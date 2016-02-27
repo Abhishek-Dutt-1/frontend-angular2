@@ -1,9 +1,15 @@
 import { Component } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
+
 import { HeroService }     from './hero.service';
 import { HeroesComponent } from './heroes.component';
-import { DashboardComponent } from './dashboard.component';
 import { HeroDetailComponent } from './hero-detail.component';
+
+import { PostService }     from './post/post.service';
+import { PostsComponent } from './post/posts.component';
+import { PostDetailComponent } from './post/post-detail.component';
+
+import { DashboardComponent } from './dashboard.component';
 
 @Component({
   selector: 'my-app',
@@ -12,6 +18,7 @@ import { HeroDetailComponent } from './hero-detail.component';
     <nav>
         <a [routerLink]="['Dashboard']">Dashboard</a>
         <a [routerLink]="['Heroes']">Heroes</a>
+        <a [routerLink]="['Posts']">Posts</a>
     </nav>
     <router-outlet></router-outlet>
   `,
@@ -19,15 +26,11 @@ import { HeroDetailComponent } from './hero-detail.component';
   directives: [ROUTER_DIRECTIVES],
   providers: [
     ROUTER_PROVIDERS,
-    HeroService
+    HeroService,
+    PostService
   ]
 })
 @RouteConfig([
-  {
-    path: '/heroes',
-    name: 'Heroes',
-    component: HeroesComponent
-  },
   {
     path: '/dashboard',
     name: 'Dashboard',
@@ -35,10 +38,25 @@ import { HeroDetailComponent } from './hero-detail.component';
     useAsDefault: true
   },
   {
+    path: '/heroes',
+    name: 'Heroes',
+    component: HeroesComponent
+  },
+  {
   path: '/detail/:id',
   name: 'HeroDetail',
   component: HeroDetailComponent
-}
+  },
+  {
+    path: '/posts',
+    name: 'Posts',
+    component: PostsComponent
+  },
+  {
+  path: '/postdetail/:id',
+  name: 'PostDetail',
+  component: PostDetailComponent
+  },
 ])
 export class AppComponent {
   title = 'Tour of Heroes';
