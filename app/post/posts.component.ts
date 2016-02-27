@@ -12,7 +12,7 @@ import {Router} from 'angular2/router';
   providers: []
 })
 export class PostsComponent implements OnInit {
-  title = 'Tour of Posts';
+  //title = 'Tour of Posts';
   posts: Post[];
   selectedPost: Post;
   constructor(
@@ -27,8 +27,11 @@ export class PostsComponent implements OnInit {
     this.getPosts();
   }
   
-  onSelect(post: Post) { this.selectedPost = post; }
-  
+  //onSelect(post: Post) { this.selectedPost = post; }
+  onSelect(post: Post) { this.selectedPost = post; 
+    this._router.navigate(['ViewPost', { id: this.selectedPost.id }]);
+  }
+
   gotoDetail() {
     this._router.navigate(['PostDetail', { id: this.selectedPost.id }]);
   }

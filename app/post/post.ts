@@ -3,4 +3,5 @@ export interface Post {
   title: string;
   text: string;
   type: string;
+  comments: any[]
 }

@@ -1,18 +1,27 @@
-    <h1>{{title}}</h1>
-    <h2>My Posts</h2>
-    <ul class="posts">
-      <li *ngFor="#post of posts"
-        [class.selected]="post === selectedPost"
-        (click)="onSelect(post)">
-        <span class="badge">{{post.id}}</span> {{post.title}} ::
-        <span>{{post.text}}</span> ::
-        <span>{{post.type}}</span>
-      </li>
-    </ul>
-    <div *ngIf="selectedPost">
-  <h2>
-    {{selectedPost.title | uppercase}} is my post
-  </h2>
-  <button (click)="gotoDetail()">View Details</button>
-  
+<div>
+  <ul class="posts demo-list-three mdl-list">
+    <li *ngFor="#post of posts"
+      [class.selected]="post === selectedPost"
+      (click)="onSelect(post)"
+      class="mdl-list__item mdl-list__item--three-line">
+      <span class="mdl-list__item-primary-content">
+        <i class="material-icons mdl-list__item-avatar">person</i>
+        <span>{{post.id}} :: {{post.title}}</span>
+        <span class="mdl-list__item-text-body">
+          {{post.text}}
+        </span>
+      </span>
+      <!--
+      <span class="mdl-list__item-secondary-content">
+        <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>
+      </span>
+      -->
+    </li>
+  </ul>
+</div>
+<div *ngIf="selectedPost">
+<h2>
+  {{selectedPost.title | uppercase}} is my post
+</h2>
+<button (click)="gotoDetail()">View Details</button>
 </div>

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './hero/hero.service', './hero/heroes.component', './hero/hero-detail.component', './post/post.service', './post/posts.component', './post/post-detail.component', './dashboard.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './hero/hero.service', './hero/heroes.component', './hero/hero-detail.component', './post/post.service', './post/posts.component', './post/post-detail.component', './post/view-post.component', './dashboard/dashboard.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './hero/hero.service', './h
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, hero_service_1, heroes_component_1, hero_detail_component_1, post_service_1, posts_component_1, post_detail_component_1, dashboard_component_1;
+    var core_1, router_1, hero_service_1, heroes_component_1, hero_detail_component_1, post_service_1, posts_component_1, post_detail_component_1, view_post_component_1, dashboard_component_1;
     var AppComponent;
     return {
         setters:[
@@ -38,18 +38,31 @@ System.register(['angular2/core', 'angular2/router', './hero/hero.service', './h
             function (post_detail_component_1_1) {
                 post_detail_component_1 = post_detail_component_1_1;
             },
+            function (view_post_component_1_1) {
+                view_post_component_1 = view_post_component_1_1;
+            },
             function (dashboard_component_1_1) {
                 dashboard_component_1 = dashboard_component_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
-                    this.title = 'Tour of Heroes';
                 }
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
-                        template: "\n    <h1>{{title}}</h1>\n    <nav>\n        <a [routerLink]=\"['Dashboard']\">Dashboard</a>\n        <a [routerLink]=\"['Heroes']\">Heroes</a>\n        <a [routerLink]=\"['Posts']\">Posts</a>\n    </nav>\n    <router-outlet></router-outlet>\n  ",
+                        /*
+                        template: `
+                          <!-- <h1>{{title}}</h1> -->
+                          <nav>
+                              <a [routerLink]="['Dashboard']">Dashboard</a>
+                              <a [routerLink]="['Heroes']">Heroes</a>
+                              <a [routerLink]="['Posts']">Posts</a>
+                          </nav>
+                          <router-outlet></router-outlet>
+                        `,
+                        */
+                        templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css'],
                         directives: [router_1.ROUTER_DIRECTIVES],
                         providers: [
@@ -81,10 +94,16 @@ System.register(['angular2/core', 'angular2/router', './hero/hero.service', './h
                             component: posts_component_1.PostsComponent
                         },
                         {
+                            // would be changed to edit post
                             path: '/postdetail/:id',
                             name: 'PostDetail',
                             component: post_detail_component_1.PostDetailComponent
                         },
+                        {
+                            path: '/post/:id',
+                            name: 'ViewPost',
+                            component: view_post_component_1.ViewPostComponent
+                        }
                     ]), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);

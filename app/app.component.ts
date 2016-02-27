@@ -8,13 +8,15 @@ import { HeroDetailComponent } from './hero/hero-detail.component';
 import { PostService }     from './post/post.service';
 import { PostsComponent } from './post/posts.component';
 import { PostDetailComponent } from './post/post-detail.component';
+import { ViewPostComponent } from './post/view-post.component';
 
-import { DashboardComponent } from './dashboard.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @Component({
   selector: 'my-app',
+  /*
   template: `
-    <h1>{{title}}</h1>
+    <!-- <h1>{{title}}</h1> -->
     <nav>
         <a [routerLink]="['Dashboard']">Dashboard</a>
         <a [routerLink]="['Heroes']">Heroes</a>
@@ -22,6 +24,8 @@ import { DashboardComponent } from './dashboard.component';
     </nav>
     <router-outlet></router-outlet>
   `,
+  */
+  templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css'],
   directives: [ROUTER_DIRECTIVES],
   providers: [
@@ -53,11 +57,17 @@ import { DashboardComponent } from './dashboard.component';
     component: PostsComponent
   },
   {
+    // would be changed to edit post
   path: '/postdetail/:id',
   name: 'PostDetail',
   component: PostDetailComponent
   },
+  {
+    path: '/post/:id',
+    name: 'ViewPost',
+    component: ViewPostComponent
+  }
 ])
 export class AppComponent {
-  title = 'Tour of Heroes';
+  //title = 'Tour of Heroes';
 }

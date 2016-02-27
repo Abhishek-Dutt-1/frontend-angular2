@@ -1,0 +1,110 @@
+<div *ngIf="post">
+  <!--
+  <h2>{{post.title}}</h2>
+  <div>
+    <label>id: </label>{{post.id}}</div>
+  <div>
+    <label>title: </label>
+    <input [(ngModel)]="post.title" placeholder="title" />
+    <input [(ngModel)]="post.text" placeholder="text" />
+    <input [(ngModel)]="post.type" placeholder="type" />
+  </div>
+  <button (click)="goBack()">Back</button>
+  -->
+  <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">{{post.id}}. {{post.title}}</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      {{post.text}}
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+      <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      Get Started 
+      </a>
+      <button (click)="goBack()">Back</button>
+    </div>
+    <div class="mdl-card__menu">
+      <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+      <i class="material-icons">share</i>
+      </button>
+    </div>
+  </div>
+
+  <div> <!-- comments start -->
+    <!-- Replies to Post -->
+    <ul class="comments demo-list-three mdl-list">
+      <li *ngFor="#comment of post.comments"
+        class="mdl-list__item mdl-list__item--three-line">
+        <span class="mdl-list__item-primary-content">
+          <i class="material-icons mdl-list__item-avatar">person</i>
+          <span>{{comment.id}} :: {{comment.title}}</span>
+          <span class="mdl-list__item-text-body">
+            {{comment.text}}
+          </span>
+        </span>
+        <!-- Replies to comments (Level 1) -->
+        <ul class="comments demo-list-three mdl-list">
+          <li *ngFor="#comment1 of comment.comments"
+            class="mdl-list__item mdl-list__item--three-line">
+            <span class="mdl-list__item-primary-content">
+              <i class="material-icons mdl-list__item-avatar">person</i>
+              <span>{{comment1.id}} :: {{comment1.title}}</span>
+              <span class="mdl-list__item-text-body">
+                {{comment1.text}}
+              </span>
+            </span>
+            <!-- Replies to reply (Level 2) -->
+            <ul class="comments demo-list-three mdl-list">
+              <li *ngFor="#comment2 of comment1.comments"
+                class="mdl-list__item mdl-list__item--three-line">
+                <span class="mdl-list__item-primary-content">
+                  <i class="material-icons mdl-list__item-avatar">person</i>
+                  <span>{{comment2.id}} :: {{comment2.title}}</span>
+                  <span class="mdl-list__item-text-body">
+                    {{comment2.text}}
+                  </span>
+                </span>
+                
+              </li>
+            </ul>
+    
+          </li>
+        </ul>
+        
+      </li>
+    </ul>
+  </div>  <!-- end comments -->
+
+<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable">
+  <thead>
+    <tr>
+      <th>Checkbox</th>
+      <th>Comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic"
+      *ngFor="#comment of post.comments" class="mdl-list__item mdl-list__item--three-line">
+      <td>
+          <span>{{comment.id}} :: {{comment.title}}</span>
+          :: {{comment.text}}
+          
+        <!-- Replies to comments (Level 1) -->
+          <span *ngFor="#comment1 of comment.comments">
+              <span>{{comment1.id}} :: {{comment1.title}}</span>
+              :: {{comment1.text}}
+              
+            <!-- Replies to reply (Level 2) -->
+              <span *ngFor="#comment2 of comment1.comments">
+                  <span>{{comment2.id}} :: {{comment2.title}}</span>
+                  :: {{comment2.text}}
+              </span> <!-- end level 2 -->
+          </span> <!-- end level 1 -->
+      </td> <!-- end top  level -->
+            
+    </tr>
+  </tbody>
+</table>
+  
+</div>  <!-- end top div -->
