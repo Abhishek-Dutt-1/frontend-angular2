@@ -10,3 +10,27 @@
 .demo-card-wide > .mdl-card__menu {
   color: #fff;
 }
+
+ul.comment-list.level-1 {
+  list-style-type: none;
+  margin: 20px;
+  padding: 0px;
+}
+ul.comment-list.level-1 > li {
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  padding: 15px;
+}
+ul.comment-list i.material-icons {
+  float: left;
+  margin-right: 10px;
+}
+ul.comment-list.level-2  {
+  list-style-type: none;
+  margin: 20px 0 0 50px;
+  padding: 0px;
+}
+ul.comment-list.level-3  {
+  list-style-type: none;
+  margin: 20px 0 0 50px;
+  padding: 0px;
+}

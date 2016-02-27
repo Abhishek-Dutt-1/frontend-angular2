@@ -33,38 +33,35 @@
 
   <div> <!-- comments start -->
     <!-- Replies to Post -->
-    <ul class="comments demo-list-three mdl-list">
-      <li *ngFor="#comment of post.comments"
-        class="mdl-list__item mdl-list__item--three-line">
-        <span class="mdl-list__item-primary-content">
+    <ul class="comment-list level-1">
+      <li *ngFor="#comment1 of post.comments" class="">
+        <div class="comment">
           <i class="material-icons mdl-list__item-avatar">person</i>
-          <span>{{comment.id}} :: {{comment.title}}</span>
-          <span class="mdl-list__item-text-body">
-            {{comment.text}}
-          </span>
-        </span>
-        <!-- Replies to comments (Level 1) -->
-        <ul class="comments demo-list-three mdl-list">
-          <li *ngFor="#comment1 of comment.comments"
-            class="mdl-list__item mdl-list__item--three-line">
-            <span class="mdl-list__item-primary-content">
+          <div>{{comment1.id}} :: {{comment1.title}}</div>
+          <div class="">
+            {{comment1.text}}
+          </div>
+        </div>
+        <!-- Replies to comments (Level 2) -->
+        <ul *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">
+          <li *ngFor="#comment2 of comment1.comments" class="">
+            <div class="comment">
               <i class="material-icons mdl-list__item-avatar">person</i>
-              <span>{{comment1.id}} :: {{comment1.title}}</span>
-              <span class="mdl-list__item-text-body">
-                {{comment1.text}}
-              </span>
-            </span>
-            <!-- Replies to reply (Level 2) -->
-            <ul class="comments demo-list-three mdl-list">
-              <li *ngFor="#comment2 of comment1.comments"
-                class="mdl-list__item mdl-list__item--three-line">
-                <span class="mdl-list__item-primary-content">
+              <div>{{comment2.id}} :: {{comment2.title}}</div>
+              <div class="">
+                {{comment2.text}}
+              </div>
+            </div>
+            <!-- Replies to reply (Level 3) -->
+            <ul *ngIf="comment2.comments && comment2.comments.length > 0" class="comment-list level-3">
+              <li *ngFor="#comment3 of comment2.comments" class="">
+                <div class="comment">
                   <i class="material-icons mdl-list__item-avatar">person</i>
-                  <span>{{comment2.id}} :: {{comment2.title}}</span>
-                  <span class="mdl-list__item-text-body">
-                    {{comment2.text}}
-                  </span>
-                </span>
+                  <div>{{comment3.id}} :: {{comment3.title}}</div>
+                  <div class="">
+                    {{comment3.text}}
+                  </div>
+                </div>
                 
               </li>
             </ul>
@@ -75,36 +72,5 @@
       </li>
     </ul>
   </div>  <!-- end comments -->
-
-<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable">
-  <thead>
-    <tr>
-      <th>Checkbox</th>
-      <th>Comment</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr data-mdl-data-table-selectable-name="materials[]" data-mdl-data-table-selectable-value="acrylic"
-      *ngFor="#comment of post.comments" class="mdl-list__item mdl-list__item--three-line">
-      <td>
-          <span>{{comment.id}} :: {{comment.title}}</span>
-          :: {{comment.text}}
-          
-        <!-- Replies to comments (Level 1) -->
-          <span *ngFor="#comment1 of comment.comments">
-              <span>{{comment1.id}} :: {{comment1.title}}</span>
-              :: {{comment1.text}}
-              
-            <!-- Replies to reply (Level 2) -->
-              <span *ngFor="#comment2 of comment1.comments">
-                  <span>{{comment2.id}} :: {{comment2.title}}</span>
-                  :: {{comment2.text}}
-              </span> <!-- end level 2 -->
-          </span> <!-- end level 1 -->
-      </td> <!-- end top  level -->
-            
-    </tr>
-  </tbody>
-</table>
   
 </div>  <!-- end top div -->
