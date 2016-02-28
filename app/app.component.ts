@@ -6,9 +6,12 @@ import { HeroesComponent } from './hero/heroes.component';
 import { HeroDetailComponent } from './hero/hero-detail.component';
 
 import { PostService }     from './post/post.service';
-import { PostsComponent } from './post/posts.component';
+import { PostListLoaderComponent } from './post/post-list-loader.component';
 import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
+
+import { GroupService }     from './group/group.service';
+import { ViewGroupComponent } from './group/view-group.component';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -31,7 +34,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   providers: [
     ROUTER_PROVIDERS,
     HeroService,
-    PostService
+    PostService,
+    GroupService
   ]
 })
 @RouteConfig([
@@ -53,8 +57,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   },
   {
     path: '/posts',
-    name: 'Posts',
-    component: PostsComponent
+    name: 'PostList',
+    component: PostListLoaderComponent
   },
   {
     // would be changed to edit post
@@ -66,6 +70,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     path: '/post/:id',
     name: 'ViewPost',
     component: ViewPostComponent
+  },
+  {
+    path: '/g/:groupname',
+    name: 'ViewGroup',
+    component: ViewGroupComponent
   }
 ])
 export class AppComponent {

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './post.service'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './post.service', './post.component', '../comment/comment.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './post.service'], function
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, post_service_1;
+    var core_1, router_1, post_service_1, post_component_1, comment_component_1;
     var ViewPostComponent;
     return {
         setters:[
@@ -22,6 +22,12 @@ System.register(['angular2/core', 'angular2/router', './post.service'], function
             },
             function (post_service_1_1) {
                 post_service_1 = post_service_1_1;
+            },
+            function (post_component_1_1) {
+                post_component_1 = post_component_1_1;
+            },
+            function (comment_component_1_1) {
+                comment_component_1 = comment_component_1_1;
             }],
         execute: function() {
             ViewPostComponent = (function () {
@@ -32,26 +38,15 @@ System.register(['angular2/core', 'angular2/router', './post.service'], function
                 ViewPostComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     var id = +this._routeParams.get('id');
-                    this._postService.getPost(id)
-                        .then(function (post) { return _this.post = post; });
-                };
-                ViewPostComponent.prototype.goBack = function () {
-                    window.history.back();
-                };
-                ViewPostComponent.prototype.upVotePost = function (id) {
-                    this.post.upvotes++;
-                    this._postService.upVotePost(id);
-                };
-                ViewPostComponent.prototype.downVotePost = function (id) {
-                    this.post.downvotes++;
-                    this._postService.downVotePost(id);
+                    this._postService.getPost(id).then(function (post) { return _this.post = post; });
+                    this.postTemplateType = 'main';
                 };
                 ViewPostComponent = __decorate([
                     core_1.Component({
                         selector: 'my-view-post',
                         templateUrl: 'app/post/view-post.component.html',
                         styleUrls: ['app/post/view-post.component.css'],
-                        inputs: ['post']
+                        directives: [post_component_1.PostComponent, comment_component_1.CommentComponent]
                     }), 
                     __metadata('design:paramtypes', [post_service_1.PostService, router_1.RouteParams])
                 ], ViewPostComponent);

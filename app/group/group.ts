@@ -1,5 +1,5 @@
 export interface Group {
   id: number;
-  url: string;
+  // name and group url are the same
   name: string;
 }

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './hero/hero.service', './hero/heroes.component', './hero/hero-detail.component', './post/post.service', './post/posts.component', './post/post-detail.component', './post/view-post.component', './dashboard/dashboard.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './hero/hero.service', './hero/heroes.component', './hero/hero-detail.component', './post/post.service', './post/post-list-loader.component', './post/post-detail.component', './post/view-post.component', './group/group.service', './group/view-group.component', './dashboard/dashboard.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './hero/hero.service', './h
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, hero_service_1, heroes_component_1, hero_detail_component_1, post_service_1, posts_component_1, post_detail_component_1, view_post_component_1, dashboard_component_1;
+    var core_1, router_1, hero_service_1, heroes_component_1, hero_detail_component_1, post_service_1, post_list_loader_component_1, post_detail_component_1, view_post_component_1, group_service_1, view_group_component_1, dashboard_component_1;
     var AppComponent;
     return {
         setters:[
@@ -32,14 +32,20 @@ System.register(['angular2/core', 'angular2/router', './hero/hero.service', './h
             function (post_service_1_1) {
                 post_service_1 = post_service_1_1;
             },
-            function (posts_component_1_1) {
-                posts_component_1 = posts_component_1_1;
+            function (post_list_loader_component_1_1) {
+                post_list_loader_component_1 = post_list_loader_component_1_1;
             },
             function (post_detail_component_1_1) {
                 post_detail_component_1 = post_detail_component_1_1;
             },
             function (view_post_component_1_1) {
                 view_post_component_1 = view_post_component_1_1;
+            },
+            function (group_service_1_1) {
+                group_service_1 = group_service_1_1;
+            },
+            function (view_group_component_1_1) {
+                view_group_component_1 = view_group_component_1_1;
             },
             function (dashboard_component_1_1) {
                 dashboard_component_1 = dashboard_component_1_1;
@@ -68,7 +74,8 @@ System.register(['angular2/core', 'angular2/router', './hero/hero.service', './h
                         providers: [
                             router_1.ROUTER_PROVIDERS,
                             hero_service_1.HeroService,
-                            post_service_1.PostService
+                            post_service_1.PostService,
+                            group_service_1.GroupService
                         ]
                     }),
                     router_1.RouteConfig([
@@ -90,8 +97,8 @@ System.register(['angular2/core', 'angular2/router', './hero/hero.service', './h
                         },
                         {
                             path: '/posts',
-                            name: 'Posts',
-                            component: posts_component_1.PostsComponent
+                            name: 'PostList',
+                            component: post_list_loader_component_1.PostListLoaderComponent
                         },
                         {
                             // would be changed to edit post
@@ -103,6 +110,11 @@ System.register(['angular2/core', 'angular2/router', './hero/hero.service', './h
                             path: '/post/:id',
                             name: 'ViewPost',
                             component: view_post_component_1.ViewPostComponent
+                        },
+                        {
+                            path: '/g/:groupname',
+                            name: 'ViewGroup',
+                            component: view_group_component_1.ViewGroupComponent
                         }
                     ]), 
                     __metadata('design:paramtypes', [])

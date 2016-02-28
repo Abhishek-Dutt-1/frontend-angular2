@@ -1,35 +1,30 @@
 import {Group} from './group'
 
+// Grouop's name and urls are same
 export var GROUPS: Group[] = [
   {
     id: 1,
-    url: 'g/casual_international_celebrity_encounters',
-    name: 'Casual international celebrity encounters'
+    name: 'casual_international_celebrity_encounters'
   },
   {
     id: 2,
-    url: 'g/random',
-    name: 'Random'
+    name: 'random'
   },
   {
     id: 3,
-    url: 'g/funny',
-    name: 'Funny'
+    name: 'funny',
   },
   {
     id: 4,
-    url: 'g/interstellar_space_travel',
-    name: 'Interstellar Space Travel'
+    name: 'interstellar_space_travel'
   },
   {
     id: 5,
-    url: 'g/one_true_god',
-    name: 'One True God'
+    name: 'one_true_god'
   },
   {
     id: 6,
-    url: 'g/nicholas_cage_fan_club',
-    name: 'Nicholas Cage Fan Club'
+    name: 'nicholas_cage_fan_club'
   }
   
 ]
