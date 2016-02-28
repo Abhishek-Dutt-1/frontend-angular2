@@ -1,5 +1,6 @@
 import {User} from '../user/user'
 import {Comment} from '../comment/comment'
+import {Group} from '../group/group'
 
 export interface Post {
   id: number;
@@ -10,4 +11,5 @@ export interface Post {
   type: string;
   comments: Comment[];
   postedby: User;
+  group: Group;
 }

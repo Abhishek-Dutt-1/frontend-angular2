@@ -32,6 +32,9 @@
       <a (click)="downVotePost(post.id)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
       {{post.downvotes}} Vote down
       </a>
+      <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      {{post.group.name}} 
+      </a>
       <a (click)="goBack()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
       back 
       </a>
@@ -48,19 +51,17 @@
     <ul class="comment-list level-1">
       <li *ngFor="#comment1 of post.comments" class="">
         <div class="comment">
-          <i class="material-icons mdl-list__item-icon">person</i>
-          <div>{{comment1.id}} :: {{comment1.title}}</div>
+          <i class="material-icons mdl-list__item-icon">person</i> {{comment1.postedby.username}}
           <div class="">
             {{comment1.text}}
           </div>
-          <i class="material-icons mdl-list__item-icon">person</i> {{post.postedby.username}}
+
         </div>
         <!-- Replies to comments (Level 2) -->
         <ul *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">
           <li *ngFor="#comment2 of comment1.comments" class="">
             <div class="comment">
-              <i class="material-icons mdl-list__item-icon">person</i>
-              <div>{{comment2.id}} :: {{comment2.title}}</div>
+              <i class="material-icons mdl-list__item-icon">person</i> {{comment2.postedby.username}}
               <div class="">
                 {{comment2.text}}
               </div>
@@ -69,8 +70,7 @@
             <ul *ngIf="comment2.comments && comment2.comments.length > 0" class="comment-list level-3">
               <li *ngFor="#comment3 of comment2.comments" class="">
                 <div class="comment">
-                  <i class="material-icons mdl-list__item-icon">person</i>
-                  <div>{{comment3.id}} :: {{comment3.title}}</div>
+                  <i class="material-icons mdl-list__item-icon">person</i> {{comment3.postedby.username}}
                   <div class="">
                     {{comment3.text}}
                   </div>
