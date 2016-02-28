@@ -31,7 +31,6 @@ System.register(['angular2/core', './post-detail.component', './post.service', '
                 function PostsComponent(_postService, _router) {
                     this._postService = _postService;
                     this._router = _router;
-                    this.title = 'Tour of Posts';
                 }
                 PostsComponent.prototype.getPosts = function () {
                     var _this = this;
@@ -40,7 +39,11 @@ System.register(['angular2/core', './post-detail.component', './post.service', '
                 PostsComponent.prototype.ngOnInit = function () {
                     this.getPosts();
                 };
-                PostsComponent.prototype.onSelect = function (post) { this.selectedPost = post; };
+                //onSelect(post: Post) { this.selectedPost = post; }
+                PostsComponent.prototype.onSelect = function (post) {
+                    this.selectedPost = post;
+                    this._router.navigate(['ViewPost', { id: this.selectedPost.id }]);
+                };
                 PostsComponent.prototype.gotoDetail = function () {
                     this._router.navigate(['PostDetail', { id: this.selectedPost.id }]);
                 };
