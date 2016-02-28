@@ -1,3 +1,6 @@
+import {User} from '../user/user'
+import {Comment} from '../comment/comment'
+
 export interface Post {
   id: number;
   upvotes: number,
@@ -5,5 +8,6 @@ export interface Post {
   title: string;
   text: string;
   type: string;
-  comments: any[]
+  comments: Comment[];
+  postedby: User;
 }

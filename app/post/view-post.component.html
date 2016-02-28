@@ -21,6 +21,9 @@
     </div>
     <div class="mdl-card__actions mdl-card--border">
       <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+       <i class="material-icons mdl-list__item-icon">person</i> {{post.postedby.username}} 
+      </a>
+      <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
       Edit 
       </a>
       <a (click)="upVotePost(post.id)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
@@ -50,6 +53,7 @@
           <div class="">
             {{comment1.text}}
           </div>
+          <i class="material-icons mdl-list__item-icon">person</i> {{post.postedby.username}}
         </div>
         <!-- Replies to comments (Level 2) -->
         <ul *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">
