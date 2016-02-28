@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base href="/">
-    <title>Angular 2 Tour of Heroes</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <base href="/">
+  <title>Angular 2 Tour of Heroes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- IE required polyfills, in this exact order -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.33.3/es6-shim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.20/system-polyfills.js"></script>
-    
-    <script src="https://code.angularjs.org/2.0.0-beta.7/angular2-polyfills.js"></script>
-    <script src="https://code.angularjs.org/tools/system.js"></script>
-    <script src="https://code.angularjs.org/tools/typescript.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-beta.7/Rx.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-beta.7/angular2.dev.js"></script>
-    <script src="node_modules/angular2/bundles/router.dev.js"></script>
+  <!-- IE required polyfills, in this exact order -->
+  <script src="node_modules/es6-shim/es6-shim.min.js"></script>
+  <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
+  
+  <script src="https://code.angularjs.org/2.0.0-beta.7/angular2-polyfills.js"></script>
+  <script src="node_modules/systemjs/dist/system.js"></script>
+  <script src="https://code.angularjs.org/tools/typescript.js"></script>
+  <script src="https://code.angularjs.org/2.0.0-beta.7/Rx.js"></script>
+  <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+  <script src="node_modules/angular2/bundles/router.dev.js"></script>
 <link rel="stylesheet" href="styles.css">
 
-    <script>
-      System.config({
-        transpiler: 'typescript', 
-        typescriptOptions: { emitDecoratorMetadata: true }, 
-        packages: {'app': {defaultExtension: 'ts'}} 
-      });
-      System.import('app/main')
-            .then(null, console.error.bind(console));
-    </script>
-  </head>
+<link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
+<script src="/node_modules/material-design-lite/material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-  <body>
-    <my-app>Loading...</my-app>
-  </body>
+  <script>
+  System.config({
+    transpiler: 'typescript', 
+    typescriptOptions: { emitDecoratorMetadata: true }, 
+    packages: {'app': {defaultExtension: 'ts'}} 
+  });
+  System.import('app/main')
+    .then(null, console.error.bind(console));
+  </script>
+</head>
+
+<body>
+  <my-app>Loading...</my-app>
+</body>  
 </html>
 
 
