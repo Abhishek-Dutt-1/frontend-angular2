@@ -38,6 +38,14 @@ System.register(['angular2/core', 'angular2/router', './post.service'], function
                 ViewPostComponent.prototype.goBack = function () {
                     window.history.back();
                 };
+                ViewPostComponent.prototype.upVotePost = function (id) {
+                    this.post.upvotes++;
+                    this._postService.upVotePost(id);
+                };
+                ViewPostComponent.prototype.downVotePost = function (id) {
+                    this.post.downvotes++;
+                    this._postService.downVotePost(id);
+                };
                 ViewPostComponent = __decorate([
                     core_1.Component({
                         selector: 'my-view-post',

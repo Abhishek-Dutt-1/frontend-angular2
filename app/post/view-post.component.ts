@@ -26,6 +26,16 @@ export class ViewPostComponent {
   goBack() {
     window.history.back();
   }
-
-    post: Post;
+  
+  upVotePost(id:number) {
+    this.post.upvotes++
+    this._postService.upVotePost(id)  
+  }
+  
+  downVotePost(id:number) {
+    this.post.downvotes++
+    this._postService.downVotePost(id)  
+  }
+  
+  post: Post;
 }

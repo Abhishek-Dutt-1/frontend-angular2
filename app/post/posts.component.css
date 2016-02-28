@@ -1,48 +1,21 @@
-/*
-    .selected {
-      background-color: #CFD8DC !important;
-      color: white;
-    }
-    .posts {
-      margin: 0 0 2em 0;
-      list-style-type: none;
-      padding: 0;
-      width: 10em;
-    }
-    .posts li {
-      cursor: pointer;
-      position: relative;
-      left: 0;
-      background-color: #EEE;
-      margin: .5em;
-      padding: .3em 0em;
-      height: 1.6em;
-      border-radius: 4px;
-    }
-    .posts li.selected:hover {
-      color: white;
-    }
-    .posts li:hover {
-      color: #607D8B;
-      background-color: #EEE;
-      left: .1em;
-    }
-    .posts .text {
-      position: relative;
-      top: -3px;
-    }
-    .posts .badge {
-      display: inline-block;
-      font-size: small;
-      color: white;
-      padding: 0.8em 0.7em 0em 0.7em;
-      background-color: #607D8B;
-      line-height: 1em;
-      position: relative;
-      left: -1px;
-      top: -4px;
-      height: 1.8em;
-      margin-right: .8em;
-      border-radius: 4px 0px 0px 4px;
-    }
-*/
+.posts {
+  margin-top: 0px;
+  padding-top: 0px;
+}
+.posts .mdl-list__item--three-line {
+  height: 100%;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.posts .mdl-list__item-primary-content {
+  height: 100%;
+}
+.posts .mdl-list__item-text-body {
+  height: 100%;
+}
+.posts .mdl-list__item-icon {
+  margin-right: 0px;
+  font-size: 20px;
+}
+.posts .toolbox {
+  font-size: 10px;
+}

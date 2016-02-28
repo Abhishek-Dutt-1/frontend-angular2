@@ -38,6 +38,12 @@ System.register(['./mock-posts', 'angular2/core'], function(exports_1, context_1
                 PostService.prototype.getPost = function (id) {
                     return Promise.resolve(mock_posts_1.POSTS).then(function (posts) { return posts.filter(function (post) { return post.id === id; })[0]; });
                 };
+                PostService.prototype.upVotePost = function (id) {
+                    return true;
+                };
+                PostService.prototype.downVotePost = function (id) {
+                    return true;
+                };
                 PostService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [])

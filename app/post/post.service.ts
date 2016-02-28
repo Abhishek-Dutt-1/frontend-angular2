@@ -22,4 +22,11 @@ export class PostService {
     );
   }
 
+  upVotePost(id: number) {
+    return true
+  }
+  
+  downVotePost(id: number) {
+    return true
+  }
 }

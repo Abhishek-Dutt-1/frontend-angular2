@@ -1,3 +1,4 @@
+
 <div *ngIf="post">
   <!--
   <h2>{{post.title}}</h2>
@@ -11,18 +12,26 @@
   </div>
   <button (click)="goBack()">Back</button>
   -->
-  <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+  <div class="view-post demo-card-wide mdl-card mdl-shadow--2dp">
     <div class="mdl-card__title">
-      <h2 class="mdl-card__title-text">{{post.id}}. {{post.title}}</h2>
+      <h2 class="mdl-card__title-text">{{post.title}}</h2>
     </div>
     <div class="mdl-card__supporting-text">
       {{post.text}}
     </div>
     <div class="mdl-card__actions mdl-card--border">
       <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-      Get Started 
+      Edit 
       </a>
-      <button (click)="goBack()">Back</button>
+      <a (click)="upVotePost(post.id)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      {{post.upvotes}} Vote up
+      </a>
+      <a (click)="downVotePost(post.id)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      {{post.downvotes}} Vote down
+      </a>
+      <a (click)="goBack()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      back 
+      </a>
     </div>
     <div class="mdl-card__menu">
       <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
@@ -36,7 +45,7 @@
     <ul class="comment-list level-1">
       <li *ngFor="#comment1 of post.comments" class="">
         <div class="comment">
-          <i class="material-icons mdl-list__item-avatar">person</i>
+          <i class="material-icons mdl-list__item-icon">person</i>
           <div>{{comment1.id}} :: {{comment1.title}}</div>
           <div class="">
             {{comment1.text}}
@@ -46,7 +55,7 @@
         <ul *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">
           <li *ngFor="#comment2 of comment1.comments" class="">
             <div class="comment">
-              <i class="material-icons mdl-list__item-avatar">person</i>
+              <i class="material-icons mdl-list__item-icon">person</i>
               <div>{{comment2.id}} :: {{comment2.title}}</div>
               <div class="">
                 {{comment2.text}}
@@ -56,7 +65,7 @@
             <ul *ngIf="comment2.comments && comment2.comments.length > 0" class="comment-list level-3">
               <li *ngFor="#comment3 of comment2.comments" class="">
                 <div class="comment">
-                  <i class="material-icons mdl-list__item-avatar">person</i>
+                  <i class="material-icons mdl-list__item-icon">person</i>
                   <div>{{comment3.id}} :: {{comment3.title}}</div>
                   <div class="">
                     {{comment3.text}}

@@ -5,11 +5,23 @@
       (click)="onSelect(post)"
       class="mdl-list__item mdl-list__item--three-line">
       <span class="mdl-list__item-primary-content">
-        <i class="material-icons mdl-list__item-avatar">person</i>
-        <span>{{post.id}} :: {{post.title}}</span>
+        <!-- <i class="material-icons mdl-list__item-avatar">person</i> -->
+        <span>{{post.title}}</span>
         <span class="mdl-list__item-text-body">
-          {{post.text}}
+          {{post.text}}  
         </span>
+        
+        <span class="mdl-list__item-text-body">
+          <div class="toolbox">
+            <div>
+              <i class="material-icons mdl-list__item-icon">person</i>
+              Username | 12 days ago
+            </div>
+            <div>
+              {{post.upvotes}} Upvote | {{post.downvotes}} Downvote | {{post.comments.length}} Comments
+            </div>
+          </div>
+         </span>
       </span>
       <!--
       <span class="mdl-list__item-secondary-content">
