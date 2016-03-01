@@ -20,7 +20,7 @@ import {PostService} from './post.service';
           <div class="toolbox">
             <div>
               <i class="material-icons mdl-list__item-icon">person</i>
-              {{post.postedby.username}} | 12 days ago | <span (click)="gotoGroup(post.group.name)">{{post.group.name}}</span>
+              {{post.postedby.username}} | 12 days ago | <span (click)="gotoGroup(post.group.name)">go/{{post.group.name}}</span>
             </div>
             <div>
               {{post.upvotes}} Upvote | {{post.downvotes}} Downvote | {{post.comments.length}} Comments
@@ -34,6 +34,34 @@ import {PostService} from './post.service';
       </span>
       -->
     </li>
+    
+    
+    <li *ngIf="type === 'grouplist'" class="post mdl-list__item mdl-list__item--three-line">
+      <span class="post mdl-list__item-primary-content">
+        <!-- <i class="material-icons mdl-list__item-avatar">person</i> -->
+        <span (click)="gotoPost(post.id)" class="post-title">{{post.title}}</span>
+        <span class="mdl-list__item-text-body">
+          {{post.text}}  
+        </span>
+        <span class="mdl-list__item-text-body">
+          <div class="toolbox">
+            <div>
+              <i class="material-icons mdl-list__item-icon">person</i>
+              {{post.postedby.username}} | 12 days ago
+            </div>
+            <div>
+              {{post.upvotes}} Upvote | {{post.downvotes}} Downvote | {{post.comments.length}} Comments
+            </div>
+          </div>
+         </span>
+      </span>
+      <!--
+      <span class="mdl-list__item-secondary-content">
+        <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>
+      </span>
+      -->
+    </li>
+    
     
     <div *ngIf="type === 'main'">
       <div class="post-main demo-card-wide mdl-card mdl-shadow--2dp">
@@ -57,7 +85,7 @@ import {PostService} from './post.service';
           {{post.downvotes}} Vote down
           </a>
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          {{post.group.name}} 
+          go/{{post.group.name}} 
           </a>
           <a (click)="goBack()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
           back 

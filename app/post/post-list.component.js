@@ -1,4 +1,4 @@
-System.register(['angular2/core', './post.service', 'angular2/router', './post.component'], function(exports_1, context_1) {
+System.register(['angular2/core', './post.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,43 +10,40 @@ System.register(['angular2/core', './post.service', 'angular2/router', './post.c
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, post_service_1, router_1, post_component_1;
-    var PostListComponent /*implements OnInit*/;
+    var core_1, post_component_1;
+    var PostListComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (post_service_1_1) {
-                post_service_1 = post_service_1_1;
-            },
-            function (router_1_1) {
-                router_1 = router_1_1;
-            },
             function (post_component_1_1) {
                 post_component_1 = post_component_1_1;
             }],
         execute: function() {
-            PostListComponent /*implements OnInit*/ = (function () {
-                //selectedPost: Post;
-                function PostListComponent /*implements OnInit*/(_postService, _router) {
-                    this._postService = _postService;
-                    this._router = _router;
+            PostListComponent = (function () {
+                //posts: Post[];
+                //postTemplateType: string;
+                function PostListComponent() {
                 }
-                PostListComponent /*implements OnInit*/ = __decorate([
+                PostListComponent.prototype.ngOnInit = function () {
+                };
+                PostListComponent = __decorate([
                     core_1.Component({
                         selector: 'my-post-list',
+                        //template: `<div>{{posts1}} POST LIST</div>`,
+                        //template: `{{type1}} {{posts1}}<my-post [post]="posts1" [type]="type1">{{posts1}} POST LIST</my-post>`,
                         templateUrl: 'app/post/post-list.component.html',
                         styleUrls: ['app/post/post-list.component.css'],
                         //directives: [PostDetailComponent],
                         directives: [post_component_1.PostComponent],
-                        inputs: ["posts", "type"]
+                        inputs: ["posts", "postTemplateType"]
                     }), 
-                    __metadata('design:paramtypes', [post_service_1.PostService, router_1.Router])
-                ], PostListComponent /*implements OnInit*/);
-                return PostListComponent /*implements OnInit*/;
+                    __metadata('design:paramtypes', [])
+                ], PostListComponent);
+                return PostListComponent;
             }());
-            exports_1("PostListComponent /*implements OnInit*/", PostListComponent /*implements OnInit*/);
+            exports_1("PostListComponent", PostListComponent);
         }
     }
 });

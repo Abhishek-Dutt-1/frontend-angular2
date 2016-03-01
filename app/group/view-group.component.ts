@@ -4,13 +4,14 @@ import {Group} from './group';
 import {GroupService} from './group.service';
 
 import {Post} from '../post/post';
-
+import {PostListComponent} from '../post/post-list.component'
 
 @Component({
   selector: 'my-view-group',
   templateUrl: 'app/group/view-group.component.html',
   styleUrls: ['app/group/view-group.component.css'],
-  inputs: ['group']
+  inputs: ['group'],
+  directives: [PostListComponent]
 })
 export class ViewGroupComponent {
   
@@ -26,6 +27,8 @@ export class ViewGroupComponent {
       
     this._groupService.getPostsInGroup(groupname)
       .then(posts => this.groupPosts = posts);
+      
+    this.postTemplateType = 'grouplist'
   }
   
   goBack() {
@@ -34,4 +37,5 @@ export class ViewGroupComponent {
   
   group: Group;
   groupPosts: Post[];
+  postTemplateType: string;
 }

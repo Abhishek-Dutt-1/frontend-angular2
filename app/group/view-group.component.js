@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './group.service'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './group.service', '../post/post-list.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './group.service'], functio
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, group_service_1;
+    var core_1, router_1, group_service_1, post_list_component_1;
     var ViewGroupComponent;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['angular2/core', 'angular2/router', './group.service'], functio
             },
             function (group_service_1_1) {
                 group_service_1 = group_service_1_1;
+            },
+            function (post_list_component_1_1) {
+                post_list_component_1 = post_list_component_1_1;
             }],
         execute: function() {
             ViewGroupComponent = (function () {
@@ -36,6 +39,7 @@ System.register(['angular2/core', 'angular2/router', './group.service'], functio
                         .then(function (group) { return _this.group = group; });
                     this._groupService.getPostsInGroup(groupname)
                         .then(function (posts) { return _this.groupPosts = posts; });
+                    this.postTemplateType = 'grouplist';
                 };
                 ViewGroupComponent.prototype.goBack = function () {
                     window.history.back();
@@ -45,7 +49,8 @@ System.register(['angular2/core', 'angular2/router', './group.service'], functio
                         selector: 'my-view-group',
                         templateUrl: 'app/group/view-group.component.html',
                         styleUrls: ['app/group/view-group.component.css'],
-                        inputs: ['group']
+                        inputs: ['group'],
+                        directives: [post_list_component_1.PostListComponent]
                     }), 
                     __metadata('design:paramtypes', [group_service_1.GroupService, router_1.RouteParams])
                 ], ViewGroupComponent);

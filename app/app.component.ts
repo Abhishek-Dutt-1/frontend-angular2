@@ -51,9 +51,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     component: HeroesComponent
   },
   {
-  path: '/detail/:id',
-  name: 'HeroDetail',
-  component: HeroDetailComponent
+    path: '/detail/:id',
+    name: 'HeroDetail',
+    component: HeroDetailComponent
   },
   {
     path: '/posts',
@@ -62,9 +62,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   },
   {
     // would be changed to edit post
-  path: '/postdetail/:id',
-  name: 'PostDetail',
-  component: PostDetailComponent
+    path: '/postdetail/:id',
+    name: 'PostDetail',
+    component: PostDetailComponent
   },
   {
     path: '/post/:id',
