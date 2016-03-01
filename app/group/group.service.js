@@ -28,21 +28,21 @@ System.register(['./mock-groups', 'angular2/core', '../post/mock-posts'], functi
                 function GroupService() {
                 }
                 GroupService.prototype.getGroups = function () {
-                    return Promise.resolve(mock_groups_1.GROUPS);
+                    return Promise.resolve(mock_groups_1.MOCK_GROUPS);
                 };
                 // See the "Take it slow" appendix
                 GroupService.prototype.getGroupsSlowly = function () {
                     return new Promise(function (resolve) {
-                        return setTimeout(function () { return resolve(mock_groups_1.GROUPS); }, 2000);
+                        return setTimeout(function () { return resolve(mock_groups_1.MOCK_GROUPS); }, 2000);
                     } // 2 seconds
                      // 2 seconds
                     );
                 };
                 GroupService.prototype.getGroup = function (groupname) {
-                    return Promise.resolve(mock_groups_1.GROUPS).then(function (groups) { return groups.filter(function (group) { return group.name === groupname; })[0]; });
+                    return Promise.resolve(mock_groups_1.MOCK_GROUPS).then(function (groups) { return groups.filter(function (group) { return group.name === groupname; })[0]; });
                 };
                 GroupService.prototype.getPostsInGroup = function (groupname) {
-                    return Promise.resolve(mock_posts_1.POSTS).then(function (posts) { return posts.filter(function (post) { return post.group.name === groupname; }); });
+                    return Promise.resolve(mock_posts_1.MOCK_POSTS).then(function (posts) { return posts.filter(function (post) { return post.group.name === groupname; }); });
                 };
                 GroupService = __decorate([
                     core_1.Injectable(), 

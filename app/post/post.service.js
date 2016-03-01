@@ -25,18 +25,18 @@ System.register(['./mock-posts', 'angular2/core'], function(exports_1, context_1
                 function PostService() {
                 }
                 PostService.prototype.getPosts = function () {
-                    return Promise.resolve(mock_posts_1.POSTS);
+                    return Promise.resolve(mock_posts_1.MOCK_POSTS);
                 };
                 // See the "Take it slow" appendix
                 PostService.prototype.getPostsSlowly = function () {
                     return new Promise(function (resolve) {
-                        return setTimeout(function () { return resolve(mock_posts_1.POSTS); }, 2000);
+                        return setTimeout(function () { return resolve(mock_posts_1.MOCK_POSTS); }, 2000);
                     } // 2 seconds
                      // 2 seconds
                     );
                 };
                 PostService.prototype.getPost = function (id) {
-                    return Promise.resolve(mock_posts_1.POSTS).then(function (posts) { return posts.filter(function (post) { return post.id === id; })[0]; });
+                    return Promise.resolve(mock_posts_1.MOCK_POSTS).then(function (posts) { return posts.filter(function (post) { return post.id === id; })[0]; });
                 };
                 PostService.prototype.upVotePost = function (id) {
                     return true;

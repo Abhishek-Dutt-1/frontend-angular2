@@ -34,7 +34,7 @@ System.register(['angular2/core', 'angular2/router', './post.service', './post-l
                 }
                 PostListLoaderComponent.prototype.getPosts = function () {
                     var _this = this;
-                    this._postService.getPosts().then(function (posts) { return _this.posts = posts; });
+                    this._postService.getPosts().then(function (posts) { return _this.posts = posts; }).then(function (el) { return console.log(_this.posts); });
                 };
                 PostListLoaderComponent.prototype.ngOnInit = function () {
                     this.getPosts();

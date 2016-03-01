@@ -1,5 +1,5 @@
 import {User} from '../user/user'
-import {Comment} from '../comment/comment'
+import {Comment1} from '../comment1/comment1'
 import {Group} from '../group/group'
 
 export interface Post {
@@ -9,7 +9,7 @@ export interface Post {
   title: string;
   text: string;
   type: string;
-  comments: Comment[];
+  comments: Comment1[];
   postedby: User;
   group: Group;
 }

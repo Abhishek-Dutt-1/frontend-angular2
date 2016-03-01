@@ -35,7 +35,6 @@ System.register(['angular2/core', 'angular2/router', './post.service'], function
                 PostComponent.prototype.gotoGroup = function (name) {
                     this._router.navigate(['ViewGroup', { groupname: name }]);
                 };
-                /* Main view */
                 PostComponent.prototype.goBack = function () {
                     window.history.back();
                 };

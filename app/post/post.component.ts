@@ -118,7 +118,6 @@ export class PostComponent {
     this._router.navigate(['ViewGroup', {groupname: name}]);
   }
   
-  /* Main view */
   goBack() {
     window.history.back();
   }

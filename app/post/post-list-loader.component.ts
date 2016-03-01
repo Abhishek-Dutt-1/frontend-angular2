@@ -28,7 +28,7 @@ export class PostListLoaderComponent implements OnInit {
     ) { }
   
   getPosts() {
-    this._postService.getPosts().then(posts => this.posts = posts);
+    this._postService.getPosts().then(posts => this.posts = posts).then(el => console.log(this.posts));
   }
   
   
@@ -37,13 +37,4 @@ export class PostListLoaderComponent implements OnInit {
     this.postTemplateType = 'list';
   }
   
-  
-  /*
-  gotoPost(id: number) {
-    this._router.navigate(['ViewPost', {id: id}]);
-  }
-  gotoGroup(name) {
-    this._router.navigate(['ViewGroup', {groupname: name}]);
-  }
-  */
 }

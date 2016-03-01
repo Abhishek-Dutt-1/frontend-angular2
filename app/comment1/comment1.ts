@@ -1,7 +1,8 @@
 import {User} from "../user/user"
-export interface Comment {
+
+export interface Comment1 {
   id: number;
   text: string;
   postedby: User;
-  comments: Comment[];
+//  comments: Comment2[];
 }

@@ -2,7 +2,6 @@ import {Component, OnInit} from 'angular2/core';
 import {RouteParams} from 'angular2/router';
 import {Group} from './group';
 import {GroupService} from './group.service';
-
 import {Post} from '../post/post';
 import {PostListComponent} from '../post/post-list.component'
 

@@ -1,25 +1,25 @@
 System.register([], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var USERS;
+    var MOCK_USERS;
     return {
         setters:[],
         execute: function() {
-            exports_1("USERS", USERS = [
+            exports_1("MOCK_USERS", MOCK_USERS = [
                 {
-                    id: 1,
+                    id: 0,
                     username: 'Iron Man'
                 },
                 {
-                    id: 2,
+                    id: 1,
                     username: 'Captain America'
                 },
                 {
-                    id: 3,
+                    id: 2,
                     username: 'Incredible Hulk'
                 },
                 {
-                    id: 4,
+                    id: 3,
                     username: 'The Mighty Thor'
                 }
             ]);

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './post.service', './post.component', '../comment/comment.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './post.service', './post.component', '../comment1/comment1.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './post.service', './post.c
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, post_service_1, post_component_1, comment_component_1;
+    var core_1, router_1, post_service_1, post_component_1, comment1_component_1;
     var ViewPostComponent;
     return {
         setters:[
@@ -26,8 +26,8 @@ System.register(['angular2/core', 'angular2/router', './post.service', './post.c
             function (post_component_1_1) {
                 post_component_1 = post_component_1_1;
             },
-            function (comment_component_1_1) {
-                comment_component_1 = comment_component_1_1;
+            function (comment1_component_1_1) {
+                comment1_component_1 = comment1_component_1_1;
             }],
         execute: function() {
             ViewPostComponent = (function () {
@@ -46,7 +46,7 @@ System.register(['angular2/core', 'angular2/router', './post.service', './post.c
                         selector: 'my-view-post',
                         templateUrl: 'app/post/view-post.component.html',
                         styleUrls: ['app/post/view-post.component.css'],
-                        directives: [post_component_1.PostComponent, comment_component_1.CommentComponent]
+                        directives: [post_component_1.PostComponent, comment1_component_1.Comment1Component]
                     }), 
                     __metadata('design:paramtypes', [post_service_1.PostService, router_1.RouteParams])
                 ], ViewPostComponent);

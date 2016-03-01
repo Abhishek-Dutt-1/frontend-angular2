@@ -1,20 +1,20 @@
 import {User} from './user';
 
-export var USERS: User[] = [
+export var MOCK_USERS: User[] = [
   {
-    id: 1,
+    id: 0,
     username: 'Iron Man'
   },
   {
-    id: 2,
+    id: 1,
     username: 'Captain America'
   },
   {
-    id: 3,
+    id: 2,
     username: 'Incredible Hulk'
   },
   {
-    id: 4,
+    id: 3,
     username: 'The Mighty Thor'
   }
   

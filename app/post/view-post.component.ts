@@ -3,14 +3,15 @@ import {RouteParams} from 'angular2/router';
 import {Post} from './post';
 import {PostService} from './post.service';
 import {PostComponent} from './post.component';
-import {CommentComponent} from '../comment/comment.component';
+import {Comment1Component} from '../comment1/comment1.component';
 
 @Component({
   selector: 'my-view-post',
   templateUrl: 'app/post/view-post.component.html',
   styleUrls: ['app/post/view-post.component.css'],
-  directives: [PostComponent, CommentComponent]
-  //inputs: ['post']
+  directives: [PostComponent, Comment1Component]
+
+  //////inputs: ['post']////
 })
 export class ViewPostComponent {
   
@@ -43,5 +44,4 @@ export class ViewPostComponent {
     this._postService.downVotePost(id)  
   }
   */
-  
 }
