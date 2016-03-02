@@ -24,12 +24,14 @@ export class ViewGroupComponent {
     private _routeParams: RouteParams) {}
   
   ngOnInit() {
+    
+    let parent_group_name = this._routeParams.get('parent_group_name');
     let groupname = this._routeParams.get('groupname');
     
-    this._groupService.getGroup(groupname)
+    this._groupService.getGroup(parent_group_name, groupname)
       .then(group => this.group = group);
       
-    this._groupService.getPostsInGroup(groupname)
+    this._groupService.getPostsInGroup(parent_group_name, groupname)
       .then(posts => this.groupPosts = posts);
       
     this.postTemplateType = PostTemplateType.Grouplist;

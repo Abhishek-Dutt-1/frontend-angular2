@@ -13,7 +13,7 @@ export var MOCK_POSTS: Post[] = [
     text: 'textextext',
     type: 'text',
     postedby: MOCK_USERS[0],
-    group: MOCK_GROUPS[0],
+    group: MOCK_GROUPS[1],
     comments: [MOCK_COMMENT1S[1], MOCK_COMMENT1S[0]]
   }
 ]  

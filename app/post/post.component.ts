@@ -22,7 +22,8 @@ import {PostTemplateType} from './post-template-types';
           <div class="toolbox">
             <div>
               <i class="material-icons mdl-list__item-icon">person</i>
-              {{post.postedby.username}} | 12 days ago | <span (click)="gotoGroup(post.group.name)">go/{{post.group.parent_group.name}}/{{post.group.name}}</span>
+              {{post.postedby.username}} | 12 days ago | 
+                <span (click)="gotoGroup(post.group.parent_group.name, post.group.name)">go/{{post.group.parent_group.name}}/{{post.group.name}}</span>
             </div>
             <div>
               {{post.upvotes}} Upvote | {{post.downvotes}} Downvote | {{post.comments.length}} Comments
@@ -126,8 +127,8 @@ export class PostComponent implements OnInit {
     this._router.navigate(['ViewPost', {id: id}]);
   }
   
-  gotoGroup(name) {
-    this._router.navigate(['ViewGroup', {groupname: name}]);
+  gotoGroup(parent_group_name, groupname) {
+    this._router.navigate(['ViewGroup', {parent_group_name: parent_group_name, groupname: name}]);
   }
   
   goBack() {

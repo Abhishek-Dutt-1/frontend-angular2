@@ -73,7 +73,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     component: ViewPostComponent
   },
   {
-    path: '/go/:groupname',
+    // TODO: Seems to be a bug in BrowserSync with multiple tokens,
+    // works if route is typed manually
+    path: '/go/:parent_group_name/:groupname',
     name: 'ViewGroup',
     component: ViewGroupComponent
   }

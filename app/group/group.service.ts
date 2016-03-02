@@ -17,15 +17,15 @@ export class GroupService {
     );
   }
   
-  getGroup(groupname: string) {
+  getGroup(parent_group_name: string, groupname: string) {
     return Promise.resolve(MOCK_GROUPS).then(
-      groups => groups.filter(group => group.name === groupname)[0]
+      groups => groups.filter(group => group.name === groupname && group.parent_group.name === parent_group_name)[0]
     );
   }
   
-  getPostsInGroup(groupname: string) {
+  getPostsInGroup(parent_group_name: string, groupname: string) {
     return Promise.resolve(MOCK_POSTS).then(
-      posts => posts.filter(post => post.group.name === groupname)
+      posts => posts.filter(post => post.group.name === groupname && post.group.parent_group.name === parent_group_name)
     );
   }
 
