@@ -73,7 +73,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     component: ViewPostComponent
   },
   {
-    path: '/g/:groupname',
+    path: '/go/:groupname',
     name: 'ViewGroup',
     component: ViewGroupComponent
   }

@@ -6,21 +6,15 @@ import {MOCK_COMMENT1S} from '../comment1/mock-comment1s';
 
 export var MOCK_POSTS: Post[] = [
   {
-    id: 1,
-  upvotes: 1,
-  downvotes: 1,
-  title: 'title',
-  text: 'textextext',
-  type: 'text',
-  postedby: MOCK_USERS[0],
-     group: MOCK_GROUPS[0],
-     comments: [MOCK_COMMENT1S[1]]
-     /*
-     comments: [{
-       id: 0,
-       postedby: MOCK_USERS[0],
-       text: "comment"
-     }]*/
+    id: 0,
+    upvotes: 1,
+    downvotes: 1,
+    title: 'title',
+    text: 'textextext',
+    type: 'text',
+    postedby: MOCK_USERS[0],
+    group: MOCK_GROUPS[0],
+    comments: [MOCK_COMMENT1S[1], MOCK_COMMENT1S[0]]
   }
 ]  
   /*

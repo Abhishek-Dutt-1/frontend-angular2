@@ -4,6 +4,7 @@ import {Post} from './post';
 //import {PostDetailComponent} from './post-detail.component';
 import {PostService} from './post.service';
 import {PostListComponent} from './post-list.component';
+import {PostTemplateType} from './post-template-types';
 
 @Component({
   selector: 'my-post-list-loader',
@@ -20,7 +21,7 @@ import {PostListComponent} from './post-list.component';
 export class PostListLoaderComponent implements OnInit {
 
   posts: Post[];
-  postTemplateType: string;
+  postTemplateType: PostTemplateType;
 
   constructor(
     private _postService: PostService,
@@ -28,13 +29,12 @@ export class PostListLoaderComponent implements OnInit {
     ) { }
   
   getPosts() {
-    this._postService.getPosts().then(posts => this.posts = posts).then(el => console.log(this.posts));
+    this._postService.getPosts().then(posts => this.posts = posts);
   }
-  
   
   ngOnInit() {
     this.getPosts();
-    this.postTemplateType = 'list';
+    this.postTemplateType = PostTemplateType.List;
   }
   
 }

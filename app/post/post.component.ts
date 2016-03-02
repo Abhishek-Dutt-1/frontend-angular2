@@ -1,15 +1,17 @@
 /** 
  * Displays a single post
  */
-import {Component} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {Post} from './post';
 import {Router} from 'angular2/router';
 import {PostService} from './post.service';
+import {PostTemplateType} from './post-template-types';
+
 
 @Component({
   selector: 'my-post',
   template: `
-    <li *ngIf="type === 'list'" class="post mdl-list__item mdl-list__item--three-line">
+    <li *ngIf="type === templateTypeList" class="post mdl-list__item mdl-list__item--three-line">
       <span class="post mdl-list__item-primary-content">
         <!-- <i class="material-icons mdl-list__item-avatar">person</i> -->
         <span (click)="gotoPost(post.id)" class="post-title">{{post.title}}</span>
@@ -20,7 +22,7 @@ import {PostService} from './post.service';
           <div class="toolbox">
             <div>
               <i class="material-icons mdl-list__item-icon">person</i>
-              {{post.postedby.username}} | 12 days ago | <span (click)="gotoGroup(post.group.name)">go/{{post.group.name}}</span>
+              {{post.postedby.username}} | 12 days ago | <span (click)="gotoGroup(post.group.name)">go/{{post.group.parent_group.name}}/{{post.group.name}}</span>
             </div>
             <div>
               {{post.upvotes}} Upvote | {{post.downvotes}} Downvote | {{post.comments.length}} Comments
@@ -36,7 +38,7 @@ import {PostService} from './post.service';
     </li>
     
     
-    <li *ngIf="type === 'grouplist'" class="post mdl-list__item mdl-list__item--three-line">
+    <li *ngIf="type === templateTypeGroupList" class="post mdl-list__item mdl-list__item--three-line">
       <span class="post mdl-list__item-primary-content">
         <!-- <i class="material-icons mdl-list__item-avatar">person</i> -->
         <span (click)="gotoPost(post.id)" class="post-title">{{post.title}}</span>
@@ -63,7 +65,7 @@ import {PostService} from './post.service';
     </li>
     
     
-    <div *ngIf="type === 'main'">
+    <div *ngIf="type === templateTypeMain">
       <div class="post-main demo-card-wide mdl-card mdl-shadow--2dp">
         <div class="mdl-card__title">
           <h2 class="mdl-card__title-text">{{post.title}}</h2>
@@ -85,7 +87,7 @@ import {PostService} from './post.service';
           {{post.downvotes}} Vote down
           </a>
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          go/{{post.group.name}} 
+          go/{{post.group.parent_group.name}}/{{post.group.name}} 
           </a>
           <a (click)="goBack()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
           back 
@@ -102,14 +104,24 @@ import {PostService} from './post.service';
   styleUrls: ['app/post/post.component.css'],
   inputs: ['post', 'type']
 })
-export class PostComponent {
+export class PostComponent implements OnInit {
   post: Post;
   type: string;
+  templateTypeList: PostTemplateType;
+  templateTypeGroupList: PostTemplateType;
+  templateTypeMain: PostTemplateType;
   
   constructor(
     private _postService: PostService,
     private _router: Router) { }
-    
+  
+  ngOnInit() {
+    // TODO: Improve this
+    this.templateTypeList = PostTemplateType.List;
+    this.templateTypeGroupList = PostTemplateType.Grouplist;
+    this.templateTypeMain = PostTemplateType.Main;
+  }  
+  
   gotoPost(id: number) {
     this._router.navigate(['ViewPost', {id: id}]);
   }

@@ -1,19 +1,19 @@
 import {Comment1} from './comment1';
 import {MOCK_USERS} from '../user/mock-users';
-//import {MOCK_COMMENT2S} from '../comment2/mock-comment2s';
+import {MOCK_COMMENT2S} from '../comment2/mock-comment2s';
 
 export var MOCK_COMMENT1S: Comment1[] = [
   {
        id: 0,
        postedby: MOCK_USERS[0],
        text: "comment",
-       //comments: [MOCK_COMMENT2S[0]] 
+       comments: [MOCK_COMMENT2S[0]] 
      },
   {
     id: 1,
     postedby: MOCK_USERS[0],
-    //comments: [MOCK_COMMENT2S[0]],
-    text: "Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23 Reply Comment text 23"  
+    comments: [MOCK_COMMENT2S[1]],
+    text: "Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23 Comment text 23"  
   }] /*,
   {
     id: 1,
