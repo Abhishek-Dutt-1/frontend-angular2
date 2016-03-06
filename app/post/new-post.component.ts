@@ -38,14 +38,16 @@ export class NewPostComponent {
   submitted = false;
   
   onSubmit(event) {
-    this._router.navigate(['ViewPost', {id: 0}]);
-    /*
+    event.preventDefault();
+    
+    //this._router.navigate(['ViewPost', {id: 0}]);
+    
     let newPost = this._postService.createNewPost(this.model)
     newPost.then(post => {
       console.log(post);
         this._router.navigate(['ViewPost', {id: post.id}]);
     });
-    */
+    
     //this.submitted = true;
     
   }
