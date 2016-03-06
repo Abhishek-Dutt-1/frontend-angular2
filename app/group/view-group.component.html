@@ -10,8 +10,8 @@
         Mauris sagittis pellentesque lacus eleifend lacinia...
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          Get Started
+        <a (click)="gotoNewPostForm()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          Create a New Post
         </a>
       </div>
       <div class="mdl-card__menu">
@@ -21,6 +21,4 @@
       </div>
     </div>
     <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"></my-post-list>
-    
-  </div>
 </div>  <!-- end top div -->

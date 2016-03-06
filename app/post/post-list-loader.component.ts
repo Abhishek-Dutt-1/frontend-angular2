@@ -9,8 +9,6 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups';
 
 @Component({
   selector: 'my-post-list-loader',
-  //template: `<my-post-list [posts]="posts" type="postTemplateType"></my-post-list>`,
-  //template: "<div>{{posts}} hello</div>",
   template: `
     <div class="my-post-list-loader">
       <div class="geo-filter">
@@ -90,8 +88,5 @@ export class PostListLoaderComponent implements OnInit {
   gotoNewPostForm() {
     this._router.navigate(['NewPost']);
   }
-  
-  gotoInternational() {
-    
-  } 
+
 }

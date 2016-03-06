@@ -36,6 +36,29 @@
         Type is required
       </div>
     </div>
+
+    <div class="post-text">
+      <label for="group_of_groups" class="">Group Of Groups</label>
+      <input id="group_of_groups" type="text" class="" required
+        [(ngModel)] = "model.group_of_groups"
+        ngControl = "group_of_groups" #group_of_groups="ngForm"
+      >
+      <div [hidden]="group_of_groups.valid || group_of_groups.pristine" class="alert alert-danger">
+        Group of groups is required
+      </div>
+    </div>
+        
+    <div class="post-text">
+      <label for="group" class="">Group</label>
+      <input id="group" type="text" class="" required
+        [(ngModel)] = "model.group"
+        ngControl = "group" #group="ngForm"
+      >
+      <div [hidden]="group.valid || group.pristine" class="alert alert-danger">
+        Group is required
+      </div>
+    </div>
+    
     <button type="submit" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
   </form>
 </div>

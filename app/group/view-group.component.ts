@@ -1,5 +1,5 @@
 import {Component, OnInit} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Router, RouteParams} from 'angular2/router';
 import {Group} from './group';
 import {GroupService} from './group.service';
 import {Post} from '../post/post';
@@ -10,7 +10,7 @@ import {PostTemplateType} from '../post/post-template-types';
   selector: 'my-view-group',
   templateUrl: 'app/group/view-group.component.html',
   styleUrls: ['app/group/view-group.component.css'],
-  inputs: ['group'],
+  //inputs: ['group'],
   directives: [PostListComponent]
 })
 export class ViewGroupComponent {
@@ -21,6 +21,7 @@ export class ViewGroupComponent {
   
   constructor(
     private _groupService: GroupService,
+    private _router: Router,
     private _routeParams: RouteParams) {}
   
   ngOnInit() {
@@ -43,6 +44,10 @@ export class ViewGroupComponent {
   
   goBack() {
     window.history.back();
+  }
+  
+  gotoNewPostForm() {
+    this._router.navigate(['NewPost', {gog_name: this.group.parent_group.name, group_name: this.group.name}]);
   }
   
 }

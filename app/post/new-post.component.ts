@@ -14,7 +14,7 @@ import {PostService} from './post.service';
       border-left: 5px solid #a94442; /* red */
     }
     .my-new-post form {
-      width: 250px;
+      min-width: 250px;
     }
     .my-new-post .post-textarea textarea{
       width: 100%;
@@ -33,11 +33,15 @@ export class NewPostComponent {
   
   postTypes = ['text', 'link'];
   
-  model = {title: 'New Title', text: 'New Text', type: this.postTypes[0]}
+  model = null
   
   submitted = false;
   
   onSubmit() {
+    // prevent default
+    // post-service-save-post
+    // redirect on success
+    // error on error
     this.submitted = true;
   }
    
@@ -47,11 +51,22 @@ export class NewPostComponent {
   }
   
   ngOnInit() {
+    
+    let group_of_groups_name = this._routeParams.get('gog_name');
+    let group_name = this._routeParams.get('group_name');
+    
+    this.model =  {
+      title: 'New Title', 
+      text: 'New Text', 
+      type: this.postTypes[0],
+      group_of_groups: group_of_groups_name,
+      group: group_name
+    } 
     /*
     let id = +this._routeParams.get('id');
     this._postService.getPost(id)
       .then(post => this.post = post);
-      */
+    */
   }
   
   goBack() {
