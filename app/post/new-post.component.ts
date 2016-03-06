@@ -1,5 +1,5 @@
 import {Component, OnInit} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {RouteParams, Router} from 'angular2/router';
 import {Post} from './post';
 import {PostService} from './post.service';
 
@@ -37,17 +37,23 @@ export class NewPostComponent {
   
   submitted = false;
   
-  onSubmit() {
-    // prevent default
-    // post-service-save-post
-    // redirect on success
-    // error on error
-    this.submitted = true;
+  onSubmit(event) {
+    this._router.navigate(['ViewPost', {id: 0}]);
+    /*
+    let newPost = this._postService.createNewPost(this.model)
+    newPost.then(post => {
+      console.log(post);
+        this._router.navigate(['ViewPost', {id: post.id}]);
+    });
+    */
+    //this.submitted = true;
+    
   }
    
   constructor(
     private _postService: PostService,
-    private _routeParams: RouteParams) {
+    private _routeParams: RouteParams,
+    private _router: Router) {
   }
   
   ngOnInit() {

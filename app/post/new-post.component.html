@@ -1,6 +1,6 @@
 <div class="my-new-post">
   <h5>Create a New Post</h5>
-  <form (ngSubmit)="onSubmit()" #postForm="ngForm">
+  <form #postForm="ngForm">
     
     <div class="post-text">
       <label for="title" class="">Title</label>
@@ -59,6 +59,6 @@
       </div>
     </div>
     
-    <button type="submit" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
+    <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
   </form>
 </div>

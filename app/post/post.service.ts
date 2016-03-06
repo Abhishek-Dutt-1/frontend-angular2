@@ -1,9 +1,16 @@
 import {Post} from './post';
 import {MOCK_POSTS} from './mock-posts';
 import {Injectable} from 'angular2/core';
+import {GroupService} from '../group/group.service';
 
 @Injectable()
 export class PostService {
+  
+  constructor(
+    private _groupService: GroupService
+  ) {
+    
+  }
   
   getPosts() {
     return Promise.resolve(MOCK_POSTS);
@@ -26,8 +33,34 @@ export class PostService {
     return Promise.resolve(MOCK_POSTS).then(
       //posts => posts.filter(post => post.group.parent_group.name === gog_names)
       posts => posts.filter(post => gog_names.indexOf(post.group.parent_group.name) > -1)
-      //posts => posts.filter(post => gog_names.filter(gog => gog.name === post.group.parent_group.name)
     );
+  }
+  
+  createNewPost(newPost: any) {
+    // Serve should handle these things
+    let lastPost:Post = MOCK_POSTS.reduceRight((left, right) => {
+                    if(left.id > right.id) return left
+                      else return right;
+                  });
+
+    return this._groupService.getGroup(newPost.group_of_groups, newPost.group).then(
+      group => {
+        let newProperPost = {
+          id: +lastPost.id + 1,
+          upvotes: 0,
+          downvotes: 0,
+          title: newPost.title,
+          text: newPost.text,
+          type: newPost.type,
+          comments: [],
+          postedby: newPost.postedby,
+          group: group
+        }        
+        MOCK_POSTS.push(newProperPost);
+        return newProperPost;
+      }
+    )
+    
   }
   
   upVotePost(id: number) {
@@ -37,4 +70,5 @@ export class PostService {
   downVotePost(id: number) {
     return true
   }
+  
 }
