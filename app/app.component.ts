@@ -9,6 +9,8 @@ import { PostService }     from './post/post.service';
 import { PostListLoaderComponent } from './post/post-list-loader.component';
 import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
+import { NewPostComponent } from './post/new-post.component';
+import {GroupOfGroupsPostListLoaderComponent} from './post/group-of-groups-post-list-loader.component';
 
 import { GroupService }     from './group/group.service';
 import { ViewGroupComponent } from './group/view-group.component';
@@ -18,17 +20,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 @Component({
   selector: 'my-app',
-  /*
-  template: `
-    <!-- <h1>{{title}}</h1> -->
-    <nav>
-        <a [routerLink]="['Dashboard']">Dashboard</a>
-        <a [routerLink]="['Heroes']">Heroes</a>
-        <a [routerLink]="['Posts']">Posts</a>
-    </nav>
-    <router-outlet></router-outlet>
-  `,
-  */
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css'],
   directives: [ROUTER_DIRECTIVES],
@@ -56,10 +47,17 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     name: 'HeroDetail',
     component: HeroDetailComponent
   },
+  /* DEPRICATED
   {
-    path: '/posts',
+    path: '/go',
     name: 'PostList',
     component: PostListLoaderComponent
+  },
+  */
+  {
+    path: '/go/',
+    name: 'GroupOfGroupsPostList',
+    component: GroupOfGroupsPostListLoaderComponent
   },
   {
     // would be changed to edit post
@@ -73,9 +71,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     component: ViewPostComponent
   },
   {
+    // Create a new post
+    path: '/newpost',
+    name: 'NewPost',
+    component: NewPostComponent
+  },
+  {
     // TODO: Seems to be a bug in BrowserSync with multiple tokens,
     // works if route is typed manually
-    path: '/go/:parent_group_name/:groupname',
+    path: '/go/:group_of_groups_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent
   }

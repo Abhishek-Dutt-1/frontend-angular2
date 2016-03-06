@@ -12,7 +12,6 @@ import {PostTemplateType} from './post-template-types';
   templateUrl: 'app/post/view-post.component.html',
   styleUrls: ['app/post/view-post.component.css'],
   directives: [PostComponent, Comment1Component, Comment2Component]
-
   //////inputs: ['post']////
 })
 export class ViewPostComponent {

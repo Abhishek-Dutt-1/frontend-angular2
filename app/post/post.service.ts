@@ -21,7 +21,15 @@ export class PostService {
       posts => posts.filter(post => post.id === id)[0]
     );
   }
-
+  
+  getPostsByGroupOfGroups(gog_names: string[]) {
+    return Promise.resolve(MOCK_POSTS).then(
+      //posts => posts.filter(post => post.group.parent_group.name === gog_names)
+      posts => posts.filter(post => gog_names.indexOf(post.group.parent_group.name) > -1)
+      //posts => posts.filter(post => gog_names.filter(gog => gog.name === post.group.parent_group.name)
+    );
+  }
+  
   upVotePost(id: number) {
     return true
   }

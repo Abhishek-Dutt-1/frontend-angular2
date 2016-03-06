@@ -1,0 +1,41 @@
+<div class="my-new-post">
+  <h5>Create a New Post</h5>
+  <form (ngSubmit)="onSubmit()" #postForm="ngForm">
+    
+    <div class="post-text">
+      <label for="title" class="">Title</label>
+      <input id="title" type="text" class="" required
+        [(ngModel)] = "model.title"
+        ngControl = "title" #title="ngForm"
+      >
+      <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+        Title is required
+      </div>
+    </div>
+    
+    <div class="post-textarea">
+      <label for="text" class="">Text</label>
+      <textarea type="text" class="" rows="5" required
+        [(ngModel)] = "model.text"
+        ngControl = "text" #text="ngForm"
+      ></textarea>
+      <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
+        Text is required
+      </div>
+    </div>
+    
+    <div class="post-select">
+      <label for="power">Post Type</label>
+      <select class="" required
+        [(ngModel)] = "model.type"
+        ngControl = "type" #type="ngForm"
+      >
+        <option *ngFor="#postType of postTypes" [value]="postType">{{postType}}</option>
+      </select>
+      <div [hidden]="type.valid || type.pristine" class="alert alert-danger">
+        Type is required
+      </div>
+    </div>
+    <button type="submit" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
+  </form>
+</div>

@@ -14,6 +14,7 @@ import {Comment1} from './comment1';
       <div class="">
         {{comment1.text}}
       </div>
+      <div>Reply</div>
     </div>
   `,
   styleUrls: ['app/comment1/comment1.component.css'],

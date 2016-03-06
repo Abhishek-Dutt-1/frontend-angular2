@@ -128,7 +128,7 @@ export class PostComponent implements OnInit {
   }
   
   gotoGroup(parent_group_name, groupname) {
-    this._router.navigate(['ViewGroup', {parent_group_name: parent_group_name, groupname: name}]);
+    this._router.navigate(['ViewGroup', {group_of_groups_name: parent_group_name, group_name: name}]);
   }
   
   goBack() {

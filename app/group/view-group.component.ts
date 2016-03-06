@@ -25,16 +25,20 @@ export class ViewGroupComponent {
   
   ngOnInit() {
     
-    let parent_group_name = this._routeParams.get('parent_group_name');
-    let groupname = this._routeParams.get('groupname');
+    this.postTemplateType = PostTemplateType.Grouplist;
+        
+    let group_of_groups_name = this._routeParams.get('group_of_groups_name');
+    //console.log(group_of_groups_name);
     
-    this._groupService.getGroup(parent_group_name, groupname)
+    let group_name = this._routeParams.get('group_name');
+    //console.log(group_name)
+    
+    this._groupService.getGroup(group_of_groups_name, group_name)
       .then(group => this.group = group);
       
-    this._groupService.getPostsInGroup(parent_group_name, groupname)
+    this._groupService.getPostsInGroup(group_of_groups_name, group_name)
       .then(posts => this.groupPosts = posts);
-      
-    this.postTemplateType = PostTemplateType.Grouplist;
+
   }
   
   goBack() {

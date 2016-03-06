@@ -9,11 +9,22 @@ export var MOCK_POSTS: Post[] = [
     id: 0,
     upvotes: 1,
     downvotes: 1,
-    title: 'title',
-    text: 'textextext',
+    title: 'AngularJs CRUD Operations | Angular 2 JavaScript KnockoutJs AngularJs Kendo UI HTML 5 Web API',
+    text: 'AngularJs CRUD Operations | Angular 2 JavaScript KnockoutJs AngularJs Kendo UI HTML 5 Web API',
     type: 'text',
     postedby: MOCK_USERS[0],
     group: MOCK_GROUPS[1],
+    comments: [MOCK_COMMENT1S[1], MOCK_COMMENT1S[0]]
+  },
+  {
+    id: 1,
+    upvotes: 1,
+    downvotes: 1,
+    title: 'I am using angular beta version, having issue for webpack, gulp and bower.',
+    text: 'I am using angular beta version, having issue for webpack, gulp and bower.',
+    type: 'text',
+    postedby: MOCK_USERS[1],
+    group: MOCK_GROUPS[0],
     comments: [MOCK_COMMENT1S[1], MOCK_COMMENT1S[0]]
   }
 ]  

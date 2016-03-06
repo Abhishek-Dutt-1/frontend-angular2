@@ -8,7 +8,7 @@ import {PostTemplateType} from './post-template-types';
 import {Group_Of_Groups} from '../group_of_groups/group_of_groups';
 
 @Component({
-  selector: 'my-post-list-loader',
+  selector: 'my-group-of-group-post-list-loader',
   //template: `<my-post-list [posts]="posts" type="postTemplateType"></my-post-list>`,
   //template: "<div>{{posts}} hello</div>",
   template: `
@@ -61,7 +61,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups';
   directives: [PostListComponent]
   //providers: []
 })
-export class PostListLoaderComponent implements OnInit {
+export class GroupOfGroupsPostListLoaderComponent implements OnInit {
 
   posts: Post[];
   postTemplateType: PostTemplateType;
@@ -74,17 +74,19 @@ export class PostListLoaderComponent implements OnInit {
   ) { }
   
   ngOnInit() {
-    this.getPosts();
     this.postTemplateType = PostTemplateType.List;
-    
-    //let id = this._routeParams.get('group_of_groups_name');
-    //console.log(id)
-    //this._postService.getPost(id).then(post => this.post = post);
-    //this.postTemplateType = PostTemplateType.Main;
-  }
-  
-  getPosts() {
-    this._postService.getPosts().then(posts => this.posts = posts);
+    // Very strage behavious of gog_names
+    // If entered directly in url its a string
+    // if redirected (by gotoNational for eg) by angular its an array
+    let gog_names = this._routeParams.get('gog');
+    let gog_names_array = null
+    gog_names = gog_names || 'india'
+    if(Array.isArray(gog_names)) {
+      gog_names_array = gog_names;
+    } else {
+      gog_names_array = gog_names.split(',')
+    }
+    this._postService.getPostsByGroupOfGroups(gog_names_array).then(posts => this.posts = posts);
   }
   
   gotoNewPostForm() {
@@ -92,6 +94,22 @@ export class PostListLoaderComponent implements OnInit {
   }
   
   gotoInternational() {
-    
-  } 
+    this._router.navigate(['GroupOfGroupsPostList', {gog: ['india', 'bangalore']}]);
+  }
+  
+  gotoNational() {
+    this._router.navigate(['GroupOfGroupsPostList', {gog: ['india']}]);
+  }
+  
+  gotoState() {
+    this._router.navigate(['GroupOfGroupsPostList', {gog: ['bangalore']}]);
+  }
+  
+  gotoCity() {
+    this._router.navigate(['GroupOfGroupsPostList', {gog: ['india', 'bangalore']}]);
+  }
+  
+  gotoSubCity() {
+    this._router.navigate(['GroupOfGroupsPostList', {gog: ['india', 'bangalore']}]);
+  }
 }
