@@ -15,6 +15,9 @@ import {GroupOfGroupsPostListLoaderComponent} from './post/group-of-groups-post-
 import { GroupService }     from './group/group.service';
 import { ViewGroupComponent } from './group/view-group.component';
 
+import { NewUserComponent } from './user/new-user.component';
+import { ViewUserComponent } from './user/view-user.component';
+import { UserService } from './user/user.service';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -27,7 +30,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ROUTER_PROVIDERS,
     HeroService,
     PostService,
-    GroupService
+    GroupService,
+    UserService
   ]
 })
 @RouteConfig([
@@ -82,6 +86,17 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     path: '/go/:group_of_groups_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent
+  },
+  {
+    path: '/register',
+    name: 'NewUser',
+    component: NewUserComponent
+  },
+  {
+    // User Profile
+    path: '/user/:id',
+    name: 'ViewUser',
+    component: ViewUserComponent
   }
 ])
 export class AppComponent {

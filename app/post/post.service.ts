@@ -55,12 +55,11 @@ export class PostService {
           comments: [],
           postedby: newPost.postedby,
           group: group
-        }        
+        }
         MOCK_POSTS.push(newProperPost);
         return newProperPost;
       }
     )
-    
   }
   
   upVotePost(id: number) {

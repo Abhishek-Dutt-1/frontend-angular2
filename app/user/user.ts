@@ -1,7 +1,8 @@
 export interface User {
   id: number;
-  username: string;
-  settings: {
+  email: string;
+  displayname: string;
+  settings?: {
     interntaional: string[],
     national: string[],
     state: string[],

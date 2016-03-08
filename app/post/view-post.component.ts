@@ -26,10 +26,8 @@ export class ViewPostComponent {
   
   ngOnInit() {
     let id = +this._routeParams.get('id');
-    console.log(id)
-    console.log("HEEEEEEEEEEEELLLLLLLLOOOOOO!!!!!!!!!!")
+    this.postTemplateType = PostTemplateType.Main;
     this._postService.getPost(id).then(post => this.post = post);
-     this.postTemplateType = PostTemplateType.Main;
   }
   
   /*
