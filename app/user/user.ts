@@ -2,6 +2,7 @@ export interface User {
   id: number;
   email: string;
   displayname: string;
+  password: string;
   settings?: {
     interntaional: string[],
     national: string[],

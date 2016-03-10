@@ -4,6 +4,7 @@ import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/route
 import { HeroService }     from './hero/hero.service';
 import { HeroesComponent } from './hero/heroes.component';
 import { HeroDetailComponent } from './hero/hero-detail.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { PostService }     from './post/post.service';
 import { PostListLoaderComponent } from './post/post-list-loader.component';
@@ -19,7 +20,8 @@ import { NewUserComponent } from './user/new-user.component';
 import { ViewUserComponent } from './user/view-user.component';
 import { UserService } from './user/user.service';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthenticationComponent } from './authentication/authentication.component';
+import { AuthenticationService } from './authentication/authentication.service';
 
 @Component({
   selector: 'my-app',
@@ -31,7 +33,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HeroService,
     PostService,
     GroupService,
-    UserService
+    UserService,
+    AuthenticationService
   ]
 })
 @RouteConfig([
@@ -86,6 +89,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     path: '/go/:group_of_groups_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: AuthenticationComponent
   },
   {
     path: '/register',

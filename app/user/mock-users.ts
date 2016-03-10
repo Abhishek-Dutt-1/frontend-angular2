@@ -3,7 +3,9 @@ import {User} from './user';
 export var MOCK_USERS: User[] = [
   {
     id: 0,
-    username: 'Iron Man',
+    email: 'iron@in.in',
+    displayname: 'Iron Man',
+    password: '123',
     settings: {
       interntaional: ['usa', 'russia'],
       national: ['india'],
@@ -14,7 +16,9 @@ export var MOCK_USERS: User[] = [
   },
   {
     id: 1,
-    username: 'Captain America',
+    email: 'captain@in.in',
+    displayname: 'Captain America',
+    password: '123',
     settings: {
       interntaional: ['usa', 'russia'],
       national: ['india'],
@@ -25,7 +29,9 @@ export var MOCK_USERS: User[] = [
   },
   {
     id: 2,
-    username: 'Incredible Hulk',
+    email: 'hulk@in.in',
+    displayname: 'Incredible Hulk',
+    password: '123',
     settings: {
       interntaional: ['usa', 'russia'],
       national: ['india'],
@@ -36,7 +42,9 @@ export var MOCK_USERS: User[] = [
   },
   {
     id: 3,
-    username: 'The Mighty Thor',
+    email: 'thor@in.in',
+    displayname: 'The Mighty Thor',
+    password: '123',
     settings: {
       interntaional: ['usa', 'russia'],
       national: ['india'],

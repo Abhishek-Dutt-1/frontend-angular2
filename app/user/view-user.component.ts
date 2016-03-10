@@ -29,11 +29,7 @@ export class ViewUserComponent {
   
   ngOnInit() {
     let id = +this._routeParams.get('id');
-    this._userService.getUser(id).then(user => {
-      console.log("VIEW USRE")
-      console.log(user);
-      return user;
-    }).then(user => this.user = user);
+    this._userService.getUser(id).then(user => this.user = user);
   }
   
 }
