@@ -2,18 +2,23 @@ import {Component, OnInit} from 'angular2/core';
 import {Router, ROUTER_DIRECTIVES} from 'angular2/router';
 import {UserService} from './user.service';
 import {AuthenticationService} from '../authentication/authentication.service';
+import {User} from './user'
 
 @Component({
   selector: 'my-user-authentication-panel',
   template: `
     <div class="my-user-authentication-panel">
-      <div>User Logged In {{userLoggedIn}}
+      <div *ngIf="!isUserLoggedIn">
         <a [routerLink]="['Login']" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
           Login
         </a>&nbsp;
         <a [routerLink]="['NewUser']" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
           Register
         </a>
+      </div>
+      <div *ngIf="isUserLoggedIn">
+        {{loggedInUser.displayname}}
+        <button (click)="logout()">Logout</button>
       </div>
     </div>
   `,
@@ -22,21 +27,30 @@ import {AuthenticationService} from '../authentication/authentication.service';
 })
 export class UserAuthenticationPanelComponent {
   
-  private userLoggedIn = null;
+  private isUserLoggedIn = false;
+  private loggedInUser:User = null;
   
   constructor(
     private _userService: UserService,
     private _authenticationService: AuthenticationService
   ) {
-    _authenticationService.loggedInUser$.subscribe(user => {this.userLoggedIn = true;})    
+    _authenticationService.loggedInUser$.subscribe(user => {
+      if(user) {
+        this.loggedInUser = user;
+        this.isUserLoggedIn = true;
+      } else {
+        this.loggedInUser = user;
+        this.isUserLoggedIn = false;
+      }
+    });    
   }
   
   ngOnInit() {
 
   }
-    
-  goBack() {
-    window.history.back();
+  
+  logout() {
+    this._authenticationService.logoutUser()
   }
 
 }

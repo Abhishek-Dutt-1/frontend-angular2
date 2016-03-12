@@ -8,7 +8,7 @@ import {User} from '../user/user';
 export class AuthenticationService {
   
   //private _loggedInUser = null;
-  private _loggedInUser = new Subject<any>();
+  private _loggedInUser = new Subject<User>();
   
   loggedInUser$ = this._loggedInUser.asObservable();
   
@@ -31,6 +31,10 @@ export class AuthenticationService {
     });
     
   };
+  
+  logoutUser() {
+    this._loggedInUser.next(null);
+  }
   
   isUserLoggedIn() {
     return !!this._loggedInUser;
