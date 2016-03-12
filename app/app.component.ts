@@ -11,7 +11,7 @@ import { PostListLoaderComponent } from './post/post-list-loader.component';
 import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
 import { NewPostComponent } from './post/new-post.component';
-import {GroupOfGroupsPostListLoaderComponent} from './post/group-of-groups-post-list-loader.component';
+import { GroupOfGroupsPostListLoaderComponent } from './post/group-of-groups-post-list-loader.component';
 
 import { GroupService }     from './group/group.service';
 import { ViewGroupComponent } from './group/view-group.component';
@@ -19,6 +19,7 @@ import { ViewGroupComponent } from './group/view-group.component';
 import { NewUserComponent } from './user/new-user.component';
 import { ViewUserComponent } from './user/view-user.component';
 import { UserService } from './user/user.service';
+import { UserAuthenticationPanelComponent } from './user/user-authentication-panel.component';
 
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { AuthenticationService } from './authentication/authentication.service';
@@ -27,7 +28,7 @@ import { AuthenticationService } from './authentication/authentication.service';
   selector: 'my-app',
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css'],
-  directives: [ROUTER_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES, UserAuthenticationPanelComponent],
   providers: [
     ROUTER_PROVIDERS,
     HeroService,

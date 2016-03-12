@@ -7,7 +7,7 @@ import {AuthenticationService} from './authentication.service';
   template: `
     <div class="my-authentication">
 
-      <h5>Welcome fellow human</h5>
+      <h5>Welcome fellow human!</h5>
 
       <form #loginForm="ngForm">
       

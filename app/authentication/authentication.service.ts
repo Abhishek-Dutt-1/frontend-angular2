@@ -4,6 +4,8 @@ import {MOCK_USERS} from '../user/mock-users';
 @Injectable()
 export class AuthenticationService {
   
+  private loggedInUser = null;
+  
   constructor(
     //private _groupService: GroupService
   ) {  
@@ -12,10 +14,17 @@ export class AuthenticationService {
   loginUser(userInfo: any) {
     
     return Promise.resolve().then(()=> {
-      return MOCK_USERS.filter(user => user.email == userInfo.email && user.password == userInfo.password)[0]
+      let user = MOCK_USERS.filter(user => user.email == userInfo.email && user.password == userInfo.password)[0]
+      if(user) this.loggedInUser = user;
+      return user;
     }).catch((reason) => {
       console.log(reason)
     });
+    
+  };
+  
+  isUserLoggedIn() {
+    return !!this.loggedInUser;
   }
   
   /*
