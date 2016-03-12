@@ -7,7 +7,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
   selector: 'my-user-authentication-panel',
   template: `
     <div class="my-user-authentication-panel">
-      <div>
+      <div>User Logged In {{userLoggedIn}}
         <a [routerLink]="['Login']" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
           Login
         </a>&nbsp;
@@ -27,11 +27,12 @@ export class UserAuthenticationPanelComponent {
   constructor(
     private _userService: UserService,
     private _authenticationService: AuthenticationService
-    ) {}
+  ) {
+    _authenticationService.loggedInUser$.subscribe(user => {this.userLoggedIn = true;})    
+  }
   
   ngOnInit() {
-    this.userLoggedIn = this._authenticationService.isUserLoggedIn()
-    console.log(this.userLoggedIn);
+
   }
     
   goBack() {
