@@ -2,6 +2,7 @@ import {Component, OnInit} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 import {Post} from './post';
 import {PostService} from './post.service';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Component({
   selector: 'my-new-post',
@@ -31,30 +32,27 @@ import {PostService} from './post.service';
 })
 export class NewPostComponent {
   
-  postTypes = ['text', 'link'];
+  private _postTypes = ['text', 'link'];
   
-  model = null
+  private model = null;
   
-  submitted = false;
+  private _errorMsg: string = null;
   
   onSubmit(event) {
+    
     event.preventDefault();
-    
-    //this._router.navigate(['ViewPost', {id: 0}]);
-    
+  
     let newPost = this._postService.createNewPost(this.model)
     newPost.then(post => {
-      console.log(post);
-        this._router.navigate(['ViewPost', {id: post.id}]);
+      this._router.navigate(['ViewPost', {id: post.id}]);
     });
-    
-    //this.submitted = true;
-    
+      
   }
    
   constructor(
     private _postService: PostService,
     private _routeParams: RouteParams,
+    private _authenticationService: AuthenticationService,
     private _router: Router) {
   }
   
@@ -66,15 +64,19 @@ export class NewPostComponent {
     this.model =  {
       title: 'New Title', 
       text: 'New Text', 
-      type: this.postTypes[0],
+      type: this._postTypes[0],
       group_of_groups: group_of_groups_name,
       group: group_name
     } 
-    /*
-    let id = +this._routeParams.get('id');
-    this._postService.getPost(id)
-      .then(post => this.post = post);
-    */
+    
+    // Only logged in uses can post
+    let currentUser = this._authenticationService.getLoggedInUser();
+    if(currentUser) {    
+      this.model.postedby = currentUser;
+    } else {
+      this._errorMsg = "User must be logged in to create new posts.";      
+    }
+    
   }
   
   goBack() {

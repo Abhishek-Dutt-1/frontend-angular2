@@ -1,4 +1,5 @@
 import {User} from './user';
+import {UserRoles} from './user-roles';
 
 export var MOCK_USERS: User[] = [
   {
@@ -6,6 +7,7 @@ export var MOCK_USERS: User[] = [
     email: 'iron@in.in',
     displayname: 'Iron Man',
     password: '123',
+    userrole: UserRoles.user,
     settings: {
       interntaional: ['usa', 'russia'],
       national: ['india'],
@@ -19,6 +21,7 @@ export var MOCK_USERS: User[] = [
     email: 'captain@in.in',
     displayname: 'Captain America',
     password: '123',
+    userrole: UserRoles.user,
     settings: {
       interntaional: ['usa', 'russia'],
       national: ['india'],
@@ -32,6 +35,7 @@ export var MOCK_USERS: User[] = [
     email: 'hulk@in.in',
     displayname: 'Incredible Hulk',
     password: '123',
+    userrole: UserRoles.user,
     settings: {
       interntaional: ['usa', 'russia'],
       national: ['india'],
@@ -45,6 +49,7 @@ export var MOCK_USERS: User[] = [
     email: 'thor@in.in',
     displayname: 'The Mighty Thor',
     password: '123',
+    userrole: UserRoles.user,
     settings: {
       interntaional: ['usa', 'russia'],
       national: ['india'],

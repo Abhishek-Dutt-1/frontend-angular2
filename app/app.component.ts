@@ -1,4 +1,4 @@
-import { Component } from 'angular2/core';
+import { Component, OnInit } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 
 import { HeroService }     from './hero/hero.service';
@@ -25,7 +25,7 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { AuthenticationService } from './authentication/authentication.service';
 
 @Component({
-  selector: 'my-app',
+  selector: 'my-app-component',
   templateUrl: 'app/app.component.html',
   styleUrls: ['app/app.component.css'],
   directives: [ROUTER_DIRECTIVES, UserAuthenticationPanelComponent],
@@ -39,6 +39,7 @@ import { AuthenticationService } from './authentication/authentication.service';
   ]
 })
 @RouteConfig([
+  /*
   {
     path: '/dashboard',
     name: 'Dashboard',
@@ -55,6 +56,7 @@ import { AuthenticationService } from './authentication/authentication.service';
     name: 'HeroDetail',
     component: HeroDetailComponent
   },
+  */
   /* DEPRICATED
   {
     path: '/go',
@@ -109,5 +111,6 @@ import { AuthenticationService } from './authentication/authentication.service';
   }
 ])
 export class AppComponent {
+  
   //title = 'Tour of Heroes';
 }

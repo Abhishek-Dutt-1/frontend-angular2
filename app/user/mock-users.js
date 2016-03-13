@@ -1,9 +1,13 @@
-System.register([], function(exports_1, context_1) {
+System.register(['./user-roles'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
+    var user_roles_1;
     var MOCK_USERS;
     return {
-        setters:[],
+        setters:[
+            function (user_roles_1_1) {
+                user_roles_1 = user_roles_1_1;
+            }],
         execute: function() {
             exports_1("MOCK_USERS", MOCK_USERS = [
                 {
@@ -11,6 +15,7 @@ System.register([], function(exports_1, context_1) {
                     email: 'iron@in.in',
                     displayname: 'Iron Man',
                     password: '123',
+                    userrole: user_roles_1.UserRoles.user,
                     settings: {
                         interntaional: ['usa', 'russia'],
                         national: ['india'],
@@ -24,6 +29,7 @@ System.register([], function(exports_1, context_1) {
                     email: 'captain@in.in',
                     displayname: 'Captain America',
                     password: '123',
+                    userrole: user_roles_1.UserRoles.user,
                     settings: {
                         interntaional: ['usa', 'russia'],
                         national: ['india'],
@@ -37,6 +43,7 @@ System.register([], function(exports_1, context_1) {
                     email: 'hulk@in.in',
                     displayname: 'Incredible Hulk',
                     password: '123',
+                    userrole: user_roles_1.UserRoles.user,
                     settings: {
                         interntaional: ['usa', 'russia'],
                         national: ['india'],
@@ -50,6 +57,7 @@ System.register([], function(exports_1, context_1) {
                     email: 'thor@in.in',
                     displayname: 'The Mighty Thor',
                     password: '123',
+                    userrole: user_roles_1.UserRoles.user,
                     settings: {
                         interntaional: ['usa', 'russia'],
                         national: ['india'],

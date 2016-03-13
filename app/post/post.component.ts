@@ -22,7 +22,7 @@ import {PostTemplateType} from './post-template-types';
           <div class="toolbox">
             <div>
               <i class="material-icons mdl-list__item-icon">person</i>
-              {{post.postedby.username}} | 12 days ago | 
+              {{post.postedby.displayname}} | 12 days ago | 
                 <span (click)="gotoGroup(post.group.parent_group.name, post.group.name)">go/{{post.group.parent_group.name}}/{{post.group.name}}</span>
             </div>
             <div>
@@ -50,7 +50,7 @@ import {PostTemplateType} from './post-template-types';
           <div class="toolbox">
             <div>
               <i class="material-icons mdl-list__item-icon">person</i>
-              {{post.postedby.username}} | 12 days ago
+              {{post.postedby.displayname}} | 12 days ago
             </div>
             <div>
               {{post.upvotes}} Upvote | {{post.downvotes}} Downvote | {{post.comments.length}} Comments
@@ -76,27 +76,28 @@ import {PostTemplateType} from './post-template-types';
         </div>
         <div class="mdl-card__actions mdl-card--border">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          <i class="material-icons mdl-list__item-icon">person</i> {{post.postedby.username}} 
+            <i class="material-icons mdl-list__item-icon">person</i> {{post.postedby.displayname}} 
           </a>
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          Edit 
+            Edit 
           </a>
           <a (click)="upVotePost(post.id)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          {{post.upvotes}} Vote up
+            {{post.upvotes}} Vote up
           </a>
           <a (click)="downVotePost(post.id)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          {{post.downvotes}} Vote down
+            {{post.downvotes}} Vote down
           </a>
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          go/{{post.group.parent_group.name}}/{{post.group.name}} 
+          <a (click)="gotoGroup(post.group.parent_group.name, post.group.name)" 
+            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            go/{{post.group.parent_group.name}}/{{post.group.name}} 
           </a>
           <a (click)="goBack()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          back 
+            Back 
           </a>
         </div>
         <div class="mdl-card__menu">
           <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-          <i class="material-icons">share</i>
+            <i class="material-icons">share</i>
           </button>
         </div>
       </div>

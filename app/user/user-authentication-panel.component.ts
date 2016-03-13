@@ -42,11 +42,15 @@ export class UserAuthenticationPanelComponent {
         this.loggedInUser = user;
         this.isUserLoggedIn = false;
       }
-    });    
+    });
   }
   
   ngOnInit() {
-
+    // Apperently Auth service and its constructor are run before this component is able to subscribe.
+    // So old user fetched from localStorage, while is update in the auth service,
+    // is not notified to this component, so on init we check for userlogin manually once
+    this.loggedInUser = this._authenticationService.getLoggedInUser() || this.loggedInUser;
+    this.isUserLoggedIn = this.loggedInUser? true : false || this.isUserLoggedIn
   }
   
   logout() {

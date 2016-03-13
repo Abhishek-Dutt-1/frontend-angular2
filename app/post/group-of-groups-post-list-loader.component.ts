@@ -6,6 +6,7 @@ import {PostService} from './post.service';
 import {PostListComponent} from './post-list.component';
 import {PostTemplateType} from './post-template-types';
 import {Group_Of_Groups} from '../group_of_groups/group_of_groups';
+import {GeoFilterComponent} from '../post/geo-filter.component';
 
 @Component({
   selector: 'my-group-of-group-post-list-loader',
@@ -13,33 +14,10 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups';
   //template: "<div>{{posts}} hello</div>",
   template: `
     <div class="my-post-list-loader">
-      <div class="geo-filter">
-        <button class="mdl-button mdl-js-button mdl-button--accent"
-          (click)="gotoInternational()"
-          >
-          International
-        </button>
-        <button class="mdl-button mdl-js-button mdl-button--accent"
-          (click)="gotoNational()"
-          >
-          National
-        </button>
-        <button class="mdl-button mdl-js-button mdl-button--accent"
-          (click)="gotoState()"
-          >
-          State
-        </button>
-        <button class="mdl-button mdl-js-button mdl-button--accent"
-          (click)="gotoCity()"
-          >
-          City
-        </button>
-        <button class="mdl-button mdl-js-button mdl-button--accent"
-          (click)="gotoSubCity()"
-          >
-          Sub-City
-        </button>
+      <my-geo-filter></my-geo-filter>
+      <div class="pre-post-list-outer-div">
       <my-post-list [posts]="posts" [postTemplateType]="postTemplateType"></my-post-list>
+      </div>
       <!-- Colored FAB button with ripple -->
       <button (click)="gotoNewPostForm()"
         class="fab-button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
@@ -53,12 +31,15 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups';
       right: 20px;
       bottom: 20px;
     }
+    .pre-post-list-outer-div {
+      clear: both;
+    }
   `],
   //template: `<my-post-list>{{postTemplateType}}{{posts}} hello</my-post-list>`,
   //templateUrl: 'app/post/post-list.component.html',
   //styleUrls: ['app/post/post-list.component.css'],
   //directives: [PostDetailComponent],
-  directives: [PostListComponent]
+  directives: [PostListComponent, GeoFilterComponent]
   //providers: []
 })
 export class GroupOfGroupsPostListLoaderComponent implements OnInit {

@@ -2,6 +2,7 @@ import {User} from './user';
 import {MOCK_USERS} from './mock-users';
 import {Injectable} from 'angular2/core';
 import {GroupService} from '../group/group.service';
+import {UserRoles} from './user-roles';
 
 @Injectable()
 export class UserService {
@@ -32,6 +33,7 @@ export class UserService {
       email: newUser.email,
       displayname: newUser.displayname,
       password: newUser.password,
+      userrole: UserRoles.user,
       confirm_password: newUser.confirm_password,
       international: newUser.international,
       national: newUser.national,
