@@ -1,23 +1,26 @@
-<div class="my-app-component">
+<div class="app-component">
   
-  <div class="demo-layout mdl-layout mdl-layout--fixed-header">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     
-    <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+    <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
         <span class="mdl-layout-title">
+        <a [routerLink]="['GroupOfGroupsPostList']">
+          <i class="material-icons" role="presentation">home</i>YOLO!
+        </a>
             
         </span>
         
-        <a class="mdl-navigation__link1" [routerLink]="['GroupOfGroupsPostList']"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">view_list</i>Posts</a>
+        
         
         <div class="mdl-layout-spacer"></div>
         <my-user-authentication-panel></my-user-authentication-panel>
       </div>
     </header>
-  
+    
     <main class="mdl-layout__content mdl-color--grey-100">
       <div class="mdl-grid demo-content">
-        <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+        <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
             <router-outlet></router-outlet>
         </div>
       </div>
@@ -26,4 +29,3 @@
   </div>
   
 </div>
-  
