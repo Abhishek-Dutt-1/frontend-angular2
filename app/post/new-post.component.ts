@@ -1,8 +1,12 @@
 import {Component, OnInit} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 import {Post} from './post';
+import {Group} from '../group/group';
 import {PostService} from './post.service';
 import {AuthenticationService} from '../authentication/authentication.service';
+import {GroupService} from '../group/group.service';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'my-new-post',
@@ -38,21 +42,11 @@ export class NewPostComponent {
   
   private _errorMsg: string = null;
   
-  onSubmit(event) {
-    
-    event.preventDefault();
-  
-    let newPost = this._postService.createNewPost(this.model)
-    newPost.then(post => {
-      this._router.navigate(['ViewPost', {id: post.id}]);
-    });
-      
-  }
-   
   constructor(
     private _postService: PostService,
     private _routeParams: RouteParams,
     private _authenticationService: AuthenticationService,
+    private _groupService: GroupService,
     private _router: Router) {
   }
   
@@ -66,8 +60,9 @@ export class NewPostComponent {
       text: 'New Text', 
       type: this._postTypes[0],
       group_of_groups: group_of_groups_name,
-      group: group_name
-    } 
+      group: group_name,
+      gogslashgroup: group_of_groups_name + '/' + group_name
+    }
     
     // Only logged in uses can post
     let currentUser = this._authenticationService.getLoggedInUser();
@@ -78,6 +73,59 @@ export class NewPostComponent {
     }
     
   }
+  
+  /**
+   * Auto complete gog/group  
+   */
+  /*  
+  // Final version
+  private _searchTermStream = new Subject<string>();
+  search(term: string) {
+    this._searchTermStream.next(term);
+  }
+  items:Observable<string[]> = this._searchTermStream
+    .debounceTime(300)
+    .distinctUntilChanged()
+    .switchMap((term:string) => this._groupService.searchGroups(term));
+  */
+  
+  // Temporary local version
+  private items: Group[];
+  search(term: string) {
+    // get a 1 or 2 element array, correponding to trerm before and after a '/'
+    // filter empty "" strings
+    let termArray = term.split('/').slice(0, 2).filter(Boolean);
+    console.log(termArray);
+    
+    this._groupService.searchGroups(termArray).then(
+      searchResult => this.items = searchResult
+    ).catch(
+      err => console.log(err)
+    )
+  }
+  
+   
+  /**
+   * User clicked on a gog/group from the autocomplete dropdown list
+   */
+  selectGogSlashGroup(item) {
+    console.log(item)
+    this.model.gogslashgroup = item
+  }
+  
+  /**
+   * Submit the new post form
+   */
+  onSubmit(event) {
+
+    event.preventDefault();
+  
+    let newPost = this._postService.createNewPost(this.model)
+    newPost.then(post => {
+      this._router.navigate(['ViewPost', {id: post.id}]);
+    });
+
+  } 
   
   goBack() {
     window.history.back();

@@ -60,10 +60,30 @@
         </div>
       </div>
       
+      <div class="post-text">
+        <label for="group" class="">GoG/Group</label>
+        <input id="group" type="text" class="" required
+          [(ngModel)] = "model.gogslashgroup"
+          ngControl = "gogslashgroup" #gogslashgroup="ngForm"
+          (keyup)="search(gogslashgroup.value)"
+        >
+        <div [hidden]="gogslashgroup.valid || gogslashgroup.pristine" class="alert alert-danger">
+          Group is required
+        </div>
+      </div>
+      
+<ul>
+<li *ngFor="#item of itemsV1 | async" (click)="selectGogSlashGroup(item)">{{item}}</li>
+<li *ngFor="#item of items" (click)="selectGogSlashGroup(item.parent_group.name+'/'+item.name)">{{item.parent_group.name}}/{{item.name}}</li>
+</ul>
+
+      
       <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
+      <button (click)="goBack()" class="btn btn-default">Back</button>
     </form>
   </div>
   <div *ngIf="_errorMsg">
     {{_errorMsg}}
+    <button (click)="goBack()" class="btn btn-default">Back</button>
   </div>
 </div>

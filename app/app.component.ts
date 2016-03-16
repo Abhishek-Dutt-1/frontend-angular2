@@ -1,5 +1,6 @@
 import { Component, OnInit } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
+import { HTTP_PROVIDERS, JSONP_PROVIDERS } from 'angular2/http';
 
 import { HeroService }     from './hero/hero.service';
 import { HeroesComponent } from './hero/heroes.component';
@@ -31,6 +32,8 @@ import { AuthenticationService } from './authentication/authentication.service';
   directives: [ROUTER_DIRECTIVES, UserAuthenticationPanelComponent],
   providers: [
     ROUTER_PROVIDERS,
+    HTTP_PROVIDERS,
+    JSONP_PROVIDERS,
     HeroService,
     PostService,
     GroupService,
