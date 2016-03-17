@@ -55,13 +55,18 @@ export class NewPostComponent {
     let group_of_groups_name = this._routeParams.get('gog_name');
     let group_name = this._routeParams.get('group_name');
     
+    let gogslashgroup = '';
+    if(group_of_groups_name && group_name) gogslashgroup = group_of_groups_name + '/' + group_name;
+    if(group_of_groups_name && !group_name) gogslashgroup = group_of_groups_name;
+    if(!group_of_groups_name && group_name) gogslashgroup = group_name;
+    
+    
     this.model =  {
       title: 'New Title', 
       text: 'New Text', 
       type: this._postTypes[0],
-      group_of_groups: group_of_groups_name,
-      group: group_name,
-      gogslashgroup: group_of_groups_name + '/' + group_name
+      gogslashgroup: gogslashgroup
+      //gogslashgroup: group_of_groups_name + '/' + group_name
     }
     
     // Only logged in uses can post
@@ -95,8 +100,6 @@ export class NewPostComponent {
     // get a 1 or 2 element array, correponding to trerm before and after a '/'
     // filter empty "" strings
     let termArray = term.split('/').slice(0, 2).filter(Boolean);
-    console.log(termArray);
-    
     this._groupService.searchGroups(termArray).then(
       searchResult => this.items = searchResult
     ).catch(
@@ -109,7 +112,6 @@ export class NewPostComponent {
    * User clicked on a gog/group from the autocomplete dropdown list
    */
   selectGogSlashGroup(item) {
-    console.log(item)
     this.model.gogslashgroup = item
   }
   

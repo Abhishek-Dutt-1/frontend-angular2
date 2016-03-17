@@ -37,13 +37,17 @@ export class PostService {
   }
   
   createNewPost(newPost: any) {
-    // Serve should handle these things
+    // Server should handle these things
     let lastPost:Post = MOCK_POSTS.reduceRight((left, right) => {
                     if(left.id > right.id) return left
                       else return right;
                   });
 
-    return this._groupService.getGroup(newPost.group_of_groups, newPost.group).then(
+    let newPost_gog = newPost.gogslashgroup.split('/')[0]
+    let newPost_group = newPost.gogslashgroup.split('/')[1]
+    
+    //return this._groupService.getGroup(newPost.group_of_groups, newPost.group).then(
+    return this._groupService.getGroup(newPost_gog, newPost_group).then(
       group => {
         let newProperPost = {
           id: +lastPost.id + 1,
