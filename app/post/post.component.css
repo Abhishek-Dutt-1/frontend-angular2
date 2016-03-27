@@ -1,0 +1,82 @@
+/**
+ * List view
+ */
+.post.mdl-list__item--three-line {
+  height: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+.post .mdl-list__item-primary-content {
+  height: 100%;
+}
+.post .mdl-list__item-text-body {
+  height: 100%;
+}
+.post .mdl-list__item-icon {
+  margin-right: 0px;
+  font-size: 20px;
+}
+.post .toolbox {
+  font-size: 12px;
+}
+.post .post-title {
+  cursor: pointer;
+  color: black;
+}
+
+
+/**
+ * Main view
+ */
+.post-main.demo-card-wide.mdl-card {
+  /* width: 512px; */
+  width: 100%
+}
+.post-main.demo-card-wide > .mdl-card__title {
+  /*
+  color: #fff;
+  height: 176px;
+  */
+  /*
+  background: url('images/welcome_card.jpg') center / cover;
+  */
+}
+.post-main.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
+.post-main.mdl-card {
+  min-height: 0px;
+}
+.post-main .mdl-card__supporting-text {
+  padding-top: 0; 
+}
+.post-main .mdl-card__title h2 {
+  font-size: 18px;
+}
+.post-main .mdl-button {
+  font-size: 12px;
+}
+/* comment css
+ul.comment-list.level-1 {
+  list-style-type: none;
+  margin: 20px;
+  padding: 0px;
+}
+ul.comment-list.level-1 > li {
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  padding: 15px;
+}
+ul.comment-list.level-1  i.material-icons {
+  float: left;
+  margin-right: 10px;
+}
+ul.comment-list.level-2  {
+  list-style-type: none;
+  margin: 20px 0 0 50px;
+  padding: 0px;
+}
+ul.comment-list.level-3  {
+  list-style-type: none;
+  margin: 20px 0 0 50px;
+  padding: 0px;
+}
+*/

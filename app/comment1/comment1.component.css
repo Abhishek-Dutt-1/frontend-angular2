@@ -1,3 +1,4 @@
+/*
 ul.comment-list.level-1 {
   list-style-type: none;
   margin: 20px;
@@ -7,11 +8,12 @@ ul.comment-list.level-1 > li {
   border-bottom: 1px solid rgba(0,0,0,.1);
   padding: 15px;
 }
-/*
-ul.comment-list.level-1  i.material-icons {
+*/
+.comment > i.material-icons {
   float: left;
-  margin-right: 10px;
-}*/
+  margin-right: 5px;
+}
+/*
 ul.comment-list.level-2  {
   list-style-type: none;
   margin: 20px 0 0 50px;
@@ -22,3 +24,4 @@ ul.comment-list.level-3  {
   margin: 20px 0 0 50px;
   padding: 0px;
 }
+*/

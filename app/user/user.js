@@ -7,4 +7,4 @@ System.register([], function(exports_1, context_1) {
         }
     }
 });
-//# sourceMappingURL=post.js.map
+//# sourceMappingURL=user.js.map
