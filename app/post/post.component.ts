@@ -11,17 +11,20 @@ import {PostTemplateType} from './post-template-types';
 @Component({
   selector: 'my-post',
   template: `
-    <li *ngIf="type === templateTypeList" class="post mdl-list__item mdl-list__item--three-line">
-      <span class="post mdl-list__item-primary-content">
+  <div class="my-post">
+  
+    <div *ngIf="type === templateTypeList" class="">
+      <span class="">
         <!-- <i class="material-icons mdl-list__item-avatar">person</i> -->
         <span (click)="gotoPost(post.id)" class="post-title">{{post.title}}</span>
-        <span class="mdl-list__item-text-body">
+        <span class="">
           {{post.text}}  
         </span>
         <span class="mdl-list__item-text-body">
           <div class="toolbox">
             <div>
-              <i class="material-icons mdl-list__item-icon">person</i>
+              <i class="fa fa-user"></i>
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
               {{post.postedby.displayname}} | 12 days ago | 
                 <span (click)="gotoGroup(post.group.parent_group.name, post.group.name)">go/{{post.group.parent_group.name}}/{{post.group.name}}</span>
             </div>
@@ -36,10 +39,10 @@ import {PostTemplateType} from './post-template-types';
         <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>
       </span>
       -->
-    </li>
+    </div>
     
     
-    <li *ngIf="type === templateTypeGroupList" class="post mdl-list__item mdl-list__item--three-line">
+    <div *ngIf="type === templateTypeGroupList" class="post mdl-list__item mdl-list__item--three-line">
       <span class="post mdl-list__item-primary-content">
         <!-- <i class="material-icons mdl-list__item-avatar">person</i> -->
         <span (click)="gotoPost(post.id)" class="post-title">{{post.title}}</span>
@@ -63,7 +66,7 @@ import {PostTemplateType} from './post-template-types';
         <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>
       </span>
       -->
-    </li>
+    </div>
     
     
     <div *ngIf="type === templateTypeMain">
@@ -102,6 +105,8 @@ import {PostTemplateType} from './post-template-types';
         </div>
       </div>
     </div>
+    
+  </div>
   `,
   styleUrls: ['app/post/post.component.css'],
   inputs: ['post', 'type']

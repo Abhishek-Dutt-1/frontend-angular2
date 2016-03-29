@@ -70,7 +70,8 @@ import { AuthenticationService } from './authentication/authentication.service';
   {
     path: '/go/',
     name: 'GroupOfGroupsPostList',
-    component: GroupOfGroupsPostListLoaderComponent
+    component: GroupOfGroupsPostListLoaderComponent,
+    useAsDefault: true
   },
   {
     // would be changed to edit post

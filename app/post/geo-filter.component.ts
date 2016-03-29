@@ -8,80 +8,149 @@ import {User} from '../user/user';
 @Component({
   selector: 'my-geo-filter',
   template: `
-    <div class="geo-filter">
+    <div class="my-geo-filter">
     
-      <div>
-        <span class="menu-item">
-          <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _international} ]"
-          [ngClass]="{active: _currentSelection == 'interntaional'}"
-          >International</a>
-        </span>
-        
-        <span class="menu-item">
-          <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _national} ]"
-            [ngClass]="{active: _currentSelection == 'national'}"
-          >National</a>
-        </span>
-        
-        <span class="menu-item">
-          <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _state} ]"
-            [ngClass]="{active: _currentSelection == 'state'}"
-          >State</a>
-        </span>
-        
-        <span class="menu-item">
-          <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _city} ]"
-            [ngClass]="{active: _currentSelection == 'city'}"
-          >City</a>
-        </span>
-        
-        <span class="menu-item">
-          <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _sub_city} ]"
-            [ngClass]="{active: _currentSelection == 'sub_city'}"
-          >Sub-City</a>
-        </span>
-      </div>
-      
-      <div class="geo-filter-details">
-        <div>
-          {{_selectionDetails}}
-          <span class="add-more" (click)="gotoChangeGeoSttings()">
-            <i class="material-icons" role="presentation">settings</i>
+      <div class="row hidden-xs">
+        <div class="col-xs-2">
+          <span class="menu-item">
+              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _international} ]"
+                [ngClass]="{active: _currentSelection == 'international'}">
+                <i class="fa fa-plane"></i> International</a>
           </span>
         </div>
+        
+        <div class="col-xs-2">
+          <span class="menu-item">
+              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _national} ]"
+                [ngClass]="{active: _currentSelection == 'national'}">
+                <i class="fa fa-train"></i> National
+              </a>
+          </span>
+        </div>
+        
+        <div class="col-xs-2">
+          <span class="menu-item">
+              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _state} ]"
+                [ngClass]="{active: _currentSelection == 'state'}">
+                <i class="fa fa-bus"></i> State
+              </a>
+          </span>
+        </div>
+        
+        <div class="col-xs-2">
+          <span class="menu-item">
+              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _city} ]"
+                [ngClass]="{active: _currentSelection == 'city'}">
+                <i class="fa fa-car"></i> City
+              </a>
+          </span>
+        </div>
+        
+        <div class="col-xs-2">
+          <span class="menu-item">
+              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _sub_city} ]"
+                [ngClass]="{active: _currentSelection == 'sub_city'}">
+                <i class="fa fa-bicycle"></i> Sub-City
+              </a>
+          </span>
+        </div>
+      </div>  <!-- end row -->
+
+      <div class="row visible-xs-block">
+      <div class="col-xs-12 center-block">
+      <div>
+        <div class="menu-item pull-left">
+          <div >
+            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _international} ]"
+                [ngClass]="{active: _currentSelection == 'international'}">
+              <i class="fa fa-plane"></i><span *ngIf="_currentSelection == 'international'"> International</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="menu-item pull-left">
+          <div >
+            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _national} ]"
+              [ngClass]="{active: _currentSelection == 'national'}">
+              <i class="fa fa-train"></i><span *ngIf="_currentSelection == 'national'"> National</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="menu-item pull-left">
+          <div >
+            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _state} ]"
+              [ngClass]="{active: _currentSelection == 'state'}">
+              <i class="fa fa-bus"></i><span *ngIf="_currentSelection == 'state'"> State</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="menu-item pull-left">
+          <div >
+            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _city} ]"
+              [ngClass]="{active: _currentSelection == 'city'}">
+              <i class="fa fa-car"></i><span *ngIf="_currentSelection == 'city'"> City</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="menu-item pull-left">
+          <div >
+            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _sub_city} ]"
+              [ngClass]="{active: _currentSelection == 'sub_city'}">
+              <i class="fa fa-bicycle"></i><span *ngIf="_currentSelection == 'sub_city'"> Sub-City</span>
+            </a>
+          </div>
+        </div>
+        
+      </div>  
       </div>
+      </div>  <!-- end row -->
+
+      
+      <div class="row">
+        <div class="col-xs-12">
+        <div class="geo-filter-details">
+          <div>
+            {{_selectionDetails}}
+            <span class="add-more" (click)="gotoChangeGeoSttings()">
+              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </span>
+          </div>
+        </div>
+        </div>
+      </div> <!-- end row -->
       
     </div>
   `,
-  styles: [`
-      .geo-filter {
+  styles: [`      
+      .my-geo-filter {
       }
-      .geo-filter .active {
+      .my-geo-filter .active {
         font-weight: bold;
         color: red;
       }
-      
-      .geo-filter .menu-item {
+      .my-geo-filter .menu-item {
         color: #ef5350;
+        text-align: center;
+        padding: 0 15px 0 0;
       }
-      .geo-filter .menu-link {
-        padding: 0 10px 0 0;
-        float: left;
-        font-size: 12px;
-        letter-spacing: 1px;
+      .my-geo-filter .menu-link {
         transition: 0.05s ease-in-out;
         display: block;
         vertical-align: baseline;
+        letter-spacing: 1px;
         text-transform: uppercase;
         text-decoration: none;
+        /*
+        font-size: 12px;
+        */
       }
-      .geo-filter .geo-filter-details {
+      .my-geo-filter .geo-filter-details {
         clear: both;
         text-transform: uppercase;
-        font-size: 10px;
-      }
-      .geo-filter .geo-filter-details .add-more .material-icons {
-        font-size: 10px;
+        font-size: 12px;
       }
     `],
   directives: [ROUTER_DIRECTIVES, NgClass]
@@ -136,7 +205,7 @@ export class GeoFilterComponent implements OnInit {
     /** ** */
     
     if(this.arraysEqual(gog_names_array, this._international)) {
-      this._currentSelection = 'interntaional';
+      this._currentSelection = 'international';
       this._selectionDetails = this._international.join(', ')
     }
     if(this.arraysEqual(gog_names_array, this._national)) {

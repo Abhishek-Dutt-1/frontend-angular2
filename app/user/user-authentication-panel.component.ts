@@ -9,16 +9,16 @@ import {User} from './user'
   template: `
     <div class="my-user-authentication-panel">
       <div *ngIf="!isUserLoggedIn">
-        <a [routerLink]="['Login']" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <a [routerLink]="['Login']">
           Login
         </a>&nbsp;
-        <a [routerLink]="['NewUser']" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        <a [routerLink]="['NewUser']">
           Register
         </a>
       </div>
       <div *ngIf="isUserLoggedIn">
         {{loggedInUser.displayname}}
-        <button (click)="logout()">Logout</button>
+        <a class="btn btn-default btn-xs" (click)="logout()">Logout</a>
       </div>
     </div>
   `,

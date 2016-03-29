@@ -1,31 +1,23 @@
 <div class="app-component">
-  
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <div class="container">
     
-    <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">
-        <a [routerLink]="['GroupOfGroupsPostList']">
-          <i class="material-icons" role="presentation">home</i>YOLO!
-        </a>
-            
-        </span>
-        
-        
-        
-        <div class="mdl-layout-spacer"></div>
-        <my-user-authentication-panel></my-user-authentication-panel>
-      </div>
-    </header>
-    
-    <main class="mdl-layout__content mdl-color--grey-100">
-      <div class="mdl-grid demo-content">
-        <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-            <router-outlet></router-outlet>
+      <div class="row">
+        <div class="col-xs-6">
+          <a [routerLink]="['GroupOfGroupsPostList']">
+            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>YOLO!
+          </a>
+        </div>
+        <div class="col-xs-6 user-panel-container">
+          <my-user-authentication-panel></my-user-authentication-panel>
         </div>
       </div>
-    </main>
-    
+      
+      <div class="row">
+        <div class="col-xs-12">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      
+
   </div>
-  
 </div>
