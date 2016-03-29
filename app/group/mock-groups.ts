@@ -11,7 +11,7 @@ export var MOCK_GROUPS: Group[] = [
   {
     id: 1,
     name: 'random',
-    parent_group: MOCK_GROUP_OF_GROUPS[1]
+    parent_group: MOCK_GROUP_OF_GROUPS[0]
   },
   {
     id: 2,
