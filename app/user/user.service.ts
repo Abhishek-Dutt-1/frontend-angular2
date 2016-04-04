@@ -33,16 +33,18 @@ export class UserService {
       email: newUser.email,
       displayname: newUser.displayname,
       password: newUser.password,
-      userrole: UserRoles.user,
       confirm_password: newUser.confirm_password,
-      international: newUser.international,
-      national: newUser.national,
-      state: newUser.state,
-      city: newUser.city,
-      sub_city: newUser.sub_city 
+      userrole: UserRoles.user,
+      settings: {
+        international: newUser.international,
+        national: newUser.national,
+        state: newUser.state,
+        city: newUser.city,
+        local: newUser.local
+      } 
     }
     MOCK_USERS.push(newProperUser);
-    
+    console.log(newProperUser);
     return this.getUser(newProperUser.id);
   }
   

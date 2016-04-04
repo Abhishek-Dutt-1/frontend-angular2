@@ -8,7 +8,51 @@ import {PostTemplateType} from '../post/post-template-types';
 
 @Component({
   selector: 'my-view-group',
-  templateUrl: 'app/group/view-group.component.html',
+  //templateUrl: 'app/group/view-group.component.html',
+  template: `
+  <div *ngIf="group">
+  
+    <div class="my-view-group">
+      
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="group-details">
+          
+            <div class="panel panel-default group-details-panel">
+              <div class="panel-heading">
+                <h4 class="panel-title">{{group.parent_group.name}}/{{group.name}}</h4>
+              </div>  
+              <div class="panel-body">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Mauris sagittis pellentesque lacus eleifend lacinia...
+              </div>
+              <div class="panel-footer">
+                <a>Group Info</a> | 
+                <a (click)="gotoNewPostForm()" class="">
+                  Create a New Post
+                </a>
+              </div>
+            <div>
+            
+          </div>
+        </div> <!-- !col -->
+      </div> <!-- !row -->
+      
+      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"></my-post-list>
+      
+    </div>  
+  </div>  <!-- end top div -->
+  `,
+  styles: [`
+  .my-view-group .group-details-panel {
+    margin-bottom: 0px;
+    margin-top: 10px;
+    /*
+    padding-bottom: 10px;
+    border-bottom: 1px solid lightgrey;
+    */
+  }
+  `],
   styleUrls: ['app/group/view-group.component.css'],
   //inputs: ['group'],
   directives: [PostListComponent]

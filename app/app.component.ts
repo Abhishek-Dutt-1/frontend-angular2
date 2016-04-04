@@ -12,6 +12,8 @@ import { PostListLoaderComponent } from './post/post-list-loader.component';
 import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
 import { NewPostComponent } from './post/new-post.component';
+
+import { GroupOfGroupsService }     from './group_of_groups/group_of_groups.service';
 import { GroupOfGroupsPostListLoaderComponent } from './post/group-of-groups-post-list-loader.component';
 
 import { GroupService }     from './group/group.service';
@@ -19,6 +21,7 @@ import { ViewGroupComponent } from './group/view-group.component';
 
 import { NewUserComponent } from './user/new-user.component';
 import { ViewUserComponent } from './user/view-user.component';
+import { EditUserComponent } from './user/edit-user.component';
 import { UserService } from './user/user.service';
 import { UserAuthenticationPanelComponent } from './user/user-authentication-panel.component';
 
@@ -28,7 +31,54 @@ import { AuthenticationService } from './authentication/authentication.service';
 @Component({
   selector: 'my-app-component',
   templateUrl: 'app/app.component.html',
-  styleUrls: ['app/app.component.css'],
+  template: `
+  <div class="my-app-component">
+    <div class="container">
+      
+        <div class="row">
+          <div class="header">
+            <div class="col-xs-5">
+              <div class="logo"><b>
+                <a [routerLink]="['GroupOfGroupsPostList']">
+                  <span class="glyphicon glyphicon-home" aria-hidden="true"></span> YOLO!
+                </a></b>
+              </div>
+            </div>
+            <div class="col-xs-7 user-panel-container">
+              <my-user-authentication-panel></my-user-authentication-panel>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-xs-12">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+        
+
+    </div>
+  </div>
+  `,
+  styles: [`
+    .my-app-component .user-panel-container {
+      text-align: right;
+    }
+    .my-app-component .header {
+      height: 40px;
+      background-color: #0277bd;
+      color: white;
+      padding-top: 9px;
+    }
+    .my-app-component .header .logo a {
+      vertical-align: middle;
+      color: white;
+    }
+    .my-app-component .header .logo a:hover {
+      text-decoration: none;
+    }
+  `],
+  //styleUrls: ['app/app.component.css'],
   directives: [ROUTER_DIRECTIVES, UserAuthenticationPanelComponent],
   providers: [
     ROUTER_PROVIDERS,
@@ -37,6 +87,7 @@ import { AuthenticationService } from './authentication/authentication.service';
     HeroService,
     PostService,
     GroupService,
+    GroupOfGroupsService,
     UserService,
     AuthenticationService
   ]
@@ -112,6 +163,12 @@ import { AuthenticationService } from './authentication/authentication.service';
     path: '/user/:id',
     name: 'ViewUser',
     component: ViewUserComponent
+  },
+  {
+    // Edit User Profile
+    path: '/user/edit/:tab',
+    name: 'EditUser',
+    component: EditUserComponent
   }
 ])
 export class AppComponent {

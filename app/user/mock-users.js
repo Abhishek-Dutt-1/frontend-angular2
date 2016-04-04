@@ -1,69 +1,72 @@
-System.register(['./user-roles'], function(exports_1, context_1) {
+System.register(['./user-roles', '../group_of_groups/mock-group_of_groups'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var user_roles_1;
+    var user_roles_1, mock_group_of_groups_1;
     var MOCK_USERS;
     return {
         setters:[
             function (user_roles_1_1) {
                 user_roles_1 = user_roles_1_1;
+            },
+            function (mock_group_of_groups_1_1) {
+                mock_group_of_groups_1 = mock_group_of_groups_1_1;
             }],
         execute: function() {
             exports_1("MOCK_USERS", MOCK_USERS = [
                 {
-                    id: 0,
+                    id: 1,
                     email: 'iron@in.in',
                     displayname: 'Iron Man',
                     password: '123',
                     userrole: user_roles_1.UserRoles.user,
                     settings: {
-                        interntaional: ['usa', 'russia'],
-                        national: ['india'],
-                        state: ['karnataka'],
-                        city: ['bangalore'],
-                        sub_city: ['koramangala']
+                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[4]],
+                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1],
+                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5]],
+                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[2]],
+                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3]]
                     }
                 },
                 {
-                    id: 1,
+                    id: 2,
                     email: 'captain@in.in',
                     displayname: 'Captain America',
                     password: '123',
                     userrole: user_roles_1.UserRoles.user,
                     settings: {
-                        interntaional: ['usa', 'russia'],
-                        national: ['india'],
-                        state: ['karnataka'],
-                        city: ['bangalore'],
-                        sub_city: ['koramangala']
+                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[4]],
+                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1],
+                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5]],
+                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[2]],
+                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3]]
                     }
                 },
                 {
-                    id: 2,
+                    id: 3,
                     email: 'hulk@in.in',
                     displayname: 'Incredible Hulk',
                     password: '123',
                     userrole: user_roles_1.UserRoles.user,
                     settings: {
-                        interntaional: ['usa', 'russia'],
-                        national: ['india'],
-                        state: ['karnataka'],
-                        city: ['bangalore'],
-                        sub_city: ['koramangala']
+                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[4]],
+                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1],
+                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5]],
+                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[2]],
+                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3]]
                     }
                 },
                 {
-                    id: 3,
+                    id: 4,
                     email: 'thor@in.in',
                     displayname: 'The Mighty Thor',
                     password: '123',
                     userrole: user_roles_1.UserRoles.user,
                     settings: {
-                        interntaional: ['usa', 'russia'],
-                        national: ['india'],
-                        state: ['karnataka'],
-                        city: ['bangalore'],
-                        sub_city: ['koramangala']
+                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[4]],
+                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1],
+                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5]],
+                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[2]],
+                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3]]
                     }
                 }
             ]);

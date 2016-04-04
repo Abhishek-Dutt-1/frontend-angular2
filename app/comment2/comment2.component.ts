@@ -9,14 +9,19 @@ import {Comment2} from './comment2';
 @Component({
   selector: 'my-comment2',
   template: `
-    <div class="comment">
-      <i class="material-icons mdl-list__item-icon">person</i> {{comment2.postedby.username}}
-      <div class="">
-        {{comment2.text}}
+    <div class="my-comment2">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="">
+            {{comment2.text}}
+          </div>
+          <i class="fa fa-user"></i> {{comment2.postedby.displayname}}
+          | <span>Reply</span>
+        </div>
       </div>
     </div>
   `,
-  styleUrls: ['app/comment2/comment2.component.css'],
+  //styleUrls: ['app/comment2/comment2.component.css'],
   inputs: ['comment2']
 })
 export class Comment2Component {

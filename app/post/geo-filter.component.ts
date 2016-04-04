@@ -48,16 +48,16 @@ import {User} from '../user/user';
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _sub_city} ]"
-                [ngClass]="{active: _currentSelection == 'sub_city'}">
-                <i class="fa fa-bicycle"></i> Sub-City
+              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _local} ]"
+                [ngClass]="{active: _currentSelection == 'local'}">
+                <i class="fa fa-bicycle"></i> Local
               </a>
           </span>
         </div>
       </div>  <!-- end row -->
 
       <div class="row visible-xs-block">
-      <div class="col-xs-12 center-block">
+      <div class="col-xs-12">
       <div>
         <div class="menu-item pull-left">
           <div >
@@ -97,9 +97,9 @@ import {User} from '../user/user';
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _sub_city} ]"
-              [ngClass]="{active: _currentSelection == 'sub_city'}">
-              <i class="fa fa-bicycle"></i><span *ngIf="_currentSelection == 'sub_city'"> Sub-City</span>
+            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _local} ]"
+              [ngClass]="{active: _currentSelection == 'local'}">
+              <i class="fa fa-bicycle"></i><span *ngIf="_currentSelection == 'local'"> Local</span>
             </a>
           </div>
         </div>
@@ -128,13 +128,17 @@ import {User} from '../user/user';
       .my-geo-filter {
       }
       .my-geo-filter .active {
+        /*
         font-weight: bold;
+        */
         color: red;
       }
       .my-geo-filter .menu-item {
+        /*
         color: #ef5350;
         text-align: center;
-        padding: 0 15px 0 0;
+        */
+        padding: 15px 15px 0px 0;
       }
       .my-geo-filter .menu-link {
         transition: 0.05s ease-in-out;
@@ -144,6 +148,7 @@ import {User} from '../user/user';
         text-transform: uppercase;
         text-decoration: none;
         /*
+                color: #ef5350;
         font-size: 12px;
         */
       }
@@ -162,7 +167,7 @@ export class GeoFilterComponent implements OnInit {
   private _national: string = null;
   private _state: string[] = null;
   private _city: string[] = null;
-  private _sub_city: string[] = null;
+  private _local: string[] = null;
   
   private _currentSelection: string = null;
   private _selectionDetails: string = null;
@@ -180,14 +185,14 @@ export class GeoFilterComponent implements OnInit {
       this._national = loggedInUser.settings.national;
       this._state = loggedInUser.settings.state;
       this._city = loggedInUser.settings.city;
-      this._sub_city = loggedInUser.settings.sub_city;
+      this._local = loggedInUser.settings.sub_city;
     } else {
       // Defaults
       this._international = ['usa'];
       this._national = 'india';
       this._state = ['karnataka'];
       this._city = ['bangalore'];
-      this._sub_city = ['koramangala'];      
+      this._local = ['koramangala'];      
     }
     
     /** taken from group-of-groups-post-list-loader-component, KEEP IN SYNC */
@@ -220,9 +225,9 @@ export class GeoFilterComponent implements OnInit {
       this._currentSelection = "city";
       this._selectionDetails = this._city.join(', ')
     }
-    if(this.arraysEqual(gog_names_array, this._sub_city)) {
-      this._currentSelection = "sub_city";
-      this._selectionDetails = this._sub_city.join(', ')
+    if(this.arraysEqual(gog_names_array, this._local)) {
+      this._currentSelection = "local";
+      this._selectionDetails = this._local.join(', ')
     }
     
   }

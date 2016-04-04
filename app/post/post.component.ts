@@ -18,7 +18,7 @@ import {PostTemplateType} from './post-template-types';
         <div class="post-container">
           
           <div (click)="gotoPost(post.id)" class="post-title">
-            <h4>{{post.title}}</h4>
+            <h5>{{post.title}}</h5>
           </div>
           
           <div class="">
@@ -48,7 +48,7 @@ import {PostTemplateType} from './post-template-types';
         <div class="post-container">
           
           <div (click)="gotoPost(post.id)" class="post-title">
-            <h4>{{post.title}}</h4>
+            <h5>{{post.title}}</h5>
           </div>
           
           <div class="">
@@ -73,41 +73,39 @@ import {PostTemplateType} from './post-template-types';
       </div>
     </div>
     
-    
     <div *ngIf="type === templateTypeMain">
-      <div class="post-main demo-card-wide mdl-card mdl-shadow--2dp">
-        <div class="mdl-card__title">
-          <h2 class="mdl-card__title-text">{{post.title}}</h2>
-        </div>
-        <div class="mdl-card__supporting-text">
-          {{post.text}}
-        </div>
-        <div class="mdl-card__actions mdl-card--border">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            <i class="material-icons mdl-list__item-icon">person</i> {{post.postedby.displayname}} 
-          </a>
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            Edit 
-          </a>
-          <a (click)="upVotePost(post.id)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            {{post.upvotes}} Vote up
-          </a>
-          <a (click)="downVotePost(post.id)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            {{post.downvotes}} Vote down
-          </a>
-          <a (click)="gotoGroup(post.group.parent_group.name, post.group.name)" 
-            class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            go/{{post.group.parent_group.name}}/{{post.group.name}} 
-          </a>
-          <a (click)="goBack()" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            Back 
-          </a>
-        </div>
-        <div class="mdl-card__menu">
-          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-            <i class="material-icons">share</i>
-          </button>
-        </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="post-container">
+            <div class="">
+              <h5 class="">{{post.title}}</h5>
+            </div>
+            <div class="">
+              {{post.text}}
+            </div>
+            <div class="">
+              <a class="">
+                <i class="fa fa-user"></i> {{post.postedby.displayname}} 
+              </a> | 
+              <a class="">
+                Edit 
+              </a> | 
+              <a (click)="upVotePost(post.id)" class="">
+                {{post.upvotes}} Vote up
+              </a> | 
+              <a (click)="downVotePost(post.id)" class="">
+                {{post.downvotes}} Vote down
+              </a> | 
+              <a (click)="gotoGroup(post.group.parent_group.name, post.group.name)" 
+                class="">
+                go/{{post.group.parent_group.name}}/{{post.group.name}} 
+              </a> | 
+              <a (click)="goBack()" class="">
+                Back 
+              </a>
+            </div>
+          </div>
+        </div>  
       </div>
     </div>
     
@@ -117,6 +115,9 @@ import {PostTemplateType} from './post-template-types';
   .my-post .post-container {
     border-bottom: 1px solid lightgrey;
     padding-bottom: 10px;
+  }
+  .my-post .post-container h5 {
+    margin-bottom: 5px;
   }
   .my-post .post-info {
     font-size: 12px;

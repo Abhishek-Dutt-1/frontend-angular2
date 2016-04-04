@@ -74,4 +74,13 @@ export class GroupService {
     */
   }
   
+  /**
+   * Returns a list of groups based on its type
+   */
+  getGroupsByParentGroupType(groupType: string) {
+    return Promise.resolve(MOCK_GROUPS).then(
+      groups => groups.filter(group => group.parent_group.type === groupType)
+    );
+  }
+  
 }

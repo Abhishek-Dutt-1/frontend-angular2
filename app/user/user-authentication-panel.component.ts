@@ -8,21 +8,27 @@ import {User} from './user'
   selector: 'my-user-authentication-panel',
   template: `
     <div class="my-user-authentication-panel">
-      <div *ngIf="!isUserLoggedIn">
-        <a [routerLink]="['Login']">
-          Login
-        </a>&nbsp;
-        <a [routerLink]="['NewUser']">
-          Register
-        </a>
+      <div class="not-logged-in">
+        <div *ngIf="!isUserLoggedIn">
+          <a [routerLink]="['Login']">
+            Login
+          </a> | 
+          <a [routerLink]="['NewUser']">
+            Register
+          </a>
+        </div>
       </div>
       <div *ngIf="isUserLoggedIn">
-        {{loggedInUser.displayname}}
+        <a [routerLink]="['ViewUser', {id: loggedInUser.id}]">{{loggedInUser.displayname}}</a>
         <a class="btn btn-default btn-xs" (click)="logout()">Logout</a>
       </div>
     </div>
   `,
-  styles: [],
+  styles: [`
+    .my-user-authentication-panel .not-logged-in a {
+      color: white;
+    }
+  `],
   directives: [ROUTER_DIRECTIVES]
 })
 export class UserAuthenticationPanelComponent {
