@@ -39,7 +39,7 @@ import {Router} from 'angular2/router';
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <div class="col-md-offset-4 col-md-8">
-                          <a (click)="gotoEditUser()" class="btn btn-default">Edit</a>
+                          <a (click)="gotoEditUser('basic')" class="btn btn-default">Edit</a>
                           <a (click)="goBack()" class="btn btn-default">Back</a>
                         </div>
                       </div>
@@ -90,7 +90,7 @@ import {Router} from 'angular2/router';
                         </div>
                         <div class="form-group">
                           <div class="col-md-offset-4 col-md-8">
-                            <a (click)="console(user)" class="btn btn-default">Edit</a>
+                            <a (click)="gotoEditUser('geo')" class="btn btn-default">Edit</a>
                             <a (click)="goBack()" class="btn btn-default">Back</a>
                           </div>
                         </div>
@@ -138,8 +138,11 @@ export class UserComponent {
     this._router.navigate(['ViewGroup', {group_of_groups_name: parent_group_name, group_name: name}]);
   }
   */
-  gotoEditUser() {
-    this._router.navigate(['EditUser', {tab: 'basic'}]);
+  gotoEditUser(goWhere:string) {
+    console.log(goWhere)
+    //this._router.navigate(['NewUser']);
+    //this._router.navigate(['ViewUser', {'id': 2}]);
+    this._router.navigate(['EditUser', {'tab': goWhere}]);
   }
   goBack() {
     window.history.back();

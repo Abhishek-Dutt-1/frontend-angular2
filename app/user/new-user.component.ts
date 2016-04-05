@@ -52,7 +52,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
               <input id="password" type="password" class="form-control" placeholder="Password" required
                 [(ngModel)] = "model.password"
                 ngControl="password" #password = "ngForm"
-              >{{password}}
+              >
               <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
                 Password is required
               </div>
@@ -103,19 +103,10 @@ import {AuthenticationService} from '../authentication/authentication.service';
             <br/>
             <div class="form-group">
               <label for="national">National</label>
-<!-- 
 <div>
 <span *ngFor="#national of _groupList.national">
 <label class="radio-inline">
-<input type="radio" name="sex" [(ngModel)]="national.selectedNational" value="{{national.id}}"> {{national.name}}
-</label>
-</span>
-</div>
--->
-<div>
-<span *ngFor="#national of _groupList.national">
-<label class="radio-inline">
-<input type="radio" name="sex" (click)="_groupList.selectedNational = national" [checked]="national === _groupList.selectedNational"> {{national.name}}
+<input type="radio" name="national" (click)="_groupList.selectedNational = national" [checked]="national === _groupList.selectedNational"> {{national.name}}
 </label>
 </span>
 </div>

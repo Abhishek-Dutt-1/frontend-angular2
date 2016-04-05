@@ -48,4 +48,28 @@ export class UserService {
     return this.getUser(newProperUser.id);
   }
   
+  changePassword(userId: number, newPassword: string) {
+    MOCK_USERS.find(user => user.id == userId).password = newPassword
+    return Promise.resolve(MOCK_USERS.find(user => user.id == userId));
+    /*
+    return Promise.resolve(MOCK_USERS).then(
+      users => users.find(user => user.id == userId).password = newPassword
+      )
+      */
+  }
+  
+  updateGeoSettings(userId: number, newSettings: any) {
+    var user = MOCK_USERS.find(user => user.id == userId)
+    if(user) {
+      user.settings.international = newSettings.international;
+      user.settings.national = newSettings.national;
+      user.settings.state = newSettings.state;
+      user.settings.city = newSettings.city;
+      user.settings.local = newSettings.local;
+      return Promise.resolve(user); 
+    } else {
+      throw "User Not Found";
+    }
+  }
+  
 }

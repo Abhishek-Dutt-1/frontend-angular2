@@ -12,7 +12,7 @@ export var MOCK_GROUP_OF_GROUPS: Group_Of_Groups[] = [
   {
     id: 2,
     name: 'bangalore',
-    type: 'international'
+    type: 'national'
     //sub_groups: [MOCK_GROUPS[2], MOCK_GROUPS[3]]
   },
   {
@@ -30,7 +30,7 @@ export var MOCK_GROUP_OF_GROUPS: Group_Of_Groups[] = [
   {
     id: 5,
     name: 'Karnataka',
-    type: 'state'
+    type: 'international'
     //sub_groups: [MOCK_GROUPS[2], MOCK_GROUPS[4]]
   },
   {
