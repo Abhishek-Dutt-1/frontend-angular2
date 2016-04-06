@@ -33,17 +33,43 @@ export class UserService {
       email: newUser.email,
       displayname: newUser.displayname,
       password: newUser.password,
-      userrole: UserRoles.user,
       confirm_password: newUser.confirm_password,
-      international: newUser.international,
-      national: newUser.national,
-      state: newUser.state,
-      city: newUser.city,
-      sub_city: newUser.sub_city 
+      userrole: UserRoles.user,
+      settings: {
+        international: newUser.international,
+        national: newUser.national,
+        state: newUser.state,
+        city: newUser.city,
+        local: newUser.local
+      } 
     }
     MOCK_USERS.push(newProperUser);
-    
+    console.log(newProperUser);
     return this.getUser(newProperUser.id);
+  }
+  
+  changePassword(userId: number, newPassword: string) {
+    MOCK_USERS.find(user => user.id == userId).password = newPassword
+    return Promise.resolve(MOCK_USERS.find(user => user.id == userId));
+    /*
+    return Promise.resolve(MOCK_USERS).then(
+      users => users.find(user => user.id == userId).password = newPassword
+      )
+      */
+  }
+  
+  updateGeoSettings(userId: number, newSettings: any) {
+    var user = MOCK_USERS.find(user => user.id == userId)
+    if(user) {
+      user.settings.international = newSettings.international;
+      user.settings.national = newSettings.national;
+      user.settings.state = newSettings.state;
+      user.settings.city = newSettings.city;
+      user.settings.local = newSettings.local;
+      return Promise.resolve(user); 
+    } else {
+      throw "User Not Found";
+    }
   }
   
 }

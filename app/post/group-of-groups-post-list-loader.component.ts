@@ -13,11 +13,9 @@ import {GeoFilterComponent} from '../post/geo-filter.component';
   //template: `<my-post-list [posts]="posts" type="postTemplateType"></my-post-list>`,
   //template: "<div>{{posts}} hello</div>",
   template: `
-    <div class="my-post-list-loader">
-      <my-geo-filter></my-geo-filter>
-      <div class="pre-post-list-outer-div">
-      <my-post-list [posts]="posts" [postTemplateType]="postTemplateType"></my-post-list>
-      </div>
+    <div class="my-group-of-group-post-list-loader">
+        <my-geo-filter></my-geo-filter>
+        <my-post-list [posts]="posts" [postTemplateType]="postTemplateType"></my-post-list>
       <!-- Colored FAB button with ripple -->
       <button (click)="gotoNewPostForm()"
         class="fab-button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
@@ -26,7 +24,7 @@ import {GeoFilterComponent} from '../post/geo-filter.component';
     </div>
   `,
   styles: [`
-    .my-post-list-loader .fab-button {
+    .my-group-of-group-post-list-loader .fab-button {
       position: fixed;
       right: 20px;
       bottom: 20px;
@@ -73,7 +71,7 @@ export class GroupOfGroupsPostListLoaderComponent implements OnInit {
   gotoNewPostForm() {
     this._router.navigate(['NewPost']);
   }
-  
+  /*
   gotoInternational() {
     this._router.navigate(['GroupOfGroupsPostList', {gog: ['india', 'bangalore']}]);
   }
@@ -93,4 +91,5 @@ export class GroupOfGroupsPostListLoaderComponent implements OnInit {
   gotoSubCity() {
     this._router.navigate(['GroupOfGroupsPostList', {gog: ['india', 'bangalore']}]);
   }
+  */
 }

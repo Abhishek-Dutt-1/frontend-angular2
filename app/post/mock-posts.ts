@@ -6,7 +6,7 @@ import {MOCK_COMMENT1S} from '../comment1/mock-comment1s';
 
 export var MOCK_POSTS: Post[] = [
   {
-    id: 0,
+    id: 1,
     upvotes: 1,
     downvotes: 1,
     title: 'AngularJs CRUD Operations | Angular 2 JavaScript KnockoutJs AngularJs Kendo UI HTML 5 Web API',
@@ -17,11 +17,22 @@ export var MOCK_POSTS: Post[] = [
     comments: [MOCK_COMMENT1S[1], MOCK_COMMENT1S[0]]
   },
   {
-    id: 1,
+    id: 2,
     upvotes: 1,
     downvotes: 1,
     title: 'I am using angular beta version, having issue for webpack, gulp and bower.',
     text: 'I am using angular beta version, having issue for webpack, gulp and bower.',
+    type: 'text',
+    postedby: MOCK_USERS[1],
+    group: MOCK_GROUPS[0],
+    comments: [MOCK_COMMENT1S[1], MOCK_COMMENT1S[0]]
+  },
+  {
+    id: 3,
+    upvotes: 1,
+    downvotes: 1,
+    title: 'Learn how to build an exciting application from the top to bottom with AngularJs and Angular 2',
+    text: 'Learn how to build an exciting application from the top to bottom with AngularJs and Angular 2',
     type: 'text',
     postedby: MOCK_USERS[1],
     group: MOCK_GROUPS[0],

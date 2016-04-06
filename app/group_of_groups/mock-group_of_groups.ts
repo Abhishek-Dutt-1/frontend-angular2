@@ -4,34 +4,54 @@ import {MOCK_GROUPS} from '../group/mock-groups'
 // Grouop's name and urls are same
 export var MOCK_GROUP_OF_GROUPS: Group_Of_Groups[] = [
   {
-    id: 0,
-    name: 'india',
-    //sub_groups: [MOCK_GROUPS[0], MOCK_GROUPS[1]]
-  },
-  {
     id: 1,
-    name: 'bangalore',
-    //sub_groups: [MOCK_GROUPS[2], MOCK_GROUPS[3]]
+    name: 'international 1',
+    type: 'international'
   },
   {
     id: 2,
-    name: 'in',
-    //sub_groups: [MOCK_GROUPS[4]]
+    name: 'international 2',
+    type: 'international'
   },
   {
     id: 3,
-    name: 'blr',
-    //sub_groups: [MOCK_GROUPS[5], MOCK_GROUPS[1]]
+    name: 'national 1',
+    type: 'national'
   },
   {
     id: 4,
-    name: 'koramangala',
-    //sub_groups: [MOCK_GROUPS[2], MOCK_GROUPS[4]]
+    name: 'national 2',
+    type: 'national'
   },
   {
     id: 5,
-    name: 'us',
-    //sub_groups: [MOCK_GROUPS[0], MOCK_GROUPS[1]]
+    name: 'state 1',
+    type: 'state'
+  },
+  {
+    id: 6,
+    name: 'state 2',
+    type: 'state'
+  },
+  {
+    id: 7,
+    name: 'city 1',
+    type: 'city'
+  },
+  {
+    id: 8,
+    name: 'city 2',
+    type: 'city'
+  },
+  {
+    id: 9,
+    name: 'local 1',
+    type: 'local'
+  },
+  {
+    id: 10,
+    name: 'local 2',
+    type: 'local'
   }
   
 ]
