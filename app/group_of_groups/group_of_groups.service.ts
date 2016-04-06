@@ -8,6 +8,12 @@ export class GroupOfGroupsService {
   constructor() {
   }
   
+  getGroupByName(gog_name: string) {
+    return Promise.resolve(MOCK_GROUP_OF_GROUPS).then(
+      gogs => gogs.find(gog => gog.name == gog_name)
+    );
+  }
+  
   /**
    * Returns a list of group_of_groups based on its type
    */

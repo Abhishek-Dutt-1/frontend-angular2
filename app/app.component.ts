@@ -3,10 +3,11 @@ import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/route
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from 'angular2/http';
 
 import { AppService }     from './app.service';
-
+/*
 import { HeroService }     from './hero/hero.service';
 import { HeroesComponent } from './hero/heroes.component';
 import { HeroDetailComponent } from './hero/hero-detail.component';
+*/
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { PostService }     from './post/post.service';
@@ -15,6 +16,7 @@ import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
 import { NewPostComponent } from './post/new-post.component';
 
+import { RealGroupOfGroupsPostListLoaderComponent }     from './group_of_groups/real-group_of_groups-post-list-loader.component';
 import { GroupOfGroupsService }     from './group_of_groups/group_of_groups.service';
 import { GroupOfGroupsPostListLoaderComponent } from './post/group-of-groups-post-list-loader.component';
 
@@ -87,7 +89,7 @@ import { AuthenticationService } from './authentication/authentication.service';
     HTTP_PROVIDERS,
     JSONP_PROVIDERS,
     AppService,
-    HeroService,
+    //HeroService,
     PostService,
     GroupService,
     GroupOfGroupsService,
@@ -139,6 +141,11 @@ import { AuthenticationService } from './authentication/authentication.service';
     useAsDefault: true
   },
   {
+    path: '/sg/:group_of_groups_name',
+    name: 'RealGroupOfGroupsPostList',
+    component: RealGroupOfGroupsPostListLoaderComponent
+  },
+  {
     // would be changed to edit post
     path: '/postdetail/:id',
     name: 'PostDetail',
@@ -156,8 +163,6 @@ import { AuthenticationService } from './authentication/authentication.service';
     component: NewPostComponent
   },
   {
-    // TODO: Seems to be a bug in BrowserSync with multiple tokens,
-    // works if route is typed manually
     path: '/go/:group_of_groups_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent

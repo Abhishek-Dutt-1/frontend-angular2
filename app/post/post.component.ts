@@ -39,7 +39,7 @@ import {PostTemplateType} from './post-template-types';
               </a>
             </div>
             <div>
-              {{post.upvotes}} <i class="fa fa-arrow-up"></i> <i class="fa fa-arrow-down"></i> {{post.downvotes}} &bull; {{post.comments.length}} Comments
+              {{post.upvotes}} <i class="fa fa-arrow-up"></i> &bull; <i class="fa fa-arrow-down"></i> {{post.downvotes}} &bull; {{post.comments.length}} Comments
             </div>
           </div>
           
@@ -98,7 +98,7 @@ import {PostTemplateType} from './post-template-types';
               </a> &bull;
               <a (click)="upVotePost(post.id)" class="">
                 {{post.upvotes}} <i class="fa fa-arrow-up"></i> 
-              </a>
+              </a> &bull; 
               <a (click)="downVotePost(post.id)" class="">
                 <i class="fa fa-arrow-down"></i> {{post.downvotes}} 
               </a> &bull;
