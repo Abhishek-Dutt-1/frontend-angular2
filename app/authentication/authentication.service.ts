@@ -3,6 +3,7 @@ import {MOCK_USERS} from '../user/mock-users';
 import {Subject, Observable, Observer} from 'rxjs/Rx';
 //import 'rxjs/Rx';
 import {User} from '../user/user';
+import {UserService} from '../user/user.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -15,15 +16,18 @@ export class AuthenticationService {
   private _currentUser:User = null;
   
   constructor(
-    //private _groupService: GroupService
+    private _userService: UserService
   ) {
     // Load a logged in user if any
-    let oldUser = localStorage.getItem('user');
-    let user = JSON.parse(oldUser);
-    if(user) {
+    let oldUserId = localStorage.getItem('loggedInUserId');
+    let userId = JSON.parse(oldUserId);
+    
+    if(userId) {
       this._isUserLoggedIn = true;
-      this._currentUser = user;
-      this._loggedInUser.next(user);
+      this._userService.getUser(userId).then(user => {
+        this._currentUser = user;
+        this._loggedInUser.next(user);
+      });  
     }
   }
   
@@ -39,7 +43,7 @@ export class AuthenticationService {
         this._loggedInUser.next(user);
         this._isUserLoggedIn = true;
         this._currentUser = user;
-        localStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem('loggedInUserId', JSON.stringify(user.id))
       }
       return user;
     }).catch((reason) => {

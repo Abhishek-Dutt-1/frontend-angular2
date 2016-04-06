@@ -3,7 +3,7 @@
  */
 import {Component, OnInit} from 'angular2/core';
 import {Post} from './post';
-import {Router} from 'angular2/router';
+import {Router, RouterLink} from 'angular2/router';
 import {PostService} from './post.service';
 import {PostTemplateType} from './post-template-types';
 
@@ -17,8 +17,12 @@ import {PostTemplateType} from './post-template-types';
       <div class="col-xs-12">
         <div class="post-container">
           
-          <div (click)="gotoPost(post.id)" class="post-title">
-            <h5>{{post.title}}</h5>
+          <div class="row">
+            <div class="col-xs-12">
+              <div (click)="gotoPost(post.id)" class="post-title">
+                <h5>{{post.title}}</h5>
+              </div>
+            </div>
           </div>
           
           <div class="">
@@ -27,21 +31,21 @@ import {PostTemplateType} from './post-template-types';
           
           <div class="text-muted post-info">
             <div>
-              <i class="fa fa-user"></i>
-              {{post.postedby.displayname}} | 12 days ago | 
-              <span (click)="gotoGroup(post.group.parent_group.name, post.group.name)">
+              <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
+                <i class="fa fa-user"></i> {{post.postedby.displayname}}
+              </a> &bull; 12 days ago &bull; 
+              <a class="" [routerLink]="['ViewGroup', {group_of_groups_name: post.group.parent_group.name, group_name: post.group.name}]">
                 go/{{post.group.parent_group.name}}/{{post.group.name}}
-              </span>
+              </a>
             </div>
             <div>
-              {{post.upvotes}} Upvote | {{post.downvotes}} Downvote | {{post.comments.length}} Comments
+              {{post.upvotes}} <i class="fa fa-arrow-up"></i> <i class="fa fa-arrow-down"></i> {{post.downvotes}} &bull; {{post.comments.length}} Comments
             </div>
           </div>
           
         </div>
       </div>  
     </div>
-    
     
     <div *ngIf="type === templateTypeGroupList" class="row">
       <div class="col-xs-12">
@@ -57,8 +61,10 @@ import {PostTemplateType} from './post-template-types';
           
           <div class="text-muted post-info">
             <div>
-              <i class="fa fa-user"></i>
-              {{post.postedby.displayname}} | 12 days ago <!-- | 
+              <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
+                <i class="fa fa-user"></i> {{post.postedby.displayname}}
+              </a> | 
+              12 days ago <!-- | 
               <span (click)="gotoGroup(post.group.parent_group.name, post.group.name)">
                 go/{{post.group.parent_group.name}}/{{post.group.name}}
               </span>
@@ -84,22 +90,21 @@ import {PostTemplateType} from './post-template-types';
               {{post.text}}
             </div>
             <div class="">
-              <a class="">
+              <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                 <i class="fa fa-user"></i> {{post.postedby.displayname}} 
-              </a> | 
+              </a> &bull; 
               <a class="">
                 Edit 
-              </a> | 
+              </a> &bull;
               <a (click)="upVotePost(post.id)" class="">
-                {{post.upvotes}} Vote up
-              </a> | 
+                {{post.upvotes}} <i class="fa fa-arrow-up"></i> 
+              </a>
               <a (click)="downVotePost(post.id)" class="">
-                {{post.downvotes}} Vote down
-              </a> | 
-              <a (click)="gotoGroup(post.group.parent_group.name, post.group.name)" 
-                class="">
+                <i class="fa fa-arrow-down"></i> {{post.downvotes}} 
+              </a> &bull;
+              <a class="" [routerLink]="['ViewGroup', {group_of_groups_name: post.group.parent_group.name, group_name: post.group.name}]">
                 go/{{post.group.parent_group.name}}/{{post.group.name}} 
-              </a> | 
+              </a> &bull;
               <a (click)="goBack()" class="">
                 Back 
               </a>
@@ -123,7 +128,8 @@ import {PostTemplateType} from './post-template-types';
     font-size: 12px;
   }
   `],
-  inputs: ['post', 'type']
+  inputs: ['post', 'type'],
+  directives: [RouterLink]
 })
 export class PostComponent implements OnInit {
   post: Post;
@@ -147,9 +153,11 @@ export class PostComponent implements OnInit {
     this._router.navigate(['ViewPost', {id: id}]);
   }
   
+  /*
   gotoGroup(parent_group_name, groupname) {
     this._router.navigate(['ViewGroup', {group_of_groups_name: parent_group_name, group_name: name}]);
   }
+  */
   
   goBack() {
     window.history.back();

@@ -10,11 +10,11 @@ export var MOCK_USERS: User[] = [
     password: '123',
     userrole: UserRoles.user,
     settings: {
-      international: [MOCK_GROUP_OF_GROUPS[4]],
-      national: MOCK_GROUP_OF_GROUPS[1],
-      state: [MOCK_GROUP_OF_GROUPS[5]],
-      city: [MOCK_GROUP_OF_GROUPS[2]],
-      local: [MOCK_GROUP_OF_GROUPS[3]]
+      international: [MOCK_GROUP_OF_GROUPS[1-1]],
+      national: MOCK_GROUP_OF_GROUPS[3-1],
+      state: [MOCK_GROUP_OF_GROUPS[5-1]],
+      city: [MOCK_GROUP_OF_GROUPS[7-1]],
+      local: [MOCK_GROUP_OF_GROUPS[9-1]]
     }
   },
   {

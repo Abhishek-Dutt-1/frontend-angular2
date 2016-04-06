@@ -37,13 +37,15 @@ export class ViewUserComponent {
     let id = +this._routeParams.get('id');
     this._tab = this._routeParams.get('tab') || this._tab;
 
-    this._loggedInUser = this._authenticationService.getLoggedInUser()
+    this._loggedInUser = this._authenticationService.getLoggedInUser();
     
     if(this._loggedInUser) {
-      this._ownProfile = this._loggedInUser.id == id
+      this._ownProfile = this._loggedInUser.id == id;
+    } else {
+      this._ownProfile = false;
     }
-    
-    this._userService.getUser(id).then(user => this._user = user)
+
+    this._userService.getUser(id).then(user => this._user = user).then(user => console.log(user));
   }
   
 }

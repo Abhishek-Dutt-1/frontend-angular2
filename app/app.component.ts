@@ -2,6 +2,8 @@ import { Component, OnInit } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from 'angular2/http';
 
+import { AppService }     from './app.service';
+
 import { HeroService }     from './hero/hero.service';
 import { HeroesComponent } from './hero/heroes.component';
 import { HeroDetailComponent } from './hero/hero-detail.component';
@@ -39,7 +41,7 @@ import { AuthenticationService } from './authentication/authentication.service';
           <div class="header">
             <div class="col-xs-5">
               <div class="logo"><b>
-                <a [routerLink]="['GroupOfGroupsPostList']">
+                <a [routerLink]="['/GroupOfGroupsPostListDefault']">
                   <span class="glyphicon glyphicon-home" aria-hidden="true"></span> YOLO!
                 </a></b>
               </div>
@@ -84,6 +86,7 @@ import { AuthenticationService } from './authentication/authentication.service';
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     JSONP_PROVIDERS,
+    AppService,
     HeroService,
     PostService,
     GroupService,
@@ -117,10 +120,21 @@ import { AuthenticationService } from './authentication/authentication.service';
     name: 'PostList',
     component: PostListLoaderComponent
   },
-  */
+  *//*
   {
-    path: '/go/',
+    path: '/go',
+    name: 'GroupOfGroupsPostList1',
+    component: GroupOfGroupsPostListLoaderComponent,
+    useAsDefault: true
+  },*/
+  {
+    path: '/go/:geo',
     name: 'GroupOfGroupsPostList',
+    component: GroupOfGroupsPostListLoaderComponent,
+  },  
+  {
+    path: '/go',
+    name: 'GroupOfGroupsPostListDefault',
     component: GroupOfGroupsPostListLoaderComponent,
     useAsDefault: true
   },
