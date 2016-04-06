@@ -39,7 +39,7 @@ import { AuthenticationService } from './authentication/authentication.service';
           <div class="header">
             <div class="col-xs-5">
               <div class="logo"><b>
-                <a [routerLink]="['GroupOfGroupsPostList']">
+                <a [routerLink]="['/GroupOfGroupsPostListDefault']">
                   <span class="glyphicon glyphicon-home" aria-hidden="true"></span> YOLO!
                 </a></b>
               </div>
@@ -117,10 +117,21 @@ import { AuthenticationService } from './authentication/authentication.service';
     name: 'PostList',
     component: PostListLoaderComponent
   },
-  */
+  *//*
   {
-    path: '/go/',
+    path: '/go',
+    name: 'GroupOfGroupsPostList1',
+    component: GroupOfGroupsPostListLoaderComponent,
+    useAsDefault: true
+  },*/
+  {
+    path: '/go/:geo',
     name: 'GroupOfGroupsPostList',
+    component: GroupOfGroupsPostListLoaderComponent,
+  },  
+  {
+    path: '/go',
+    name: 'GroupOfGroupsPostListDefault',
     component: GroupOfGroupsPostListLoaderComponent,
     useAsDefault: true
   },

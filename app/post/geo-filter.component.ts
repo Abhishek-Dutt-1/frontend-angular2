@@ -14,16 +14,16 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
       <div class="row hidden-xs">
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _international} ]"
-                [ngClass]="{active: _currentSelection == 'international'}">
+              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'international'}]"
+                [ngClass]="{active: geoSelection == 'international'}">
                 <i class="fa fa-plane"></i> International</a>
           </span>
         </div>
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _national} ]"
-                [ngClass]="{active: _currentSelection == 'national'}">
+              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'national'}]"
+                [ngClass]="{active: geoSelection == 'national'}">
                 <i class="fa fa-train"></i> National
               </a>
           </span>
@@ -31,8 +31,8 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _state} ]"
-                [ngClass]="{active: _currentSelection == 'state'}">
+              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'state'}]"
+                [ngClass]="{active: geoSelection == 'state'}">
                 <i class="fa fa-bus"></i> State
               </a>
           </span>
@@ -40,8 +40,8 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _city} ]"
-                [ngClass]="{active: _currentSelection == 'city'}">
+              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'city'}]"
+                [ngClass]="{active: geoSelection == 'city'}">
                 <i class="fa fa-car"></i> City
               </a>
           </span>
@@ -49,58 +49,58 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _local} ]"
-                [ngClass]="{active: _currentSelection == 'local'}">
+              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'local'}]"
+                [ngClass]="{active: geoSelection == 'local'}">
                 <i class="fa fa-bicycle"></i> Local
               </a>
           </span>
         </div>
       </div>  <!-- end row -->
-
+      
       <div class="row visible-xs-block">
       <div class="col-xs-12">
       <div>
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _international} ]"
-                [ngClass]="{active: _currentSelection == 'international'}">
-              <i class="fa fa-plane"></i><span *ngIf="_currentSelection == 'international'"> International</span>
+            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'international'}]"
+                [ngClass]="{active: geoSelection == 'international'}">
+              <i class="fa fa-plane"></i><span *ngIf="geoSelection == 'international'"> International</span>
             </a>
           </div>
         </div>
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _national} ]"
-              [ngClass]="{active: _currentSelection == 'national'}">
-              <i class="fa fa-train"></i><span *ngIf="_currentSelection == 'national'"> National</span>
+            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'national'}]"
+              [ngClass]="{active: geoSelection == 'national'}">
+              <i class="fa fa-train"></i><span *ngIf="geoSelection == 'national'"> National</span>
             </a>
           </div>
         </div>
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _state} ]"
-              [ngClass]="{active: _currentSelection == 'state'}">
-              <i class="fa fa-bus"></i><span *ngIf="_currentSelection == 'state'"> State</span>
+            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'state'}]"
+              [ngClass]="{active: geoSelection == 'state'}">
+              <i class="fa fa-bus"></i><span *ngIf="geoSelection == 'state'"> State</span>
             </a>
           </div>
         </div>
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _city} ]"
-              [ngClass]="{active: _currentSelection == 'city'}">
-              <i class="fa fa-car"></i><span *ngIf="_currentSelection == 'city'"> City</span>
+            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'city'}]"
+              [ngClass]="{active: geoSelection == 'city'}">
+              <i class="fa fa-car"></i><span *ngIf="geoSelection == 'city'"> City</span>
             </a>
           </div>
         </div>
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="[ '/GroupOfGroupsPostList', {gog: _local} ]"
-              [ngClass]="{active: _currentSelection == 'local'}">
-              <i class="fa fa-bicycle"></i><span *ngIf="_currentSelection == 'local'"> Local</span>
+            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'local'}]"
+              [ngClass]="{active: geoSelection == 'local'}">
+              <i class="fa fa-bicycle"></i><span *ngIf="geoSelection == 'local'"> Local</span>
             </a>
           </div>
         </div>
@@ -112,14 +112,14 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
       
       <div class="row">
         <div class="col-xs-12">
-        <div class="geo-filter-details">
-          <div>
-            {{_selectionDetails}}
+          <div class="geo-filter-details">
+            <span *ngFor="#gog of gogList">
+              {{gog.name}}
+            </span>
             <span class="add-more" (click)="gotoChangeGeoSttings()">
               <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
             </span>
           </div>
-        </div>
         </div>
       </div> <!-- end row -->
       
@@ -159,7 +159,8 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         font-size: 12px;
       }
     `],
-  directives: [ROUTER_DIRECTIVES, NgClass]
+  inputs: ['geoSelection', 'gogList'],
+  directives: [ROUTER_DIRECTIVES]
   
 })
 export class GeoFilterComponent implements OnInit {
@@ -180,6 +181,7 @@ export class GeoFilterComponent implements OnInit {
   ) { }
   
   ngOnInit() {
+    /*
     let loggedInUser = this._authenticationService.getLoggedInUser()
     if(loggedInUser) {
       this._international = loggedInUser.settings.international.map(el => el.name);
@@ -195,11 +197,13 @@ export class GeoFilterComponent implements OnInit {
       this._city = ['bangalore'];
       this._local = ['koramangala'];      
     }
+    */
     
     /** taken from group-of-groups-post-list-loader-component, KEEP IN SYNC */
     // Very strage behavious of gog_names
     // If entered directly in url its a string
     // if redirected (by gotoNational for eg) by angular its an array
+    /*
     let gog_names = this._routeParams.get('gog');
     let gog_names_array = null
     gog_names = gog_names || 'india'
@@ -208,7 +212,6 @@ export class GeoFilterComponent implements OnInit {
     } else {
       gog_names_array = gog_names.split(',')
     }
-    /** ** */
     
     if(this.arraysEqual(gog_names_array, this._international)) {
       this._currentSelection = 'international';
@@ -233,13 +236,11 @@ export class GeoFilterComponent implements OnInit {
     
     console.log(gog_names_array)
     console.log(this._selectionDetails)
-    
+    */
   }
  
   gotoChangeGeoSttings() {
-    console.log("TODO: redirect to profile edit")
-    // TODO: redirect to profile edit
-    //this._router.navigate(['ViewGroup', {group_of_groups_name: parent_group_name, group_name: name}]);     
+    this._router.navigate(['EditUser', {tab: 'geo'}]);     
   }
     
   arraysEqual(a, b) {
