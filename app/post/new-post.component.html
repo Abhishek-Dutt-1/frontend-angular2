@@ -41,18 +41,18 @@
       <div class="post-text">
         <label for="group" class="">GoG/Group</label>
         <input id="group" type="text" class="" required
-          [(ngModel)] = "model.gogslashgroup"
-          ngControl = "gogslashgroup" #gogslashgroup="ngForm"
-          (keyup)="search(gogslashgroup.value)"
+          [(ngModel)] = "model.superGroupSlashGroup"
+          ngControl = "superGroupSlashGroup" #superGroupSlashGroup="ngForm"
+          (keyup)="search(superGroupSlashGroup.value)"
         >
-        <div [hidden]="gogslashgroup.valid || gogslashgroup.pristine" class="alert alert-danger">
+        <div [hidden]="superGroupSlashGroup.valid || superGroupSlashGroup.pristine" class="alert alert-danger">
           Group is required
         </div>
       </div>
       
 <ul>
-<li *ngFor="#item of itemsV1 | async" (click)="selectGogSlashGroup(item)">{{item}}</li>
-<li *ngFor="#item of items" (click)="selectGogSlashGroup(item.parent_group.name+'/'+item.name)">{{item.parent_group.name}}/{{item.name}}</li>
+<li *ngFor="#item of itemsV1 | async" (click)="selectSuperGroupSlashGroup(item)">{{item}}</li>
+<li *ngFor="#item of items" (click)="selectSuperGroupSlashGroup(item.super_group.name+'/'+item.name)">{{item.super_group.name}}/{{item.name}}</li>
 </ul>
 
       

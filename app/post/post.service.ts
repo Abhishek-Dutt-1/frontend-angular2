@@ -10,9 +10,7 @@ export class PostService {
   constructor(
     private _groupService: GroupService,
     private _authenticationService: AuthenticationService
-  ) {
-    
-  }
+  ) { }
   
   getPosts() {
     return Promise.resolve(MOCK_POSTS);
@@ -30,16 +28,7 @@ export class PostService {
       posts => posts.filter(post => post.id === id)[0]
     );
   }
-  
-  /*
-  getPostsByGroupOfGroups(gog_names: string[]) {
-    return Promise.resolve(MOCK_POSTS).then(
-      //posts => posts.filter(post => post.group.parent_group.name === gog_names)
-      posts => posts.filter(post => gog_names.indexOf(post.group.parent_group.name) > -1)
-    );
-  }
-  */
-  
+
   /**
    * Returns posts belonging to a geoSelection
    */
@@ -48,32 +37,32 @@ export class PostService {
     if(user) {
       if(geoSelection == 'international') {
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.international.map(int => int.id).indexOf(post.group.parent_group.id) > -1 ),
-          gog_list: user.settings.international
+          posts: MOCK_POSTS.filter(post => user.settings.international.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
+          superGroupList: user.settings.international
         })  
       }
       if(geoSelection == 'national') {
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.national.id == post.group.parent_group.id),
-          gog_list: [user.settings.national]
+          posts: MOCK_POSTS.filter(post => user.settings.national.id == post.group.super_group.id),
+          superGroupList: [user.settings.national]
         })  
       }
       if(geoSelection == 'state') {
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.state.map(el => el.id).indexOf(post.group.parent_group.id) > -1 ),
-          gog_list: user.settings.state
+          posts: MOCK_POSTS.filter(post => user.settings.state.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
+          superGroupList: user.settings.state
         })  
       }
       if(geoSelection == 'city') {
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.city.map(el => el.id).indexOf(post.group.parent_group.id) > -1 ),
-          gog_list: user.settings.city
+          posts: MOCK_POSTS.filter(post => user.settings.city.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
+          superGroupList: user.settings.city
         })  
       }
       if(geoSelection == 'local') {
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.local.map(el => el.id).indexOf(post.group.parent_group.id) > -1 ),
-          gog_list: user.settings.local
+          posts: MOCK_POSTS.filter(post => user.settings.local.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
+          superGroupList: user.settings.local
         })  
       } 
     }
@@ -86,11 +75,11 @@ export class PostService {
                       else return right;
                   });
 
-    let newPost_gog = newPost.gogslashgroup.split('/')[0]
-    let newPost_group = newPost.gogslashgroup.split('/')[1]
+    let newPost_superGroup = newPost.superGroupSlashGroup.split('/')[0]
+    let newPost_group = newPost.superGroupSlashGroup.split('/')[1]
     
     //return this._groupService.getGroup(newPost.group_of_groups, newPost.group).then(
-    return this._groupService.getGroup(newPost_gog, newPost_group).then(
+    return this._groupService.getGroup(newPost_superGroup, newPost_group).then(
       group => {
         let newProperPost = {
           id: +lastPost.id + 1,

@@ -1,3 +1,8 @@
+/*
+
+//  NOT USED
+
+
 import {Component, OnInit} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
 import {Post} from './post';
@@ -90,3 +95,5 @@ export class PostListLoaderComponent implements OnInit {
   }
 
 }
+
+*/

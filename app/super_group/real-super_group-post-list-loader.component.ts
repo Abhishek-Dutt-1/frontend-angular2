@@ -13,18 +13,18 @@
 
 import {Component, OnInit} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
-import {Group_Of_Groups} from './group_of_groups';
-import {GroupOfGroupsService} from './group_of_groups.service';
+import {SuperGroup} from './super_group';
+import {SuperGroupService} from './super_group.service';
 import {Post} from '../post/post';
 import {PostListComponent} from '../post/post-list.component'
 import {PostTemplateType} from '../post/post-template-types';
 
 @Component({
-  selector: 'my-real-group-of-groups-post-loader',
+  selector: 'my-real-super-group-post-loader',
   template: `
-  <div *ngIf="_group_of_groups">
+  <div *ngIf="_super_group">
   
-    <div class="my-real-group-of-groups-post-loader">
+    <div class="my-real-super-group-post-loader">
       
       <div class="row">
         <div class="col-xs-12">
@@ -33,7 +33,7 @@ import {PostTemplateType} from '../post/post-template-types';
             <div class="panel panel-default group-details-panel">
             
               <div class="panel-heading">
-                <h4 class="panel-title">{{_group_of_groups.name}}</h4>
+                <h4 class="panel-title">{{_super_group.name}}</h4>
               </div>
               
               <div class="panel-body">
@@ -60,30 +60,30 @@ import {PostTemplateType} from '../post/post-template-types';
   </div>  <!-- end top div -->
   `,
   styles: [`
-  .my-real-group-of-groups-post-loader .group-details-panel {
+  .my-real-super-group-post-loader .group-details-panel {
     margin-bottom: 0px;
     margin-top: 10px;
   }
   `],
   directives: [PostListComponent]
 })
-export class RealGroupOfGroupsPostListLoaderComponent {
+export class RealSuperGroupPostListLoaderComponent {
   
-  private _group_of_groups: Group_Of_Groups;
+  private _super_group: SuperGroup;
   
   constructor(
-    private _groupOfGroupsService: GroupOfGroupsService,
+    private _superGroupService: SuperGroupService,
     private _router: Router,
     private _routeParams: RouteParams) {}
   
   ngOnInit() {
         
-    let group_of_groups_name = this._routeParams.get('group_of_groups_name');
+    let super_group_name = this._routeParams.get('super_group_name');
     console.log("YUP WORKS")
-    console.log(group_of_groups_name);
+    console.log(super_group_name);
     
-    this._groupOfGroupsService.getGroupByName(group_of_groups_name)
-      .then(gog => this._group_of_groups = gog);
+    this._superGroupService.getSuperGroupByName(super_group_name)
+      .then(gog => this._super_group = gog);
       
     /*  
     this._groupService.getPostsInGroup(group_of_groups_name, group_name)

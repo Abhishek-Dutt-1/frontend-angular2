@@ -1,6 +1,6 @@
 import {UserRoles} from './user-roles';
-import {MOCK_GROUP_OF_GROUPS} from '../group_of_groups/mock-group_of_groups';
-import {Group_Of_Groups} from '../group_of_groups/group_of_groups';
+import {MOCK_SUPER_GROUPS} from '../super_group/mock-super_groups';
+import {SuperGroup} from '../super_group/super_group';
 
 export interface User {
   id: number;
@@ -9,10 +9,10 @@ export interface User {
   password: string;
   userrole: UserRoles;
   settings?: {
-    international: Group_Of_Groups[],
-    national: Group_Of_Groups,
-    state: Group_Of_Groups[],
-    city: Group_Of_Groups[],
-    local: Group_Of_Groups[]
+    international: SuperGroup[],
+    national: SuperGroup,
+    state: SuperGroup[],
+    city: SuperGroup[],
+    local: SuperGroup[]
   }
 }

@@ -1,8 +1,8 @@
-import {Group_Of_Groups} from './group_of_groups'
+import {SuperGroup} from './super_group'
 import {MOCK_GROUPS} from '../group/mock-groups'
 
 // Grouop's name and urls are same
-export var MOCK_GROUP_OF_GROUPS: Group_Of_Groups[] = [
+export var MOCK_SUPER_GROUPS: SuperGroup[] = [
   {
     id: 1,
     name: 'international_1',

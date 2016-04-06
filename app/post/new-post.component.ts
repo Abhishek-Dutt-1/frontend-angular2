@@ -52,21 +52,21 @@ export class NewPostComponent {
   
   ngOnInit() {
     
-    let group_of_groups_name = this._routeParams.get('gog_name');
+    let super_group_name = this._routeParams.get('super_group_name');
     let group_name = this._routeParams.get('group_name');
     
-    let gogslashgroup = '';
-    if(group_of_groups_name && group_name) gogslashgroup = group_of_groups_name + '/' + group_name;
-    if(group_of_groups_name && !group_name) gogslashgroup = group_of_groups_name;
-    if(!group_of_groups_name && group_name) gogslashgroup = group_name;
+    let superGroupSlashGroup = '';
+    if(super_group_name && group_name) superGroupSlashGroup = super_group_name + '/' + group_name;
+    if(super_group_name && !group_name) superGroupSlashGroup = super_group_name;
+    if(!super_group_name && group_name) superGroupSlashGroup = group_name;
     
     
     this.model =  {
       title: 'New Title', 
       text: 'New Text', 
       type: this._postTypes[0],
-      gogslashgroup: gogslashgroup
-      //gogslashgroup: group_of_groups_name + '/' + group_name
+      superGroupSlashGroup: superGroupSlashGroup
+      //superGroupSlashGroup: super_group_name + '/' + group_name
     }
     
     // Only logged in uses can post
@@ -80,7 +80,7 @@ export class NewPostComponent {
   }
   
   /**
-   * Auto complete gog/group  
+   * Auto complete super_group/group  
    */
   /*  
   // Final version
@@ -111,8 +111,8 @@ export class NewPostComponent {
   /**
    * User clicked on a gog/group from the autocomplete dropdown list
    */
-  selectGogSlashGroup(item) {
-    this.model.gogslashgroup = item
+  selectSuperGroupSlashGroup(item) {
+    this.model.superGroupSlashGroup = item
   }
   
   /**

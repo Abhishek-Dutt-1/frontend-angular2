@@ -34,8 +34,8 @@ import {PostTemplateType} from './post-template-types';
               <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                 <i class="fa fa-user"></i> {{post.postedby.displayname}}
               </a> &bull; 12 days ago &bull; 
-              <a class="" [routerLink]="['ViewGroup', {group_of_groups_name: post.group.parent_group.name, group_name: post.group.name}]">
-                go/{{post.group.parent_group.name}}/{{post.group.name}}
+              <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.super_group.name, group_name: post.group.name}]">
+                go/{{post.group.super_group.name}}/{{post.group.name}}
               </a>
             </div>
             <div>
@@ -102,8 +102,8 @@ import {PostTemplateType} from './post-template-types';
               <a (click)="downVotePost(post.id)" class="">
                 <i class="fa fa-arrow-down"></i> {{post.downvotes}} 
               </a> &bull;
-              <a class="" [routerLink]="['ViewGroup', {group_of_groups_name: post.group.parent_group.name, group_name: post.group.name}]">
-                go/{{post.group.parent_group.name}}/{{post.group.name}} 
+              <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.super_group.name, group_name: post.group.name}]">
+                go/{{post.group.super_group.name}}/{{post.group.name}} 
               </a> &bull;
               <a (click)="goBack()" class="">
                 Back 
@@ -154,8 +154,8 @@ export class PostComponent implements OnInit {
   }
   
   /*
-  gotoGroup(parent_group_name, groupname) {
-    this._router.navigate(['ViewGroup', {group_of_groups_name: parent_group_name, group_name: name}]);
+  gotoGroup(super_group_name, groupname) {
+    this._router.navigate(['ViewGroup', {super_group_name: super_group_name, group_name: name}]);
   }
   */
   

@@ -11,14 +11,14 @@ import { HeroDetailComponent } from './hero/hero-detail.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { PostService }     from './post/post.service';
-import { PostListLoaderComponent } from './post/post-list-loader.component';
+//import { PostListLoaderComponent } from './post/post-list-loader.component';
 import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
 import { NewPostComponent } from './post/new-post.component';
 
-import { RealGroupOfGroupsPostListLoaderComponent }     from './group_of_groups/real-group_of_groups-post-list-loader.component';
-import { GroupOfGroupsService }     from './group_of_groups/group_of_groups.service';
-import { GroupOfGroupsPostListLoaderComponent } from './post/group-of-groups-post-list-loader.component';
+import { RealSuperGroupPostListLoaderComponent }     from './super_group/real-super_group-post-list-loader.component';
+import { SuperGroupService }     from './super_group/super_group.service';
+import { SuperGroupPostListLoaderComponent } from './post/super_group-post-list-loader.component';
 
 import { GroupService }     from './group/group.service';
 import { ViewGroupComponent } from './group/view-group.component';
@@ -43,7 +43,7 @@ import { AuthenticationService } from './authentication/authentication.service';
           <div class="header">
             <div class="col-xs-5">
               <div class="logo"><b>
-                <a [routerLink]="['/GroupOfGroupsPostListDefault']">
+                <a [routerLink]="['/SuperGroupPostListDefault']">
                   <span class="glyphicon glyphicon-home" aria-hidden="true"></span> YOLO!
                 </a></b>
               </div>
@@ -92,7 +92,7 @@ import { AuthenticationService } from './authentication/authentication.service';
     //HeroService,
     PostService,
     GroupService,
-    GroupOfGroupsService,
+    SuperGroupService,
     UserService,
     AuthenticationService
   ]
@@ -131,19 +131,19 @@ import { AuthenticationService } from './authentication/authentication.service';
   },*/
   {
     path: '/go/:geo',
-    name: 'GroupOfGroupsPostList',
-    component: GroupOfGroupsPostListLoaderComponent,
+    name: 'SuperGroupPostList',
+    component: SuperGroupPostListLoaderComponent,
   },  
   {
     path: '/go',
-    name: 'GroupOfGroupsPostListDefault',
-    component: GroupOfGroupsPostListLoaderComponent,
+    name: 'SuperGroupPostListDefault',
+    component: SuperGroupPostListLoaderComponent,
     useAsDefault: true
   },
   {
-    path: '/sg/:group_of_groups_name',
-    name: 'RealGroupOfGroupsPostList',
-    component: RealGroupOfGroupsPostListLoaderComponent
+    path: '/sg/:super_group_name',
+    name: 'RealSuperGroupPostList',
+    component: RealSuperGroupPostListLoaderComponent
   },
   {
     // would be changed to edit post
@@ -163,7 +163,7 @@ import { AuthenticationService } from './authentication/authentication.service';
     component: NewPostComponent
   },
   {
-    path: '/go/:group_of_groups_name/:group_name',
+    path: '/go/:super_group_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent
   },

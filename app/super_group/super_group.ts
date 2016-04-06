@@ -1,6 +1,6 @@
 //import {Group} from '../group/group';
 
-export interface Group_Of_Groups {
+export interface SuperGroup {
   id: number;
   name: string;
   type: string;

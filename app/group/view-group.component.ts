@@ -20,7 +20,7 @@ import {PostTemplateType} from '../post/post-template-types';
           
             <div class="panel panel-default group-details-panel">
               <div class="panel-heading">
-                <h4 class="panel-title">{{group.parent_group.name}}/{{group.name}}</h4>
+                <h4 class="panel-title">{{group.super_group.name}}/{{group.name}}</h4>
               </div>  
               <div class="panel-body">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -53,7 +53,7 @@ import {PostTemplateType} from '../post/post-template-types';
     */
   }
   `],
-  styleUrls: ['app/group/view-group.component.css'],
+  //styleUrls: ['app/group/view-group.component.css'],
   //inputs: ['group'],
   directives: [PostListComponent]
 })
@@ -72,16 +72,16 @@ export class ViewGroupComponent {
     
     this.postTemplateType = PostTemplateType.Grouplist;
         
-    let group_of_groups_name = this._routeParams.get('group_of_groups_name');
-    //console.log(group_of_groups_name);
+    let super_group_name = this._routeParams.get('super_group_name');
+    //console.log(super_group_name);
     
     let group_name = this._routeParams.get('group_name');
     //console.log(group_name)
     
-    this._groupService.getGroup(group_of_groups_name, group_name)
+    this._groupService.getGroup(super_group_name, group_name)
       .then(group => this.group = group);
       
-    this._groupService.getPostsInGroup(group_of_groups_name, group_name)
+    this._groupService.getPostsInGroup(super_group_name, group_name)
       .then(posts => this.groupPosts = posts);
 
   }
@@ -91,7 +91,7 @@ export class ViewGroupComponent {
   }
   
   gotoNewPostForm() {
-    this._router.navigate(['NewPost', {gog_name: this.group.parent_group.name, group_name: this.group.name}]);
+    this._router.navigate(['NewPost', {super_group_name: this.group.super_group.name, group_name: this.group.name}]);
   }
   
 }
