@@ -2,6 +2,8 @@ import { Component, OnInit } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from 'angular2/http';
 
+import { AppService }     from './app.service';
+
 import { HeroService }     from './hero/hero.service';
 import { HeroesComponent } from './hero/heroes.component';
 import { HeroDetailComponent } from './hero/hero-detail.component';
@@ -84,6 +86,7 @@ import { AuthenticationService } from './authentication/authentication.service';
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     JSONP_PROVIDERS,
+    AppService,
     HeroService,
     PostService,
     GroupService,

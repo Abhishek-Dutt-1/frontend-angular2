@@ -16,9 +16,13 @@ export class UserService {
   }
   
   getUser(id: number) {
+    /*
     return Promise.resolve(MOCK_USERS).then(
-      users => users.filter(user => user.id === id)[0]
+      users => users.filter(user => user.id == id)[0]
     );
+    */
+    return Promise.resolve(MOCK_USERS.find(user => user.id == id))
+    
   }
   
   createNewUser(newUser: any) {

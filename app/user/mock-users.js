@@ -20,11 +20,11 @@ System.register(['./user-roles', '../group_of_groups/mock-group_of_groups'], fun
                     password: '123',
                     userrole: user_roles_1.UserRoles.user,
                     settings: {
-                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[4]],
-                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1],
-                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5]],
-                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[2]],
-                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3]]
+                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1 - 1]],
+                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3 - 1],
+                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5 - 1]],
+                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[7 - 1]],
+                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[9 - 1]]
                     }
                 },
                 {

@@ -2,6 +2,7 @@ import {Component, OnInit} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
 import {Post} from './post';
 //import {PostDetailComponent} from './post-detail.component';
+import {AppService} from '../app.service';
 import {PostService} from './post.service';
 import {PostListComponent} from './post-list.component';
 import {PostTemplateType} from './post-template-types';
@@ -49,6 +50,7 @@ export class GroupOfGroupsPostListLoaderComponent implements OnInit {
   private _gog_list: Group_Of_Groups[];
   
   constructor(
+    private _appService: AppService,
     private _postService: PostService,
     private _router: Router,
     private _routeParams: RouteParams
@@ -57,8 +59,9 @@ export class GroupOfGroupsPostListLoaderComponent implements OnInit {
   ngOnInit() {
     this.postTemplateType = PostTemplateType.List;
     
-    this._geoSelection = this._routeParams.get('geo') || this._geoSelection;
-    console.log(this._geoSelection)
+    this._geoSelection = this._routeParams.get('geo') || this._appService.getGeoSelection() || this._geoSelection;
+    this._appService.setGeoSelection(this._geoSelection);
+     
     this._postService.getPostsByGeoSelection(this._geoSelection).then(resp => {
       this.posts = resp.posts;
       this._gog_list = resp.gog_list;

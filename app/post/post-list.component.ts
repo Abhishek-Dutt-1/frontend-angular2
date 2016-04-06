@@ -7,7 +7,14 @@ import {PostComponent} from './post.component';
   selector: 'my-post-list',
   //template: `<div>{{posts1}} POST LIST</div>`,
   //template: `{{type1}} {{posts1}}<my-post [post]="posts1" [type]="type1">{{posts1}} POST LIST</my-post>`,
-  templateUrl: 'app/post/post-list.component.html',
+  //templateUrl: 'app/post/post-list.component.html',
+  template: `
+    <div class="my-post-list">
+      <div *ngFor="#post of posts">
+        <my-post [post]="post" [type]="postTemplateType"></my-post>
+      </div>
+    </div>
+  `,
   styleUrls: ['app/post/post-list.component.css'],
   //directives: [PostDetailComponent],
   directives: [PostComponent],

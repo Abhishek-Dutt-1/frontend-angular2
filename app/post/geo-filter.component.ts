@@ -2,6 +2,7 @@ import {Component, OnInit} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {Router, RouteParams, ROUTER_DIRECTIVES} from 'angular2/router';
 //import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, ...} from 'angular2/router';
+import {AppService} from '../app.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {User} from '../user/user';
 import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
@@ -153,10 +154,13 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         font-size: 12px;
         */
       }
+      .my-geo-filter .visible-xs-block .menu-link {
+        font-size: 12px;
+      }
       .my-geo-filter .geo-filter-details {
         clear: both;
         text-transform: uppercase;
-        font-size: 12px;
+        font-size: 11px;
       }
     `],
   inputs: ['geoSelection', 'gogList'],
@@ -176,6 +180,7 @@ export class GeoFilterComponent implements OnInit {
 
   constructor(
     private _router: Router,
+    private _appService: AppService,
     private _authenticationService: AuthenticationService,
     private _routeParams: RouteParams
   ) { }
