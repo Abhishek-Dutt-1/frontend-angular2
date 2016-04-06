@@ -1,15 +1,15 @@
-System.register(['./user-roles', '../group_of_groups/mock-group_of_groups'], function(exports_1, context_1) {
+System.register(['./user-roles', '../super_group/mock-super_groups'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var user_roles_1, mock_group_of_groups_1;
+    var user_roles_1, mock_super_groups_1;
     var MOCK_USERS;
     return {
         setters:[
             function (user_roles_1_1) {
                 user_roles_1 = user_roles_1_1;
             },
-            function (mock_group_of_groups_1_1) {
-                mock_group_of_groups_1 = mock_group_of_groups_1_1;
+            function (mock_super_groups_1_1) {
+                mock_super_groups_1 = mock_super_groups_1_1;
             }],
         execute: function() {
             exports_1("MOCK_USERS", MOCK_USERS = [
@@ -20,11 +20,11 @@ System.register(['./user-roles', '../group_of_groups/mock-group_of_groups'], fun
                     password: '123',
                     userrole: user_roles_1.UserRoles.user,
                     settings: {
-                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1 - 1]],
-                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3 - 1],
-                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5 - 1]],
-                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[7 - 1]],
-                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[9 - 1]]
+                        international: [mock_super_groups_1.MOCK_SUPER_GROUPS[1 - 1]],
+                        national: mock_super_groups_1.MOCK_SUPER_GROUPS[3 - 1],
+                        state: [mock_super_groups_1.MOCK_SUPER_GROUPS[5 - 1]],
+                        city: [mock_super_groups_1.MOCK_SUPER_GROUPS[7 - 1]],
+                        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[9 - 1]]
                     }
                 },
                 {
@@ -34,11 +34,11 @@ System.register(['./user-roles', '../group_of_groups/mock-group_of_groups'], fun
                     password: '123',
                     userrole: user_roles_1.UserRoles.user,
                     settings: {
-                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[4]],
-                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1],
-                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5]],
-                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[2]],
-                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3]]
+                        international: [mock_super_groups_1.MOCK_SUPER_GROUPS[4]],
+                        national: mock_super_groups_1.MOCK_SUPER_GROUPS[1],
+                        state: [mock_super_groups_1.MOCK_SUPER_GROUPS[5]],
+                        city: [mock_super_groups_1.MOCK_SUPER_GROUPS[2]],
+                        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[3]]
                     }
                 },
                 {
@@ -48,11 +48,11 @@ System.register(['./user-roles', '../group_of_groups/mock-group_of_groups'], fun
                     password: '123',
                     userrole: user_roles_1.UserRoles.user,
                     settings: {
-                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[4]],
-                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1],
-                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5]],
-                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[2]],
-                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3]]
+                        international: [mock_super_groups_1.MOCK_SUPER_GROUPS[4]],
+                        national: mock_super_groups_1.MOCK_SUPER_GROUPS[1],
+                        state: [mock_super_groups_1.MOCK_SUPER_GROUPS[5]],
+                        city: [mock_super_groups_1.MOCK_SUPER_GROUPS[2]],
+                        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[3]]
                     }
                 },
                 {
@@ -62,11 +62,11 @@ System.register(['./user-roles', '../group_of_groups/mock-group_of_groups'], fun
                     password: '123',
                     userrole: user_roles_1.UserRoles.user,
                     settings: {
-                        international: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[4]],
-                        national: mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[1],
-                        state: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[5]],
-                        city: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[2]],
-                        local: [mock_group_of_groups_1.MOCK_GROUP_OF_GROUPS[3]]
+                        international: [mock_super_groups_1.MOCK_SUPER_GROUPS[4]],
+                        national: mock_super_groups_1.MOCK_SUPER_GROUPS[1],
+                        state: [mock_super_groups_1.MOCK_SUPER_GROUPS[5]],
+                        city: [mock_super_groups_1.MOCK_SUPER_GROUPS[2]],
+                        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[3]]
                     }
                 }
             ]);

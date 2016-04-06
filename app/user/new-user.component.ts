@@ -2,7 +2,7 @@ import {Component, OnInit} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {UserService} from './user.service';
 //import {GroupService} from '../group/group.service';
-import {GroupOfGroupsService} from '../group_of_groups/group_of_groups.service';
+import {SuperGroupService} from '../super_group/super_group.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 
 @Component({
@@ -233,16 +233,16 @@ export class NewUserComponent {
   
   constructor(
     private _userService: UserService,
-    private _groupOfGroupsService: GroupOfGroupsService,
+    private _superGroupService: SuperGroupService,
     private _authenticationService: AuthenticationService,
     private _router: Router) {}
   
   ngOnInit() {
-    this._groupOfGroupsService.getGroupOfGroupsByType('international').then( gogList => this._groupList.international = gogList );
-    this._groupOfGroupsService.getGroupOfGroupsByType('national').then( gogList => this._groupList.national = gogList );
-    this._groupOfGroupsService.getGroupOfGroupsByType('state').then( gogList => this._groupList.state = gogList );
-    this._groupOfGroupsService.getGroupOfGroupsByType('city').then( gogList => this._groupList.city = gogList );
-    this._groupOfGroupsService.getGroupOfGroupsByType('local').then( gogList => this._groupList.local = gogList );
+    this._superGroupService.getSuperGroupsByType('international').then( sgList => this._groupList.international = sgList );
+    this._superGroupService.getSuperGroupsByType('national').then( sgList => this._groupList.national = sgList );
+    this._superGroupService.getSuperGroupsByType('state').then( sgList => this._groupList.state = sgList );
+    this._superGroupService.getSuperGroupsByType('city').then( sgList => this._groupList.city = sgList );
+    this._superGroupService.getSuperGroupsByType('local').then( sgList => this._groupList.local = sgList );
   }
   
   onSubmit(event) {

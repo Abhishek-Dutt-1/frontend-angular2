@@ -45,9 +45,10 @@ System.register(['angular2/core', '../hero/hero.service', 'angular2/router'], fu
                         templateUrl: 'app/dashboard/dashboard.component.html',
                         styleUrls: ['app/dashboard/dashboard.component.css']
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router, hero_service_1.HeroService])
+                    __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof hero_service_1.HeroService !== 'undefined' && hero_service_1.HeroService) === 'function' && _a) || Object])
                 ], DashboardComponent);
                 return DashboardComponent;
+                var _a;
             }());
             exports_1("DashboardComponent", DashboardComponent);
         }

@@ -10,8 +10,8 @@ import {UserService} from './user.service';
 import {UserComponent} from './user.component';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {ROUTER_DIRECTIVES} from "angular2/router";
-import {Group_Of_Groups} from '../group_of_groups/group_of_groups';
-import {GroupOfGroupsService} from '../group_of_groups/group_of_groups.service';
+import {SuperGroup} from '../super_group/super_group';
+import {SuperGroupService} from '../super_group/super_group.service';
 
 @Component({
   selector: 'my-edit-user',
@@ -186,7 +186,7 @@ export class EditUserComponent {
     private _router: Router,
     private _routeParams: RouteParams,
     private _authenticationService: AuthenticationService,
-    private _groupOfGroupsService: GroupOfGroupsService) {
+    private _superGroupService: SuperGroupService) {
   }
   
   ngOnInit() {
@@ -200,8 +200,8 @@ export class EditUserComponent {
     this._model.password = null;
     this._model.confirm_password = null;
     
-    this._groupOfGroupsService.getGroupOfGroupsByType('international').then( gogList => {
-      this._groupList.international = gogList;
+    this._superGroupService.getSuperGroupsByType('international').then( sgList => {
+      this._groupList.international = sgList;
       for(var i = 0, l = this._groupList.international.length; i < l; i++) {
         if( this._loggedInUser.settings.international.map(el => el.id).indexOf(this._groupList.international[i].id) > -1 ) {
           this._groupList.international[i].selected = true;
@@ -209,13 +209,13 @@ export class EditUserComponent {
       }
     });
     
-    this._groupOfGroupsService.getGroupOfGroupsByType('national').then( gogList => {
-      this._groupList.national = gogList;
+    this._superGroupService.getSuperGroupsByType('national').then( sgList => {
+      this._groupList.national = sgList;
       this._groupList.selectedNational = this._loggedInUser.settings.national;
     });
     
-    this._groupOfGroupsService.getGroupOfGroupsByType('state').then( gogList => {
-      this._groupList.state = gogList;
+    this._superGroupService.getSuperGroupsByType('state').then( sgList => {
+      this._groupList.state = sgList;
       for(var i = 0, l = this._groupList.state.length; i < l; i++) {
         if( this._loggedInUser.settings.state.map(el => el.id).indexOf(this._groupList.state[i].id) > -1 ) {
           this._groupList.state[i].selected = true;
@@ -223,8 +223,8 @@ export class EditUserComponent {
       }
     });
     
-    this._groupOfGroupsService.getGroupOfGroupsByType('city').then( gogList => {
-      this._groupList.city = gogList
+    this._superGroupService.getSuperGroupsByType('city').then( sgList => {
+      this._groupList.city = sgList
       for(var i = 0, l = this._groupList.city.length; i < l; i++) {
         if( this._loggedInUser.settings.city.map(el => el.id).indexOf(this._groupList.city[i].id) > -1 ) {
           this._groupList.city[i].selected = true;
@@ -232,8 +232,8 @@ export class EditUserComponent {
       }
     });
     
-    this._groupOfGroupsService.getGroupOfGroupsByType('local').then( gogList => {
-      this._groupList.local = gogList
+    this._superGroupService.getSuperGroupsByType('local').then( sgList => {
+      this._groupList.local = sgList
       for(var i = 0, l = this._groupList.local.length; i < l; i++) {
         if( this._loggedInUser.settings.local.map(el => el.id).indexOf(this._groupList.local[i].id) > -1 ) {
           this._groupList.local[i].selected = true;

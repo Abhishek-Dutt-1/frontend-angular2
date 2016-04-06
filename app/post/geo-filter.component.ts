@@ -5,7 +5,7 @@ import {Router, RouteParams, ROUTER_DIRECTIVES} from 'angular2/router';
 import {AppService} from '../app.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {User} from '../user/user';
-import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
+import {SuperGroup} from '../super_group/super_group'
 
 @Component({
   selector: 'my-geo-filter',
@@ -15,7 +15,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
       <div class="row hidden-xs">
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'international'}]"
+              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'international'}]"
                 [ngClass]="{active: geoSelection == 'international'}">
                 <i class="fa fa-plane"></i> International</a>
           </span>
@@ -23,7 +23,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'national'}]"
+              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'national'}]"
                 [ngClass]="{active: geoSelection == 'national'}">
                 <i class="fa fa-train"></i> National
               </a>
@@ -32,7 +32,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'state'}]"
+              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'state'}]"
                 [ngClass]="{active: geoSelection == 'state'}">
                 <i class="fa fa-bus"></i> State
               </a>
@@ -41,7 +41,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'city'}]"
+              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'city'}]"
                 [ngClass]="{active: geoSelection == 'city'}">
                 <i class="fa fa-car"></i> City
               </a>
@@ -50,7 +50,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'local'}]"
+              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'local'}]"
                 [ngClass]="{active: geoSelection == 'local'}">
                 <i class="fa fa-bicycle"></i> Local
               </a>
@@ -63,7 +63,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
       <div>
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'international'}]"
+            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'international'}]"
                 [ngClass]="{active: geoSelection == 'international'}">
               <i class="fa fa-plane"></i><span *ngIf="geoSelection == 'international'"> International</span>
             </a>
@@ -72,7 +72,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'national'}]"
+            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'national'}]"
               [ngClass]="{active: geoSelection == 'national'}">
               <i class="fa fa-train"></i><span *ngIf="geoSelection == 'national'"> National</span>
             </a>
@@ -81,7 +81,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'state'}]"
+            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'state'}]"
               [ngClass]="{active: geoSelection == 'state'}">
               <i class="fa fa-bus"></i><span *ngIf="geoSelection == 'state'"> State</span>
             </a>
@@ -90,7 +90,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'city'}]"
+            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'city'}]"
               [ngClass]="{active: geoSelection == 'city'}">
               <i class="fa fa-car"></i><span *ngIf="geoSelection == 'city'"> City</span>
             </a>
@@ -99,7 +99,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/GroupOfGroupsPostList', {geo: 'local'}]"
+            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'local'}]"
               [ngClass]="{active: geoSelection == 'local'}">
               <i class="fa fa-bicycle"></i><span *ngIf="geoSelection == 'local'"> Local</span>
             </a>
@@ -114,8 +114,8 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
       <div class="row">
         <div class="col-xs-12">
           <div class="geo-filter-details">
-            <span *ngFor="#gog of gogList">
-              {{gog.name}}
+            <span *ngFor="#sg of superGroupList">
+              {{sg.name}}
             </span>
             <span class="add-more" (click)="gotoChangeGeoSttings()">
               <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -163,7 +163,7 @@ import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
         font-size: 11px;
       }
     `],
-  inputs: ['geoSelection', 'gogList'],
+  inputs: ['geoSelection', 'superGroupList'],
   directives: [ROUTER_DIRECTIVES]
   
 })
@@ -185,64 +185,7 @@ export class GeoFilterComponent implements OnInit {
     private _routeParams: RouteParams
   ) { }
   
-  ngOnInit() {
-    /*
-    let loggedInUser = this._authenticationService.getLoggedInUser()
-    if(loggedInUser) {
-      this._international = loggedInUser.settings.international.map(el => el.name);
-      this._national = loggedInUser.settings.national.name;
-      this._state = loggedInUser.settings.state.map(el => el.name);
-      this._city = loggedInUser.settings.city.map(el => el.name);
-      this._local = loggedInUser.settings.local.map(el => el.name);
-    } else {
-      // Defaults
-      this._international = ['usa'];
-      this._national = 'india';
-      this._state = ['karnataka'];
-      this._city = ['bangalore'];
-      this._local = ['koramangala'];      
-    }
-    */
-    
-    /** taken from group-of-groups-post-list-loader-component, KEEP IN SYNC */
-    // Very strage behavious of gog_names
-    // If entered directly in url its a string
-    // if redirected (by gotoNational for eg) by angular its an array
-    /*
-    let gog_names = this._routeParams.get('gog');
-    let gog_names_array = null
-    gog_names = gog_names || 'india'
-    if(Array.isArray(gog_names)) {
-      gog_names_array = gog_names;
-    } else {
-      gog_names_array = gog_names.split(',')
-    }
-    
-    if(this.arraysEqual(gog_names_array, this._international)) {
-      this._currentSelection = 'international';
-      this._selectionDetails = this._international.join(',')
-    }
-    if(gog_names_array[0] == this._national) {
-      this._currentSelection = "national";
-      this._selectionDetails = this._national
-    }
-    if(this.arraysEqual(gog_names_array, this._state)) {
-      this._currentSelection = "state";
-      this._selectionDetails = this._state.join(',')
-    }
-    if(this.arraysEqual(gog_names_array, this._city)) {
-      this._currentSelection = "city";
-      this._selectionDetails = this._city.join(',')
-    }
-    if(this.arraysEqual(gog_names_array, this._local)) {
-      this._currentSelection = "local";
-      this._selectionDetails = this._local.join(',')
-    }
-    
-    console.log(gog_names_array)
-    console.log(this._selectionDetails)
-    */
-  }
+  ngOnInit() {}
  
   gotoChangeGeoSttings() {
     this._router.navigate(['EditUser', {tab: 'geo'}]);     

@@ -24,18 +24,18 @@ export class GroupService {
   
   getGroup(parent_group_name: string, groupname: string) {
     return Promise.resolve(MOCK_GROUPS).then(
-      groups => groups.filter(group => group.name === groupname && group.parent_group.name === parent_group_name)[0]
+      groups => groups.filter(group => group.name === groupname && group.super_group.name === parent_group_name)[0]
     );
   }
   
   getPostsInGroup(parent_group_name: string, groupname: string) {
     return Promise.resolve(MOCK_POSTS).then(
-      posts => posts.filter(post => post.group.name === groupname && post.group.parent_group.name === parent_group_name)
+      posts => posts.filter(post => post.group.name === groupname && post.group.super_group.name === parent_group_name)
     );
   }
 
   /**
-   * Fetch a list of gog/group names for autocomplete dropdown in new post form
+   * Fetch a list of super_group/group names for autocomplete dropdown in new post form
    * TODO:: SETUP BACKEND TO TEST THIS
    * TODO:: CHANGE JSONP TO HTTP
    */
@@ -48,11 +48,11 @@ export class GroupService {
         group => {
           // 1 element => no '/' was used, search on both parent and group name
           if(searchTermArray.length == 1) {
-            return (group.name.indexOf(searchTermArray[0]) > -1) || (group.parent_group.name.indexOf(searchTermArray[0]) > -1)
+            return (group.name.indexOf(searchTermArray[0]) > -1) || (group.super_group.name.indexOf(searchTermArray[0]) > -1)
           }
           // 2 elements => a '/' was used, search first element on parent and 2nd element on group name
           if(searchTermArray.length == 2) {
-            return (group.name.indexOf(searchTermArray[1]) > -1) && (group.parent_group.name.indexOf(searchTermArray[0]) > -1)
+            return (group.name.indexOf(searchTermArray[1]) > -1) && (group.super_group.name.indexOf(searchTermArray[0]) > -1)
           }
           
         }
@@ -77,9 +77,9 @@ export class GroupService {
   /**
    * Returns a list of groups based on its type
    */
-  getGroupsByParentGroupType(groupType: string) {
+  getGroupsBySuperGroupType(groupType: string) {
     return Promise.resolve(MOCK_GROUPS).then(
-      groups => groups.filter(group => group.parent_group.type === groupType)
+      groups => groups.filter(group => group.super_group.type === groupType)
     );
   }
   
