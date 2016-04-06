@@ -14,13 +14,14 @@ import {AuthenticationService} from '../authentication/authentication.service';
   selector: 'my-view-user',
   template: `
     <div class="my-view-user">
-      <my-user [user]="_user" [ownProfile]="_ownProfile"></my-user>
+      <my-user [user]="_user" [ownProfile]="_ownProfile" [tab]="_tab"></my-user>
     </div>
   `,
   directives: [UserComponent]
 })
 export class ViewUserComponent {
   
+  private _tab: string = 'basic'
   private _user: User
   private _loggedInUser:User = null
   private _ownProfile = false
@@ -34,12 +35,15 @@ export class ViewUserComponent {
   
   ngOnInit() {
     let id = +this._routeParams.get('id');
+    this._tab = this._routeParams.get('tab') || this._tab;
+
     this._loggedInUser = this._authenticationService.getLoggedInUser()
+    
     if(this._loggedInUser) {
       this._ownProfile = this._loggedInUser.id == id
     }
-    this._userService.getUser(id).then(user => this._user = user)
     
+    this._userService.getUser(id).then(user => this._user = user)
   }
   
 }

@@ -71,7 +71,7 @@ export class GroupOfGroupsPostListLoaderComponent implements OnInit {
   gotoNewPostForm() {
     this._router.navigate(['NewPost']);
   }
-  
+  /*
   gotoInternational() {
     this._router.navigate(['GroupOfGroupsPostList', {gog: ['india', 'bangalore']}]);
   }
@@ -91,4 +91,5 @@ export class GroupOfGroupsPostListLoaderComponent implements OnInit {
   gotoSubCity() {
     this._router.navigate(['GroupOfGroupsPostList', {gog: ['india', 'bangalore']}]);
   }
+  */
 }

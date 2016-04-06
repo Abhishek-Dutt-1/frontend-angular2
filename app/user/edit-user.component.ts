@@ -4,7 +4,7 @@
  * this could have user+other stuff
  */
 import {Component, OnInit} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Router, RouteParams} from 'angular2/router';
 import {User} from './user';
 import {UserService} from './user.service';
 import {UserComponent} from './user.component';
@@ -41,42 +41,49 @@ import {GroupOfGroupsService} from '../group_of_groups/group_of_groups.service';
                       <label class="col-md-4 control-label">Display Name</label>
                       <p class="form-control-static col-md-8">{{_model.displayname}}</p>
                     </div>
+                    
                     <div class="form-group">
                       <label class="col-md-4 control-label">Email</label>
                       <p class="form-control-static col-md-8">{{_model.email}}</p>
                     </div>
+                    
                     <div class="form-group">
-                      <label for="password">Password</label>
-                      <input id="password" type="password" class="form-control" placeholder="Password" required
-                        [(ngModel)] = "_model.password"
-                        ngControl="password" #password = "ngForm"
-                      >
-                      <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
-                        Password is required
+                      <label for="password" class="col-md-4 control-label">Password</label>
+                      <div class="col-md-8">
+                        <input id="password" type="password" class="form-control" placeholder="Password" required
+                          [(ngModel)] = "_model.password"
+                          ngControl="password" #password = "ngForm"
+                        >
+                        <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+                          Password is required
+                        </div>
                       </div>
                     </div>
-                    <br/>
+
                     <div class="form-group">
-                      <label for="confirm_password">Confirm Password</label>
-                      <input id="confirm_password" type="password" class="form-control" placeholder="Confirm Password" required
-                        [(ngModel)] = "_model.confirm_password"
-                        ngControl="confirm_password" #confirm_password = "ngForm"
-                      >
-                      <div [hidden]="(confirm_password.value == password.value) || confirm_password.pristine" class="alert alert-danger">
-                        Passwords do not match.
+                      <label for="confirm_password" class="col-md-4 control-label">Confirm Password</label>
+                      <div class="col-md-8">
+                        <input id="confirm_password" type="password" class="form-control" placeholder="Confirm Password" required
+                          [(ngModel)] = "_model.confirm_password"
+                          ngControl="confirm_password" #confirm_password = "ngForm"
+                        >
+                        <div [hidden]="(confirm_password.value == password.value) || confirm_password.pristine" class="alert alert-danger">
+                          Passwords do not match.
+                        </div>
                       </div>
                     </div>
                     
                     <div class="form-group">
                       <div class="col-md-offset-4 col-md-8">
-                        <a (click)="onSubmitBasic($event)" class="btn btn-default">Save</a>
-                        <a (click)="goBack()" class="btn btn-default">Cancel</a>
+                        <button (click)="onSubmitBasic($event)" class="btn btn-default" [disabled]="!editBasicForm.form.valid || (confirm_password.value != password.value)">Save</button>
+                        <button (click)="gotoProfile('basic')" type="button" class="btn btn-default">Cancel</button>
                       </div>
                     </div>
                     
                   </form>
                   
                 </div>
+                
                 <div role="tabpanel" class="tab-pane" [ngClass]="{active: _tab == 'geo'}" id="geo">
                 
                   <div>                          
@@ -84,86 +91,63 @@ import {GroupOfGroupsService} from '../group_of_groups/group_of_groups.service';
                     
                       <div class="form-group">
                         <label class="col-md-4 control-label">International</label>
-<div>
-<span *ngFor="#international of _groupList.international">
-<label class="checkbox-inline">
-<input type="checkbox" [(ngModel)]="international.selected"> {{international.name}}
-</label>
-</span>
-</div>
-                        <p class="form-control-static col-md-8">
-                          <span *ngFor="#international of _loggedInUser.settings.international">
-                            {{international.name}},
+                        <div class="col-md-8">
+                          <span *ngFor="#international of _groupList.international">
+                            <label class="checkbox-inline">
+                              <input type="checkbox" [(ngModel)]="international.selected"> {{international.name}}
+                            </label>
                           </span>
-                        </p>
+                        </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="col-md-4 control-label">National</label>
-<div>
-<span *ngFor="#national of _groupList.national">
-<label class="radio-inline">
-<input type="radio" name="nationalcb" (click)="_groupList.selectedNational = national" [checked]="national.id === _groupList.selectedNational.id"> {{national.name}}
-</label>
-</span>
-</div>
-                        <p class="form-control-static col-md-8">
-                          {{_loggedInUser.settings.national.name}}
-                        </p>
+                        <div class="col-md-8">
+                          <span *ngFor="#national of _groupList.national">
+                            <label class="radio-inline">
+                              <input type="radio" (click)="_groupList.selectedNational = national" [checked]="national.id === _groupList.selectedNational.id"> {{national.name}}
+                            </label>
+                          </span>
+                        </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="col-md-4 control-label">State</label>
-<div>
-<span *ngFor="#state of _groupList.state">
-<label class="checkbox-inline">
-<input type="checkbox" [(ngModel)]="state.selected"> {{state.name}}
-</label>
-</span>
-</div>
-                        <p class="form-control-static col-md-8">
-                          <span *ngFor="#state of _loggedInUser.settings.state">
-                              {{state.name}},
+                        <div class="col-md-8">
+                          <span *ngFor="#state of _groupList.state">
+                            <label class="checkbox-inline">
+                              <input type="checkbox" [(ngModel)]="state.selected"> {{state.name}}
+                            </label>
                           </span>
-                        </p>
+                        </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="col-md-4 control-label">City</label>
-<div>
-<span *ngFor="#city of _groupList.city">
-<label class="checkbox-inline">
-<input type="checkbox" [(ngModel)]="city.selected"> {{city.name}}
-</label>
-</span>
-</div>
-                        <p class="form-control-static col-md-8">
-                          <span *ngFor="#city of _loggedInUser.settings.city">
-                            {{city.name}},
+                        <div class="col-md-8">
+                          <span *ngFor="#city of _groupList.city">
+                            <label class="checkbox-inline">
+                              <input type="checkbox" [(ngModel)]="city.selected"> {{city.name}}
+                            </label>
                           </span>
-                        </p>
+                        </div>
                       </div>
                       
                       <div class="form-group">
                         <label class="col-md-4 control-label">Local</label>
-<div>
-<span *ngFor="#local of _groupList.local">
-<label class="checkbox-inline">
-<input type="checkbox" [(ngModel)]="local.selected"> {{local.name}}
-</label>
-</span>
-</div>
-                        <p class="form-control-static col-md-8">
-                          <span *ngFor="#local of _loggedInUser.settings.local">
-                            {{local.name}},
+                        <div class="col-md-8">
+                          <span *ngFor="#local of _groupList.local">
+                            <label class="checkbox-inline">
+                              <input type="checkbox" [(ngModel)]="local.selected"> {{local.name}}
+                            </label>
                           </span>
-                        </p>
+                        </div>
                       </div>
                       
                       <div class="form-group">
                         <div class="col-md-offset-4 col-md-8">
-                          <a (click)="onSubmitGeo($event)" class="btn btn-default">Edit</a>
-                          <a (click)="goBack()" class="btn btn-default">Back</a>
+                          <button (click)="onSubmitGeo($event)" class="btn btn-default">Save</button>
+                          <button (click)="gotoProfile('geo')" type="button" class="btn btn-default">Cancel</button>
                         </div>
                       </div>
                       
@@ -188,7 +172,6 @@ import {GroupOfGroupsService} from '../group_of_groups/group_of_groups.service';
     margin: 15px;
   }
   `],
-  //directives: [ROUTER_DIRECTIVES]
 })
 export class EditUserComponent {
   
@@ -197,21 +180,10 @@ export class EditUserComponent {
   private _model: any = null
 
   private _groupList = {international: [], national: [], state: [], city: [], local: [], selectedNational: {}};
-  private model = {
-    /* email: null,
-    displayname: null,
-    password: null,
-    confirm_password: null,*/
-    international: [],
-    national: {},
-    state: [],
-    city: [],
-    local: []
-  };
-
   
   constructor(
     private _userService: UserService,
+    private _router: Router,
     private _routeParams: RouteParams,
     private _authenticationService: AuthenticationService,
     private _groupOfGroupsService: GroupOfGroupsService) {
@@ -219,11 +191,10 @@ export class EditUserComponent {
   
   ngOnInit() {
     
-    this._tab = this._routeParams.get('tab');
-    console.log(this._tab);
+    this._tab = this._routeParams.get('tab') || this._tab;
 
     this._loggedInUser = this._authenticationService.getLoggedInUser();
-    console.log(this._loggedInUser);
+    //console.log(this._loggedInUser);
     this._model = this.cloneObj({}, this._loggedInUser);
 
     this._model.password = null;
@@ -241,7 +212,6 @@ export class EditUserComponent {
     this._groupOfGroupsService.getGroupOfGroupsByType('national').then( gogList => {
       this._groupList.national = gogList;
       this._groupList.selectedNational = this._loggedInUser.settings.national;
-      console.log(this._groupList.selectedNational);
     });
     
     this._groupOfGroupsService.getGroupOfGroupsByType('state').then( gogList => {
@@ -275,45 +245,52 @@ export class EditUserComponent {
   
   onSubmitBasic(event) {
     event.preventDefault();
-    console.log(this._loggedInUser)
-    console.log(this._model)
-    if(this._model.password != this._model.confirm_password) return
+
+    if(this._model.password != this._model.confirm_password) {
+      return
+    }
     
     if(this._model.password && this._model.confirm_password) {
-      this._userService.changePassword(this._loggedInUser.id, this._model.password).then(
-        updatedUser => this._authenticationService.loginUser(updatedUser)
-      ).catch(function(err) {
-        console.log(err)
-      })
+      this._userService.changePassword(this._loggedInUser.id, this._model.password)
+        .then( updatedUser => {
+          return this._authenticationService.loginUser(updatedUser)
+      }).then( user => {
+        this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'basic'}]);
+      }).catch( err => console.log(err) );
     }
-    /*
-    this._userService.updateUser(this.model).then(
-      user => {
-        this._router.navigate(['ViewUser', {id: user.id}]);        
-    });
-    */
   }
   
   onSubmitGeo(event) {
     event.preventDefault();
-
-    this.model.international = this._groupList.international.filter(el => el.selected == true)
-    this.model.national = this._groupList.selectedNational
-    this.model.state = this._groupList.state.filter(el => el.selected == true)
-    this.model.city = this._groupList.city.filter(el => el.selected == true)
-    this.model.local = this._groupList.local.filter(el => el.selected == true)
     
-    console.log(this.model);
-console.log(this._loggedInUser)
-    this._userService.updateGeoSettings(this._loggedInUser.id, this.model).then(
-      user => {
-        this._authenticationService.loginUser(user).then(
-          user1 => console.log(user1)
-          //user => this._router.navigate(['ViewUser', {id: user.id}])
-        ).catch(err => console.log(err))
-                
-    });
+    let model = {
+      international: [],
+      national: {},
+      state: [],
+      city: [],
+      local: []
+    };
+    
+    model.international = this._groupList.international.filter(el => el.selected == true)
+    model.national = this._groupList.selectedNational
+    model.state = this._groupList.state.filter(el => el.selected == true)
+    model.city = this._groupList.city.filter(el => el.selected == true)
+    model.local = this._groupList.local.filter(el => el.selected == true)
+    
+    this._userService.updateGeoSettings(this._loggedInUser.id, model)
+      .then( updatedUser => {
+        this._authenticationService.loginUser(updatedUser);
+      }).then( user => {
+        this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'geo'}]);
+      }).catch( err => console.log(err) );
   }
+  
+  /**
+   * User pressed cancel
+   */
+  gotoProfile(tab: string) {
+    this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: tab}])
+  } 
   
   /**
    * Clone or merge one or more objects. Polyfill of Object.assign

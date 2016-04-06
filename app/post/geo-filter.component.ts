@@ -4,6 +4,7 @@ import {Router, RouteParams, ROUTER_DIRECTIVES} from 'angular2/router';
 //import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, ...} from 'angular2/router';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {User} from '../user/user';
+import {Group_Of_Groups} from '../group_of_groups/group_of_groups'
 
 @Component({
   selector: 'my-geo-filter',
@@ -181,11 +182,11 @@ export class GeoFilterComponent implements OnInit {
   ngOnInit() {
     let loggedInUser = this._authenticationService.getLoggedInUser()
     if(loggedInUser) {
-      this._international = loggedInUser.settings.interntaional;
-      this._national = loggedInUser.settings.national;
-      this._state = loggedInUser.settings.state;
-      this._city = loggedInUser.settings.city;
-      this._local = loggedInUser.settings.sub_city;
+      this._international = loggedInUser.settings.international.map(el => el.name);
+      this._national = loggedInUser.settings.national.name;
+      this._state = loggedInUser.settings.state.map(el => el.name);
+      this._city = loggedInUser.settings.city.map(el => el.name);
+      this._local = loggedInUser.settings.local.map(el => el.name);
     } else {
       // Defaults
       this._international = ['usa'];
@@ -211,24 +212,27 @@ export class GeoFilterComponent implements OnInit {
     
     if(this.arraysEqual(gog_names_array, this._international)) {
       this._currentSelection = 'international';
-      this._selectionDetails = this._international.join(', ')
+      this._selectionDetails = this._international.join(',')
     }
-    if(this.arraysEqual(gog_names_array, this._national)) {
+    if(gog_names_array[0] == this._national) {
       this._currentSelection = "national";
       this._selectionDetails = this._national
     }
     if(this.arraysEqual(gog_names_array, this._state)) {
       this._currentSelection = "state";
-      this._selectionDetails = this._state.join(', ')
+      this._selectionDetails = this._state.join(',')
     }
     if(this.arraysEqual(gog_names_array, this._city)) {
       this._currentSelection = "city";
-      this._selectionDetails = this._city.join(', ')
+      this._selectionDetails = this._city.join(',')
     }
     if(this.arraysEqual(gog_names_array, this._local)) {
       this._currentSelection = "local";
-      this._selectionDetails = this._local.join(', ')
+      this._selectionDetails = this._local.join(',')
     }
+    
+    console.log(gog_names_array)
+    console.log(this._selectionDetails)
     
   }
  

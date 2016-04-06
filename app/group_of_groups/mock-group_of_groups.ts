@@ -5,39 +5,53 @@ import {MOCK_GROUPS} from '../group/mock-groups'
 export var MOCK_GROUP_OF_GROUPS: Group_Of_Groups[] = [
   {
     id: 1,
-    name: 'india',
-    type: 'national'
-    //sub_groups: [MOCK_GROUPS[0], MOCK_GROUPS[1]]
+    name: 'international 1',
+    type: 'international'
   },
   {
     id: 2,
-    name: 'bangalore',
-    type: 'national'
-    //sub_groups: [MOCK_GROUPS[2], MOCK_GROUPS[3]]
+    name: 'international 2',
+    type: 'international'
   },
   {
     id: 3,
-    name: 'in',
+    name: 'national 1',
     type: 'national'
-    //sub_groups: [MOCK_GROUPS[4]]
   },
   {
     id: 4,
-    name: 'USA',
-    type: 'international'
-    //sub_groups: [MOCK_GROUPS[5], MOCK_GROUPS[1]]
+    name: 'national 2',
+    type: 'national'
   },
   {
     id: 5,
-    name: 'Karnataka',
-    type: 'international'
-    //sub_groups: [MOCK_GROUPS[2], MOCK_GROUPS[4]]
+    name: 'state 1',
+    type: 'state'
   },
   {
     id: 6,
-    name: 'us',
-    type: 'international'
-    //sub_groups: [MOCK_GROUPS[0], MOCK_GROUPS[1]]
+    name: 'state 2',
+    type: 'state'
+  },
+  {
+    id: 7,
+    name: 'city 1',
+    type: 'city'
+  },
+  {
+    id: 8,
+    name: 'city 2',
+    type: 'city'
+  },
+  {
+    id: 9,
+    name: 'local 1',
+    type: 'local'
+  },
+  {
+    id: 10,
+    name: 'local 2',
+    type: 'local'
   }
   
 ]

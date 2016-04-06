@@ -16,13 +16,17 @@ import {Router} from 'angular2/router';
           <div class="col-xs-12 col-md-offset-3 col-md-6">
             
             <div class="tab-container">
-              <div>
+              <div class="myTabs">
                 <ul class="nav nav-tabs" role="tablist">
-                  <li role="presentation" class="active"><a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic</a></li>
-                  <li role="presentation" [hidden]="!ownProfile"><a href="#geo" aria-controls="geo" role="tab" data-toggle="tab">Geo</a></li>
+                  <li role="presentation" [ngClass]="{active: tab == 'basic'}">
+                    <a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic</a>
+                  </li>
+                  <li role="presentation" [hidden]="!ownProfile" [ngClass]="{active: tab == 'geo'}">
+                    <a href="#geo" aria-controls="geo" role="tab" data-toggle="tab">Geo</a>
+                  </li>
                 </ul>
                 <div class="tab-content">
-                  <div role="tabpanel" class="tab-pane active" id="basic">
+                  <div role="tabpanel" class="tab-pane" [ngClass]="{active: tab == 'basic'}" id="basic">
                   
                     <div class="form-horizontal">
                       <div class="form-group">
@@ -35,18 +39,17 @@ import {Router} from 'angular2/router';
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <label class="col-md-4 control-label">Password</label>
-                        <p class="form-control-static col-md-8">****</p>
+                        <p class="form-control-static col-md-8">*****</p>
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <div class="col-md-offset-4 col-md-8">
-                          <a (click)="gotoEditUser('basic')" class="btn btn-default">Edit</a>
-                          <a (click)="goBack()" class="btn btn-default">Back</a>
+                          <button (click)="gotoEditUser('basic')" class="btn btn-default">Edit</button>
                         </div>
                       </div>
                     </div>
                     
                   </div>
-                  <div role="tabpanel" class="tab-pane" id="geo">
+                  <div role="tabpanel" class="tab-pane" [ngClass]="{active: tab == 'geo'}" id="geo">
                   
                     <div [hidden]="!ownProfile">                          
                       <div class="form-horizontal">
@@ -90,8 +93,7 @@ import {Router} from 'angular2/router';
                         </div>
                         <div class="form-group">
                           <div class="col-md-offset-4 col-md-8">
-                            <a (click)="gotoEditUser('geo')" class="btn btn-default">Edit</a>
-                            <a (click)="goBack()" class="btn btn-default">Back</a>
+                            <button (click)="gotoEditUser('geo')" class="btn btn-default">Edit</button>
                           </div>
                         </div>
                       </div>
@@ -116,7 +118,7 @@ import {Router} from 'angular2/router';
   }
   `],
   //styleUrls: ['app/post/post.component.css'],
-  inputs: ['user', 'ownProfile']
+  inputs: ['user', 'ownProfile', 'tab']
 })
 export class UserComponent {
   
@@ -130,21 +132,8 @@ export class UserComponent {
   
   ngOnInit() {
   }
-  /*
-  gotoPost(id: number) {
-    this._router.navigate(['ViewPost', {id: id}]);
-  }
-  gotoGroup(parent_group_name, groupname) {
-    this._router.navigate(['ViewGroup', {group_of_groups_name: parent_group_name, group_name: name}]);
-  }
-  */
+  
   gotoEditUser(goWhere:string) {
-    console.log(goWhere)
-    //this._router.navigate(['NewUser']);
-    //this._router.navigate(['ViewUser', {'id': 2}]);
-    this._router.navigate(['EditUser', {'tab': goWhere}]);
-  }
-  goBack() {
-    window.history.back();
+    this._router.navigate(['EditUser', {tab: goWhere}]);
   }
 }

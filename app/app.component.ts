@@ -157,21 +157,30 @@ import { AuthenticationService } from './authentication/authentication.service';
     path: '/register',
     name: 'NewUser',
     component: NewUserComponent
-  },
+  },/*
   {
-    // User Profile
+    // Edit User Profile (with tab)
+    path: '/user/edit/:tab',
+    name: 'EditUserTab',
+    component: EditUserComponent
+  },*/
+  {
+    // Edit User Profile (no tab)
+    path: '/user/edit',
+    name: 'EditUser',
+    component: EditUserComponent
+  },/*
+  {
+    // User Profile (with tab)
+    path: '/user/:id/:tab',
+    name: 'ViewUserTab',
+    component: ViewUserComponent
+  },*/
+  {
+    // User Profile (no tab)
     path: '/user/:id',
     name: 'ViewUser',
     component: ViewUserComponent
-  },
-  {
-    // Edit User Profile
-    path: '/user/edit/:tab',
-    name: 'EditUser',
-    component: EditUserComponent
   }
 ])
-export class AppComponent {
-  
-  //title = 'Tour of Heroes';
-}
+export class AppComponent { }
