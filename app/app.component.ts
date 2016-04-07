@@ -3,16 +3,11 @@ import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/route
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from 'angular2/http';
 
 import { AppService }     from './app.service';
-/*
-import { HeroService }     from './hero/hero.service';
-import { HeroesComponent } from './hero/heroes.component';
-import { HeroDetailComponent } from './hero/hero-detail.component';
-*/
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { PostService }     from './post/post.service';
 //import { PostListLoaderComponent } from './post/post-list-loader.component';
-import { PostDetailComponent } from './post/post-detail.component';
+//import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
 import { NewPostComponent } from './post/new-post.component';
 
@@ -20,7 +15,7 @@ import { RealSuperGroupPostListLoaderComponent }     from './super_group/real-su
 import { SuperGroupService }     from './super_group/super_group.service';
 import { SuperGroupPostListLoaderComponent } from './post/super_group-post-list-loader.component';
 
-import { GroupService }     from './group/group.service';
+import { GroupService } from './group/group.service';
 import { ViewGroupComponent } from './group/view-group.component';
 
 import { NewUserComponent } from './user/new-user.component';
@@ -31,6 +26,9 @@ import { UserAuthenticationPanelComponent } from './user/user-authentication-pan
 
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { AuthenticationService } from './authentication/authentication.service';
+
+import { NewComment1LoaderComponent } from './comment1/new-comment1-loader.component';
+import { Comment1Service } from './comment1/comment1.service';
 
 @Component({
   selector: 'my-app-component',
@@ -89,7 +87,7 @@ import { AuthenticationService } from './authentication/authentication.service';
     HTTP_PROVIDERS,
     JSONP_PROVIDERS,
     AppService,
-    //HeroService,
+    Comment1Service,
     PostService,
     GroupService,
     SuperGroupService,
@@ -98,37 +96,6 @@ import { AuthenticationService } from './authentication/authentication.service';
   ]
 })
 @RouteConfig([
-  /*
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: DashboardComponent,
-    useAsDefault: true
-  },
-  {
-    path: '/heroes',
-    name: 'Heroes',
-    component: HeroesComponent
-  },
-  {
-    path: '/detail/:id',
-    name: 'HeroDetail',
-    component: HeroDetailComponent
-  },
-  */
-  /* DEPRICATED
-  {
-    path: '/go',
-    name: 'PostList',
-    component: PostListLoaderComponent
-  },
-  *//*
-  {
-    path: '/go',
-    name: 'GroupOfGroupsPostList1',
-    component: GroupOfGroupsPostListLoaderComponent,
-    useAsDefault: true
-  },*/
   {
     path: '/go/:geo',
     name: 'SuperGroupPostList',
@@ -144,13 +111,13 @@ import { AuthenticationService } from './authentication/authentication.service';
     path: '/sg/:super_group_name',
     name: 'RealSuperGroupPostList',
     component: RealSuperGroupPostListLoaderComponent
-  },
+  },/*
   {
     // would be changed to edit post
     path: '/postdetail/:id',
     name: 'PostDetail',
     component: PostDetailComponent
-  },
+  },*/
   {
     path: '/post/:id',
     name: 'ViewPost',
@@ -200,6 +167,11 @@ import { AuthenticationService } from './authentication/authentication.service';
     path: '/user/:id',
     name: 'ViewUser',
     component: ViewUserComponent
+  },
+  {
+    path: '/reply/:postid',
+    name: 'NewComment1',
+    component: NewComment1LoaderComponent
   }
 ])
 export class AppComponent { }

@@ -11,8 +11,9 @@ import {PostTemplateType} from './post-template-types';
 @Component({
   selector: 'my-post',
   template: `
+  <div *ngIf="post">
   <div class="my-post">
-  
+
     <div *ngIf="type === templateTypeList" class="row">
       <div class="col-xs-12">
         <div class="post-container">
@@ -105,8 +106,8 @@ import {PostTemplateType} from './post-template-types';
               <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.super_group.name, group_name: post.group.name}]">
                 go/{{post.group.super_group.name}}/{{post.group.name}} 
               </a> &bull;
-              <a (click)="goBack()" class="">
-                Back 
+              <a [routerLink]="['NewComment1', {postid: post.id}]" class="">
+                Reply 
               </a>
             </div>
           </div>
@@ -114,6 +115,7 @@ import {PostTemplateType} from './post-template-types';
       </div>
     </div>
     
+  </div>
   </div>
   `,
   styles: [`

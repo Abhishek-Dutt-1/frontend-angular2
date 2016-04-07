@@ -3,8 +3,6 @@
  */
 import {Component} from 'angular2/core';
 import {Comment1} from './comment1';
-//import {Router} from 'angular2/router';
-//import {PostService} from './post.service';
 
 @Component({
   selector: 'my-comment1',
@@ -21,22 +19,11 @@ import {Comment1} from './comment1';
       </div>
     </div>
   `,
-  styles: [`
-  
-  `],
-  //styleUrls: ['app/comment1/comment1.component.css'],
+  styles: [` `],
   inputs: ['comment1']
 })
 export class Comment1Component {
   
-  //comment: Comment;
-  //type: string;
+  constructor() {}
   
-  constructor(
-    /*
-    private _postService: PostService,
-    private _router: Router
-    */
-  ) { }
-
 }
