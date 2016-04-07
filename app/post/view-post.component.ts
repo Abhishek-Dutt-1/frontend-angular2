@@ -21,7 +21,7 @@ import {PostTemplateType} from './post-template-types';
           <!-- Replies to Post -->
           <div class="comment-list level-1">
             <div *ngFor="#comment1 of post.comments" class="comment-level-1">
-              <my-comment1 [comment1]="comment1"></my-comment1>
+              <my-comment1 [comment1]="comment1" [post]="post"></my-comment1>
               
               <!-- Replies to comments (Level 2) -->
               <div *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">

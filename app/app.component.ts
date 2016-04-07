@@ -28,7 +28,9 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { AuthenticationService } from './authentication/authentication.service';
 
 import { NewComment1LoaderComponent } from './comment1/new-comment1-loader.component';
+import { NewComment2LoaderComponent } from './comment2/new-comment2-loader.component';
 import { Comment1Service } from './comment1/comment1.service';
+import { Comment2Service } from './comment2/comment2.service';
 
 @Component({
   selector: 'my-app-component',
@@ -88,6 +90,7 @@ import { Comment1Service } from './comment1/comment1.service';
     JSONP_PROVIDERS,
     AppService,
     Comment1Service,
+    Comment2Service,
     PostService,
     GroupService,
     SuperGroupService,
@@ -172,6 +175,11 @@ import { Comment1Service } from './comment1/comment1.service';
     path: '/reply/:postid',
     name: 'NewComment1',
     component: NewComment1LoaderComponent
+  },
+  {
+    path: '/reply2/:postid/:comment1id',
+    name: 'NewComment2',
+    component: NewComment2LoaderComponent
   }
 ])
 export class AppComponent { }

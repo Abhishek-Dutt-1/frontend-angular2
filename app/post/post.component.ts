@@ -149,7 +149,7 @@ export class PostComponent implements OnInit {
     this.templateTypeList = PostTemplateType.List;
     this.templateTypeGroupList = PostTemplateType.Grouplist;
     this.templateTypeMain = PostTemplateType.Main;
-  }  
+  }
   
   gotoPost(id: number) {
     this._router.navigate(['ViewPost', {id: id}]);

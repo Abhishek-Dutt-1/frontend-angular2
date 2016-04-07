@@ -34,5 +34,8 @@ export class Comment1Service {
     
     return Promise.resolve(newProperComment1);
   }
-  
+
+  getComment1ById(id: number) {
+    return Promise.resolve(MOCK_COMMENT1S.find(comment1s => comment1s.id == id));
+  }  
 }
