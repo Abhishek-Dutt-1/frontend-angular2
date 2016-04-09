@@ -11,12 +11,13 @@ import { PostService }     from './post/post.service';
 import { ViewPostComponent } from './post/view-post.component';
 import { NewPostComponent } from './post/new-post.component';
 
-import { RealSuperGroupPostListLoaderComponent }     from './super_group/real-super_group-post-list-loader.component';
+import { SuperGroupPostListLoaderComponent }     from './super_group/super_group-post-list-loader.component';
 import { SuperGroupService }     from './super_group/super_group.service';
-import { SuperGroupPostListLoaderComponent } from './post/super_group-post-list-loader.component';
 
 import { GroupService } from './group/group.service';
 import { ViewGroupComponent } from './group/view-group.component';
+
+import { HyperGroupPostListLoaderComponent } from './hyper_group/hyper_group-post-list-loader.component';
 
 import { NewUserComponent } from './user/new-user.component';
 import { ViewUserComponent } from './user/view-user.component';
@@ -43,7 +44,7 @@ import { Comment2Service } from './comment2/comment2.service';
           <div class="header">
             <div class="col-xs-5">
               <div class="logo"><b>
-                <a [routerLink]="['/SuperGroupPostListDefault']">
+                <a [routerLink]="['/HyperGroupPostListDefault']">
                   <span class="glyphicon glyphicon-home" aria-hidden="true"></span> YOLO!
                 </a></b>
               </div>
@@ -101,19 +102,19 @@ import { Comment2Service } from './comment2/comment2.service';
 @RouteConfig([
   {
     path: '/go/:geo',
-    name: 'SuperGroupPostList',
-    component: SuperGroupPostListLoaderComponent,
+    name: 'HyperGroupPostList',
+    component: HyperGroupPostListLoaderComponent,
   },  
   {
     path: '/go',
-    name: 'SuperGroupPostListDefault',
-    component: SuperGroupPostListLoaderComponent,
+    name: 'HyperGroupPostListDefault',
+    component: HyperGroupPostListLoaderComponent,
     useAsDefault: true
   },
   {
     path: '/sg/:super_group_name',
-    name: 'RealSuperGroupPostList',
-    component: RealSuperGroupPostListLoaderComponent
+    name: 'SuperGroupPostList',
+    component: SuperGroupPostListLoaderComponent
   },/*
   {
     // would be changed to edit post

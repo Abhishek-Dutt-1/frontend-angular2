@@ -1,30 +1,19 @@
-/**
- * 
- * 
- * 
- * This is currently left unfinished as Super Group does not have
- * information about its child groups (in local version)
- * 
- * 
- * 
- * 
- */
-
-
 import {Component, OnInit} from 'angular2/core';
-import {Router, RouteParams} from 'angular2/router';
+import {Router, RouteParams, RouterLink} from 'angular2/router';
 import {SuperGroup} from './super_group';
 import {SuperGroupService} from './super_group.service';
+import {GroupService} from '../group/group.service';
 import {Post} from '../post/post';
+import {Group} from '../group/group';
 import {PostListComponent} from '../post/post-list.component'
 import {PostTemplateType} from '../post/post-template-types';
 
 @Component({
-  selector: 'my-real-super-group-post-loader',
+  selector: 'my-super-group-post-list-loader',
   template: `
-  <div *ngIf="_super_group">
+  <div *ngIf="_super_group && _groups">
   
-    <div class="my-real-super-group-post-loader">
+    <div class="my-super-group-post-list-loader">
       
       <div class="row">
         <div class="col-xs-12">
@@ -37,8 +26,9 @@ import {PostTemplateType} from '../post/post-template-types';
               </div>
               
               <div class="panel-body">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Mauris sagittis pellentesque lacus eleifend lacinia...
+                <div *ngFor="#group of _groups">
+                <a [routerLink]="['ViewGroup', {super_group_name: _super_group.name, group_name: group.name}]">{{group.name}}</a>
+                </div>
               </div>
               
               <div class="panel-footer">
@@ -60,36 +50,37 @@ import {PostTemplateType} from '../post/post-template-types';
   </div>  <!-- end top div -->
   `,
   styles: [`
-  .my-real-super-group-post-loader .group-details-panel {
+  .my-super-group-post-list-loader .group-details-panel {
     margin-bottom: 0px;
     margin-top: 10px;
   }
   `],
-  directives: [PostListComponent]
+  directives: [PostListComponent, RouterLink]
 })
-export class RealSuperGroupPostListLoaderComponent {
+export class SuperGroupPostListLoaderComponent {
   
+  private _groups: Group[];
+  private _super_group_name: string;
   private _super_group: SuperGroup;
   
   constructor(
+    private _groupService: GroupService,
     private _superGroupService: SuperGroupService,
     private _router: Router,
     private _routeParams: RouteParams) {}
   
   ngOnInit() {
         
-    let super_group_name = this._routeParams.get('super_group_name');
-    console.log("YUP WORKS")
-    console.log(super_group_name);
-    
-    this._superGroupService.getSuperGroupByName(super_group_name)
-      .then(gog => this._super_group = gog);
-      
-    /*  
-    this._groupService.getPostsInGroup(group_of_groups_name, group_name)
-      .then(posts => this.groupPosts = posts);
-    */
+    this._super_group_name = this._routeParams.get('super_group_name');
 
+    this._groupService.getGroupsBySuperGroupName(this._super_group_name)
+      .then(groups => {
+        this._groups = groups
+      });
+    
+    this._superGroupService.getSuperGroupsByName(this._super_group_name)
+      .then(sg => this._super_group = sg);
+      
   }
   
   goBack() {

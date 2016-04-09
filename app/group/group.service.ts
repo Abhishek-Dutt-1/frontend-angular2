@@ -4,12 +4,12 @@ import {Injectable} from 'angular2/core';
 import {MOCK_POSTS} from '../post/mock-posts';
 import {Http, Jsonp, Response, URLSearchParams} from 'angular2/http';
 
-
 @Injectable()
 export class GroupService {
   
-  constructor(private http: Http, private jsonp: Jsonp) {
-  }
+  constructor(
+    private http: Http, 
+    private jsonp: Jsonp) {}
   
   getGroups() {
     return Promise.resolve(MOCK_GROUPS);
@@ -81,6 +81,13 @@ export class GroupService {
     return Promise.resolve(MOCK_GROUPS).then(
       groups => groups.filter(group => group.super_group.type === groupType)
     );
+  }
+  
+  /**
+   * Returns list of all groups belonging to the given super group
+   */
+  getGroupsBySuperGroupName(sg_name: string) {
+    return Promise.resolve(MOCK_GROUPS.filter(group => group.super_group.name == sg_name));
   }
   
 }

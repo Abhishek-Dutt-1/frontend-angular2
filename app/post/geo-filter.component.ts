@@ -15,7 +15,7 @@ import {SuperGroup} from '../super_group/super_group'
       <div class="row hidden-xs">
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'international'}]"
+              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'international'}]"
                 [ngClass]="{active: geoSelection == 'international'}">
                 <i class="fa fa-plane"></i> International</a>
           </span>
@@ -23,7 +23,7 @@ import {SuperGroup} from '../super_group/super_group'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'national'}]"
+              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
                 [ngClass]="{active: geoSelection == 'national'}">
                 <i class="fa fa-train"></i> National
               </a>
@@ -32,7 +32,7 @@ import {SuperGroup} from '../super_group/super_group'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'state'}]"
+              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
                 [ngClass]="{active: geoSelection == 'state'}">
                 <i class="fa fa-bus"></i> State
               </a>
@@ -41,7 +41,7 @@ import {SuperGroup} from '../super_group/super_group'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'city'}]"
+              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
                 [ngClass]="{active: geoSelection == 'city'}">
                 <i class="fa fa-car"></i> City
               </a>
@@ -50,7 +50,7 @@ import {SuperGroup} from '../super_group/super_group'
         
         <div class="col-xs-2">
           <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'local'}]"
+              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
                 [ngClass]="{active: geoSelection == 'local'}">
                 <i class="fa fa-bicycle"></i> Local
               </a>
@@ -63,7 +63,7 @@ import {SuperGroup} from '../super_group/super_group'
       <div>
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'international'}]"
+            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'international'}]"
                 [ngClass]="{active: geoSelection == 'international'}">
               <i class="fa fa-plane"></i><span *ngIf="geoSelection == 'international'"> International</span>
             </a>
@@ -72,7 +72,7 @@ import {SuperGroup} from '../super_group/super_group'
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'national'}]"
+            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
               [ngClass]="{active: geoSelection == 'national'}">
               <i class="fa fa-train"></i><span *ngIf="geoSelection == 'national'"> National</span>
             </a>
@@ -81,7 +81,7 @@ import {SuperGroup} from '../super_group/super_group'
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'state'}]"
+            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
               [ngClass]="{active: geoSelection == 'state'}">
               <i class="fa fa-bus"></i><span *ngIf="geoSelection == 'state'"> State</span>
             </a>
@@ -90,7 +90,7 @@ import {SuperGroup} from '../super_group/super_group'
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'city'}]"
+            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
               [ngClass]="{active: geoSelection == 'city'}">
               <i class="fa fa-car"></i><span *ngIf="geoSelection == 'city'"> City</span>
             </a>
@@ -99,7 +99,7 @@ import {SuperGroup} from '../super_group/super_group'
         
         <div class="menu-item pull-left">
           <div >
-            <a class="menu-link" [routerLink]="['/SuperGroupPostList', {geo: 'local'}]"
+            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
               [ngClass]="{active: geoSelection == 'local'}">
               <i class="fa fa-bicycle"></i><span *ngIf="geoSelection == 'local'"> Local</span>
             </a>

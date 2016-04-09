@@ -1,20 +1,17 @@
 import {Component, OnInit} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
-import {Post} from './post';
-//import {PostDetailComponent} from './post-detail.component';
+import {Post} from '../post/post';
 import {AppService} from '../app.service';
-import {PostService} from './post.service';
-import {PostListComponent} from './post-list.component';
-import {PostTemplateType} from './post-template-types';
+import {PostService} from '../post/post.service';
+import {PostListComponent} from '../post/post-list.component';
+import {PostTemplateType} from '../post/post-template-types';
 import {SuperGroup} from '../super_group/super_group';
 import {GeoFilterComponent} from '../post/geo-filter.component';
 
 @Component({
-  selector: 'my-super_group-post-list-loader',
-  //template: `<my-post-list [posts]="posts" type="postTemplateType"></my-post-list>`,
-  //template: "<div>{{posts}} hello</div>",
+  selector: 'my-hyper_group-post-list-loader',
   template: `
-    <div class="my-super_group-post-list-loader">
+    <div class="my-hyper_group-post-list-loader">
         <my-geo-filter [geoSelection]="_geoSelection" [superGroupList]="_superGroupList"></my-geo-filter>
         <my-post-list [posts]="posts" [postTemplateType]="postTemplateType"></my-post-list>
       <!-- Colored FAB button with ripple -->
@@ -34,14 +31,9 @@ import {GeoFilterComponent} from '../post/geo-filter.component';
       clear: both;
     }
   `],
-  //template: `<my-post-list>{{postTemplateType}}{{posts}} hello</my-post-list>`,
-  //templateUrl: 'app/post/post-list.component.html',
-  //styleUrls: ['app/post/post-list.component.css'],
-  //directives: [PostDetailComponent],
   directives: [PostListComponent, GeoFilterComponent]
-  //providers: []
 })
-export class SuperGroupPostListLoaderComponent implements OnInit {
+export class HyperGroupPostListLoaderComponent implements OnInit {
 
   private posts: Post[];
   private postTemplateType: PostTemplateType;
