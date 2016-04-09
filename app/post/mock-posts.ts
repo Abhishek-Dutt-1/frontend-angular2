@@ -25,7 +25,7 @@ export var MOCK_POSTS: Post[] = [
     type: 'text',
     postedby: MOCK_USERS[1],
     group: MOCK_GROUPS[0],
-    comments: [MOCK_COMMENT1S[1], MOCK_COMMENT1S[0]]
+    comments: [MOCK_COMMENT1S[3], MOCK_COMMENT1S[4]]
   },
   {
     id: 3,
@@ -36,7 +36,7 @@ export var MOCK_POSTS: Post[] = [
     type: 'text',
     postedby: MOCK_USERS[1],
     group: MOCK_GROUPS[0],
-    comments: [MOCK_COMMENT1S[1], MOCK_COMMENT1S[0]]
+    comments: [MOCK_COMMENT1S[5], MOCK_COMMENT1S[6]]
   }
 ]  
   /*
