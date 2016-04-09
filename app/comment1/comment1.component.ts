@@ -31,6 +31,8 @@ import {RouterLink} from 'angular2/router';
 })
 export class Comment1Component {
   
-  constructor() {}
+  constructor() {
+    
+  }
   
 }
