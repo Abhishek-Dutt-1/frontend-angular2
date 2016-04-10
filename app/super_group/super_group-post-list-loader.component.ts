@@ -27,14 +27,16 @@ import {PostTemplateType} from '../post/post-template-types';
               
               <div class="panel-body">
                 <div *ngFor="#group of _groups">
-                <a [routerLink]="['ViewGroup', {super_group_name: _super_group.name, group_name: group.name}]">{{group.name}}</a>
+                <a [routerLink]="['ViewGroup', {super_group_name: _super_group.name, group_name: group.name}]">&bull; /{{group.name}}</a>
                 </div>
               </div>
               
               <div class="panel-footer">
-                <a>Group Info</a> | 
+                <a [routerLink]="['NewGroup', {super_group_name: _super_group.name}]"> 
+                  Create New Group 
+                </a> &bull;
                 <a (click)="gotoNewPostForm()" class="">
-                  Create a New Post
+                  Create New Post
                 </a>
               </div>
               
@@ -57,6 +59,10 @@ import {PostTemplateType} from '../post/post-template-types';
   `],
   directives: [PostListComponent, RouterLink]
 })
+/**
+ * This compnenet was supposed to show a list of posts (hence the name)
+ * But that idea was abandaoned later as it would make it similar to hyper groups
+ */
 export class SuperGroupPostListLoaderComponent {
   
   private _groups: Group[];
@@ -74,13 +80,11 @@ export class SuperGroupPostListLoaderComponent {
     this._super_group_name = this._routeParams.get('super_group_name');
 
     this._groupService.getGroupsBySuperGroupName(this._super_group_name)
-      .then(groups => {
-        this._groups = groups
-      });
+      .then(groups => { this._groups = groups });
     
-    this._superGroupService.getSuperGroupsByName(this._super_group_name)
+    this._superGroupService.getSuperGroupByName(this._super_group_name)
       .then(sg => this._super_group = sg);
-      
+         
   }
   
   goBack() {

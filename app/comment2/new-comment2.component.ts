@@ -111,7 +111,7 @@ export class NewComment2Component {
     event.preventDefault();
   
     let newPost = this._comment2Service.createNewComment2(this._model, this.comment1).then(comment1 => {
-      this._router.navigate(['ViewPost', {id: this.post.id}]);
+      this._router.navigate(['ViewPost', {postid: this.post.id}]);
     });
 
   } 

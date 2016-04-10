@@ -62,7 +62,8 @@ export class NewPostComponent {
     
     
     this.model =  {
-      title: 'New Title', 
+      title: 'New Title',
+      link: '', 
       text: 'New Text', 
       type: this._postTypes[0],
       superGroupSlashGroup: superGroupSlashGroup
@@ -124,7 +125,7 @@ export class NewPostComponent {
   
     let newPost = this._postService.createNewPost(this.model)
     newPost.then(post => {
-      this._router.navigate(['ViewPost', {id: post.id}]);
+      this._router.navigate(['ViewPost', {postid: post.id}]);
     });
 
   } 

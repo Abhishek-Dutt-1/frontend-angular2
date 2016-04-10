@@ -1,13 +1,13 @@
 import {SuperGroup} from './super_group';
 import {MOCK_SUPER_GROUPS} from './mock-super_groups';
 import {Injectable} from 'angular2/core';
-import {GroupService} from '../group/group.service';
+//import {GroupService} from '../group/group.service';
 
 @Injectable()
 export class SuperGroupService {
   
   constructor(
-    private _groupService: GroupService
+    //private _groupService: GroupService
   ) {}
   
   /*
@@ -19,7 +19,7 @@ export class SuperGroupService {
   /**
    * Returns a Super group obj be name
    */
-  getSuperGroupsByName(sg_name: string) {
+  getSuperGroupByName(sg_name: string) {
     return Promise.resolve(MOCK_SUPER_GROUPS.find(sgs => {
       return sgs.name == sg_name;
     }));

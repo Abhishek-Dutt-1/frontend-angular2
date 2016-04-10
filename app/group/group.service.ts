@@ -3,11 +3,13 @@ import {MOCK_GROUPS} from './mock-groups';
 import {Injectable} from 'angular2/core';
 import {MOCK_POSTS} from '../post/mock-posts';
 import {Http, Jsonp, Response, URLSearchParams} from 'angular2/http';
+import {SuperGroupService} from '../super_group/super_group.service';
 
 @Injectable()
 export class GroupService {
   
   constructor(
+    private _superGroupService: SuperGroupService,
     private http: Http, 
     private jsonp: Jsonp) {}
   
@@ -20,6 +22,27 @@ export class GroupService {
     return new Promise<Group[]>(resolve =>
       setTimeout(()=>resolve(MOCK_GROUPS), 2000) // 2 seconds
     );
+  }
+  
+  createNewGroup(newGroup: any) {
+    // Server should handle these things
+    let lastGroup:Group = MOCK_GROUPS.reduceRight((left, right) => {
+                    if(left.id > right.id) return left
+                      else return right;
+                  });
+                  
+    return this._superGroupService.getSuperGroupByName(newGroup.super_group_name)
+    .then(sg => {
+      let newProperGroup = {
+        id: +lastGroup.id + 1,
+        name: newGroup.name,
+        super_group: sg,
+        owner: newGroup.owner,
+      }
+      MOCK_GROUPS.push(newProperGroup);
+      return newProperGroup;
+    });
+    
   }
   
   getGroup(parent_group_name: string, groupname: string) {

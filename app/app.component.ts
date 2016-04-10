@@ -16,6 +16,7 @@ import { SuperGroupService }     from './super_group/super_group.service';
 
 import { GroupService } from './group/group.service';
 import { ViewGroupComponent } from './group/view-group.component';
+import { NewGroupComponent } from './group/new-group.component';
 
 import { HyperGroupPostListLoaderComponent } from './hyper_group/hyper_group-post-list-loader.component';
 
@@ -123,7 +124,7 @@ import { Comment2Service } from './comment2/comment2.service';
     component: PostDetailComponent
   },*/
   {
-    path: '/post/:id',
+    path: '/post/:postid',
     name: 'ViewPost',
     component: ViewPostComponent
   },
@@ -137,6 +138,11 @@ import { Comment2Service } from './comment2/comment2.service';
     path: '/go/:super_group_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent
+  },
+  {
+    path: '/newgroup/:super_group_name',
+    name: 'NewGroup',
+    component: NewGroupComponent
   },
   {
     path: '/login',

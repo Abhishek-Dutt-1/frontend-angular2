@@ -3,6 +3,14 @@
     <h5>Create a New Post</h5>
     <form #postForm="ngForm">
       
+      
+      <div class="post-select">
+        <label for="type">Post Type</label>
+        <span *ngFor="#postType of _postTypes">
+          <input type="radio" name="type" (click)="model.type = postType" [checked]="postType === model.type"> {{postType}}
+        </span>
+      </div>
+      
       <div class="post-text">
         <label for="title" class="">Title</label>
         <input id="title" type="text" class="" required
@@ -14,6 +22,19 @@
         </div>
       </div>
       
+      <div *ngIf="model.type == 'link'">
+        <div class="post-text">
+          <label for="link" class="">Link</label>
+          <input id="link" type="url" class="" required
+            [(ngModel)] = "model.link"
+            ngControl = "link" #link="ngForm"
+          >
+          <div [hidden]="link.valid || link.pristine" class="alert alert-danger">
+            Link is required
+          </div>
+        </div>
+      </div>
+      
       <div class="post-textarea">
         <label for="text" class="">Text</label>
         <textarea type="text" class="" rows="5" required
@@ -22,19 +43,6 @@
         ></textarea>
         <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
           Text is required
-        </div>
-      </div>
-      
-      <div class="post-select">
-        <label for="power">Post Type</label>
-        <select class="" required
-          [(ngModel)] = "model.type"
-          ngControl = "type" #type="ngForm"
-        >
-          <option *ngFor="#postType of _postTypes" [value]="postType">{{postType}}</option>
-        </select>
-        <div [hidden]="type.valid || type.pristine" class="alert alert-danger">
-          Type is required
         </div>
       </div>
       

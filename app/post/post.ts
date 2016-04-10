@@ -8,6 +8,7 @@ export interface Post {
   downvotes: number,
   title: string;
   text: string;
+  link?: string;
   type: string;
   comments: Comment1[];
   postedby: User;
