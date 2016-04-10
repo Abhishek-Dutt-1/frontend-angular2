@@ -3,25 +3,22 @@ import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/route
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from 'angular2/http';
 
 import { AppService }     from './app.service';
-/*
-import { HeroService }     from './hero/hero.service';
-import { HeroesComponent } from './hero/heroes.component';
-import { HeroDetailComponent } from './hero/hero-detail.component';
-*/
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { PostService }     from './post/post.service';
 //import { PostListLoaderComponent } from './post/post-list-loader.component';
-import { PostDetailComponent } from './post/post-detail.component';
+//import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
 import { NewPostComponent } from './post/new-post.component';
 
-import { RealSuperGroupPostListLoaderComponent }     from './super_group/real-super_group-post-list-loader.component';
+import { SuperGroupPostListLoaderComponent }     from './super_group/super_group-post-list-loader.component';
 import { SuperGroupService }     from './super_group/super_group.service';
-import { SuperGroupPostListLoaderComponent } from './post/super_group-post-list-loader.component';
 
-import { GroupService }     from './group/group.service';
+import { GroupService } from './group/group.service';
 import { ViewGroupComponent } from './group/view-group.component';
+import { NewGroupComponent } from './group/new-group.component';
+
+import { HyperGroupPostListLoaderComponent } from './hyper_group/hyper_group-post-list-loader.component';
 
 import { NewUserComponent } from './user/new-user.component';
 import { ViewUserComponent } from './user/view-user.component';
@@ -31,6 +28,11 @@ import { UserAuthenticationPanelComponent } from './user/user-authentication-pan
 
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { AuthenticationService } from './authentication/authentication.service';
+
+import { NewComment1LoaderComponent } from './comment1/new-comment1-loader.component';
+import { NewComment2LoaderComponent } from './comment2/new-comment2-loader.component';
+import { Comment1Service } from './comment1/comment1.service';
+import { Comment2Service } from './comment2/comment2.service';
 
 @Component({
   selector: 'my-app-component',
@@ -43,7 +45,7 @@ import { AuthenticationService } from './authentication/authentication.service';
           <div class="header">
             <div class="col-xs-5">
               <div class="logo"><b>
-                <a [routerLink]="['/SuperGroupPostListDefault']">
+                <a [routerLink]="['/HyperGroupPostListDefault']">
                   <span class="glyphicon glyphicon-home" aria-hidden="true"></span> YOLO!
                 </a></b>
               </div>
@@ -89,7 +91,8 @@ import { AuthenticationService } from './authentication/authentication.service';
     HTTP_PROVIDERS,
     JSONP_PROVIDERS,
     AppService,
-    //HeroService,
+    Comment1Service,
+    Comment2Service,
     PostService,
     GroupService,
     SuperGroupService,
@@ -98,61 +101,30 @@ import { AuthenticationService } from './authentication/authentication.service';
   ]
 })
 @RouteConfig([
-  /*
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: DashboardComponent,
-    useAsDefault: true
-  },
-  {
-    path: '/heroes',
-    name: 'Heroes',
-    component: HeroesComponent
-  },
-  {
-    path: '/detail/:id',
-    name: 'HeroDetail',
-    component: HeroDetailComponent
-  },
-  */
-  /* DEPRICATED
-  {
-    path: '/go',
-    name: 'PostList',
-    component: PostListLoaderComponent
-  },
-  *//*
-  {
-    path: '/go',
-    name: 'GroupOfGroupsPostList1',
-    component: GroupOfGroupsPostListLoaderComponent,
-    useAsDefault: true
-  },*/
   {
     path: '/go/:geo',
-    name: 'SuperGroupPostList',
-    component: SuperGroupPostListLoaderComponent,
+    name: 'HyperGroupPostList',
+    component: HyperGroupPostListLoaderComponent,
   },  
   {
     path: '/go',
-    name: 'SuperGroupPostListDefault',
-    component: SuperGroupPostListLoaderComponent,
+    name: 'HyperGroupPostListDefault',
+    component: HyperGroupPostListLoaderComponent,
     useAsDefault: true
   },
   {
     path: '/sg/:super_group_name',
-    name: 'RealSuperGroupPostList',
-    component: RealSuperGroupPostListLoaderComponent
-  },
+    name: 'SuperGroupPostList',
+    component: SuperGroupPostListLoaderComponent
+  },/*
   {
     // would be changed to edit post
     path: '/postdetail/:id',
     name: 'PostDetail',
     component: PostDetailComponent
-  },
+  },*/
   {
-    path: '/post/:id',
+    path: '/post/:postid',
     name: 'ViewPost',
     component: ViewPostComponent
   },
@@ -166,6 +138,11 @@ import { AuthenticationService } from './authentication/authentication.service';
     path: '/go/:super_group_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent
+  },
+  {
+    path: '/newgroup/:super_group_name',
+    name: 'NewGroup',
+    component: NewGroupComponent
   },
   {
     path: '/login',
@@ -200,6 +177,16 @@ import { AuthenticationService } from './authentication/authentication.service';
     path: '/user/:id',
     name: 'ViewUser',
     component: ViewUserComponent
+  },
+  {
+    path: '/reply/:postid',
+    name: 'NewComment1',
+    component: NewComment1LoaderComponent
+  },
+  {
+    path: '/reply2/:postid/:comment1id',
+    name: 'NewComment2',
+    component: NewComment2LoaderComponent
   }
 ])
 export class AppComponent { }

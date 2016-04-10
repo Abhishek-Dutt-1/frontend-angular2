@@ -1,5 +1,5 @@
 import {Component, OnInit} from 'angular2/core';
-import {Router, RouteParams} from 'angular2/router';
+import {Router, RouteParams, RouterLink} from 'angular2/router';
 import {Group} from './group';
 import {GroupService} from './group.service';
 import {Post} from '../post/post';
@@ -20,11 +20,13 @@ import {PostTemplateType} from '../post/post-template-types';
           
             <div class="panel panel-default group-details-panel">
               <div class="panel-heading">
-                <h4 class="panel-title">{{group.super_group.name}}/{{group.name}}</h4>
+                <h4 class="panel-title">
+                  <a [routerLink]="['SuperGroupPostList', {super_group_name: group.super_group.name}]">{{group.super_group.name}}</a>/{{group.name}}
+                </h4>
               </div>  
               <div class="panel-body">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Mauris sagittis pellentesque lacus eleifend lacinia...
+                <span *ngIf="group.description">{{group.description}}</span>
+                <span *ngIf="!group.description"><i>Welcome to {{group.super_group.name}}/{{group.name}}</i></span>
               </div>
               <div class="panel-footer">
                 <a>Group Info</a> | 
@@ -47,15 +49,20 @@ import {PostTemplateType} from '../post/post-template-types';
   .my-view-group .group-details-panel {
     margin-bottom: 0px;
     margin-top: 10px;
-    /*
-    padding-bottom: 10px;
-    border-bottom: 1px solid lightgrey;
-    */
   }
+  .my-view-group .panel-heading {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+  .my-view-group .panel-body {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+  
   `],
   //styleUrls: ['app/group/view-group.component.css'],
   //inputs: ['group'],
-  directives: [PostListComponent]
+  directives: [PostListComponent, RouterLink]
 })
 export class ViewGroupComponent {
   

@@ -86,6 +86,7 @@ export class PostService {
           upvotes: 0,
           downvotes: 0,
           title: newPost.title,
+          link: newPost.link,
           text: newPost.text,
           type: newPost.type,
           comments: [],
