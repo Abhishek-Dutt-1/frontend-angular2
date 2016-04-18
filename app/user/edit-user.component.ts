@@ -6,6 +6,7 @@
 import {Component, OnInit} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
 import {User} from './user';
+import {AppService} from '../app.service';
 import {UserService} from './user.service';
 import {UserComponent} from './user.component';
 import {AuthenticationService} from '../authentication/authentication.service';
@@ -73,6 +74,12 @@ import {SuperGroupService} from '../super_group/super_group.service';
                       </div>
                     </div>
                     
+                    <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
+                      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                      <span class="sr-only">Error:</span>
+                      {{_errorMsg}}
+                    </div>
+                                        
                     <div class="form-group">
                       <div class="col-md-offset-4 col-md-8">
                         <button (click)="onSubmitBasic($event)" class="btn btn-default" [disabled]="!editBasicForm.form.valid || (confirm_password.value != password.value)">Save</button>
@@ -144,6 +151,12 @@ import {SuperGroupService} from '../super_group/super_group.service';
                         </div>
                       </div>
                       
+                      <div class="alert alert-danger" role="alert" [hidden]="!_errorMsgGeo">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        {{_errorMsgGeo}}
+                      </div>
+                      
                       <div class="form-group">
                         <div class="col-md-offset-4 col-md-8">
                           <button (click)="onSubmitGeo($event)" class="btn btn-default">Save</button>
@@ -175,13 +188,16 @@ import {SuperGroupService} from '../super_group/super_group.service';
 })
 export class EditUserComponent {
   
-  private _tab: String = 'basic'
-  private _loggedInUser: User = null
-  private _model: any = null
+  private _tab: String = 'basic';
+  private _loggedInUser: User = null;
+  private _model: any = null;
+  private _errorMsg = null;
+  private _errorMsgGeo = null;
 
   private _groupList = {international: [], national: [], state: [], city: [], local: [], selectedNational: {}};
   
   constructor(
+    private _appService: AppService,
     private _userService: UserService,
     private _router: Router,
     private _routeParams: RouteParams,
@@ -194,12 +210,51 @@ export class EditUserComponent {
     this._tab = this._routeParams.get('tab') || this._tab;
 
     this._loggedInUser = this._authenticationService.getLoggedInUser();
+    if(!this._loggedInUser) {
+      this._router.navigate(['Login']);
+      return;
+    }
     //console.log(this._loggedInUser);
     this._model = this.cloneObj({}, this._loggedInUser);
 
     this._model.password = null;
     this._model.confirm_password = null;
     
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      this._superGroupService.getAllSuperGroups(false).then(sgList => {
+        console.log(sgList);
+        ["international", "state", "city", "local"].forEach(hyperGroup => {
+          this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
+          for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+            if( this._loggedInUser.settings[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+              this._groupList[hyperGroup][i].selected = true;
+            }
+          }
+        });
+        this._groupList.national = sgList.filter(sg => sg.type === 'national');
+        this._groupList.selectedNational = this._loggedInUser.settings.national;
+      }).catch(err => console.log(err));
+    }
+    
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      this._superGroupService.getAllSuperGroups(false).subscribe(sgList => {
+        console.log(sgList);
+        ["international", "state", "city", "local"].forEach(hyperGroup => {
+          this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
+          for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+            if( this._loggedInUser.settings[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+              this._groupList[hyperGroup][i].selected = true;
+            }
+          }
+        });
+        this._groupList.national = sgList.filter(sg => sg.type === 'national');
+        this._groupList.selectedNational = this._loggedInUser.settings.national;
+      },
+      error => {
+        console.log(error);
+      });
+    }
+    /*
     this._superGroupService.getSuperGroupsByType('international').then( sgList => {
       this._groupList.international = sgList;
       for(var i = 0, l = this._groupList.international.length; i < l; i++) {
@@ -240,23 +295,42 @@ export class EditUserComponent {
         }
       }
     });
-
+    */
   }
   
   onSubmitBasic(event) {
+    
     event.preventDefault();
-
+    this._errorMsg = null;
+    
     if(this._model.password != this._model.confirm_password) {
       return
     }
     
-    if(this._model.password && this._model.confirm_password) {
-      this._userService.changePassword(this._loggedInUser.id, this._model.password)
-        .then( updatedUser => {
-          return this._authenticationService.loginUser(updatedUser)
-      }).then( user => {
-        this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'basic'}]);
-      }).catch( err => console.log(err) );
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      if(this._model.password && this._model.confirm_password) {
+        this._userService.changePassword(this._loggedInUser.id, this._model.password)
+          .then( updatedUser => {
+            return this._authenticationService.loginUser(updatedUser)
+        }).then( user => {
+          this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'basic'}]);
+        }).catch( err => console.log(err) );
+      }
+    }
+    
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      if(this._model.password && this._model.confirm_password) {
+        this._userService.changePassword(this._loggedInUser.id, this._model.password)
+          .subscribe(
+            res => {
+              console.log(res);
+              this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'basic'}]);
+            },
+            error => {
+              this._errorMsg = "Password must have at least 8 characters."
+            }
+          )
+      }
     }
   }
   

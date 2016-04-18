@@ -39,7 +39,7 @@ import {Router} from 'angular2/router';
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <label class="col-md-4 control-label">Password</label>
-                        <p class="form-control-static col-md-8">*****</p>
+                        <p class="form-control-static col-md-8"><i>[hidden]</i></p>
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <div class="col-md-offset-4 col-md-8">

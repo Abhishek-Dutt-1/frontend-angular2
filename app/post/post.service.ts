@@ -3,13 +3,15 @@ import {MOCK_POSTS} from './mock-posts';
 import {Injectable} from 'angular2/core';
 import {GroupService} from '../group/group.service';
 import {AuthenticationService} from '../authentication/authentication.service';
+import {UserService} from '../user/user.service';
 
 @Injectable()
 export class PostService {
   
   constructor(
     private _groupService: GroupService,
-    private _authenticationService: AuthenticationService
+    private _authenticationService: AuthenticationService,
+    private _userService: UserService
   ) { }
   
   getPosts() {
@@ -34,12 +36,20 @@ export class PostService {
    */
   getPostsByGeoSelection(geoSelection: string) {
     let user = this._authenticationService.getLoggedInUser();
+    console.log(geoSelection);
+    console.log(user)
+    if(!user) {
+      // No user logged in
+      // Display a posts from a default selection of super groups
+      user = this._userService.getDefaultUser();
+    }
+    
     if(user) {
       if(geoSelection == 'international') {
         return Promise.resolve({
           posts: MOCK_POSTS.filter(post => user.settings.international.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
           superGroupList: user.settings.international
-        })  
+        })
       }
       if(geoSelection == 'national') {
         return Promise.resolve({
@@ -51,20 +61,20 @@ export class PostService {
         return Promise.resolve({
           posts: MOCK_POSTS.filter(post => user.settings.state.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
           superGroupList: user.settings.state
-        })  
+        })
       }
       if(geoSelection == 'city') {
         return Promise.resolve({
           posts: MOCK_POSTS.filter(post => user.settings.city.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
           superGroupList: user.settings.city
-        })  
+        })
       }
       if(geoSelection == 'local') {
         return Promise.resolve({
           posts: MOCK_POSTS.filter(post => user.settings.local.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
           superGroupList: user.settings.local
-        })  
-      } 
+        })
+      }
     }
   }
   

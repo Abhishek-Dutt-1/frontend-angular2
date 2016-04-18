@@ -43,7 +43,7 @@ export class UserAuthenticationPanelComponent {
     private _userService: UserService,
     private _authenticationService: AuthenticationService
   ) {
-    _authenticationService.loggedInUser$.subscribe(user => {
+    this._authenticationService.loggedInUser$.subscribe(user => {
       if(user) {
         this.loggedInUser = user;
         this.isUserLoggedIn = true;

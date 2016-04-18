@@ -3,12 +3,17 @@ import {MOCK_USERS} from './mock-users';
 import {Injectable} from 'angular2/core';
 import {GroupService} from '../group/group.service';
 import {UserRoles} from './user-roles';
+import {AppService} from '../app.service';
+import {Http, Headers, RequestOptions} from 'angular2/http';
+import {Subject, Observable, Observer} from 'rxjs/Rx';
 
 @Injectable()
 export class UserService {
   
   constructor(
-    private _groupService: GroupService
+    private _groupService: GroupService,
+    private _appService: AppService,
+    private _http: Http
   ) { }
   
   getUsers() {
@@ -16,12 +21,56 @@ export class UserService {
   }
   
   getUser(id: number) {
-    /*
-    return Promise.resolve(MOCK_USERS).then(
-      users => users.filter(user => user.id == id)[0]
-    );
-    */
-    return Promise.resolve(MOCK_USERS.find(user => user.id == id))
+    
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      return Promise.resolve(MOCK_USERS.find(user => user.id == id));
+    }
+    
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+      return this._http.get(backendUrl+'/user/'+id, options)
+      .map( 
+        res => {
+          let user = res.json();
+          if(user && !user.settings) {
+            user.settings = {
+              international: [],
+              national: {},
+              state: [],
+              city: [],
+              local: []
+            };
+          }
+          console.log("NO ERROR")
+          console.log(user);
+          return user;
+      })
+      .catch(
+        error => {
+          // In a real world app, we might send the error to remote logging infrastructure
+          let errMsg = "";
+          //console.log("ERROR")
+          //console.log(error)
+          //console.log(error.status)
+          try {
+            console.log(error._body)
+            if(error.status === 404 ) {
+              errMsg = error._body;
+            } else if (error.json().type === "error") { 
+              // Handle XMLHttpRequestProgressEvent::ERR_CONNECTION_REFUSED i.e. Server not up
+              errMsg = "Server not responding, Please try again later.";
+            } else if(error.json()) {
+              errMsg = error.json();
+            } 
+          } catch(err) {
+            errMsg = 'Server error';
+          }
+          return Observable.throw(errMsg);
+        }
+      );
+    }
     
   }
   
@@ -47,19 +96,60 @@ export class UserService {
         local: newUser.local
       } 
     }
-    MOCK_USERS.push(newProperUser);
-    console.log(newProperUser);
-    return this.getUser(newProperUser.id);
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      MOCK_USERS.push(newProperUser);
+      console.log(newProperUser);
+      return this.getUser(newProperUser.id);
+    }
+    
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      delete newProperUser.id;
+      newProperUser.international = newProperUser.settings.international;
+      newProperUser.national = newProperUser.settings.international;
+      newProperUser.state = newProperUser.settings.international;
+      newProperUser.city = newProperUser.settings.international;
+      newProperUser.local = newProperUser.settings.international;
+      delete newProperUser.settings;
+      
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+      return this._http.post(backendUrl+'/auth/local/register', JSON.stringify(newProperUser), options)
+      .map(
+        res => {
+          let user = res;
+          console.log(user);
+          console.log(user.json());
+          user = res.json().user;
+          return user;
+      })
+      .catch(
+        error => {
+          console.log(error);
+          // In a real world app, we might send the error to remote logging infrastructure
+          let errMsg = error.json() || 'Server error';
+          return Observable.throw(errMsg);
+        }
+      );
+    }
   }
   
   changePassword(userId: number, newPassword: string) {
-    MOCK_USERS.find(user => user.id == userId).password = newPassword
-    return Promise.resolve(MOCK_USERS.find(user => user.id == userId));
-    /*
-    return Promise.resolve(MOCK_USERS).then(
-      users => users.find(user => user.id == userId).password = newPassword
-      )
-      */
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      MOCK_USERS.find(user => user.id == userId).password = newPassword
+      return Promise.resolve(MOCK_USERS.find(user => user.id == userId));
+    }
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers = new Headers( this._appService.getSiteParams().headersObj );
+      let options = new RequestOptions({ headers: headers });
+      return this._http.post(backendUrl+'/passport/changepassword', JSON.stringify({userId: userId, newPassword: newPassword}), options)
+        .map(res => {
+          return res.json();
+        }).catch(error => {
+          return Observable.throw(error.json());
+        });
+    }
   }
   
   updateGeoSettings(userId: number, newSettings: any) {
@@ -74,6 +164,23 @@ export class UserService {
     } else {
       throw "User Not Found";
     }
+  }
+  
+  /**
+   * returns a default user object to fill in
+   * whernever a logged in user is requried but is not available
+   */
+  getDefaultUser() {
+    let defaultUser = {
+      settings: {
+        international: [],
+        national: {},
+        state: [],
+        city: [],
+        local: []
+      }
+    };
+    return defaultUser;
   }
   
 }
