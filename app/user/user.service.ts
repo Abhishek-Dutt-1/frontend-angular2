@@ -49,6 +49,8 @@ export class UserService {
       })
       .catch(
         error => {
+          return this._appService.handleServerErrors(error);
+          /*
           // In a real world app, we might send the error to remote logging infrastructure
           let errMsg = "";
           //console.log("ERROR")
@@ -68,6 +70,7 @@ export class UserService {
             errMsg = 'Server error';
           }
           return Observable.throw(errMsg);
+          */
         }
       );
     }
@@ -147,22 +150,37 @@ export class UserService {
         .map(res => {
           return res.json();
         }).catch(error => {
-          return Observable.throw(error.json());
+          return this._appService.handleServerErrors(error);
         });
     }
   }
   
   updateGeoSettings(userId: number, newSettings: any) {
-    var user = MOCK_USERS.find(user => user.id == userId)
-    if(user) {
-      user.settings.international = newSettings.international;
-      user.settings.national = newSettings.national;
-      user.settings.state = newSettings.state;
-      user.settings.city = newSettings.city;
-      user.settings.local = newSettings.local;
-      return Promise.resolve(user); 
-    } else {
-      throw "User Not Found";
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      var user = MOCK_USERS.find(user => user.id == userId)
+      if(user) {
+        user.settings.international = newSettings.international;
+        user.settings.national = newSettings.national;
+        user.settings.state = newSettings.state;
+        user.settings.city = newSettings.city;
+        user.settings.local = newSettings.local;
+        return Promise.resolve(user); 
+      } else {
+        throw "User Not Found";
+      }
+    }
+    
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers = new Headers( this._appService.getSiteParams().headersObj );
+      let options = new RequestOptions({ headers: headers });
+      return this._http.post(backendUrl+'/user/updateGeoSettings', JSON.stringify({userId: userId, newSettings: newSettings}), options)
+        .map(res => {
+          console.log(res);
+          return res.json();
+        }).catch(error => {
+          return this._appService.handleServerErrors(error);
+        });
     }
   }
   

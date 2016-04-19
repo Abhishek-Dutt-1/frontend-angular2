@@ -16,12 +16,12 @@ export var MOCK_SUPER_GROUPS: SuperGroup[] = [
   {
     id: 3,
     name: 'national_1',
-    type: 'national'
+    type: 'international'
   },
   {
     id: 4,
     name: 'national_2',
-    type: 'national'
+    type: 'international'
   },
   {
     id: 5,

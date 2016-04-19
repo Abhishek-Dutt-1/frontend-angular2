@@ -68,7 +68,8 @@ export class SuperGroupService {
         })
         .catch(error => {
           console.log(error);
-          return Observable.throw(error);
+          return this._appService.handleServerErrors(error);
+          //return Observable.throw(error);
         });
     }
   }

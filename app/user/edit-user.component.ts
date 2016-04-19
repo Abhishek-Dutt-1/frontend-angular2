@@ -92,8 +92,14 @@ import {SuperGroupService} from '../super_group/super_group.service';
                 </div>
                 
                 <div role="tabpanel" class="tab-pane" [ngClass]="{active: _tab == 'geo'}" id="geo">
-                
-                  <div>                          
+                                      
+                  <div class="alert alert-danger" role="alert" [hidden]="!_errorMsgGeo">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    {{_errorMsgGeo}}
+                  </div>
+                  
+                  <div>                     
                     <form #editGeoForm="ngForm" class="form-horizontal">
                     
                       <div class="form-group">
@@ -107,6 +113,7 @@ import {SuperGroupService} from '../super_group/super_group.service';
                         </div>
                       </div>
                       
+                      {{_groupList.selectedNational.name}}
                       <div class="form-group">
                         <label class="col-md-4 control-label">National</label>
                         <div class="col-md-8">
@@ -149,12 +156,6 @@ import {SuperGroupService} from '../super_group/super_group.service';
                             </label>
                           </span>
                         </div>
-                      </div>
-                      
-                      <div class="alert alert-danger" role="alert" [hidden]="!_errorMsgGeo">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        <span class="sr-only">Error:</span>
-                        {{_errorMsgGeo}}
                       </div>
                       
                       <div class="form-group">
@@ -231,8 +232,8 @@ export class EditUserComponent {
             }
           }
         });
-        this._groupList.national = sgList.filter(sg => sg.type === 'national');
-        this._groupList.selectedNational = this._loggedInUser.settings.national;
+        this._groupList.national = sgList.filter(sg => sg.type === 'international');
+        this._groupList.selectedNational = this.cloneObj({}, this._loggedInUser.settings.national);
       }).catch(err => console.log(err));
     }
     
@@ -247,11 +248,12 @@ export class EditUserComponent {
             }
           }
         });
-        this._groupList.national = sgList.filter(sg => sg.type === 'national');
-        this._groupList.selectedNational = this._loggedInUser.settings.national;
+        this._groupList.national = sgList.filter(sg => sg.type === 'international');
+        this._groupList.selectedNational = this.cloneObj({}, this._loggedInUser.settings.national);
       },
       error => {
         console.log(error);
+        this._errorMsgGeo = error;
       });
     }
     /*
@@ -344,19 +346,45 @@ export class EditUserComponent {
       city: [],
       local: []
     };
+
+    model.international = this._groupList.international.filter(el => el.selected == true);
+    model.national = this.cloneObj({}, this._groupList.selectedNational);
+    model.state = this._groupList.state.filter(el => el.selected == true);
+    model.city = this._groupList.city.filter(el => el.selected == true);
+    model.local = this._groupList.local.filter(el => el.selected == true);
+    console.log(this._groupList.selectedNational);
+    console.log(model)
+    var geoSettings = this.cloneObj({}, model);
     
-    model.international = this._groupList.international.filter(el => el.selected == true)
-    model.national = this._groupList.selectedNational
-    model.state = this._groupList.state.filter(el => el.selected == true)
-    model.city = this._groupList.city.filter(el => el.selected == true)
-    model.local = this._groupList.local.filter(el => el.selected == true)
-    
-    this._userService.updateGeoSettings(this._loggedInUser.id, model)
-      .then( updatedUser => {
-        this._authenticationService.loginUser(updatedUser);
-      }).then( user => {
-        this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'geo'}]);
-      }).catch( err => console.log(err) );
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      this._userService.updateGeoSettings(this._loggedInUser.id, model)
+        .then( updatedUser => {
+          this._authenticationService.loginUser(updatedUser);
+        }).then( user => {
+          this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'geo'}]);
+        }).catch( err => console.log(err) );
+    }
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      
+      model.international = model.international.map(el => el.id);
+      if(model.national) model.national = model.national.id;
+      model.state = model.state.map(el => el.id);
+      model.city = model.city.map(el => el.id);
+      model.local = model.local.map(el => el.id);
+      console.log(model)
+      
+      this._userService.updateGeoSettings(this._loggedInUser.id, model)
+        .subscribe( updatedUser => {
+          console.log(updatedUser);
+          console.log(geoSettings);
+            this._authenticationService.refreshLoggedInUser(geoSettings);
+            this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'geo'}]);
+        }, 
+        error => {
+          console.log(error);
+          this._errorMsgGeo = error;
+        });
+    }
   }
   
   /**

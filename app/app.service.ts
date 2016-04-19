@@ -1,5 +1,6 @@
 import {Injectable} from 'angular2/core';
 import {Http, Headers, RequestOptions} from 'angular2/http';
+import {Observable} from 'rxjs/Rx';
 
 @Injectable()
 export class AppService {
@@ -57,5 +58,26 @@ export class AppService {
    */
   unsetAuthorizationHeader() {
     this._jwt = null;
+  }
+  
+  handleServerErrors(error: any) {
+    // In a real world app, we might send the error to remote logging infrastructure
+    let errMsg = "";
+    try {
+      console.log(error);
+      if(error.status === 404 ) {
+        errMsg = error._body || "Page Not Found!";
+      } else if(error.status === 403) {
+        errMsg = error._body || "Not Authorized!";
+      } else if (error.json().type === "error") { 
+        // Handle XMLHttpRequestProgressEvent::ERR_CONNECTION_REFUSED i.e. Server not up
+        errMsg = "Server not responding, Please try again later.";
+      } else if(error.json()) {
+        errMsg = error.json();
+      }
+    } catch(err) {
+      errMsg = 'Server error';
+    }
+    return Observable.throw(errMsg);
   }
 }

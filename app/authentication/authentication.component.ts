@@ -11,7 +11,11 @@ import {AppService} from '../app.service';
       <div class="col-xs-12 col-md-offset-3 col-md-6">
     
         <h3>Welcome fellow human!</h3>
-
+        <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          {{_errorMsg}}
+        </div>
         <form #loginForm="ngForm">
         
           <!--
@@ -76,7 +80,7 @@ export class AuthenticationComponent {
     identifier: null,
     password: null
   };
-  errorMsg = null;
+  private _errorMsg = null;
   
   constructor(
     private _authenticationService: AuthenticationService,
@@ -93,7 +97,7 @@ export class AuthenticationComponent {
           if(user) {
             this._router.navigate(['ViewUser', {id: user.id}]);
           }  else {
-            this.errorMsg = "Incorrect email or password!"
+            this._errorMsg = "Incorrect email or password!"
           }       
       }).catch((reason) => {
         console.log(reason);
@@ -107,14 +111,15 @@ export class AuthenticationComponent {
           }
         },
         error => {
-          this.errorMsg = error;  
+          console.log(error)
+          this._errorMsg = error;  
         }
       );
     }
   }
   
   clearErrorMsg() {
-    this.errorMsg = null;
+    this._errorMsg = null;
   }
     
   goBack() {

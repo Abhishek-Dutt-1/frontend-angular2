@@ -56,7 +56,9 @@ export class AuthenticationService {
             }
           },
           error => {
+            // token found but server did not sent a user
             console.log(error);
+            return this._appService.handleServerErrors(error)
           }
         );
       } else {
@@ -123,10 +125,13 @@ export class AuthenticationService {
       })
       .catch(
         error => {
+          return this._appService.handleServerErrors(error);
+          /*
           console.log(error)
           // In a real world app, we might send the error to remote logging infrastructure
           let errMsg = error.json() || 'Server error';
           return Observable.throw(errMsg);
+          */
         }
       );
     }   //!servicesMode = 'server'
@@ -146,6 +151,13 @@ export class AuthenticationService {
   
   getLoggedInUser() {
     return this._currentUser;
+  }
+  
+  /**
+   * User updated his geo setting, refresh its front end cache
+   */
+  refreshLoggedInUser(geoSettings: any) {
+    this._currentUser.settings = geoSettings;
   }
   
 }
