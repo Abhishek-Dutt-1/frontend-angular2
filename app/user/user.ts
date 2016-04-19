@@ -8,11 +8,9 @@ export interface User {
   displayname: string;
   password: string;
   userrole: UserRoles;
-  settings?: {
-    international: SuperGroup[],
-    national: SuperGroup,
-    state: SuperGroup[],
-    city: SuperGroup[],
-    local: SuperGroup[]
-  }
+  international: SuperGroup[],
+  national: SuperGroup[],
+  state: SuperGroup[],
+  city: SuperGroup[],
+  local: SuperGroup[]
 }

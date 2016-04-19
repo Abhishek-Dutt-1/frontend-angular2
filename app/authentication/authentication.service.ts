@@ -51,7 +51,8 @@ export class AuthenticationService {
             if(user) {
               this._isUserLoggedIn = true;
               this._currentUser = user;
-              this._loggedInUser.next(user);   
+              this._loggedInUser.next(user);
+              this._appService.setAuthorizationHeader(token);
               console.log("Auto logged in user frlom jwt", this._currentUser)     
             }
           },
@@ -105,16 +106,6 @@ export class AuthenticationService {
         res => {
           console.log(res.json())
           let user = res.json().user || {};
-          if(user && !user.settings) {
-            user.settings = {
-              international: [],
-              national: {},
-              state: [],
-              city: [],
-              local: []
-            };
-          }
-          
           this._currentUser = user;
           //localStorage.setItem('loggedInUserId', JSON.stringify(user.id));
           localStorage.setItem('jwt', JSON.stringify(user.jwt));
@@ -150,6 +141,7 @@ export class AuthenticationService {
   }
   
   getLoggedInUser() {
+    console.log(this._currentUser);
     return this._currentUser;
   }
   
@@ -157,7 +149,11 @@ export class AuthenticationService {
    * User updated his geo setting, refresh its front end cache
    */
   refreshLoggedInUser(geoSettings: any) {
-    this._currentUser.settings = geoSettings;
+    this._currentUser.international = geoSettings.international;
+    this._currentUser.national = geoSettings.national;
+    this._currentUser.state = geoSettings.state;
+    this._currentUser.city = geoSettings.city;
+    this._currentUser.local = geoSettings.local;
   }
   
 }

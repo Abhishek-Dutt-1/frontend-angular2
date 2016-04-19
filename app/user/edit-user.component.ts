@@ -113,7 +113,18 @@ import {SuperGroupService} from '../super_group/super_group.service';
                         </div>
                       </div>
                       
-                      {{_groupList.selectedNational.name}}
+                      <div class="form-group">
+                        <label class="col-md-4 control-label">National</label>
+                        <div class="col-md-8">
+                          <span *ngFor="#national of _groupList.national">
+                            <label class="checkbox-inline">
+                              <input type="checkbox" [(ngModel)]="national.selected"> {{national.name}}
+                            </label>
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <!--
                       <div class="form-group">
                         <label class="col-md-4 control-label">National</label>
                         <div class="col-md-8">
@@ -124,6 +135,7 @@ import {SuperGroupService} from '../super_group/super_group.service';
                           </span>
                         </div>
                       </div>
+                      -->
                       
                       <div class="form-group">
                         <label class="col-md-4 control-label">State</label>
@@ -227,13 +239,21 @@ export class EditUserComponent {
         ["international", "state", "city", "local"].forEach(hyperGroup => {
           this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
           for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
-            if( this._loggedInUser.settings[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+            if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
               this._groupList[hyperGroup][i].selected = true;
             }
           }
         });
+        // National and International are same SuperGroups
         this._groupList.national = sgList.filter(sg => sg.type === 'international');
-        this._groupList.selectedNational = this.cloneObj({}, this._loggedInUser.settings.national);
+        let hyperGroup = "national"
+        for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+          this._groupList[hyperGroup][i].selected = false;    // selected = false coz international above has made some true
+          if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+            this._groupList[hyperGroup][i].selected = true;
+          }
+        }
+        //this._groupList.selectedNational = this.cloneObj({}, this._loggedInUser.national);
       }).catch(err => console.log(err));
     }
     
@@ -243,13 +263,21 @@ export class EditUserComponent {
         ["international", "state", "city", "local"].forEach(hyperGroup => {
           this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
           for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
-            if( this._loggedInUser.settings[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+            if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
               this._groupList[hyperGroup][i].selected = true;
             }
           }
         });
-        this._groupList.national = sgList.filter(sg => sg.type === 'international');
-        this._groupList.selectedNational = this.cloneObj({}, this._loggedInUser.settings.national);
+        // National and International are same SuperGroups``
+        this._groupList.national = JSON.parse(JSON.stringify(sgList.filter(sg => sg.type === 'international')));
+        let hyperGroup = "national"
+        for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+          this._groupList[hyperGroup][i].selected = false;    // selected = false coz international above has made some true
+          if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+            this._groupList[hyperGroup][i].selected = true;
+          }
+        }
+        console.log(this._groupList)
       },
       error => {
         console.log(error);
@@ -341,19 +369,22 @@ export class EditUserComponent {
     
     let model = {
       international: [],
-      national: {},
+      national: [],
       state: [],
       city: [],
       local: []
     };
 
     model.international = this._groupList.international.filter(el => el.selected == true);
-    model.national = this.cloneObj({}, this._groupList.selectedNational);
+    model.national = this._groupList.national.filter(el => el.selected == true);
+    //model.national = this.cloneObj({}, this._groupList.selectedNational);
     model.state = this._groupList.state.filter(el => el.selected == true);
     model.city = this._groupList.city.filter(el => el.selected == true);
     model.local = this._groupList.local.filter(el => el.selected == true);
+    
     console.log(this._groupList.selectedNational);
     console.log(model)
+    
     var geoSettings = this.cloneObj({}, model);
     
     if(this._appService.getSiteParams().servicesMode === 'local') {
@@ -367,7 +398,8 @@ export class EditUserComponent {
     if(this._appService.getSiteParams().servicesMode === 'server') {
       
       model.international = model.international.map(el => el.id);
-      if(model.national) model.national = model.national.id;
+      model.national = model.national.map(el => el.id);
+      //if(model.national) model.national = model.national.id;
       model.state = model.state.map(el => el.id);
       model.city = model.city.map(el => el.id);
       model.local = model.local.map(el => el.id);

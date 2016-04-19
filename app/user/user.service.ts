@@ -34,15 +34,6 @@ export class UserService {
       .map( 
         res => {
           let user = res.json();
-          if(user && !user.settings) {
-            user.settings = {
-              international: [],
-              national: {},
-              state: [],
-              city: [],
-              local: []
-            };
-          }
           console.log("NO ERROR")
           console.log(user);
           return user;
@@ -50,27 +41,6 @@ export class UserService {
       .catch(
         error => {
           return this._appService.handleServerErrors(error);
-          /*
-          // In a real world app, we might send the error to remote logging infrastructure
-          let errMsg = "";
-          //console.log("ERROR")
-          //console.log(error)
-          //console.log(error.status)
-          try {
-            console.log(error._body)
-            if(error.status === 404 ) {
-              errMsg = error._body;
-            } else if (error.json().type === "error") { 
-              // Handle XMLHttpRequestProgressEvent::ERR_CONNECTION_REFUSED i.e. Server not up
-              errMsg = "Server not responding, Please try again later.";
-            } else if(error.json()) {
-              errMsg = error.json();
-            } 
-          } catch(err) {
-            errMsg = 'Server error';
-          }
-          return Observable.throw(errMsg);
-          */
         }
       );
     }
@@ -91,13 +61,11 @@ export class UserService {
       password: newUser.password,
       confirm_password: newUser.confirm_password,
       userrole: UserRoles.user,
-      settings: {
-        international: newUser.international,
-        national: newUser.national,
-        state: newUser.state,
-        city: newUser.city,
-        local: newUser.local
-      } 
+      international: newUser.international,
+      national: newUser.national,
+      state: newUser.state,
+      city: newUser.city,
+      local: newUser.local
     }
     if(this._appService.getSiteParams().servicesMode === 'local') {
       MOCK_USERS.push(newProperUser);
@@ -105,15 +73,7 @@ export class UserService {
       return this.getUser(newProperUser.id);
     }
     
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      delete newProperUser.id;
-      newProperUser.international = newProperUser.settings.international;
-      newProperUser.national = newProperUser.settings.international;
-      newProperUser.state = newProperUser.settings.international;
-      newProperUser.city = newProperUser.settings.international;
-      newProperUser.local = newProperUser.settings.international;
-      delete newProperUser.settings;
-      
+    if(this._appService.getSiteParams().servicesMode === 'server') {      
       let backendUrl = this._appService.getSiteParams().backendUrl;
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
@@ -129,9 +89,7 @@ export class UserService {
       .catch(
         error => {
           console.log(error);
-          // In a real world app, we might send the error to remote logging infrastructure
-          let errMsg = error.json() || 'Server error';
-          return Observable.throw(errMsg);
+          return this._appService.handleServerErrors(error);
         }
       );
     }
@@ -159,11 +117,11 @@ export class UserService {
     if(this._appService.getSiteParams().servicesMode === 'local') {
       var user = MOCK_USERS.find(user => user.id == userId)
       if(user) {
-        user.settings.international = newSettings.international;
-        user.settings.national = newSettings.national;
-        user.settings.state = newSettings.state;
-        user.settings.city = newSettings.city;
-        user.settings.local = newSettings.local;
+        user.international = newSettings.international;
+        user.national = newSettings.national;
+        user.state = newSettings.state;
+        user.city = newSettings.city;
+        user.local = newSettings.local;
         return Promise.resolve(user); 
       } else {
         throw "User Not Found";
@@ -172,6 +130,7 @@ export class UserService {
     
     if(this._appService.getSiteParams().servicesMode === 'server') {
       let backendUrl = this._appService.getSiteParams().backendUrl;
+      console.log(this._appService.getSiteParams().headersObj);
       let headers = new Headers( this._appService.getSiteParams().headersObj );
       let options = new RequestOptions({ headers: headers });
       return this._http.post(backendUrl+'/user/updateGeoSettings', JSON.stringify({userId: userId, newSettings: newSettings}), options)
@@ -190,13 +149,11 @@ export class UserService {
    */
   getDefaultUser() {
     let defaultUser = {
-      settings: {
-        international: [],
-        national: {},
-        state: [],
-        city: [],
-        local: []
-      }
+      international: [],
+      national: [],
+      state: [],
+      city: [],
+      local: []
     };
     return defaultUser;
   }
