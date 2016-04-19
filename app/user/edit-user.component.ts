@@ -117,6 +117,18 @@ import {SuperGroupService} from '../super_group/super_group.service';
                         <label class="col-md-4 control-label">National</label>
                         <div class="col-md-8">
                           <span *ngFor="#national of _groupList.national">
+                            <label class="radio-inline">
+                              <input type="radio" (click)="nationalRadioToggle(national.id)" [checked]="national.selected"> {{national.name}}
+                            </label>
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <!-- 
+                      <div class="form-group">
+                        <label class="col-md-4 control-label">National</label>
+                        <div class="col-md-8">
+                          <span *ngFor="#national of _groupList.national">
                             <label class="checkbox-inline">
                               <input type="checkbox" [(ngModel)]="national.selected"> {{national.name}}
                             </label>
@@ -124,7 +136,6 @@ import {SuperGroupService} from '../super_group/super_group.service';
                         </div>
                       </div>
                       
-                      <!--
                       <div class="form-group">
                         <label class="col-md-4 control-label">National</label>
                         <div class="col-md-8">
@@ -426,6 +437,16 @@ export class EditUserComponent {
     this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: tab}])
   } 
   
+  nationalRadioToggle(nationalId) {
+    for(var i in this._groupList.national) {
+      if(this._groupList.national[i].id === nationalId) {
+        this._groupList.national[i].selected = true; //!this._groupList.national[i].selected;
+      } else {
+        this._groupList.national[i].selected = false;
+      }
+    }
+    console.log(this._groupList.national);
+  } 
   /**
    * Clone or merge one or more objects. Polyfill of Object.assign
    * Ref: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
