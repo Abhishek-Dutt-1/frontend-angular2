@@ -1,6 +1,8 @@
 import {Post} from './post';
 import {MOCK_POSTS} from './mock-posts';
 import {Injectable} from 'angular2/core';
+import {Http, Headers, RequestOptions} from 'angular2/http';
+import {AppService} from '../app.service';
 import {GroupService} from '../group/group.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {UserService} from '../user/user.service';
@@ -9,6 +11,8 @@ import {UserService} from '../user/user.service';
 export class PostService {
   
   constructor(
+    private _http: Http,
+    private _appService: AppService,
     private _groupService: GroupService,
     private _authenticationService: AuthenticationService,
     private _userService: UserService
@@ -44,39 +48,90 @@ export class PostService {
       user = this._userService.getDefaultUser();
     }
     
-    if(user) {
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      if(user) {
+        if(geoSelection == 'international') {
+          return Promise.resolve({
+            posts: MOCK_POSTS.filter(post => user.international.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
+            superGroupList: user.international
+          })
+        }
+        if(geoSelection == 'national') {
+          return Promise.resolve({
+            posts: MOCK_POSTS.filter(post => user.national.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
+            superGroupList: user.national
+          })  
+        }
+        if(geoSelection == 'state') {
+          return Promise.resolve({
+            posts: MOCK_POSTS.filter(post => user.state.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
+            superGroupList: user.state
+          })
+        }
+        if(geoSelection == 'city') {
+          return Promise.resolve({
+            posts: MOCK_POSTS.filter(post => user.city.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
+            superGroupList: user.city
+          })
+        }
+        if(geoSelection == 'local') {
+          console.log(user)
+          return Promise.resolve({
+            posts: MOCK_POSTS.filter(post => user.local.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
+            superGroupList: user.local
+          })
+        }
+      }
+    }     // !getSiteParams()
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers = new Headers( this._appService.getSiteParams().headersObj );
+      let options = new RequestOptions({ headers: headers });
+      return this._http.get(backendUrl+'/post/getPostsByGeoSelection/' + geoSelection, options)
+        .map(res => {
+          console.log(res);
+          return res.json();
+        }).catch(error => {
+          return this._appService.handleServerErrors(error);
+        });
+    
+      /*
       if(geoSelection == 'international') {
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.international.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
-          superGroupList: user.settings.international
+          posts: MOCK_POSTS.filter(post => user.international.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
+          superGroupList: user.international
         })
       }
       if(geoSelection == 'national') {
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.national.id == post.group.super_group.id),
-          superGroupList: [user.settings.national]
+          posts: MOCK_POSTS.filter(post => user.national.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
+          superGroupList: user.national
         })  
       }
       if(geoSelection == 'state') {
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.state.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
-          superGroupList: user.settings.state
+          posts: MOCK_POSTS.filter(post => user.state.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
+          superGroupList: user.state
         })
       }
       if(geoSelection == 'city') {
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.city.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
-          superGroupList: user.settings.city
+          posts: MOCK_POSTS.filter(post => user.city.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
+          superGroupList: user.city
         })
       }
       if(geoSelection == 'local') {
+        console.log(user)
         return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.settings.local.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
-          superGroupList: user.settings.local
+          posts: MOCK_POSTS.filter(post => user.local.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
+          superGroupList: user.local
         })
       }
-    }
-  }
+      */
+    }       // !getSiteParams
+    
+  }         // !getPostsByGeoSelection()
   
   createNewPost(newPost: any) {
     // Server should handle these things

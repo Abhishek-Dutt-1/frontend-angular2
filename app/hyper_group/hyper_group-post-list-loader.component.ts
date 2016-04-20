@@ -13,6 +13,11 @@ import {GeoFilterComponent} from '../post/geo-filter.component';
   template: `
     <div class="my-hyper_group-post-list-loader">
         <my-geo-filter [geoSelection]="_geoSelection" [superGroupList]="_superGroupList"></my-geo-filter>
+        <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          {{_errorMsg}}
+        </div>
         <my-post-list [posts]="posts" [postTemplateType]="postTemplateType"></my-post-list>
       <!-- Colored FAB button with ripple -->
       <button (click)="gotoNewPostForm()"
@@ -40,6 +45,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit {
   //private parent_gorup: Group_Of_Groups;
   private _geoSelection: string = 'national';
   private _superGroupList: SuperGroup[];
+  private _errorMsg = null;
   
   constructor(
     private _appService: AppService,
@@ -53,12 +59,26 @@ export class HyperGroupPostListLoaderComponent implements OnInit {
     
     this._geoSelection = this._routeParams.get('geo') || this._appService.getGeoSelection() || this._geoSelection;
     this._appService.setGeoSelection(this._geoSelection);
-     
-    this._postService.getPostsByGeoSelection(this._geoSelection).then(resp => {
-      this.posts = resp.posts;
-      this._superGroupList = resp.superGroupList;
-    });
     
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      this._postService.getPostsByGeoSelection(this._geoSelection).then(resp => {
+        this.posts = resp.posts;
+        this._superGroupList = resp.superGroupList;
+      })
+      .catch(error => console.log(error));
+    }
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      this._postService.getPostsByGeoSelection(this._geoSelection).subscribe(
+        resp => {
+          this.posts = resp.posts;
+          this._superGroupList = resp.superGroupList;
+        },
+        error => {
+          console.log(error);
+          this._errorMsg = error;
+        }
+      );
+    }
   }
   
   gotoNewPostForm() {

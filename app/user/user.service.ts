@@ -6,6 +6,7 @@ import {UserRoles} from './user-roles';
 import {AppService} from '../app.service';
 import {Http, Headers, RequestOptions} from 'angular2/http';
 import {Subject, Observable, Observer} from 'rxjs/Rx';
+import {MOCK_SUPER_GROUPS} from '../super_group/mock-super_groups';
 
 @Injectable()
 export class UserService {
@@ -130,7 +131,6 @@ export class UserService {
     
     if(this._appService.getSiteParams().servicesMode === 'server') {
       let backendUrl = this._appService.getSiteParams().backendUrl;
-      console.log(this._appService.getSiteParams().headersObj);
       let headers = new Headers( this._appService.getSiteParams().headersObj );
       let options = new RequestOptions({ headers: headers });
       return this._http.post(backendUrl+'/user/updateGeoSettings', JSON.stringify({userId: userId, newSettings: newSettings}), options)
@@ -149,11 +149,11 @@ export class UserService {
    */
   getDefaultUser() {
     let defaultUser = {
-      international: [],
-      national: [],
-      state: [],
-      city: [],
-      local: []
+      international: [MOCK_SUPER_GROUPS[1-1], MOCK_SUPER_GROUPS[2-1]],
+      national: [MOCK_SUPER_GROUPS[3-1], MOCK_SUPER_GROUPS[4-1]],
+      state: [MOCK_SUPER_GROUPS[5-1], MOCK_SUPER_GROUPS[6-1]],
+      city: [MOCK_SUPER_GROUPS[7-1], MOCK_SUPER_GROUPS[8-1]],
+      local: [MOCK_SUPER_GROUPS[9-1], MOCK_SUPER_GROUPS[10-1]]
     };
     return defaultUser;
   }
