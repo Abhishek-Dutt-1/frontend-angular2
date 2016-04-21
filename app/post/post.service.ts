@@ -95,74 +95,56 @@ export class PostService {
         }).catch(error => {
           return this._appService.handleServerErrors(error);
         });
-    
-      /*
-      if(geoSelection == 'international') {
-        return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.international.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
-          superGroupList: user.international
-        })
-      }
-      if(geoSelection == 'national') {
-        return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.national.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
-          superGroupList: user.national
-        })  
-      }
-      if(geoSelection == 'state') {
-        return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.state.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
-          superGroupList: user.state
-        })
-      }
-      if(geoSelection == 'city') {
-        return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.city.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
-          superGroupList: user.city
-        })
-      }
-      if(geoSelection == 'local') {
-        console.log(user)
-        return Promise.resolve({
-          posts: MOCK_POSTS.filter(post => user.local.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
-          superGroupList: user.local
-        })
-      }
-      */
     }       // !getSiteParams
     
   }         // !getPostsByGeoSelection()
   
   createNewPost(newPost: any) {
-    // Server should handle these things
-    let lastPost:Post = MOCK_POSTS.reduceRight((left, right) => {
-                    if(left.id > right.id) return left
-                      else return right;
-                  });
-
-    let newPost_superGroup = newPost.superGroupSlashGroup.split('/')[0]
-    let newPost_group = newPost.superGroupSlashGroup.split('/')[1]
     
-    //return this._groupService.getGroup(newPost.group_of_groups, newPost.group).then(
-    return this._groupService.getGroup(newPost_superGroup, newPost_group).then(
-      group => {
-        let newProperPost = {
-          id: +lastPost.id + 1,
-          upvotes: 0,
-          downvotes: 0,
-          title: newPost.title,
-          link: newPost.link,
-          text: newPost.text,
-          type: newPost.type,
-          comments: [],
-          postedby: newPost.postedby,
-          group: group
-        }
-        MOCK_POSTS.push(newProperPost);
-        return newProperPost;
-      }
-    )
-  }
+    
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      let lastPost:Post = MOCK_POSTS.reduceRight((left, right) => {
+                      if(left.id > right.id) return left
+                        else return right;
+                    });
+      let newPost_superGroup = newPost.superGroupSlashGroup.split('/')[0]
+      let newPost_group = newPost.superGroupSlashGroup.split('/')[1]
+      
+      return this._groupService.getGroup(newPost_superGroup, newPost_group).then(
+        group => {
+          let newProperPost = {
+            id: +lastPost.id + 1,
+            upvotes: 0,
+            downvotes: 0,
+            title: newPost.title,
+            link: newPost.link,
+            text: newPost.text,
+            type: newPost.type,
+            comments: [],
+            postedby: newPost.postedby,
+            group: group
+          }
+          MOCK_POSTS.push(newProperPost);
+          return newProperPost;
+        });    
+    }
+    
+    if(this._appService.getSiteParams().servicesMode === 'service') {
+      
+      let newPost_superGroup = newPost.superGroupSlashGroup.split('/')[0]
+      let newPost_group = newPost.superGroupSlashGroup.split('/')[1]
+      
+      let newProperPost = {
+            title: newPost.title,
+            link: newPost.link,
+            text: newPost.text,
+            type: newPost.type,
+            postedby: newPost.postedby,
+            group: group
+          }
+    }
+      
+  }     // !createNewPost()
   
   upVotePost(id: number) {
     return true
