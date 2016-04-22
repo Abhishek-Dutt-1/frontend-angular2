@@ -1,5 +1,6 @@
 import {Component, OnInit} from 'angular2/core';
 import {RouteParams} from 'angular2/router';
+import {AppService} from '../app.service';
 import {Post} from './post';
 import {PostService} from './post.service';
 import {PostComponent} from './post.component';
@@ -68,14 +69,28 @@ export class ViewPostComponent {
   postTemplateType: PostTemplateType;
     
   constructor(
+    private _appService: AppService,
     private _postService: PostService,
     private _routeParams: RouteParams) {
   }
   
   ngOnInit() {
-    let id = +this._routeParams.get('postid');
+    let id = this._routeParams.get('postid');
+    console.log(id);
     this.postTemplateType = PostTemplateType.Main;
-    this._postService.getPost(id).then(post => this.post = post);
+    
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      this._postService.getPost(id).then(post => this.post = post);
+    }
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      this._postService.getPost(id).subscribe(
+        post => {
+          this.post = post;
+        },
+        error => {
+          console.log(error);
+        });
+    }
   }
   
   /*

@@ -70,14 +70,22 @@ import {ErrorComponent} from '../misc/error.component';
         
         <div class="form-group">
           <label class="col-md-4 control-label">Group</label>
-          <p class="form-control-static col-md-8"  *ngIf="model.group">
-            {{model.group.supergroup.name}}/{{model.group.name}}
+          <p class="form-control-static col-md-8">
+            <span *ngIf="model.group">
+              {{model.group.supergroup.name}}/{{model.group.name}}
+            </span>
+            <span *ngIf="!model.group">
+              <i>[No Group Selected]</i>
+            </span>
+            
           </p>
-          <!--
-          <div [hidden]="superGroupSlashGroup.valid || superGroupSlashGroup.pristine" class="alert alert-danger">
+          <input id="group" type="text" class="hidden" required
+            [(ngModel)] = "model.group"
+            ngControl = "group" #group="ngForm"
+          >
+          <div [hidden]="group.valid || !postForm.form.submitted" class="alert alert-danger">
             Group is required
           </div>
-          -->
         </div>
         
         <!--
@@ -164,8 +172,19 @@ export class NewPostComponent {
     let super_group_name = this._routeParams.get('super_group_name');
     let group_name = this._routeParams.get('group_name');
     
-    let superGroupSlashGroup = '';
-    if(super_group_name && group_name) superGroupSlashGroup = super_group_name + '/' + group_name;
+    let superGroupSlashGroup = null;
+    if(super_group_name && group_name) {
+      //superGroupSlashGroup = super_group_name + '/' + group_name;
+      this._groupService.getGroup(super_group_name, group_name).subscribe(
+        group => {
+          console.log(group);
+          this.model.group = group;
+        },
+        error => {
+          console.log(error)
+        }
+      )     // !subscribe
+    }
     if(super_group_name && !group_name) superGroupSlashGroup = super_group_name;
     if(!super_group_name && group_name) superGroupSlashGroup = group_name;
     //this._searchGroup = superGroupSlashGroup;
@@ -198,7 +217,7 @@ export class NewPostComponent {
     console.log(term)
   }
   items:Observable<string[]> = this._searchTermStream
-    .debounceTime(300)
+    .debounceTime(500)
     .distinctUntilChanged()
     .switchMap((term:string) => this._groupService.searchGroups(term));
 
@@ -230,24 +249,28 @@ export class NewPostComponent {
    * Submit the new post form
    */
   onSubmit(event) {
-
+    
+    console.log(this.model);
+    
     event.preventDefault();
-  
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      this._postService.createNewPost(this.model).then(
-        post => {
-          this._router.navigate(['ViewPost', {postid: post.id}]);
-        });  
-    }
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      this._postService.createNewPost(this.model).subscribe(
-        post => {
-          console.log(post);
-          this._router.navigate(['ViewPost', {postid: post.id}]);
-        },
-        error => console.log(error));
+    
+    if(!this.model.group) return;
+    
+    let properModel = {
+      title    : this.model.title,
+      link     : this.model.link || null,
+      text     : this.model.text || null,
+      type     : this.model.type,
+      postedby : this.model.postedby.id,
+      group    : this.model.group.id
     }
     
+    this._postService.createNewPost(properModel).subscribe(
+      post => {
+        console.log(post);
+        this._router.navigate(['ViewPost', {postid: post.id}]);
+      },
+      error => console.log(error));    
   } 
   
   goBack() {

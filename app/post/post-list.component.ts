@@ -16,8 +16,10 @@ import {PostComponent} from './post.component';
 })
 export class PostListComponent implements OnInit {
   
+  private posts = null;
+  
   constructor() {}
   
-  ngOnInit() {}
+  ngOnInit() { }
   
 }

@@ -29,10 +29,27 @@ export class PostService {
     );
   }
   
-  getPost(id: number) {
-    return Promise.resolve(MOCK_POSTS).then(
-      posts => posts.filter(post => post.id === id)[0]
-    );
+  getPost(id: any) {
+    
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      return Promise.resolve(MOCK_POSTS).then(
+        posts => posts.filter(post => post.id === id)[0]
+      );
+    }
+    
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers = new Headers( this._appService.getSiteParams().headersObj );
+      let options = new RequestOptions({ headers: headers });
+      return this._http.get(backendUrl+'/post/getPostById/' + id, options)
+        .map(res => {
+          console.log(res.json());
+          return res.json();
+        }).catch(error => {
+          return this._appService.handleServerErrors(error);
+        });
+    }
+    
   }
 
   /**
@@ -99,51 +116,17 @@ export class PostService {
     
   }         // !getPostsByGeoSelection()
   
-  createNewPost(newPost: any) {
-    
-    
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      let lastPost:Post = MOCK_POSTS.reduceRight((left, right) => {
-                      if(left.id > right.id) return left
-                        else return right;
-                    });
-      let newPost_superGroup = newPost.superGroupSlashGroup.split('/')[0]
-      let newPost_group = newPost.superGroupSlashGroup.split('/')[1]
-      
-      return this._groupService.getGroup(newPost_superGroup, newPost_group).then(
-        group => {
-          let newProperPost = {
-            id: +lastPost.id + 1,
-            upvotes: 0,
-            downvotes: 0,
-            title: newPost.title,
-            link: newPost.link,
-            text: newPost.text,
-            type: newPost.type,
-            comments: [],
-            postedby: newPost.postedby,
-            group: group
-          }
-          MOCK_POSTS.push(newProperPost);
-          return newProperPost;
-        });    
-    }
-    
-    if(this._appService.getSiteParams().servicesMode === 'service') {
-      
-      let newPost_superGroup = newPost.superGroupSlashGroup.split('/')[0]
-      let newPost_group = newPost.superGroupSlashGroup.split('/')[1]
-      
-      let newProperPost = {
-            title: newPost.title,
-            link: newPost.link,
-            text: newPost.text,
-            type: newPost.type,
-            postedby: newPost.postedby,
-            group: group
-          }
-    }
-      
+  createNewPost(newProperPost: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/post', JSON.stringify(newProperPost), options).map(
+      res => {
+        console.log(res)
+        console.log(res.json())
+        return <string[]> res.json()
+      })
+      .catch(error => this._appService.handleServerErrors(error));  
   }     // !createNewPost()
   
   upVotePost(id: number) {

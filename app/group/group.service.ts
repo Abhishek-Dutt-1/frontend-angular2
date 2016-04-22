@@ -47,16 +47,51 @@ export class GroupService {
     
   }
   
-  getGroup(parent_group_name: string, groupname: string) {
-    return Promise.resolve(MOCK_GROUPS).then(
-      groups => groups.filter(group => group.name === groupname && group.super_group.name === parent_group_name)[0]
-    );
-  }
+  /**
+   * Return a Group obj by name and supergroups name
+   */ 
+  getGroup(superGroupName: string, groupName: string) {
+
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers = new Headers( this._appService.getSiteParams().headersObj );
+      let options = new RequestOptions({ headers: headers });
+      return this._http.post(backendUrl+'/group/getGroupByName', 
+          JSON.stringify({superGroupName: superGroupName, groupName: groupName}), 
+          options)
+        .map(
+          res => {
+            console.log(res);
+            console.log(res.json());
+            return res.json()
+          }
+        )
+        .catch(error => this._appService.handleServerErrors(error)); 
+    }
+  }     // !getGroup
   
-  getPostsInGroup(parent_group_name: string, groupname: string) {
-    return Promise.resolve(MOCK_POSTS).then(
-      posts => posts.filter(post => post.group.name === groupname && post.group.super_group.name === parent_group_name)
-    );
+  /**
+   * Get all posts in a Group
+   */
+  getPostsInGroup(superGroupName: string, groupName: string) {
+    
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers = new Headers( this._appService.getSiteParams().headersObj );
+      let options = new RequestOptions({ headers: headers });
+      return this._http.post(backendUrl+'/group/getPostsInGroup', 
+          JSON.stringify({superGroupName: superGroupName, groupName: groupName}), 
+          options)
+        .map(
+          res => {
+            //console.log(res);
+            //console.log(res.json());
+            return res.json()
+          }
+        )
+        .catch(error => this._appService.handleServerErrors(error));
+    }
+    
   }
 
   /**
@@ -97,12 +132,9 @@ export class GroupService {
                 .get(searchUrl, { search: params })
                 .map(request => <string[]> request.json()[1]);
       */
-      // Finally should use this observable version
-      let searchUrl = 'http://en.wikipedia.org/w/api.php'
       console.log(searchTermArray)
-      var params = new URLSearchParams();
       let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let headers = new Headers( this._appService.getSiteParams().headersObj );
       let options = new RequestOptions({ headers: headers });
       return this._http.post(backendUrl+'/group/fuzzySearchGroupsByName', JSON.stringify({searchStr: searchTermArray}), options).map(
         res => {

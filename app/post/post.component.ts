@@ -42,8 +42,8 @@ import {PostTemplateType} from './post-template-types';
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <i class="fa fa-user"></i> {{post.postedby.displayname}}
                   </a> &bull; 12 days ago &bull; 
-                  <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.super_group.name, group_name: post.group.name}]">
-                    go/{{post.group.super_group.name}}/{{post.group.name}}
+                  <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
+                    go/{{post.group.supergroup.name}}/{{post.group.name}}
                   </a>
                 </div>
                 <div>
@@ -86,8 +86,8 @@ import {PostTemplateType} from './post-template-types';
                 <i class="fa fa-user"></i> {{post.postedby.displayname}}
               </a> &bull; 
               12 days ago <!-- &bull; 
-              <span (click)="gotoGroup(post.group.parent_group.name, post.group.name)">
-                go/{{post.group.parent_group.name}}/{{post.group.name}}
+              <span (click)="gotoGroup(post.group.supergroup.name, post.group.name)">
+                go/{{post.group.supergroup.name}}/{{post.group.name}}
               </span>
               -->
             </div>
@@ -107,7 +107,7 @@ import {PostTemplateType} from './post-template-types';
             <div class="row">
               <div class="col-xs-12">
                 <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
-                  <span>{{post.title}} </span> 
+                  <span>{{post.title}}</span> 
                 </a>
                 <span *ngIf="post.type === 'link'"> 
                   <a target="_blank" [href]="post.link">[view link]</a>
@@ -133,8 +133,8 @@ import {PostTemplateType} from './post-template-types';
               <a (click)="downVotePost(post.id)" class="">
                 <i class="fa fa-arrow-down"></i> {{post.downvotes}} 
               </a> &bull;
-              <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.super_group.name, group_name: post.group.name}]">
-                go/{{post.group.super_group.name}}/{{post.group.name}} 
+              <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
+                go/{{post.group.supergroup.name}}/{{post.group.name}} 
               </a> &bull;
               <a [routerLink]="['NewComment1', {postid: post.id}]" class="">
                 Reply 
