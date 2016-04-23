@@ -79,12 +79,23 @@ export class SuperGroupPostListLoaderComponent {
         
     this._super_group_name = this._routeParams.get('super_group_name');
 
+    /*
     this._groupService.getGroupsBySuperGroupName(this._super_group_name)
       .then(groups => { this._groups = groups });
     
     this._superGroupService.getSuperGroupByName(this._super_group_name)
       .then(sg => this._super_group = sg);
-         
+    */
+    
+    this._superGroupService.getSuperGroupByName(this._super_group_name)
+      .subscribe(
+        superGroup => {
+          this._super_group = superGroup;
+          this._groups = superGroup.groups;
+        },
+        error => {
+          console.log(error);
+        });
   }
   
   goBack() {

@@ -102,7 +102,7 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
         -->
         
-        <div class="post-text">
+        <div class="post-text" *ngIf="_showGroupSearchBox">
           <label for="group" class="">Search Groups</label>
           <input id="group" type="text" class=""
             ngControl = "searchGroupTmp" #searchGroupTmp="ngForm"
@@ -152,41 +152,47 @@ import {ErrorComponent} from '../misc/error.component';
 })
 export class NewPostComponent {
   
-  private _postTypes        = ['text', 'link'];
-  private model             = null;
-  private _errorMsg: string = null;
+  private _postTypes          = ['text', 'link'];
+  private model               = null;
+  private _errorMsg: string   = null;
+  private _showGroupSearchBox = true;       
   //private _searchGroup      = '';
   
   constructor(
-    private _postService          : PostService,
-    private _routeParams          : RouteParams,
-    private _authenticationService: AuthenticationService,
-    private _groupService         : GroupService,
-    private _router               : Router,
-    private _appService           : AppService
+    private _postService           : PostService,
+    private _routeParams           : RouteParams,
+    private _authenticationService : AuthenticationService,
+    private _groupService          : GroupService,
+    private _router                : Router,
+    private _appService            : AppService
   ) 
   { }
   
   ngOnInit() {
     
     let super_group_name = this._routeParams.get('super_group_name');
-    let group_name = this._routeParams.get('group_name');
+    let group_name       = this._routeParams.get('group_name');
     
     let superGroupSlashGroup = null;
     if(super_group_name && group_name) {
       //superGroupSlashGroup = super_group_name + '/' + group_name;
+      this._showGroupSearchBox = false;
       this._groupService.getGroup(super_group_name, group_name).subscribe(
         group => {
           console.log(group);
           this.model.group = group;
         },
         error => {
+          this._showGroupSearchBox = true;
           console.log(error)
-        }
-      )     // !subscribe
+        })     // !subscribe
     }
-    if(super_group_name && !group_name) superGroupSlashGroup = super_group_name;
-    if(!super_group_name && group_name) superGroupSlashGroup = group_name;
+    if(super_group_name && !group_name) {
+      superGroupSlashGroup = super_group_name;
+    }
+    if(!super_group_name && group_name) {
+      superGroupSlashGroup = group_name;
+    }
     //this._searchGroup = superGroupSlashGroup;
     
     this.model =  {
@@ -198,6 +204,16 @@ export class NewPostComponent {
     }
     
     // Only logged in uses can post
+    this._authenticationService.loggedInUser$.subscribe(user => {
+      if(user) {
+        this.model.postedby = currentUser;
+        this._errorMsg = null;
+      } else {
+        this._errorMsg = "User must be logged in to create new posts.";
+      }
+    });
+    // Only logged in uses can post (init version)
+    // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
       this.model.postedby = currentUser;
@@ -236,7 +252,6 @@ export class NewPostComponent {
   }
   */
   
-   
   /**
    * User clicked on a gog/group from the autocomplete dropdown list
    */
@@ -271,7 +286,7 @@ export class NewPostComponent {
         this._router.navigate(['ViewPost', {postid: post.id}]);
       },
       error => console.log(error));    
-  } 
+  }
   
   goBack() {
     window.history.back();

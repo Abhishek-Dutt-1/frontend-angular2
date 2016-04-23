@@ -55,10 +55,10 @@ export class PostService {
   /**
    * Returns posts belonging to a geoSelection
    */
-  getPostsByGeoSelection(geoSelection: string) {
+  getPostsByHyperGroup(geoSelection: string) {
     let user = this._authenticationService.getLoggedInUser();
-    console.log(geoSelection);
-    console.log(user)
+    //console.log(geoSelection);
+    //console.log(user)
     if(!user) {
       // No user logged in
       // Display a posts from a default selection of super groups
@@ -105,9 +105,9 @@ export class PostService {
       let backendUrl = this._appService.getSiteParams().backendUrl;
       let headers = new Headers( this._appService.getSiteParams().headersObj );
       let options = new RequestOptions({ headers: headers });
-      return this._http.get(backendUrl+'/post/getPostsByGeoSelection/' + geoSelection, options)
+      return this._http.get(backendUrl+'/post/getPostsByHyperGroup/' + geoSelection, options)
         .map(res => {
-          console.log(res);
+          console.log(res.json());
           return res.json();
         }).catch(error => {
           return this._appService.handleServerErrors(error);

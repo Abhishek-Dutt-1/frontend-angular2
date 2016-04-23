@@ -141,7 +141,7 @@ export class AuthenticationService {
   }
   
   getLoggedInUser() {
-    console.log(this._currentUser);
+    //console.log(this._currentUser);
     return this._currentUser;
   }
   

@@ -114,6 +114,7 @@ export class ViewGroupComponent {
       this._groupService.getPostsInGroup(super_group_name, group_name)
         .subscribe(
           groupAndPostList => {
+            console.log(groupAndPostList.group)
             this.group = groupAndPostList.group
             this.groupPosts = groupAndPostList.postList;
           },

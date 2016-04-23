@@ -24,9 +24,29 @@ export class SuperGroupService {
    * Returns a Super group obj be name
    */
   getSuperGroupByName(sg_name: string) {
+    
+    /*
     return Promise.resolve(MOCK_SUPER_GROUPS.find(sgs => {
       return sgs.name == sg_name;
     }));
+    */
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers    = new Headers( this._appService.getSiteParams().headersObj );
+    let options    = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/supergroup/getSuperGroupByName', JSON.stringify({superGroupName: sg_name}), options)
+      .map( 
+        res => {
+          console.log(res)
+          console.log(res.json())
+          return res.json();
+      })
+      .catch(error => {
+        console.log(error);
+        return this._appService.handleServerErrors(error);
+        //return Observable.throw(error);
+      });
+        
   }
   
   /**

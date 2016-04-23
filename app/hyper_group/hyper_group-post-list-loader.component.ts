@@ -22,12 +22,12 @@ import {GeoFilterComponent} from '../post/geo-filter.component';
       <!-- Colored FAB button with ripple -->
       <button (click)="gotoNewPostForm()"
         class="fab-button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
-        <i class="material-icons">add</i>
+        New Post
       </button>
     </div>
   `,
   styles: [`
-    .my-super_group-post-list-loader .fab-button {
+    .my-hyper_group-post-list-loader .fab-button {
       position: fixed;
       right: 20px;
       bottom: 20px;
@@ -61,14 +61,14 @@ export class HyperGroupPostListLoaderComponent implements OnInit {
     this._appService.setGeoSelection(this._geoSelection);
     
     if(this._appService.getSiteParams().servicesMode === 'local') {
-      this._postService.getPostsByGeoSelection(this._geoSelection).then(resp => {
+      this._postService.getPostsByHyperGroup(this._geoSelection).then(resp => {
         this.posts = resp.posts;
         this._superGroupList = resp.superGroupList;
       })
       .catch(error => console.log(error));
     }
     if(this._appService.getSiteParams().servicesMode === 'server') {
-      this._postService.getPostsByGeoSelection(this._geoSelection).subscribe(
+      this._postService.getPostsByHyperGroup(this._geoSelection).subscribe(
         resp => {
           this.posts = resp.posts;
           this._superGroupList = resp.superGroupList;
