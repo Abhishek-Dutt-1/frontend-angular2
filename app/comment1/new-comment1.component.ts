@@ -87,7 +87,6 @@ export class NewComment1Component {
 
     this._model =  {
       text: 'New Comment',
-      commentedon: this.post,
       postedby: null
     }
     
@@ -131,11 +130,13 @@ export class NewComment1Component {
     this._model.commentedon = this.post
 
     let newPost = this._comment1Service.createNewComment1(this._model)
-      .subscribe(comment1 => {
-        console.log(comment1)
-        this._router.navigate(['ViewPost', {postid: this.post.id}]);
-      });
-
+      .subscribe(
+        comment1 => {
+          console.log(comment1)
+          this._router.navigate(['ViewPost', {postid: this.post.id}]);
+        },
+        error => console.log(error)
+      );
   } 
   
   goBack() {

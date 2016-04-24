@@ -3,21 +3,21 @@ import {RouteParams, Router} from 'angular2/router';
 import {User} from '../user/user';
 import {Post} from '../post/post';
 //import {Group} from '../group/group';
-import {Comment2Service} from './comment2.service';
+import {Comment4Service} from './comment4.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 //import {GroupService} from '../group/group.service';
 //import {Observable} from 'rxjs/Observable';
 //import {Subject} from 'rxjs/Subject';
 
 @Component({
-  selector: 'my-new-comment2',
+  selector: 'my-new-comment4',
   template: `
-  <div class="my-new-comment2">
+  <div class="my-new-comment4">
   
   <div *ngIf="!_errorMsg">
   
     <h4>Write a New Comment:</h4>
-    <form #comment1Form="ngForm" class="form-horizontal">
+    <form #comment4Form="ngForm" class="form-horizontal">
       
       <div class="post-textarea form-group">
         <label for="text" class="col-md-1">Comment Text</label>
@@ -33,7 +33,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
       </div>
       <div class="form-group">
         <div class="col-md-offset-1 col-md-11">
-          <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!comment1Form.form.valid">Submit</button>
+          <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!comment4Form.form.valid">Submit</button>
           <button (click)="goBack()" class="btn btn-default">Cancel</button>
         </div>
       </div>
@@ -50,36 +50,36 @@ import {AuthenticationService} from '../authentication/authentication.service';
   `,
   //templateUrl: 'app/post/new-post.component.html',
   styles: [`
-    .my-new-comment2 .ng-valid[required] {
+    .my-new-comment4 .ng-valid[required] {
       border-left: 5px solid #42A948; /* green */
     }
-    .my-new-comment2 .ng-invalid {
+    .my-new-comment4 .ng-invalid {
       border-left: 5px solid #a94442; /* red */
     }
-    .my-new-comment2 form {
+    .my-new-comment4 form {
       min-width: 250px;
     }
-    .my-new-comment2 .post-textarea textarea{
+    .my-new-comment4 .post-textarea textarea{
       width: 100%;
     }
-    .my-new-comment2 .post-text input{
+    .my-new-comment4 .post-text input{
       width: 100%;
     }
-    .my-new-comment2 .post-select select{
+    .my-new-comment4 .post-select select{
       width: 100%;
     }
   `],
-  inputs: ['comment1', 'post']
+  inputs: ['comment3', 'post']
 })
-export class NewComment2Component {
+export class NewComment4Component {
   
   private post: Post = null;
-  private comment1 = null;
+  private comment3 = null;
   private _model: any = null;
   private _errorMsg: string = null;
   
   constructor(
-    private _comment2Service: Comment2Service,
+    private _comment4Service: Comment4Service,
     private _routeParams: RouteParams,
     private _authenticationService: AuthenticationService,
     private _router: Router) {
@@ -128,9 +128,9 @@ export class NewComment2Component {
   onSubmit(event) {
 
     event.preventDefault();
-    this._model.commentedon = this.comment1
+    this._model.commentedon = this.comment3
   
-    let newPost = this._comment2Service.createNewComment2(this._model)
+    let newPost = this._comment4Service.createNewComment4(this._model)
       .subscribe(
         comment1 => {
           this._router.navigate(['ViewPost', {postid: this.post.id}]);

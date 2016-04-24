@@ -6,6 +6,7 @@ import {PostService} from './post.service';
 import {PostComponent} from './post.component';
 import {Comment1Component} from '../comment1/comment1.component';
 import {Comment2Component} from '../comment2/comment2.component';
+import {Comment3Component} from '../comment3/comment3.component';
 import {PostTemplateType} from './post-template-types';
 
 @Component({
@@ -15,6 +16,7 @@ import {PostTemplateType} from './post-template-types';
     <div class="my-view-post">
     
       <div *ngIf="post">
+
         <my-post [post]="post" [type]="postTemplateType"></my-post>
         
         <!-- split it into comment-list component if need to reuse -->
@@ -26,7 +28,7 @@ import {PostTemplateType} from './post-template-types';
               
               <!-- Replies to comments (Level 2) -->
               <div *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">
-                <div *ngFor="#comment2 of comment1.comments" class="comment-level-2">
+                <div *ngFor="#comment2 of comment1.comments" class="comment-level-2">{{comment2.comments | json}}
                   <my-comment2 [comment2]="comment2"></my-comment2>
 
                   <!-- Replies to reply (Level 3) -->
@@ -85,6 +87,7 @@ export class ViewPostComponent {
     if(this._appService.getSiteParams().servicesMode === 'server') {
       this._postService.getPost(id).subscribe(
         post => {
+          console.log(post)
           this.post = post;
         },
         error => {

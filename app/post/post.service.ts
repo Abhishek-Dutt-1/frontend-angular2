@@ -38,7 +38,9 @@ export class PostService {
       return this._http.get(backendUrl+'/post/getPostById/' + id, options)
         .map(res => {
           console.log(res.json());
-          return res.json();
+          let post = res.json().post;
+          post.comments = res.json().comments;
+          return post;
         }).catch(error => {
           return this._appService.handleServerErrors(error);
         });

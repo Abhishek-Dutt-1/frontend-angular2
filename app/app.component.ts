@@ -31,8 +31,12 @@ import { AuthenticationService } from './authentication/authentication.service';
 
 import { NewComment1LoaderComponent } from './comment1/new-comment1-loader.component';
 import { NewComment2LoaderComponent } from './comment2/new-comment2-loader.component';
+import { NewComment3LoaderComponent } from './comment3/new-comment3-loader.component';
+import { NewComment4LoaderComponent } from './comment4/new-comment4-loader.component';
 import { Comment1Service } from './comment1/comment1.service';
 import { Comment2Service } from './comment2/comment2.service';
+import { Comment3Service } from './comment3/comment3.service';
+import { Comment4Service } from './comment4/comment4.service';
 
 @Component({
   selector: 'my-app-component',
@@ -93,6 +97,8 @@ import { Comment2Service } from './comment2/comment2.service';
     AppService,
     Comment1Service,
     Comment2Service,
+    Comment3Service,
+    Comment4Service,
     PostService,
     GroupService,
     SuperGroupService,
@@ -187,6 +193,16 @@ import { Comment2Service } from './comment2/comment2.service';
     path: '/reply2/:postid/:comment1id',
     name: 'NewComment2',
     component: NewComment2LoaderComponent
+  },
+  {
+    path: '/reply3/:postid/:comment2id',
+    name: 'NewComment3',
+    component: NewComment3LoaderComponent
+  },
+  {
+    path: '/reply4/:postid/:comment2id',
+    name: 'NewComment4',
+    component: NewComment4LoaderComponent
   }
 ])
 export class AppComponent { }

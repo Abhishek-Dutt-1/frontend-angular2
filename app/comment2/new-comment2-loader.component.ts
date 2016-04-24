@@ -18,7 +18,7 @@ import {PostTemplateType} from '../post/post-template-types';
     </div>
   `,
   styles: [`
-    .my-new-comment1-loader {
+    .my-new-comment2-loader {
     }
   `],
   directives: [Comment1Component, NewComment2Component]
@@ -31,28 +31,30 @@ export class NewComment2LoaderComponent implements OnInit {
   
   constructor(
     private _postService: PostService,
-    private _comment1Service: Comment1Service,
+    //private _comment1Service: Comment1Service,
     private _routeParams: RouteParams
-  ) { }
+  ) {}
   
   ngOnInit() {
-    
-    let postid = +this._routeParams.get('postid');
-    let comment1id = +this._routeParams.get('comment1id');
-    
+    let postid     = this._routeParams.get('postid');
+    let comment1id = this._routeParams.get('comment1id');
+    /*
     this._postService.getPost(postid).then(post => {
-      
       this._post = post;
-      
       this._comment1Service.getComment1ById(comment1id).then(comment1 => {
         this._comment1 = comment1;
       });
-      
     });
-    
+    */
+    this._postService.getPost(postid)
+      .subscribe(
+        post => {
+          console.log(post);
+          this._post = post;
+          this._comment1 = post.comments.find(function(comment) {return comment.id == comment1id;})
+        },
+        error => console.log(error)
+      );
   }
-  
-  gotoNewPostForm() {
-    //this._router.navigate(['NewPost']);
-  }
+
 }

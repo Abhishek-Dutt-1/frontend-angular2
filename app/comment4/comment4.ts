@@ -1,11 +1,11 @@
-import {Comment1} from "../comment1/comment1";
 import {Comment3} from "../comment3/comment3";
+//import {Comment4} from "../comment4/comment4";
 import {User} from "../user/user";
 
-export interface Comment2 {
+export interface Comment4 {
   id: number;
   text: string;
   postedby: User;
-  commentedon: Comment1;
-  comments?: Comment3[];
+  commentedon: Comment3;
+  //comments?: Comment4[];
 }
