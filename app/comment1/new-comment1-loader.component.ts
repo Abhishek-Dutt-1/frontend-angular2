@@ -41,7 +41,7 @@ export class NewComment1LoaderComponent implements OnInit {
     
     this._postid = +this._routeParams.get('postid');
     
-    this._postService.getPost(this._postid).then(post => {
+    this._postService.getPost(this._postid).subscribe(post => {
       this._post = post;
     });
     

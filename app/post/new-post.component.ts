@@ -204,8 +204,8 @@ export class NewPostComponent {
     }
     
     // Only logged in uses can post
-    this._authenticationService.loggedInUser$.subscribe(user => {
-      if(user) {
+    this._authenticationService.loggedInUser$.subscribe(currentUser => {
+      if(currentUser) {
         this.model.postedby = currentUser;
         this._errorMsg = null;
       } else {
@@ -217,6 +217,7 @@ export class NewPostComponent {
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
       this.model.postedby = currentUser;
+      this._errorMsg = null;
     } else {
       this._errorMsg = "User must be logged in to create new posts.";      
     }

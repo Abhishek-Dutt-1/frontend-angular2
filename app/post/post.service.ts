@@ -31,12 +31,6 @@ export class PostService {
   
   getPost(id: any) {
     
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      return Promise.resolve(MOCK_POSTS).then(
-        posts => posts.filter(post => post.id === id)[0]
-      );
-    }
-    
     if(this._appService.getSiteParams().servicesMode === 'server') {
       let backendUrl = this._appService.getSiteParams().backendUrl;
       let headers = new Headers( this._appService.getSiteParams().headersObj );
