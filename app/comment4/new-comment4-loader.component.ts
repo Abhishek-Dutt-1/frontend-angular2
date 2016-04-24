@@ -51,17 +51,20 @@ export class NewComment4LoaderComponent implements OnInit {
         post => {
           console.log(post);
           this._post = post;
-          var tmpComment1 = post.comments.find(function(comment1) {
-            var tmpComment2 = comment1.comments.find(function(comment2) {
-              var tmpComment3 = comment2.comments.find(function(comment3) {
+          var tmpComment3 = null;
+          post.comments.find(function(comment1) {
+            if(tmpComment3) return true;
+            comment1.comments.find(function(comment2) {
+              if(tmpComment3) return true;
+              tmpComment3 = comment2.comments.find(function(comment3) {
                 return comment3.id == comment3id;
               })
+              return false;
             })
-            if(tmpComment1) return true;
-            else return false;
+            return false;
           })
-          console.log(tmpComment1)
-          this._comment3 = tmpComment1
+          this._comment3 = tmpComment3
+          console.log(this._comment3)
         },
         error => console.log(error)
       );

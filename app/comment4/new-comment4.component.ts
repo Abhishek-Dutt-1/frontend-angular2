@@ -129,10 +129,12 @@ export class NewComment4Component {
 
     event.preventDefault();
     this._model.commentedon = this.comment3
-  
+    
+    console.log(this._model)
+    
     let newPost = this._comment4Service.createNewComment4(this._model)
       .subscribe(
-        comment1 => {
+        comment => {
           this._router.navigate(['ViewPost', {postid: this.post.id}]);
         },
         error => console.log(error)

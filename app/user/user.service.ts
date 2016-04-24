@@ -35,8 +35,6 @@ export class UserService {
       .map( 
         res => {
           let user = res.json();
-          console.log("NO ERROR")
-          console.log(user);
           return user;
       })
       .catch(

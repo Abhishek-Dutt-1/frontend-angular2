@@ -7,6 +7,7 @@ import {PostComponent} from './post.component';
 import {Comment1Component} from '../comment1/comment1.component';
 import {Comment2Component} from '../comment2/comment2.component';
 import {Comment3Component} from '../comment3/comment3.component';
+import {Comment4Component} from '../comment4/comment4.component';
 import {PostTemplateType} from './post-template-types';
 
 @Component({
@@ -28,13 +29,21 @@ import {PostTemplateType} from './post-template-types';
               
               <!-- Replies to comments (Level 2) -->
               <div *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">
-                <div *ngFor="#comment2 of comment1.comments" class="comment-level-2">{{comment2.comments | json}}
-                  <my-comment2 [comment2]="comment2"></my-comment2>
+                <div *ngFor="#comment2 of comment1.comments" class="comment-level-2">
+                  <my-comment2 [comment2]="comment2" [post]="post"></my-comment2>
 
                   <!-- Replies to reply (Level 3) -->
                   <div *ngIf="comment2.comments && comment2.comments.length > 0" class="comment-list level-3">
                     <div *ngFor="#comment3 of comment2.comments" class="comment-level-3">
-                      <my-comment3 [comment3]="comment3"></my-comment3>
+                      <my-comment3 [comment3]="comment3" [post]="post"></my-comment3>
+                      
+                      <!-- Replies to reply (Level 3) -->
+                      <div *ngIf="comment3.comments && comment3.comments.length > 0" class="comment-list level-4">
+                        <div *ngFor="#comment4 of comment3.comments" class="comment-level-3">
+                          <my-comment4 [comment4]="comment4" [post]="post"></my-comment4>
+                          
+                        </div>
+                      </div>
                       
                     </div>
                   </div>
@@ -60,9 +69,12 @@ import {PostTemplateType} from './post-template-types';
   .my-view-post .comment-list .level-3 {
     padding: 10px 10px 0px 20px;
   }
+  .my-view-post .comment-list .level-4 {
+    padding: 10px 10px 0px 20px;
+  }
   `],
   //styleUrls: ['app/post/view-post.component.css'],
-  directives: [PostComponent, Comment1Component, Comment2Component]
+  directives: [PostComponent, Comment1Component, Comment2Component, Comment3Component, Comment4Component]
   //////inputs: ['post']////
 })
 export class ViewPostComponent {
@@ -78,7 +90,6 @@ export class ViewPostComponent {
   
   ngOnInit() {
     let id = this._routeParams.get('postid');
-    console.log(id);
     this.postTemplateType = PostTemplateType.Main;
     
     if(this._appService.getSiteParams().servicesMode === 'local') {
@@ -87,7 +98,6 @@ export class ViewPostComponent {
     if(this._appService.getSiteParams().servicesMode === 'server') {
       this._postService.getPost(id).subscribe(
         post => {
-          console.log(post)
           this.post = post;
         },
         error => {

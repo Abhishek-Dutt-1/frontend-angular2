@@ -26,5 +26,7 @@ import {RouterLink} from 'angular2/router';
   directives: [RouterLink]
 })
 export class Comment2Component {
+
   constructor() { }
+
 }

@@ -27,11 +27,9 @@ export class NewComment3LoaderComponent implements OnInit {
 
   private _post: Post;
   private _comment2: Comment2;
-  //private _comment1id: number = null;
   
   constructor(
     private _postService: PostService,
-    //private _comment2Service: Comment2Service,
     private _routeParams: RouteParams
   ) {}
   
@@ -51,12 +49,14 @@ export class NewComment3LoaderComponent implements OnInit {
         post => {
           console.log(post);
           this._post = post;
-          var tmpComment2 = post.comments.find(function(comment1) {
-            var tmpComment1 = comment1.comments.find(function(comment2) {
-              return comment2.id == comment2id;  
+          
+          var tmpComment2 = null;
+          post.comments.find(function(comment1) {
+            if(tmpComment2) return true;
+            tmpComment2 = comment1.comments.find(function(comment2) {
+              return comment2.id == comment2id; 
             })
-            if(tmpComment1) return true;
-            else return false;
+            return false;
           })
           console.log(tmpComment2)
           this._comment2 = tmpComment2

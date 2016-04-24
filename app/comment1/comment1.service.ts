@@ -39,21 +39,14 @@ export class Comment1Service {
     return Promise.resolve(newProperComment1);
     */
     
-    console.log(newComment1)
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/comment1', JSON.stringify(newComment1), options).map(
       res => {
-        console.log(res)
-        console.log(res.json())
         return res.json()
       })
       .catch(error => this._appService.handleServerErrors(error));
     
-  }
-
-  getComment1ById(id: number) {
-    return Promise.resolve(MOCK_COMMENT1S.find(comment1s => comment1s.id == id));
   }  
 }

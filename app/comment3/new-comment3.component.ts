@@ -130,15 +130,14 @@ export class NewComment3Component {
     event.preventDefault();
     this._model.commentedon = this.comment2
   
-    let newPost = this._comment3Service.createNewComment3(this._model)
+    this._comment3Service.createNewComment3(this._model)
       .subscribe(
-        comment1 => {
+        comment3 => {
           this._router.navigate(['ViewPost', {postid: this.post.id}]);
         },
         error => console.log(error)
       );
-
-  } 
+  }
   
   goBack() {
     window.history.back();

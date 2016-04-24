@@ -200,7 +200,7 @@ import { Comment4Service } from './comment4/comment4.service';
     component: NewComment3LoaderComponent
   },
   {
-    path: '/reply4/:postid/:comment2id',
+    path: '/reply4/:postid/:comment3id',
     name: 'NewComment4',
     component: NewComment4LoaderComponent
   }

@@ -27,10 +27,10 @@ import {RouterLink} from 'angular2/router';
 })
 export class Comment3Component {
   
-  //comment: Comment;
-  //type: string;
+  private comment3
+  private post
   
   constructor(
   ) { }
-
+  
 }

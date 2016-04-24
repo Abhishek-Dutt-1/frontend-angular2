@@ -17,15 +17,12 @@ export class Comment3Service {
   ) { }
 
   createNewComment3(newComment3: any) {
-    console.log(newComment3)
 
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/comment3', JSON.stringify(newComment3), options).map(
       res => {
-        console.log(res)
-        console.log(res.json())
         return res.json()
       })
       .catch(error => this._appService.handleServerErrors(error));
