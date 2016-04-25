@@ -7,6 +7,7 @@ import {Router, RouterLink} from 'angular2/router';
 import {PostService} from './post.service';
 import {PostTemplateType} from './post-template-types';
 import {VoteComponent} from '../misc/vote.component';
+import {DateFormatPipe} from '../misc/date-format.pipe';
 
 
 @Component({
@@ -42,7 +43,7 @@ import {VoteComponent} from '../misc/vote.component';
                 <div>
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <i class="fa fa-user"></i> {{post.postedby.displayname}}
-                  </a> &bull; {{post.createdAt}}
+                  </a> &bull; {{ post.createdAt | timeAgo }} &bull;
                   <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
                     go/{{post.group.supergroup.name}}/{{post.group.name}}
                   </a>
@@ -89,7 +90,7 @@ import {VoteComponent} from '../misc/vote.component';
               <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                 <i class="fa fa-user"></i> {{post.postedby.displayname}}
               </a> &bull; 
-               {{post.createdAt}} <!-- &bull; 
+               {{ post.createdAt | timeAgo }} &bull; <!-- &bull; 
               <span (click)="gotoGroup(post.group.supergroup.name, post.group.name)">
                 go/{{post.group.supergroup.name}}/{{post.group.name}}
               </span>
@@ -128,7 +129,7 @@ import {VoteComponent} from '../misc/vote.component';
             <div class="">
               <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                 <i class="fa fa-user"></i> {{post.postedby.displayname}} 
-              </a> &bull;  {{post.createdAt}} &bull; <!--
+              </a> &bull; {{ post.createdAt | timeAgo }} &bull; <!--
               <a class="">
                 Edit 
               </a> &bull; -->
@@ -172,7 +173,8 @@ import {VoteComponent} from '../misc/vote.component';
   }
   `],
   inputs: ['post', 'type'],
-  directives: [RouterLink, VoteComponent]
+  directives: [RouterLink, VoteComponent],
+  pipes: [DateFormatPipe]
 })
 export class PostComponent implements OnInit {
   

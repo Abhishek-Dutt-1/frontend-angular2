@@ -67,10 +67,12 @@ export class AppService {
       console.log(error);
       if(error.status === 404 ) {
         errMsg = error._body || "Page Not Found!";
-      } else if(error.status === 403) {
+      } else if (error.status === 403) {
         errMsg = error._body || "Not Authorized!";
-      } else if(error.status === 400) {
+      } else if (error.status === 400) {
         errMsg = error._body || "User must be logged in!";
+      } else if (error.status === 500) {
+        errMsg = "Server Error";
       } else if (error.json().type === "error") { 
         // Handle XMLHttpRequestProgressEvent::ERR_CONNECTION_REFUSED i.e. Server not up
         errMsg = "Server not responding, Please try again later.";
