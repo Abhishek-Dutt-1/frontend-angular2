@@ -56,6 +56,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit {
   ) { }
   
   ngOnInit() {
+    
     this.postTemplateType = PostTemplateType.List;
     
     this._geoSelection = this._routeParams.get('geo') || this._appService.getGeoSelection() || this._geoSelection;

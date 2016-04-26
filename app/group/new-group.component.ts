@@ -38,6 +38,13 @@ import {Subject} from 'rxjs/Subject';
           </div>
         </div>
         
+        <div class="">{{model.non_members_can_view}}
+          <label for="non_members_can_view">Non members can view posts in this group?</label>
+            <input type="radio" name="non_members_can_view" (click)="model.non_members_can_view = 1"  [checked]="model.non_members_can_view === 1" > Yes
+            <input type="radio" name="non_members_can_view" (click)="model.non_members_can_view = 0" [checked]="!model.non_members_can_view === 0" > No
+        </div>
+        
+        
         <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!groupForm.form.valid">Submit</button>
         <button (click)="goBack()" class="btn btn-default">Back</button>
       </form>
@@ -91,16 +98,28 @@ export class NewGroupComponent {
       name: 'Group_Name',
       description: 'Group Description',
       super_group_name: super_group_name,
+      non_members_can_view: 1,
     }
-    
+
     // Only logged in uses can post
+    this._authenticationService.loggedInUser$.subscribe(currentUser => {
+      if(currentUser) {
+        this.model.owner = currentUser;
+        this._errorMsg = null;
+      } else {
+        this._errorMsg = "User must be logged in to create new group.";
+      }
+    });
+    // Only logged in uses can post (init version)
+    // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
-    if(currentUser) {    
+    if(currentUser) {
       this.model.owner = currentUser;
+      this._errorMsg = null;
     } else {
-      this._errorMsg = "User must be logged in to create new group.";      
+      this._errorMsg = "User must be logged in to create new group.";
     }
-    
+
   }
   
   /**

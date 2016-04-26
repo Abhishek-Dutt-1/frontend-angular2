@@ -5,7 +5,7 @@ import {Pipe, PipeTransform} from 'angular2/core';
 @Pipe({name: 'timeAgo'})
 export class DateFormatPipe implements PipeTransform {
 
-  transform(date:string, [format]) : string {
+  transform(date:string, format) : string {
     
     return this.humanized_time_span(date)
     
