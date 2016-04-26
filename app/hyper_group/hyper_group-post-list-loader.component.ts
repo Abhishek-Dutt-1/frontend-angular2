@@ -20,10 +20,11 @@ import {GeoFilterComponent} from '../post/geo-filter.component';
         </div>
         <my-post-list [posts]="posts" [postTemplateType]="postTemplateType"></my-post-list>
       <!-- Colored FAB button with ripple -->
-      <button (click)="gotoNewPostForm()"
-        class="fab-button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
-        New Post
-      </button>
+      <div class="fab-button">
+        <button (click)="gotoNewPostForm()" class="">
+          New Post
+        </button>
+      </div>
     </div>
   `,
   styles: [`
