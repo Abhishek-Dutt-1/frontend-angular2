@@ -7,14 +7,14 @@ import {Component, OnInit, EventEmitter} from 'angular2/core';
       <div class="my-vote">
         
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-6 vote-col-up">
             <div (click)="upVotePost(_votee.id)">
               <div [ngClass]="{userHasVoted: _votee.currentUserHasUpVoted}">
               {{_votee.upvotes}} <i class="fa fa-arrow-up"></i>
               </div> 
             </div>
           </div>
-          <div class="col-xs-6">
+          <div class="col-xs-6 vote-col-down">
             <div (click)="downVotePost(_votee.id)">
               <div [ngClass]="{userHasVoted: _votee.currentUserHasDownVoted}">
                 <i class="fa fa-arrow-down"></i> {{_votee.downvotes}}
@@ -27,7 +27,16 @@ import {Component, OnInit, EventEmitter} from 'angular2/core';
     </div>
   `,
   styles: [`
+    .my-vote .vote-col-up {
+      padding-right: 0;
+    }
+    .my-vote .vote-col-down {
+      padding-left: 0;
+    }
     .my-vote {
+      font-size: 12px;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
     }
     .my-vote .userHasVoted {
       background-color: aqua;    

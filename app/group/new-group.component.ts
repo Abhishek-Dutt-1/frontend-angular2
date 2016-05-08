@@ -5,8 +5,10 @@ import {Group} from '../group/group';
 import {PostService} from './post.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {GroupService} from '../group/group.service';
+import {SuperGroupService} from '../super_group/super_group.service';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
+import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-new-group',
@@ -107,8 +109,9 @@ import {Subject} from 'rxjs/Subject';
       </form>
     </div>
     <div *ngIf="_errorMsg">
+      <my-error [_errorMsg]=_errorMsg></my-error>
       {{_errorMsg}}
-      <button (click)="goBack()" class="btn btn-default">Back</button>
+      <button (click)="_errorMsg=false" class="btn btn-default">Back</button>
     </div>
   </div>
   `,
@@ -134,7 +137,7 @@ import {Subject} from 'rxjs/Subject';
     }
   `],
   //styleUrls: ['app/post/new-post.component.css'],
-  inputs: ['post']
+  inputs: ['post', 'error']
 })
 export class NewGroupComponent {
   
@@ -150,15 +153,22 @@ export class NewGroupComponent {
     private _routeParams: RouteParams,
     private _authenticationService: AuthenticationService,
     private _groupService: GroupService,
+    private _superGroupService: SuperGroupService,
     private _router: Router) {
   }
   
   ngOnInit() {
     let super_group_name = this._routeParams.get('super_group_name');
-    this.model =  {
+    this._superGroupService.getSuperGroupByName(super_group_name).subscribe(
+      sg => {
+        this.model.supergroup = sg;
+      },
+      error => console.log(error) )
+
+    this.model = {
       name: '',
       description: '',
-      super_group_name: super_group_name,
+      supergroup: null,
       non_members_can_view: 1,
       non_members_can_post: 0,
       verify_members_email: 0,
@@ -204,33 +214,11 @@ export class NewGroupComponent {
     ['name', 'description', 'emailDomain'].forEach( field => this.validateForm(field) );
     if(this._formErrors.name.isValid && this._formErrors.description.isValid && this._formErrors.emailDomain.isValid) {
       console.log("FORM IS VALID")
-      return;
     } else {
       console.log("FORM IS not VALID")
       return;
     }
 
-    let emailDomainList = [];
-    if(this.model.verify_members_email == 1) {
-      this.model.verify_email_domains_list.forEach(function(email) {
-        if(email && /@(.+)/.test(email)) {
-          emailDomainList.push(email);
-        } else if(email == '') {
-
-        } else {
-          this._errList.push("Invalid email domain: " + email + " Email domain's must be of the form @mycollege.edu");
-        }
-      });
-      console.log(emailDomainList);
-    }
-
-    if(this._errList.length == 0) {
-      this._showSummary = true;
-    } else {
-      return
-    }
-
-    /*
     if(this.model.non_members_can_view == 1) this.model.non_members_can_view = true;
     if(this.model.non_members_can_view == 0) this.model.non_members_can_view = false;
 
@@ -239,13 +227,29 @@ export class NewGroupComponent {
 
     if(this.model.verify_members_email == 1) this.model.verify_members_email = true;
     if(this.model.verify_members_email == 0) this.model.verify_members_email = false;
-    */
-    return;
 
-    let newGroup = this._groupService.createNewGroup(this.model)
-    newGroup.then(group => {
-      this._router.navigate(['ViewGroup', {super_group_name: group.super_group.name, group_name: group.name}]);
-    });
+    delete this.model.number_of_email_domains
+
+    this._groupService.createNewGroup(this.model)
+      .subscribe( group => {
+        console.log(group)
+        this._router.navigate(['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]);
+      },
+      error => {
+        console.log(error); 
+        this._errorMsg = error;
+
+        // Revive users selection
+        if ( this.model.non_members_can_view == true  ) this.model.non_members_can_view = 1;
+        if ( this.model.non_members_can_view == false ) this.model.non_members_can_view = 0;
+
+        if ( this.model.non_members_can_post == true  ) this.model.non_members_can_post = 1;
+        if ( this.model.non_members_can_post == false ) this.model.non_members_can_post = 0;
+
+        if ( this.model.verify_members_email == true  ) this.model.verify_members_email = 1;
+        if ( this.model.verify_members_email == false ) this.model.verify_members_email = 0;
+
+      });
 
   }
 
@@ -279,7 +283,7 @@ export class NewGroupComponent {
 
           if(emailList.length > 0) {
             this._formErrors.emailDomain.isValid = false;
-            this._formErrors.emailDomain.errMsg = "Invalid email domain: " + emailList.join(", ") + " Email domain's must be of the form @mycollege.edu";
+            this._formErrors.emailDomain.errMsg = "Invalid email domain: " + emailList.join(", ") + " Email domain's must be of the form @email.com";
           } else {
             this._formErrors.emailDomain.isValid = true;
             this._formErrors.emailDomain.errMsg = '';

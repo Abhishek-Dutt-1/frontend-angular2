@@ -50,9 +50,18 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 </div>
                 <div>
                 
-                   <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
-                   
-                  {{post.comments.length}} Comments
+                  <div class="row">
+                    <div class="col-xs-6">
+                      {{post.comments.length}} Comments 
+                      <span *ngIf="currentUser && currentUser.id == post.postedby.id"> &bull; 
+                        <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                      </span>
+                    </div>
+                    <div class="col-xs-6">
+                      <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -97,8 +106,14 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
               -->
             </div>
             <div>
-              <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote> 
-              {{post.comments.length}} Comments
+                <div class="row">
+                  <div class="col-xs-6">
+                    {{post.comments.length}} Comments
+                  </div>
+                  <div class="col-xs-6">
+                    <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+                  </div>
+                </div>
             </div>
           </div>
           
@@ -134,8 +149,15 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 Edit 
               </a> &bull; -->
               
-              <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
-              
+                  <div class="row">
+                    <div class="col-xs-6">
+                      {{post.comments.length}} Comments
+                    </div>
+                    <div class="col-xs-6">
+                      <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+                    </div>
+                  </div>
+                                
               &bull;
               <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
                 go/{{post.group.supergroup.name}}/{{post.group.name}} 
@@ -172,7 +194,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     word-wrap: break-word;
   }
   `],
-  inputs: ['post', 'type'],
+  inputs: ['post', 'type', 'currentUser'],
   directives: [RouterLink, VoteComponent],
   pipes: [DateFormatPipe]
 })

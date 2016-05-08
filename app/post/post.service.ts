@@ -60,42 +60,7 @@ export class PostService {
       // Display a posts from a default selection of super groups
       user = this._userService.getDefaultUser();
     }
-    
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      if(user) {
-        if(geoSelection == 'international') {
-          return Promise.resolve({
-            posts: MOCK_POSTS.filter(post => user.international.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
-            superGroupList: user.international
-          })
-        }
-        if(geoSelection == 'national') {
-          return Promise.resolve({
-            posts: MOCK_POSTS.filter(post => user.national.map(int => int.id).indexOf(post.group.super_group.id) > -1 ),
-            superGroupList: user.national
-          })  
-        }
-        if(geoSelection == 'state') {
-          return Promise.resolve({
-            posts: MOCK_POSTS.filter(post => user.state.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
-            superGroupList: user.state
-          })
-        }
-        if(geoSelection == 'city') {
-          return Promise.resolve({
-            posts: MOCK_POSTS.filter(post => user.city.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
-            superGroupList: user.city
-          })
-        }
-        if(geoSelection == 'local') {
-          console.log(user)
-          return Promise.resolve({
-            posts: MOCK_POSTS.filter(post => user.local.map(el => el.id).indexOf(post.group.super_group.id) > -1 ),
-            superGroupList: user.local
-          })
-        }
-      }
-    }     // !getSiteParams()
+   
     if(this._appService.getSiteParams().servicesMode === 'server') {
       
       let backendUrl = this._appService.getSiteParams().backendUrl;
@@ -124,6 +89,19 @@ export class PostService {
       })
       .catch(error => this._appService.handleServerErrors(error));  
   }     // !createNewPost()
+  
+  deletePostById(postId: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers    = new Headers( this._appService.getSiteParams().headersObj );
+    let options    = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/post/deletePostById/' + postId, options).map(
+      res => {
+        console.log(res)
+        console.log(res.json())
+        return res.json()
+      })
+      .catch(error => this._appService.handleServerErrors(error));
+  }   // !deletePostById()
   
   upVotePost(id: any) {
     let backendUrl = this._appService.getSiteParams().backendUrl;

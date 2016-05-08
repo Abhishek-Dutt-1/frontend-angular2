@@ -1,6 +1,7 @@
 import {Group} from './group';
 import {MOCK_GROUPS} from './mock-groups';
 import {Injectable} from 'angular2/core';
+import {Http, Headers, RequestOptions} from 'angular2/http';
 import {MOCK_POSTS} from '../post/mock-posts';
 import {Http, Jsonp, Response, URLSearchParams} from 'angular2/http';
 import {Headers, RequestOptions} from 'angular2/http';
@@ -27,6 +28,7 @@ export class GroupService {
   }
   
   createNewGroup(newGroup: any) {
+    /*
     // Server should handle these things
     let lastGroup:Group = MOCK_GROUPS.reduceRight((left, right) => {
                     if(left.id > right.id) return left
@@ -44,7 +46,16 @@ export class GroupService {
       MOCK_GROUPS.push(newProperGroup);
       return newProperGroup;
     });
-    
+    */
+     
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/createNewGroup', JSON.stringify(newGroup), options).map(
+      res => {
+        return res.json()
+      })
+      .catch(error => this._appService.handleServerErrors(error));
   }
   
   /**
