@@ -33,40 +33,29 @@ export class AuthenticationService {
     //this._jwtHelper.getTokenExpirationDate(token),
     //this._jwtHelper.isTokenExpired(token)
 
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      let userId = token;   //for local token is user.id
-      this._userService.getUser(userId).then(user => {
-        this._isUserLoggedIn = true;
-        this._currentUser = user;
-        this._loggedInUser.next(user);
-      }).catch(err => console.log(err));  
-    }
-
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-
-      if(token && !this._jwtHelper.isTokenExpired(token)) {        
-        let userId = this._jwtHelper.decodeToken(token);
-        this._userService.getUser(userId).subscribe(
-          user => {
-            if(user) {
-              this._isUserLoggedIn = true;
-              this._currentUser = user;
-              this._loggedInUser.next(user);
-              this._appService.setAuthorizationHeader(token);
-              console.log("Auto logged in user frlom jwt", this._currentUser)     
-            }
-          },
-          error => {
-            // token found but server did not sent a user
-            console.log(error);
-            return this._appService.handleServerErrors(error)
+    if(token && !this._jwtHelper.isTokenExpired(token)) {        
+      let userId = this._jwtHelper.decodeToken(token);
+      this._userService.getUser(userId).subscribe(
+        user => {
+          if(user) {
+            this._isUserLoggedIn = true;
+            this._currentUser = user;
+            this._appService.setAuthorizationHeader(token);
+            this._loggedInUser.next(user);
+            console.log("Auto logged in user frlom jwt", this._currentUser)     
           }
-        );
-      } else {
-        // Logout user (Should not be needed)
-        this.logoutUser();
-      }
+        },
+        error => {
+          // token found but server did not sent a user
+          console.log(error);
+          return this._appService.handleServerErrors(error)
+        }
+      );
+    } else {
+      // Logout user (Should not be needed)
+      this.logoutUser();
     }
+  
     
   }
   
@@ -76,64 +65,43 @@ export class AuthenticationService {
   
   loginUser(userInfo: any) {
     
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      // The promise is returned because auth.component needs it in case of error
-      // For all other components, they are told of state change by subscribed observables
-      return Promise.resolve().then(()=> {
-        let user = MOCK_USERS.filter(user => user.email == userInfo.email && user.password == userInfo.password)[0]
-        if(user) {
-          this._loggedInUser.next(user);
-          this._isUserLoggedIn = true;
-          this._currentUser = user;
-          user.jwt = user.id;
-          //localStorage.setItem('loggedInUserId', JSON.stringify(user.id))
-          localStorage.setItem('jwt', JSON.stringify(user.jwt))
-        }
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    //let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/auth/local', JSON.stringify(userInfo), options)
+    .map( 
+      res => {
+        console.log(res.json())
+        let user = res.json().user || {};
+        this._currentUser = user;
+        //localStorage.setItem('loggedInUserId', JSON.stringify(user.id));
+        localStorage.setItem('jwt', JSON.stringify(user.jwt));
+        this._isUserLoggedIn = true;
+        this._appService.setAuthorizationHeader(user.jwt);
+        this._loggedInUser.next(user);
         return user;
-      }).catch((reason) => {
-        console.log(reason)
-      });
-    }   //!servicesMode == 'local'
-    
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers( this._appService.getSiteParams().headersObj );
-      //let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-      return this._http.post(backendUrl+'/auth/local', JSON.stringify(userInfo), options)
-      .map( 
-        res => {
-          console.log(res.json())
-          let user = res.json().user || {};
-          this._currentUser = user;
-          //localStorage.setItem('loggedInUserId', JSON.stringify(user.id));
-          localStorage.setItem('jwt', JSON.stringify(user.jwt));
-          this._loggedInUser.next(user);
-          this._isUserLoggedIn = true;
-          this._appService.setAuthorizationHeader(user.jwt);
-          return user;
-      })
-      .catch(
-        error => {
-          return this._appService.handleServerErrors(error);
-          /*
-          console.log(error)
-          // In a real world app, we might send the error to remote logging infrastructure
-          let errMsg = error.json() || 'Server error';
-          return Observable.throw(errMsg);
-          */
-        }
-      );
-    }   //!servicesMode = 'server'
+    })
+    .catch(
+      error => {
+        return this._appService.handleServerErrors(error);
+        /*
+        console.log(error)
+        // In a real world app, we might send the error to remote logging infrastructure
+        let errMsg = error.json() || 'Server error';
+        return Observable.throw(errMsg);
+        */
+      }
+    );
+
   };
   
   logoutUser() {
     this._isUserLoggedIn = false;
     this._currentUser = null;
     localStorage.removeItem('jwt');
-    this._loggedInUser.next(null);
     this._appService.unsetAuthorizationHeader();
+    this._loggedInUser.next(null);
   }
   
   isUserLoggedIn() {

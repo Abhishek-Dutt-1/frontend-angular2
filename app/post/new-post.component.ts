@@ -22,62 +22,71 @@ import {ErrorComponent} from '../misc/error.component';
     </div>
     
     <div *ngIf="!_errorMsg">
-      <h5>Create a New Post</h5>
+      <h3>Create a New Post</h3>
 
-      <form #postForm="ngForm">
+      <form #postForm="ngForm" class="form-horizontal" novalidate>
         
-        <div class="post-select">
-          <label for="type">Post Type</label>
+        <div class="post-select form-group">
+          <label for="type" class="col-sm-2 control-label">Post Type</label>
           <span *ngFor="#postType of _postTypes">
-            <input type="radio" name="type" (click)="model.type = postType" [checked]="postType === model.type"> {{postType}}
+            <div class="radio-inline">
+              <label>
+                <input type="radio" name="type" (click)="model.type = postType" [checked]="postType === model.type"> {{postType}}
+              </label>
+            </div>
           </span>
         </div>
         
-        <div class="post-text">
-          <label for="title" class="">Title</label>
-          <input id="title" type="text" class="" required
-            [(ngModel)] = "model.title"
-            ngControl = "title" #title="ngForm"
-          >
-          <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
-            Title is required
-          </div>
-        </div>
-        
-        <div *ngIf="model.type == 'link'">
-          <div class="post-text">
-            <label for="link" class="">Link</label>
-            <input id="link" type="url" class="" required
-              [(ngModel)] = "model.link"
-              ngControl = "link" #link="ngForm"
+        <div class="post-text form-group">
+          <label for="title" class="col-sm-2 control-label">Title</label>
+          <div class="col-sm-10">
+            <input id="title" type="text" class="form-control" required
+              [(ngModel)] = "model.title"
+              ngControl = "title" #title="ngForm"
             >
-            <div [hidden]="link.valid || link.pristine" class="alert alert-danger">
-              Link is required
+            <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+              Title is required
             </div>
           </div>
         </div>
         
-        <div class="post-textarea">
-          <label for="text" class="">Text</label>
-          <textarea type="text" class="" rows="5" required
-            [(ngModel)] = "model.text"
-            ngControl = "text" #text="ngForm"
-          ></textarea>
-          <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
-            Text is required
+        <div *ngIf="model.type == 'link'">
+          <div class="post-text form-group">
+            <label for="link" class="col-sm-2 control-label">Link</label>
+            <div class="col-sm-10">
+              <input id="link" type="url" class="form-control" required
+                [(ngModel)] = "model.link"
+                ngControl = "link" #link="ngForm"
+              >
+              <div [hidden]="link.valid || link.pristine" class="alert alert-danger">
+                Link is required
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="post-textarea form-group">
+          <label for="text" class="col-sm-2 control-label">Text</label>
+          <div class="col-sm-10">
+            <textarea type="text" class="form-control" rows="5" required
+              [(ngModel)] = "model.text"
+              ngControl = "text" #text="ngForm"
+            ></textarea>
+            <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
+              Text is required
+            </div>
           </div>
         </div>
         
         <div class="form-group">
-          <label class="col-md-4 control-label">Group</label>
-          <p class="form-control-static col-md-8">
+          <label class="col-sm-2 control-label">Group</label>
+          <p class="form-control-static col-md-10">
             <span *ngIf="model.group">
-              {{model.group.supergroup.name}}/{{model.group.name}}
+              {{model.group.supergroup.name | uppercase}}/{{model.group.name}}
             </span>
             <span *ngIf="!model.group">
               <i>[No Group Selected]</i>
             </span>
-            
           </p>
           <input id="group" type="text" class="hidden" required
             [(ngModel)] = "model.group"
@@ -102,26 +111,34 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
         -->
         
-        <div class="post-text" *ngIf="_showGroupSearchBox">
-          <label for="group" class="">Search Groups</label>
-          <input id="group" type="text" class=""
-            ngControl = "searchGroupTmp" #searchGroupTmp="ngForm"
-            (keyup)="search(searchGroupTmp.value)"
-          >
-          <!--
-          <div [hidden]="_searchGroup.valid || _searchGroup.pristine" class="alert alert-danger">
-            Group is required
+        <div class="post-text form-group" *ngIf="_showGroupSearchBox">
+          <label for="group" class="col-sm-2 control-label">Search Groups (and click on the name to select)</label>
+          <div class="col-sm-10">
+            <input id="group" type="text" class="form-control"
+              ngControl = "searchGroupTmp" #searchGroupTmp="ngForm"
+              (keyup)="search(searchGroupTmp.value)"
+            >
+            <!--
+            <div [hidden]="_searchGroup.valid || _searchGroup.pristine" class="alert alert-danger">
+              Group is required
+            </div>
+            -->
           </div>
-          -->
         </div>
+              
+        <ul>
+        <li *ngFor="#item of items | async" (click)="selectSuperGroupSlashGroup(item)" class="form-control-static">{{item.supergroup.name | uppercase}}/{{item.name}}</li>
+        <!--
+        <li *ngFor="#item of itemsV1" (click)="selectSuperGroupSlashGroup(item.super_group.name+'/'+item.name)">{{item.super_group.name}}/{{item.name}}</li>
+        -->
+        </ul>
         
-  <ul>
-  <li *ngFor="#item of items | async" (click)="selectSuperGroupSlashGroup(item)">{{item.supergroup.name}}/{{item.name}}</li>
-  <li *ngFor="#item of itemsV1" (click)="selectSuperGroupSlashGroup(item.super_group.name+'/'+item.name)">{{item.super_group.name}}/{{item.name}}</li>
-  </ul>
-      
-        <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
-        <button (click)="goBack()" class="btn btn-default">Back</button>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
+            <button (click)="goBack()" class="btn btn-default">Back</button>
+          </div>
+        </div>
       </form>
     </div>
 

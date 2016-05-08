@@ -1,8 +1,6 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit, OnDestroy} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
-import {Post} from './post';
 import {Group} from '../group/group';
-import {PostService} from './post.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {GroupService} from '../group/group.service';
 import {SuperGroupService} from '../super_group/super_group.service';
@@ -14,10 +12,10 @@ import {ErrorComponent} from '../misc/error.component';
   selector: 'my-new-group',
   template: `
   <div class="my-new-group">
-    <div *ngIf="!_errorMsg">
-      <h3 class="col-sm-offset-2">Create a New Group: GLOBAL/{{model.name}}</h3>
+    <div *ngIf="!_errorMsg && model.supergroup">
+      <h3 class="col-sm-offset-2">Create a New Group:</h3>
       <form #groupForm="ngForm" class="form-horizontal" novalidate>
-        
+        <h5>{{model.supergroup.name | uppercase}}/{{model.name}}</h5>
         <div class="form-group">
           <label for="group_name" class="col-sm-2 control-label"> Group Name </label>
           <div class="col-sm-10">
@@ -139,14 +137,14 @@ import {ErrorComponent} from '../misc/error.component';
   //styleUrls: ['app/post/new-post.component.css'],
   inputs: ['post', 'error']
 })
-export class NewGroupComponent {
+export class NewGroupComponent implements OnInit, OnDestroy  {
   
   private model = null;
   private _formErrors = null;
   private _errorMsg: string = null;
   private _errList:string[] = [];
   private _showSummary: boolean = false;
-
+  private _loggedInUserSubcription = null;
 
   constructor(
     //private _postService: PostService,
@@ -183,7 +181,7 @@ export class NewGroupComponent {
     }
 
     // Only logged in uses can post
-    this._authenticationService.loggedInUser$.subscribe(currentUser => {
+    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
         this.model.owner = currentUser;
         this._errorMsg = null;
@@ -307,6 +305,9 @@ export class NewGroupComponent {
     this.model.number_of_email_domains.push(this.model.number_of_email_domains.length);
   }
 
+  ngOnDestroy() {
+    this._loggedInUserSubcription.unsubscribe();
+  }
   
   goBack() {
     window.history.back();

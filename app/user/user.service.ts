@@ -48,51 +48,47 @@ export class UserService {
   
   createNewUser(newUser: any) {
     // Serve should handle these things
+    /*
     let lastUser:User = MOCK_USERS.reduceRight((left, right) => {
                     if(left.id > right.id) return left
                       else return right;
                   });
+    */
 
     let newProperUser = {
-      id: +lastUser.id + 1,
+      //id: +lastUser.id + 1,
       email: newUser.email,
       displayname: newUser.displayname,
       password: newUser.password,
       confirm_password: newUser.confirm_password,
+      /*
       userrole: UserRoles.user,
       international: newUser.international,
       national: newUser.national,
       state: newUser.state,
       city: newUser.city,
       local: newUser.local
-    }
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      MOCK_USERS.push(newProperUser);
-      console.log(newProperUser);
-      return this.getUser(newProperUser.id);
+      */
     }
     
-    if(this._appService.getSiteParams().servicesMode === 'server') {      
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-      return this._http.post(backendUrl+'/auth/local/register', JSON.stringify(newProperUser), options)
-      .map(
-        res => {
-          let user = res;
-          console.log(user);
-          console.log(user.json());
-          user = res.json().user;
-          return user;
-      })
-      .catch(
-        error => {
-          console.log(error);
-          return this._appService.handleServerErrors(error);
-        }
-      );
-    }
-  }
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/auth/local/register', JSON.stringify(newProperUser), options)
+    .map(
+      res => {
+        let user = res;
+        console.log(user);
+        console.log(user.json());
+        user = res.json().user;
+        return user;
+    })
+    .catch(
+      error => {
+        console.log(error);
+        return this._appService.handleServerErrors(error);
+    });
+  }         // !createNewUser()
   
   changePassword(userId: number, newPassword: string) {
     if(this._appService.getSiteParams().servicesMode === 'local') {
@@ -145,6 +141,7 @@ export class UserService {
    * returns a default user object to fill in
    * whernever a logged in user is requried but is not available
    */
+  /*
   getDefaultUser() {
     let defaultUser = {
       international: [MOCK_SUPER_GROUPS[1-1], MOCK_SUPER_GROUPS[2-1]],
@@ -155,5 +152,6 @@ export class UserService {
     };
     return defaultUser;
   }
+  */
   
 }

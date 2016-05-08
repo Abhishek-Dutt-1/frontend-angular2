@@ -51,15 +51,17 @@ export class PostService {
   /**
    * Returns posts belonging to a geoSelection
    */
-  getPostsByHyperGroup(geoSelection: string) {
-    let user = this._authenticationService.getLoggedInUser();
+  getPostsByHyperGroup(geoSelection: any) {
+    //let user = this._authenticationService.getLoggedInUser();
     //console.log(geoSelection);
     //console.log(user)
+    /*
     if(!user) {
       // No user logged in
       // Display a posts from a default selection of super groups
       user = this._userService.getDefaultUser();
     }
+    */
    
     if(this._appService.getSiteParams().servicesMode === 'server') {
       

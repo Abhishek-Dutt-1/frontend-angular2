@@ -86,22 +86,20 @@ export class GroupService {
    */
   getPostsInGroup(superGroupName: string, groupName: string) {
     
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers( this._appService.getSiteParams().headersObj );
-      let options = new RequestOptions({ headers: headers });
-      return this._http.post(backendUrl+'/group/getPostsInGroup', 
-          JSON.stringify({superGroupName: superGroupName, groupName: groupName}), 
-          options)
-        .map(
-          res => {
-            //console.log(res);
-            //console.log(res.json());
-            return res.json()
-          }
-        )
-        .catch(error => this._appService.handleServerErrors(error));
-    }
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/getPostsInGroup', 
+        JSON.stringify({superGroupName: superGroupName, groupName: groupName}), 
+        options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
     
   }
 

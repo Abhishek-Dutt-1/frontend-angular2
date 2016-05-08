@@ -1,11 +1,14 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit, OnDestroy} from 'angular2/core';
 import {Router, RouteParams, RouterLink} from 'angular2/router';
 import {AppService} from '../app.service';
 import {Group} from './group';
+import {User} from '../user/user';
 import {GroupService} from './group.service';
 import {Post} from '../post/post';
-import {PostListComponent} from '../post/post-list.component'
+import {PostListComponent} from '../post/post-list.component';
 import {PostTemplateType} from '../post/post-template-types';
+import {AuthenticationService} from '../authentication/authentication.service';
+import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-view-group',
@@ -17,12 +20,12 @@ import {PostTemplateType} from '../post/post-template-types';
       
       <div class="row">
         <div class="col-xs-12">
-          <div class="group-details">
-          
+          <my-error [_errorMsg]="_errorMsg"></my-error>
+          <div class="group-details">  
             <div class="panel panel-default group-details-panel">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name}}</a>/{{group.name}}
+                  <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a>/{{group.name}}
                 </h4>
               </div>  
               <div class="panel-body">
@@ -31,9 +34,6 @@ import {PostTemplateType} from '../post/post-template-types';
               </div>
               <div class="panel-footer">
                 <a>Group Info</a> |
-                <!-- 
-                <a (click)="gotoNewPostForm()" class="">
-                -->
                 <a [routerLink]="['NewPost', {super_group_name: group.supergroup.name, group_name: group.name}]" class="">
                   Create a New Post
                 </a>
@@ -44,7 +44,7 @@ import {PostTemplateType} from '../post/post-template-types';
         </div> <!-- !col -->
       </div> <!-- !row -->
 
-      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"></my-post-list>
+      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser"></my-post-list>
       
     </div>  
   </div>  <!-- end top div -->
@@ -66,17 +66,21 @@ import {PostTemplateType} from '../post/post-template-types';
   `],
   //styleUrls: ['app/group/view-group.component.css'],
   //inputs: ['group'],
-  directives: [PostListComponent, RouterLink]
+  directives: [PostListComponent, RouterLink, ErrorComponent]
 })
-export class ViewGroupComponent {
+export class ViewGroupComponent implements OnInit, OnDestroy  {
   
-  group: Group;
-  groupPosts: Post[];
-  postTemplateType: PostTemplateType;
-  
+  private group: Group;
+  private groupPosts: Post[];
+  private postTemplateType: PostTemplateType;
+  private _loggedInUserSubcription = null;
+  private _currentUser: User = null;
+  private _errorMsg = null;
+
   constructor(
     private _appService: AppService,
     private _groupService: GroupService,
+    private _authenticationService: AuthenticationService,
     private _router: Router,
     private _routeParams: RouteParams) {}
   
@@ -85,46 +89,51 @@ export class ViewGroupComponent {
     this.postTemplateType = PostTemplateType.Grouplist;
         
     let super_group_name = this._routeParams.get('super_group_name');
-    //console.log(super_group_name);
-    
     let group_name = this._routeParams.get('group_name');
-    //console.log(group_name)
     
-    // Get the group and super group
-    /*
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      this._groupService.getGroup(super_group_name, group_name)
-        .subscribe(
-          group => {
-            console.log(group);
-            this.group = group;
-          }, 
-          error => {
-            console.log(error);
-          });
-    }
-    */
-    
-    // Get the posts in the group
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-    this._groupService.getPostsInGroup(super_group_name, group_name)
-      .then(posts => this.groupPosts = posts);
-    }
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      this._groupService.getPostsInGroup(super_group_name, group_name)
-        .subscribe(
-          groupAndPostList => {
-            console.log(groupAndPostList)
-            this.group = groupAndPostList.group
-            this.groupPosts = groupAndPostList.postList;
-          },
-          error => {
-            console.log(error);  
-          });
-    }
-    
+    // Only logged in uses view posts
+    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(
+      currentUser => {
+        if(currentUser) {
+          this._currentUser = currentUser;
+          this._errorMsg = null;
+          this.getPostsInGroup(super_group_name, group_name);
+        } else {
+          this.getPostsInGroup(super_group_name, group_name);
+        }
+      });
+    // Only logged in uses view post (init version)
+    // TODO:: Find the Observable way to do this
+    let currentUser = this._authenticationService.getLoggedInUser();
+    if(currentUser) {
+      this._currentUser = currentUser;
+      this._errorMsg = null;
+    } else { }
+    // Logged in or not fetch posts immidiately
+    this.getPostsInGroup(super_group_name, group_name);
+
   }   // !ngOnInit
   
+  
+  /**
+   * Fetches posts in given supergroup/group
+   */
+  getPostsInGroup(super_group_name: string, group_name: string) {
+    this._groupService.getPostsInGroup(super_group_name, group_name)
+      .subscribe(
+        groupAndPostList => {
+          console.log(groupAndPostList)
+          this.group = groupAndPostList.group
+          this.groupPosts = groupAndPostList.postList;
+        },
+        error => {
+          console.log(error);  
+        });
+  }
+  
+  ngOnDestroy() {
+    this._loggedInUserSubcription.unsubscribe();
+  }
   goBack() {
     window.history.back();
   }

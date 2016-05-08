@@ -115,10 +115,12 @@ import {SuperGroup} from '../super_group/super_group'
         <div class="col-xs-12">
           <div class="geo-filter-details">
             <span *ngFor="#sg of superGroupList">
-              {{sg.name}}
+              <a [routerLink]="['SuperGroupPostList', {super_group_name: sg.name}]">{{sg.name}}</a>
             </span>
-            <span class="add-more" (click)="gotoChangeGeoSttings()">
-              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            <span class="add-more">
+              <a [routerLink]="['EditUser', {tab: 'geo'}]">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
             </span>
           </div>
         </div>
