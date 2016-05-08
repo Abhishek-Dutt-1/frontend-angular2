@@ -73,10 +73,7 @@ import {Subject} from 'rxjs/Subject';
 export class NewComment1Component {
   
   private post = null;
-  private _postTypes: string[] = ['text', 'link'];
-  
   private _model: any = null;
-    
   private _errorMsg: string = null;
   
   constructor(
@@ -89,18 +86,39 @@ export class NewComment1Component {
   ngOnInit() {
 
     this._model =  {
-      text: 'New Comment', 
-      type: this._postTypes[0],
+      text: 'New Comment',
+      postedby: null
     }
     
     // Only logged in uses can comment1
+    /*
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
       this._model.postedby = currentUser;
     } else {
       this._errorMsg = "User must be logged in to create new posts.";      
     }
+    */
     
+    // Only logged in uses can comment1
+    this._authenticationService.loggedInUser$.subscribe(currentUser => {
+      if(currentUser) {
+        console.log("State change ", currentUser)
+        this._model.postedby = currentUser;
+        this._errorMsg = null;
+      } else {
+        this._errorMsg = "User must be logged in to reply.";
+      }
+    });
+    // Only logged in uses can comment1 (init version)
+    // TODO:: Find the Observable way to do this
+    let currentUser = this._authenticationService.getLoggedInUser();
+    if(currentUser) {
+      this._model.postedby = currentUser;
+      this._errorMsg = null;
+    } else {
+      this._errorMsg = "User must be logged in to reply.";      
+    }
   }
   
   /**
@@ -109,11 +127,16 @@ export class NewComment1Component {
   onSubmit(event) {
 
     event.preventDefault();
-  
-    let newPost = this._comment1Service.createNewComment1(this._model, this.post).then(comment1 => {
-      this._router.navigate(['ViewPost', {postid: this.post.id}]);
-    });
+    this._model.commentedon = this.post
 
+    let newPost = this._comment1Service.createNewComment1(this._model)
+      .subscribe(
+        comment1 => {
+          console.log(comment1)
+          this._router.navigate(['ViewPost', {postid: this.post.id}]);
+        },
+        error => console.log(error)
+      );
   } 
   
   goBack() {

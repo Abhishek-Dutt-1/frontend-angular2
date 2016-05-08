@@ -25,16 +25,10 @@ import {RouterLink} from 'angular2/router';
     </div>
   </div>
   `,
-  styles: [` `],
   inputs: ['comment1', 'post'],
   directives: [RouterLink]
 })
 export class Comment1Component {
-  
   private post;
-  
-  constructor() {
-    
-  }
-  
+  constructor() {}
 }

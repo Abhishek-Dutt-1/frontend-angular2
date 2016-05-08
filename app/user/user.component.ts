@@ -39,7 +39,7 @@ import {Router} from 'angular2/router';
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <label class="col-md-4 control-label">Password</label>
-                        <p class="form-control-static col-md-8">*****</p>
+                        <p class="form-control-static col-md-8"><i>[hidden]</i></p>
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <div class="col-md-offset-4 col-md-8">
@@ -56,7 +56,7 @@ import {Router} from 'angular2/router';
                         <div class="form-group">
                           <label class="col-md-4 control-label">International</label>
                           <p class="form-control-static col-md-8">
-                            <span *ngFor="#international of user.settings.international">
+                            <span *ngFor="#international of user.international">
                               {{international.name}},
                             </span>
                           </p>
@@ -64,13 +64,15 @@ import {Router} from 'angular2/router';
                         <div class="form-group">
                           <label class="col-md-4 control-label">National</label>
                           <p class="form-control-static col-md-8">
-                            {{user.settings.national.name}}
+                            <span *ngFor="#national of user.national">
+                              {{national.name}}
+                            </span>
                           </p>
                         </div>
                         <div class="form-group">
                           <label class="col-md-4 control-label">State</label>
                           <p class="form-control-static col-md-8">
-                            <span *ngFor="#state of user.settings.state">
+                            <span *ngFor="#state of user.state">
                                 {{state.name}},
                             </span>
                           </p>
@@ -78,7 +80,7 @@ import {Router} from 'angular2/router';
                         <div class="form-group">
                           <label class="col-md-4 control-label">City</label>
                           <p class="form-control-static col-md-8">
-                            <span *ngFor="#city of user.settings.city">
+                            <span *ngFor="#city of user.city">
                               {{city.name}},
                             </span>
                           </p>
@@ -86,7 +88,7 @@ import {Router} from 'angular2/router';
                         <div class="form-group">
                           <label class="col-md-4 control-label">Local</label>
                           <p class="form-control-static col-md-8">
-                            <span *ngFor="#local of user.settings.local">
+                            <span *ngFor="#local of user.local">
                               {{local.name}},
                             </span>
                           </p>

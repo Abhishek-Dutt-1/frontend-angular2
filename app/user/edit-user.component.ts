@@ -6,6 +6,7 @@
 import {Component, OnInit} from 'angular2/core';
 import {Router, RouteParams} from 'angular2/router';
 import {User} from './user';
+import {AppService} from '../app.service';
 import {UserService} from './user.service';
 import {UserComponent} from './user.component';
 import {AuthenticationService} from '../authentication/authentication.service';
@@ -73,6 +74,12 @@ import {SuperGroupService} from '../super_group/super_group.service';
                       </div>
                     </div>
                     
+                    <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
+                      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                      <span class="sr-only">Error:</span>
+                      {{_errorMsg}}
+                    </div>
+                                        
                     <div class="form-group">
                       <div class="col-md-offset-4 col-md-8">
                         <button (click)="onSubmitBasic($event)" class="btn btn-default" [disabled]="!editBasicForm.form.valid || (confirm_password.value != password.value)">Save</button>
@@ -85,8 +92,14 @@ import {SuperGroupService} from '../super_group/super_group.service';
                 </div>
                 
                 <div role="tabpanel" class="tab-pane" [ngClass]="{active: _tab == 'geo'}" id="geo">
-                
-                  <div>                          
+                                      
+                  <div class="alert alert-danger" role="alert" [hidden]="!_errorMsgGeo">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    {{_errorMsgGeo}}
+                  </div>
+                  
+                  <div>                     
                     <form #editGeoForm="ngForm" class="form-horizontal">
                     
                       <div class="form-group">
@@ -105,11 +118,35 @@ import {SuperGroupService} from '../super_group/super_group.service';
                         <div class="col-md-8">
                           <span *ngFor="#national of _groupList.national">
                             <label class="radio-inline">
+                              <input type="radio" (click)="nationalRadioToggle(national.id)" [checked]="national.selected"> {{national.name}}
+                            </label>
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <!-- 
+                      <div class="form-group">
+                        <label class="col-md-4 control-label">National</label>
+                        <div class="col-md-8">
+                          <span *ngFor="#national of _groupList.national">
+                            <label class="checkbox-inline">
+                              <input type="checkbox" [(ngModel)]="national.selected"> {{national.name}}
+                            </label>
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="col-md-4 control-label">National</label>
+                        <div class="col-md-8">
+                          <span *ngFor="#national of _groupList.national">
+                            <label class="radio-inline">
                               <input type="radio" (click)="_groupList.selectedNational = national" [checked]="national.id === _groupList.selectedNational.id"> {{national.name}}
                             </label>
                           </span>
                         </div>
                       </div>
+                      -->
                       
                       <div class="form-group">
                         <label class="col-md-4 control-label">State</label>
@@ -175,13 +212,16 @@ import {SuperGroupService} from '../super_group/super_group.service';
 })
 export class EditUserComponent {
   
-  private _tab: String = 'basic'
-  private _loggedInUser: User = null
-  private _model: any = null
+  private _tab: String = 'basic';
+  private _loggedInUser: User = null;
+  private _model: any = null;
+  private _errorMsg = null;
+  private _errorMsgGeo = null;
 
   private _groupList = {international: [], national: [], state: [], city: [], local: [], selectedNational: {}};
   
   constructor(
+    private _appService: AppService,
     private _userService: UserService,
     private _router: Router,
     private _routeParams: RouteParams,
@@ -194,12 +234,68 @@ export class EditUserComponent {
     this._tab = this._routeParams.get('tab') || this._tab;
 
     this._loggedInUser = this._authenticationService.getLoggedInUser();
+    if(!this._loggedInUser) {
+      this._router.navigate(['Login']);
+      return;
+    }
     //console.log(this._loggedInUser);
     this._model = this.cloneObj({}, this._loggedInUser);
 
     this._model.password = null;
     this._model.confirm_password = null;
     
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      this._superGroupService.getAllSuperGroups(false).then(sgList => {
+        console.log(sgList);
+        ["international", "state", "city", "local"].forEach(hyperGroup => {
+          this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
+          for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+            if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+              this._groupList[hyperGroup][i].selected = true;
+            }
+          }
+        });
+        // National and International are same SuperGroups
+        this._groupList.national = sgList.filter(sg => sg.type === 'international');
+        let hyperGroup = "national"
+        for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+          this._groupList[hyperGroup][i].selected = false;    // selected = false coz international above has made some true
+          if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+            this._groupList[hyperGroup][i].selected = true;
+          }
+        }
+        //this._groupList.selectedNational = this.cloneObj({}, this._loggedInUser.national);
+      }).catch(err => console.log(err));
+    }
+    
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      this._superGroupService.getAllSuperGroups(false).subscribe(sgList => {
+        console.log(sgList);
+        ["international", "state", "city", "local"].forEach(hyperGroup => {
+          this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
+          for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+            if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+              this._groupList[hyperGroup][i].selected = true;
+            }
+          }
+        });
+        // National and International are same SuperGroups``
+        this._groupList.national = JSON.parse(JSON.stringify(sgList.filter(sg => sg.type === 'international')));
+        let hyperGroup = "national"
+        for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+          this._groupList[hyperGroup][i].selected = false;    // selected = false coz international above has made some true
+          if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+            this._groupList[hyperGroup][i].selected = true;
+          }
+        }
+        console.log(this._groupList)
+      },
+      error => {
+        console.log(error);
+        this._errorMsgGeo = error;
+      });
+    }
+    /*
     this._superGroupService.getSuperGroupsByType('international').then( sgList => {
       this._groupList.international = sgList;
       for(var i = 0, l = this._groupList.international.length; i < l; i++) {
@@ -240,23 +336,42 @@ export class EditUserComponent {
         }
       }
     });
-
+    */
   }
   
   onSubmitBasic(event) {
+    
     event.preventDefault();
-
+    this._errorMsg = null;
+    
     if(this._model.password != this._model.confirm_password) {
       return
     }
     
-    if(this._model.password && this._model.confirm_password) {
-      this._userService.changePassword(this._loggedInUser.id, this._model.password)
-        .then( updatedUser => {
-          return this._authenticationService.loginUser(updatedUser)
-      }).then( user => {
-        this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'basic'}]);
-      }).catch( err => console.log(err) );
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      if(this._model.password && this._model.confirm_password) {
+        this._userService.changePassword(this._loggedInUser.id, this._model.password)
+          .then( updatedUser => {
+            return this._authenticationService.loginUser(updatedUser)
+        }).then( user => {
+          this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'basic'}]);
+        }).catch( err => console.log(err) );
+      }
+    }
+    
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      if(this._model.password && this._model.confirm_password) {
+        this._userService.changePassword(this._loggedInUser.id, this._model.password)
+          .subscribe(
+            res => {
+              console.log(res);
+              this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'basic'}]);
+            },
+            error => {
+              this._errorMsg = "Password must have at least 8 characters."
+            }
+          )
+      }
     }
   }
   
@@ -265,24 +380,54 @@ export class EditUserComponent {
     
     let model = {
       international: [],
-      national: {},
+      national: [],
       state: [],
       city: [],
       local: []
     };
+
+    model.international = this._groupList.international.filter(el => el.selected == true);
+    model.national = this._groupList.national.filter(el => el.selected == true);
+    //model.national = this.cloneObj({}, this._groupList.selectedNational);
+    model.state = this._groupList.state.filter(el => el.selected == true);
+    model.city = this._groupList.city.filter(el => el.selected == true);
+    model.local = this._groupList.local.filter(el => el.selected == true);
     
-    model.international = this._groupList.international.filter(el => el.selected == true)
-    model.national = this._groupList.selectedNational
-    model.state = this._groupList.state.filter(el => el.selected == true)
-    model.city = this._groupList.city.filter(el => el.selected == true)
-    model.local = this._groupList.local.filter(el => el.selected == true)
+    console.log(this._groupList.selectedNational);
+    console.log(model)
     
-    this._userService.updateGeoSettings(this._loggedInUser.id, model)
-      .then( updatedUser => {
-        this._authenticationService.loginUser(updatedUser);
-      }).then( user => {
-        this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'geo'}]);
-      }).catch( err => console.log(err) );
+    var geoSettings = this.cloneObj({}, model);
+    
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      this._userService.updateGeoSettings(this._loggedInUser.id, model)
+        .then( updatedUser => {
+          this._authenticationService.loginUser(updatedUser);
+        }).then( user => {
+          this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'geo'}]);
+        }).catch( err => console.log(err) );
+    }
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      
+      model.international = model.international.map(el => el.id);
+      model.national = model.national.map(el => el.id);
+      //if(model.national) model.national = model.national.id;
+      model.state = model.state.map(el => el.id);
+      model.city = model.city.map(el => el.id);
+      model.local = model.local.map(el => el.id);
+      console.log(model)
+      
+      this._userService.updateGeoSettings(this._loggedInUser.id, model)
+        .subscribe( updatedUser => {
+          console.log(updatedUser);
+          console.log(geoSettings);
+            this._authenticationService.refreshLoggedInUser(geoSettings);
+            this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'geo'}]);
+        }, 
+        error => {
+          console.log(error);
+          this._errorMsgGeo = error;
+        });
+    }
   }
   
   /**
@@ -292,6 +437,16 @@ export class EditUserComponent {
     this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: tab}])
   } 
   
+  nationalRadioToggle(nationalId) {
+    for(var i in this._groupList.national) {
+      if(this._groupList.national[i].id === nationalId) {
+        this._groupList.national[i].selected = true; //!this._groupList.national[i].selected;
+      } else {
+        this._groupList.national[i].selected = false;
+      }
+    }
+    console.log(this._groupList.national);
+  } 
   /**
    * Clone or merge one or more objects. Polyfill of Object.assign
    * Ref: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill

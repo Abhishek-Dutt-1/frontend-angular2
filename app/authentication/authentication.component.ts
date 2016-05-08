@@ -1,6 +1,7 @@
 import {Component, OnInit} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 import {AuthenticationService} from './authentication.service';
+import {AppService} from '../app.service';
 
 @Component({
   selector: 'my-authentication',
@@ -10,9 +11,14 @@ import {AuthenticationService} from './authentication.service';
       <div class="col-xs-12 col-md-offset-3 col-md-6">
     
         <h3>Welcome fellow human!</h3>
-
+        <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          {{_errorMsg}}
+        </div>
         <form #loginForm="ngForm">
         
+          <!--
           <div class="form-group">
             <label for="email">Email</label>
             <input id="email" type="text" class="form-control" placeholder="Email" required
@@ -21,6 +27,18 @@ import {AuthenticationService} from './authentication.service';
               (click)="clearErrorMsg()"
             >
             <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+              Email is required
+            </div>
+          </div>
+          -->
+          <div class="form-group">
+            <label for="identifier">Email</label>
+            <input id="identifier" type="text" class="form-control" placeholder="Email" required
+              [(ngModel)] = "model.identifier"
+              ngControl = "identifier" #identifier = "ngForm"
+              (click)="clearErrorMsg()"
+            >
+            <div [hidden]="identifier.valid || identifier.pristine" class="alert alert-danger">
               Email is required
             </div>
           </div>
@@ -58,34 +76,50 @@ import {AuthenticationService} from './authentication.service';
 export class AuthenticationComponent {
   
   model = {
-    email: null,
+    //email: null,
+    identifier: null,
     password: null
   };
-  errorMsg = null;
+  private _errorMsg = null;
   
   constructor(
     private _authenticationService: AuthenticationService,
-    private _router: Router) { }
+    private _router: Router,
+    private _appService: AppService) { }
   
   onSubmit(event) {
     
     event.preventDefault();
     
-    this._authenticationService.loginUser(this.model).then(
-      user => {
-        if(user) {
-          this._router.navigate(['ViewUser', {id: user.id}]);
-        }  else {
-          this.errorMsg = "Incorrect email or password!"
-        }       
-    }).catch((reason) => {
-      console.log(reason);
-    });
-    
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      this._authenticationService.loginUser(this.model).then(
+        user => {
+          if(user) {
+            this._router.navigate(['ViewUser', {id: user.id}]);
+          }  else {
+            this._errorMsg = "Incorrect email or password!"
+          }       
+      }).catch((reason) => {
+        console.log(reason);
+      });
+    }
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      this._authenticationService.loginUser(this.model).subscribe(
+        user => {
+          if(user) {
+            this._router.navigate(['ViewUser', {id: user.id}]);
+          }
+        },
+        error => {
+          console.log(error)
+          this._errorMsg = error;  
+        }
+      );
+    }
   }
   
   clearErrorMsg() {
-    this.errorMsg = null;
+    this._errorMsg = null;
   }
     
   goBack() {

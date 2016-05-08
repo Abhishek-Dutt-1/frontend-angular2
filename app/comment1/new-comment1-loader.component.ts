@@ -16,9 +16,7 @@ import {PostTemplateType} from '../post/post-template-types';
     </div>
   `,
   styles: [`
-    .my-new-comment1-loader {
-      
-    }
+    .my-new-comment1-loader { }
   `],
   directives: [PostComponent, NewComment1Component]
 })
@@ -27,12 +25,9 @@ export class NewComment1LoaderComponent implements OnInit {
   private _post: Post;
   private _postTemplateType: PostTemplateType;
   private _postid: number = null;
-  //private _superGroupList: SuperGroup[];
   
   constructor(
-    //private _appService: AppService,
     private _postService: PostService,
-    //private _router: Router,
     private _routeParams: RouteParams
   ) { }
   
@@ -41,7 +36,7 @@ export class NewComment1LoaderComponent implements OnInit {
     
     this._postid = +this._routeParams.get('postid');
     
-    this._postService.getPost(this._postid).then(post => {
+    this._postService.getPost(this._postid).subscribe(post => {
       this._post = post;
     });
     

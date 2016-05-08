@@ -75,9 +75,7 @@ export class NewComment2Component {
   
   private post: Post = null;
   private comment1 = null;
-  
   private _model: any = null;
-    
   private _errorMsg: string = null;
   
   constructor(
@@ -93,6 +91,7 @@ export class NewComment2Component {
       text: 'New Comment', 
     }
     
+    /*
     // Only logged in uses can comment1
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
@@ -100,7 +99,27 @@ export class NewComment2Component {
     } else {
       this._errorMsg = "User must be logged in to create new posts.";      
     }
+    */
     
+    // Only logged in uses can comment2
+    this._authenticationService.loggedInUser$.subscribe(currentUser => {
+      if(currentUser) {
+        console.log("State change ", currentUser)
+        this._model.postedby = currentUser;
+        this._errorMsg = null;
+      } else {
+        this._errorMsg = "User must be logged in to reply.";
+      }
+    });
+    // Only logged in uses can comment2 (init version)
+    // TODO:: Find the Observable way to do this
+    let currentUser = this._authenticationService.getLoggedInUser();
+    if(currentUser) {
+      this._model.postedby = currentUser;
+      this._errorMsg = null;
+    } else {
+      this._errorMsg = "User must be logged in to reply.";      
+    }
   }
   
   /**
@@ -109,10 +128,15 @@ export class NewComment2Component {
   onSubmit(event) {
 
     event.preventDefault();
+    this._model.commentedon = this.comment1
   
-    let newPost = this._comment2Service.createNewComment2(this._model, this.comment1).then(comment1 => {
-      this._router.navigate(['ViewPost', {postid: this.post.id}]);
-    });
+    let newPost = this._comment2Service.createNewComment2(this._model)
+      .subscribe(
+        comment1 => {
+          this._router.navigate(['ViewPost', {postid: this.post.id}]);
+        },
+        error => console.log(error)
+      );
 
   } 
   

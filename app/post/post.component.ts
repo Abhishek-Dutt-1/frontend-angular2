@@ -6,6 +6,8 @@ import {Post} from './post';
 import {Router, RouterLink} from 'angular2/router';
 import {PostService} from './post.service';
 import {PostTemplateType} from './post-template-types';
+import {VoteComponent} from '../misc/vote.component';
+import {DateFormatPipe} from '../misc/date-format.pipe';
 
 
 @Component({
@@ -41,13 +43,25 @@ import {PostTemplateType} from './post-template-types';
                 <div>
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <i class="fa fa-user"></i> {{post.postedby.displayname}}
-                  </a> &bull; 12 days ago &bull; 
-                  <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.super_group.name, group_name: post.group.name}]">
-                    go/{{post.group.super_group.name}}/{{post.group.name}}
+                  </a> &bull; {{ post.createdAt | timeAgo }} &bull;
+                  <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
+                    go/{{post.group.supergroup.name}}/{{post.group.name}}
                   </a>
                 </div>
                 <div>
-                  {{post.upvotes}} <i class="fa fa-arrow-up"></i> &bull; <i class="fa fa-arrow-down"></i> {{post.downvotes}} &bull; {{post.comments.length}} Comments
+                
+                  <div class="row">
+                    <div class="col-xs-6">
+                      {{post.comments.length}} Comments 
+                      <span *ngIf="currentUser && currentUser.id == post.postedby.id"> &bull; 
+                        <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                      </span>
+                    </div>
+                    <div class="col-xs-6">
+                      <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -85,14 +99,21 @@ import {PostTemplateType} from './post-template-types';
               <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                 <i class="fa fa-user"></i> {{post.postedby.displayname}}
               </a> &bull; 
-              12 days ago <!-- &bull; 
-              <span (click)="gotoGroup(post.group.parent_group.name, post.group.name)">
-                go/{{post.group.parent_group.name}}/{{post.group.name}}
+               {{ post.createdAt | timeAgo }} &bull; <!-- &bull; 
+              <span (click)="gotoGroup(post.group.supergroup.name, post.group.name)">
+                go/{{post.group.supergroup.name}}/{{post.group.name}}
               </span>
               -->
             </div>
             <div>
-              {{post.upvotes}} <i class="fa fa-arrow-up"></i> &bull; {{post.downvotes}} <i class="fa fa-arrow-down"></i> &bull; {{post.comments.length}} Comments
+                <div class="row">
+                  <div class="col-xs-6">
+                    {{post.comments.length}} Comments
+                  </div>
+                  <div class="col-xs-6">
+                    <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+                  </div>
+                </div>
             </div>
           </div>
           
@@ -107,7 +128,7 @@ import {PostTemplateType} from './post-template-types';
             <div class="row">
               <div class="col-xs-12">
                 <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
-                  <span>{{post.title}} </span> 
+                  <span>{{post.title}}</span> 
                 </a>
                 <span *ngIf="post.type === 'link'"> 
                   <a target="_blank" [href]="post.link">[view link]</a>
@@ -123,18 +144,23 @@ import {PostTemplateType} from './post-template-types';
             <div class="">
               <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                 <i class="fa fa-user"></i> {{post.postedby.displayname}} 
-              </a> &bull; <!--
+              </a> &bull; {{ post.createdAt | timeAgo }} &bull; <!--
               <a class="">
                 Edit 
               </a> &bull; -->
-              <a (click)="upVotePost(post.id)" class="">
-                {{post.upvotes}} <i class="fa fa-arrow-up"></i> 
-              </a> &bull; 
-              <a (click)="downVotePost(post.id)" class="">
-                <i class="fa fa-arrow-down"></i> {{post.downvotes}} 
-              </a> &bull;
-              <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.super_group.name, group_name: post.group.name}]">
-                go/{{post.group.super_group.name}}/{{post.group.name}} 
+              
+                  <div class="row">
+                    <div class="col-xs-6">
+                      {{post.comments.length}} Comments
+                    </div>
+                    <div class="col-xs-6">
+                      <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+                    </div>
+                  </div>
+                                
+              &bull;
+              <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
+                go/{{post.group.supergroup.name}}/{{post.group.name}} 
               </a> &bull;
               <a [routerLink]="['NewComment1', {postid: post.id}]" class="">
                 Reply 
@@ -166,18 +192,21 @@ import {PostTemplateType} from './post-template-types';
     font-size: 12px;
     overflow-wrap: break-word;
     word-wrap: break-word;
-
   }
   `],
-  inputs: ['post', 'type'],
-  directives: [RouterLink]
+  inputs: ['post', 'type', 'currentUser'],
+  directives: [RouterLink, VoteComponent],
+  pipes: [DateFormatPipe]
 })
 export class PostComponent implements OnInit {
-  post: Post;
-  type: string;
-  templateTypeList: PostTemplateType;
-  templateTypeGroupList: PostTemplateType;
-  templateTypeMain: PostTemplateType;
+  
+  
+  private post                    : Post             = null;
+  private type                    : string           = null;
+  private templateTypeList        : PostTemplateType = null;
+  private templateTypeGroupList   : PostTemplateType = null;
+  private templateTypeMain        : PostTemplateType = null;
+  private _processingVote         : Boolean          = false;
   
   constructor(
     private _postService: PostService,
@@ -193,24 +222,47 @@ export class PostComponent implements OnInit {
   gotoPost(id: number) {
     this._router.navigate(['ViewPost', {id: id}]);
   }
-  
-  /*
-  gotoGroup(super_group_name, groupname) {
-    this._router.navigate(['ViewGroup', {super_group_name: super_group_name, group_name: name}]);
-  }
-  */
-  
-  goBack() {
-    window.history.back();
-  }
 
+  /**
+   * User clicked upvote
+   */
   upVotePost(id:number) {
-    this.post.upvotes++
-    this._postService.upVotePost(id)  
+    console.log("Inside post comp upvoting ", id)
+    if(this._processingVote) return;
+    this._processingVote = true;
+    
+    this._postService.upVotePost(id).subscribe(
+      post => {
+        this._processingVote = false;
+        //this.post = post;
+        this.post.upvotes = post.upvotes;
+        this.post.downvotes = post.downvotes;
+        this.post.currentUserHasUpVoted = post.currentUserHasUpVoted;
+        this.post.currentUserHasDownVoted = post.currentUserHasDownVoted;
+        console.log("UpVote susccess");
+      },
+      error => {
+        console.log("Upvote unsuccess")
+      });
   }
   
   downVotePost(id:number) {
-    this.post.downvotes++
-    this._postService.downVotePost(id)  
+    console.log("Inside post comp Down Voting ", id)
+    if(this._processingVote) return;
+    this._processingVote = true;
+    
+    this._postService.downVotePost(id).subscribe(
+      post => {
+        this._processingVote = false;
+        //this.post = post;
+        this.post.upvotes = post.upvotes;
+        this.post.downvotes = post.downvotes;
+        this.post.currentUserHasUpVoted = post.currentUserHasUpVoted;
+        this.post.currentUserHasDownVoted = post.currentUserHasDownVoted;
+        console.log("Down Vote susccess");
+      },
+      error => {
+        console.log("Upvote unsuccess")
+      });  
   }
 }

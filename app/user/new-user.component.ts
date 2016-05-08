@@ -1,5 +1,6 @@
 import {Component, OnInit} from 'angular2/core';
 import {Router} from 'angular2/router';
+import {AppService} from '../app.service';
 import {UserService} from './user.service';
 //import {GroupService} from '../group/group.service';
 import {SuperGroupService} from '../super_group/super_group.service';
@@ -188,15 +189,20 @@ import {AuthenticationService} from '../authentication/authentication.service';
               <span class="text-muted pull-right field-explainer">Select your 'Local' groups. Multiple groups can be selected.</span>
             </div>
             
-            <br/>
+            <br/><br/>
+            
+            <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span>
+              {{_errorMsg}}
+            </div>
             <div>
               <button (click)="onSubmit($event)" [disabled]="!newUserForm.form.valid" class="btn btn-default">Submit</button>
               <button (click)="goBack()" class="btn btn-default">Go Back</button>
             </div>
             
           </form>
-
-      
+            
         </div>
       </div>
     </div>
@@ -230,8 +236,10 @@ export class NewUserComponent {
     local: []
   };
   private _groupList = {international: [], national: [], state: [], city: [], local: [], selectedNational: {}};
+  private _errorMsg = null;
   
   constructor(
+    private _appService: AppService,
     private _userService: UserService,
     private _superGroupService: SuperGroupService,
     private _authenticationService: AuthenticationService,
@@ -246,6 +254,7 @@ export class NewUserComponent {
   }
   
   onSubmit(event) {
+    this._errorMsg = null;
     event.preventDefault();
     
     this.model.international = this._groupList.international.filter(el => el.selected == true)
@@ -255,14 +264,30 @@ export class NewUserComponent {
     this.model.local = this._groupList.local.filter(el => el.selected == true)
     
     console.log(this.model);
-    
-    this._userService.createNewUser(this.model).then(
-      user => {
-        this._authenticationService.loginUser(user).then(
-          user => this._router.navigate(['ViewUser', {id: user.id}])
-        ).catch(err => console.log(err))
-                
-    });
+    if(this._appService.getSiteParams().servicesMode === 'local') {
+      this._userService.createNewUser(this.model).then(
+        user => {
+          this._authenticationService.loginUser(user).then(
+            user => this._router.navigate(['ViewUser', {id: user.id}])
+          ).catch(err => console.log(err))           
+      });
+    }
+    if(this._appService.getSiteParams().servicesMode === 'server') {
+      this._userService.createNewUser(this.model).subscribe(
+        user => {
+          // Registeratin success
+          // redirect ot login page (TODO: Auto login the new registered user)
+          console.log(user)
+          //this._router.navigate(['ViewUser', {id: user.id}]);
+          this._router.navigate(['Login']);
+        },
+        error => {
+          // TODO:: Handle errors
+          console.log(error)
+          this._errorMsg = error;
+        }
+      )
+    }
   }
     
   goBack() {

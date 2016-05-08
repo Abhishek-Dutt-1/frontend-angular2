@@ -9,13 +9,12 @@ export var MOCK_USERS: User[] = [
     displayname: 'Iron Man',
     password: '123',
     userrole: UserRoles.user,
-    settings: {
-      international: [MOCK_SUPER_GROUPS[1-1]],
-      national: MOCK_SUPER_GROUPS[3-1],
-      state: [MOCK_SUPER_GROUPS[5-1]],
-      city: [MOCK_SUPER_GROUPS[7-1]],
-      local: [MOCK_SUPER_GROUPS[9-1]]
-    }
+    international: [MOCK_SUPER_GROUPS[1-1]],
+    national: MOCK_SUPER_GROUPS[3-1],
+    state: [MOCK_SUPER_GROUPS[5-1]],
+    city: [MOCK_SUPER_GROUPS[7-1]],
+    local: [MOCK_SUPER_GROUPS[9-1]]
+
   },
   {
     id: 2,
@@ -23,13 +22,12 @@ export var MOCK_USERS: User[] = [
     displayname: 'Captain America',
     password: '123',
     userrole: UserRoles.user,
-    settings: {
-      international: [MOCK_SUPER_GROUPS[4]],
-      national: MOCK_SUPER_GROUPS[1],
-      state: [MOCK_SUPER_GROUPS[5]],
-      city: [MOCK_SUPER_GROUPS[2]],
-      local: [MOCK_SUPER_GROUPS[3]]
-    }
+    international: [MOCK_SUPER_GROUPS[4]],
+    national: MOCK_SUPER_GROUPS[1],
+    state: [MOCK_SUPER_GROUPS[5]],
+    city: [MOCK_SUPER_GROUPS[2]],
+    local: [MOCK_SUPER_GROUPS[3]]
+
   },
   {
     id: 3,
@@ -37,13 +35,12 @@ export var MOCK_USERS: User[] = [
     displayname: 'Incredible Hulk',
     password: '123',
     userrole: UserRoles.user,
-    settings: {
-      international: [MOCK_SUPER_GROUPS[4]],
-      national: MOCK_SUPER_GROUPS[1],
-      state: [MOCK_SUPER_GROUPS[5]],
-      city: [MOCK_SUPER_GROUPS[2]],
-      local: [MOCK_SUPER_GROUPS[3]]
-    }
+    international: [MOCK_SUPER_GROUPS[4]],
+    national: MOCK_SUPER_GROUPS[1],
+    state: [MOCK_SUPER_GROUPS[5]],
+    city: [MOCK_SUPER_GROUPS[2]],
+    local: [MOCK_SUPER_GROUPS[3]]
+
   },
   {
     id: 4,
@@ -51,13 +48,12 @@ export var MOCK_USERS: User[] = [
     displayname: 'The Mighty Thor',
     password: '123',
     userrole: UserRoles.user,
-    settings: {
-      international: [MOCK_SUPER_GROUPS[4]],
-      national: MOCK_SUPER_GROUPS[1],
-      state: [MOCK_SUPER_GROUPS[5]],
-      city: [MOCK_SUPER_GROUPS[2]],
-      local: [MOCK_SUPER_GROUPS[3]]
-    }
+    international: [MOCK_SUPER_GROUPS[4]],
+    national: MOCK_SUPER_GROUPS[1],
+    state: [MOCK_SUPER_GROUPS[5]],
+    city: [MOCK_SUPER_GROUPS[2]],
+    local: [MOCK_SUPER_GROUPS[3]]
+  
   }
   
 ]
