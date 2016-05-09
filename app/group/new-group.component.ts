@@ -38,6 +38,18 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
         
         <div class="form-group">
+          <label for="membership_needs_approval" class="col-sm-2 control-label">Do users need your approval before joining this group?</label>
+          <div class="col-sm-10">
+            <label class="checkbox-inline">
+              <input type="radio" name="membership_needs_approval" (click)="model.membership_needs_approval = 1" [checked]="model.membership_needs_approval === 1" > Yes
+            </label>
+            <label class="checkbox-inline">
+              <input type="radio" name="membership_needs_approval" (click)="model.membership_needs_approval = 0" [checked]="model.membership_needs_approval === 0" > No
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-group">
           <label for="non_members_can_view" class="col-sm-2 control-label">Are posts in this group visible to NON Members?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
@@ -159,7 +171,9 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     let super_group_name = this._routeParams.get('super_group_name');
     this._superGroupService.getSuperGroupByName(super_group_name).subscribe(
       sg => {
-        this.model.supergroup = sg;
+        // Keep model.supergroup as object and not just id as this is returned as is from the server
+        // and used by the onSubmit to redirect to the new created group (saving a query)
+        this.model.supergroup = sg;      
       },
       error => console.log(error) )
 
@@ -171,8 +185,10 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
       non_members_can_post: 0,
       verify_members_email: 0,
       verify_email_domains_list: [],
-      number_of_email_domains: [0]      // this tracks the number of email input fields to show in ui
+      number_of_email_domains: [0],      // this tracks the number of email input fields to show in ui (purly frontend stuff)
+      membership_needs_approval: 0
     }
+    
     this._formErrors = {
       name: {isValid: true, errMsg: ''},
       description: {isValid: true, errMsg: 'YOLO'},
@@ -183,7 +199,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     // Only logged in uses can post
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
-        this.model.owner = currentUser;
+        this.model.owner = currentUser.id;
         this._errorMsg = null;
       } else {
         this._errorMsg = "User must be logged in to create new group.";
@@ -193,7 +209,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
-      this.model.owner = currentUser;
+      this.model.owner = currentUser.id;
       this._errorMsg = null;
     } else {
       this._errorMsg = "User must be logged in to create new group.";
@@ -226,6 +242,9 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     if(this.model.verify_members_email == 1) this.model.verify_members_email = true;
     if(this.model.verify_members_email == 0) this.model.verify_members_email = false;
 
+    if(this.model.membership_needs_approval == 1) this.model.membership_needs_approval = true;
+    if(this.model.membership_needs_approval == 0) this.model.membership_needs_approval = false;
+
     delete this.model.number_of_email_domains
 
     this._groupService.createNewGroup(this.model)
@@ -246,6 +265,9 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
 
         if ( this.model.verify_members_email == true  ) this.model.verify_members_email = 1;
         if ( this.model.verify_members_email == false ) this.model.verify_members_email = 0;
+
+        if ( this.model.membership_needs_approval == true  ) this.model.membership_needs_approval = 1;
+        if ( this.model.membership_needs_approval == false ) this.model.membership_needs_approval = 0;
 
       });
 

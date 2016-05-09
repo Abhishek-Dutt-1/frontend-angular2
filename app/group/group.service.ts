@@ -173,4 +173,44 @@ export class GroupService {
     return Promise.resolve(MOCK_GROUPS.filter(group => group.super_group.name == sg_name));
   }
   
+  /**
+   * Subscribe the logged in user to a grouop
+   */
+  subscribeCurrentUserToGroup(groupId: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/subscribeCurrentUserToGroup/' + groupId, options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+    
+  }       // ! subscribeCurrentUserToGroup()
+  
+  /**
+   * UnSubscribe the logged in user to a grouop
+   */
+  unSubscribeCurrentUserFromGroup(groupId: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/unSubscribeCurrentUserFromGroup/' + groupId, options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+    
+  }       // ! subscribeCurrentUserToGroup()
+  
 }

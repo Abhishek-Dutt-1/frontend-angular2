@@ -20,17 +20,26 @@ import {ErrorComponent} from '../misc/error.component';
       
       <div class="row">
         <div class="col-xs-12">
-          <my-error [_errorMsg]="_errorMsg"></my-error>
+          
           <div class="group-details">  
             <div class="panel panel-default group-details-panel">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a>/{{group.name}}
+                  <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a> / {{group.name}}
+                  <button class="btn btn-default btn-xs" *ngIf="!group.isCurrentUserSubscribed" (click)="subscribeToThisGroup()">Subscribe</button>
+                  <button class="btn btn-default btn-xs" *ngIf="group.isCurrentUserSubscribed" (click)="unSubscribeFromThisGroup()">Unsubscribe</button>
                 </h4>
               </div>  
               <div class="panel-body">
                 <span *ngIf="group.description">{{group.description}}</span>
                 <span *ngIf="!group.description"><i>Welcome to {{group.supergroup.name}}/{{group.name}}</i></span>
+                <hr/>
+                Non members can view: {{group.non_members_can_view}}<br/>
+                Non members can post: {{group.non_members_can_post}}<br/>
+                Verify members email: {{group.verify_members_email}}<br/>
+                Verify members email domain list: {{group.verify_members_email_list}}<br/>
+                Membership needs approval: {{group.membership_needs_approval}}<br/>
+                Members waiting approval: {{group.members_waiting_approval}}<br/>
               </div>
               <div class="panel-footer">
                 <a>Group Info</a> |
@@ -39,11 +48,13 @@ import {ErrorComponent} from '../misc/error.component';
                 </a>
               </div>
             <div>
-            
           </div>
+
         </div> <!-- !col -->
       </div> <!-- !row -->
-
+      
+      <my-error [_errorMsg]="_errorMsg"></my-error>
+      
       <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser"></my-post-list>
       
     </div>  
@@ -62,7 +73,6 @@ import {ErrorComponent} from '../misc/error.component';
     overflow-wrap: break-word;
     word-wrap: break-word;
   }
-  
   `],
   //styleUrls: ['app/group/view-group.component.css'],
   //inputs: ['group'],
@@ -125,10 +135,50 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
           console.log(groupAndPostList)
           this.group = groupAndPostList.group
           this.groupPosts = groupAndPostList.postList;
+          if(this.groupPosts.length < 1) {
+          this._errorMsg = "This group does not have any posts yet. You can help by creating the first post!"
+          }
         },
         error => {
           console.log(error);  
         });
+  }
+  
+  /**
+   * Subscribe current user to this group
+   */
+  subscribeToThisGroup() {
+    console.log("SUBSRIBING");
+    if(!this.group.id) return;
+    if(!this._currentUser.id) return;
+    this._groupService.subscribeCurrentUserToGroup(this.group.id).subscribe(
+      res => {
+        console.log("SUCCESS SUBS", res);
+        this.group.isCurrentUserSubscribed = true;
+        this._errorMsg = null;
+      },
+      error => {
+        this._errorMsg = error;
+        console.log("ERROR", error);
+      })
+  }
+  
+  /**
+   * Unsubscirbe current user from this group
+   */
+  unSubscribeFromThisGroup() {
+    console.log("Un subscribing")
+    if(!this.group.id) return;
+    if(!this._currentUser.id) return;
+    this._groupService.unSubscribeCurrentUserFromGroup(this.group.id).subscribe(
+      res => {
+        console.log("SUCCESS UN SUBS", res);
+        this.group.isCurrentUserSubscribed = false;
+      },
+      error => {
+        this._errorMsg = error;
+        console.log("ERROR", error);
+      })
   }
   
   ngOnDestroy() {

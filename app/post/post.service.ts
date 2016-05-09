@@ -83,11 +83,11 @@ export class PostService {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.post(backendUrl+'/post', JSON.stringify(newProperPost), options).map(
+    return this._http.post(backendUrl+'/post/createNewPost', JSON.stringify(newProperPost), options).map(
       res => {
         console.log(res)
         console.log(res.json())
-        return <string[]> res.json()
+        return res.json()
       })
       .catch(error => this._appService.handleServerErrors(error));  
   }     // !createNewPost()

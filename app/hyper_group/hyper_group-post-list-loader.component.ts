@@ -99,13 +99,13 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         //console.log(resp)
         this.posts = resp.posts;
         if(this.posts.length < 1) {
-          this._errorMsg = "Your '" + this._geoSelection + "' groups do not have any posts. " + 
+          this._errorMsg = "Your '" + this._geoSelection.toUpperCase() + "' groups do not have any posts yet. " + 
                            "Please visit your profile to subscribe to some more active groups, or create a new post yourself."
         }
         
         this._superGroupList = resp.superGroupList;
         if(this._superGroupList.length < 1) {
-          this._errorMsg = "You have not subscibed to any groups in '" + this._geoSelection + "'. " + 
+          this._errorMsg = "You have not subscibed to any groups in '" + this._geoSelection.toUpperCase() + "'. " + 
                            "Please visit your profile to subscribe to groups."
         }
       },

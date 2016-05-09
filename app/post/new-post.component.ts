@@ -283,8 +283,6 @@ export class NewPostComponent {
    */
   onSubmit(event) {
     
-    console.log(this.model);
-    
     event.preventDefault();
     
     if(!this.model.group) return;
@@ -298,12 +296,17 @@ export class NewPostComponent {
       group    : this.model.group.id
     }
     
+    console.log(properModel);
+    
     this._postService.createNewPost(properModel).subscribe(
       post => {
         console.log(post);
         this._router.navigate(['ViewPost', {postid: post.id}]);
       },
-      error => console.log(error));    
+      error => {
+        this._errorMsg = error;
+        console.log(error);
+      });
   }
   
   goBack() {
