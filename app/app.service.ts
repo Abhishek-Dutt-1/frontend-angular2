@@ -72,7 +72,7 @@ export class AppService {
       } else if (error.status === 400) {
         errMsg = error._body || "User must be logged in!";
       } else if (error.status === 500) {
-        errMsg = error.json().details || error._body || "Server Error";
+        errMsg = error.json().details || error.json() || error._body || "Server Error";
       } else if (error.json().type === "error") { 
         // Handle XMLHttpRequestProgressEvent::ERR_CONNECTION_REFUSED i.e. Server not up
         errMsg = "Server not responding, Please try again later.";

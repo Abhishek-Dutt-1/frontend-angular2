@@ -9,10 +9,10 @@ import {Subject} from 'rxjs/Subject';
 import {ErrorComponent} from '../misc/error.component';
 
 @Component({
-  selector: 'my-new-group',
+  selector: 'my-edit-group',
   template: `
-  <div class="my-new-group">
-    <div *ngIf="!_errorMsg && model.supergroup">
+  <div class="my-edit-group">
+    <div *ngIf="!_errorMsg && _model.supergroup">
       <h3 class="col-sm-offset-2">Create a New Group:</h3>
       <form #groupForm="ngForm" class="form-horizontal" novalidate>
         <h5>{{model.supergroup.name | uppercase}}/{{model.name}}</h5>
@@ -125,38 +125,38 @@ import {ErrorComponent} from '../misc/error.component';
     </div>
   </div>
   `,
-  templateUrl: 'app/post/new-post.component.html',
   styles: [`
-    .my-new-group .ng-valid[required] {
+    .my-edit-group .ng-valid[required] {
       border-left: 5px solid #42A948; /* green */
     }
-    .my-new-group .ng-invalid {
+    .my-edit-group .ng-invalid {
       border-left: 5px solid #a94442; /* red */
     }
-    .my-new-group form {
+    .my-edit-group form {
       min-width: 250px;
     }
-    .my-new-group .post-textarea textarea{
+    .my-edit-group .post-textarea textarea{
       width: 100%;
     }
-    .my-new-group .post-text input{
+    .my-edit-group .post-text input{
       width: 100%;
     }
-    .my-new-group .post-select select{
+    .my-edit-group .post-select select{
       width: 100%;
     }
   `],
   //styleUrls: ['app/post/new-post.component.css'],
   inputs: ['post', 'error']
 })
-export class NewGroupComponent implements OnInit, OnDestroy  {
+export class EditGroupComponent implements OnInit, OnDestroy  {
   
-  private model = null;
+  private _model = null;
   private _formErrors = null;
   private _errorMsg: string = null;
   private _errList:string[] = [];
   private _showSummary: boolean = false;
   private _loggedInUserSubcription = null;
+  private _currentUser = null;
 
   constructor(
     //private _postService: PostService,
@@ -168,16 +168,39 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
   }
   
   ngOnInit() {
-    let super_group_name = this._routeParams.get('super_group_name');
-    this._superGroupService.getSuperGroupByName(super_group_name).subscribe(
-      sg => {
-        // Keep model.supergroup as object and not just id as this is returned as is from the server
-        // and used by the onSubmit to redirect to the new created group (thus saving a query)
-        this.model.supergroup = sg;      
+    let groupId = this._routeParams.get('group_id');
+    this._groupService.getGroupById(groupId).subscribe(
+      group => {
+        console.log(group);
+        this._model.group = group;
       },
-      error => console.log(error) )
+      error => {
+        this._errorMsg = error;
+      })
 
-    this.model = {
+    // Only logged in uses can post
+    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
+      if(currentUser) {
+        this._currentUser = currentUser;
+        this._errorMsg = null;
+      } else {
+        this._currentUser = null;
+        this._errorMsg = "User must be logged in to edit a group.";
+      }
+    });
+    // Only logged in uses can post (init version)
+    // TODO:: Find the Observable way to do this
+    let currentUser = this._authenticationService.getLoggedInUser();
+    if(currentUser) {
+      this._currentUser = currentUser;
+      this._errorMsg = null;
+    } else {
+      this._errorMsg = "User must be logged in to edit a group.";
+    }
+  
+    // DO SOMETHING WIHT THE GORUP AND CURRENT USER
+  
+    this._model = {
       name: '',
       description: '',
       supergroup: null,
@@ -185,7 +208,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
       non_members_can_post: 0,
       verify_members_email: 0,
       verify_email_domains_list: [],
-      number_of_email_domains: [0],      // this tracks the number of email input fields to show in ui (purly frontend stuff)
+      number_of_email_domains: [0],      // this tracks the number of email input fields to show in ui (purely frontend stuff)
       membership_needs_approval: 0
     }
     
@@ -195,27 +218,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
       emailDomain: {isValid: true, errMsg: 'YOLO'},
       isFormValid: false
     }
-
-    // Only logged in uses can post
-    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
-      if(currentUser) {
-        this.model.owner = currentUser.id;
-        this._errorMsg = null;
-      } else {
-        this._errorMsg = "User must be logged in to create new group.";
-      }
-    });
-    // Only logged in uses can post (init version)
-    // TODO:: Find the Observable way to do this
-    let currentUser = this._authenticationService.getLoggedInUser();
-    if(currentUser) {
-      this.model.owner = currentUser.id;
-      this._errorMsg = null;
-    } else {
-      this._errorMsg = "User must be logged in to create new group.";
-    }
-
-  }
+}
   
   /**
    * Submit the form

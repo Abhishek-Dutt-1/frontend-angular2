@@ -1,3 +1,6 @@
+/**
+ * Approve or decline memberships for a group
+ */
 import {Component, OnInit, OnDestroy} from 'angular2/core';
 import {Router, RouteParams, RouterLink} from 'angular2/router';
 import {AppService} from '../app.service';
@@ -11,12 +14,14 @@ import {AuthenticationService} from '../authentication/authentication.service';
 import {ErrorComponent} from '../misc/error.component';
 
 @Component({
-  selector: 'my-view-group',
+  selector: 'my-approve-membership',
   //templateUrl: 'app/group/view-group.component.html',
   template: `
-  <div *ngIf="group">
-  
-    <div class="my-view-group">
+  <div class="my-approve-membership">
+    
+    <my-error [_errorMsg]="_errorMsg"></my-error>
+    
+    <div *ngIf="group">
       
       <div class="row">
         <div class="col-xs-12">
@@ -26,10 +31,6 @@ import {ErrorComponent} from '../misc/error.component';
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a> / {{group.name}}
-                  <button class="btn btn-default btn-xs" *ngIf="!group.isCurrentUserSubscribed && _currentUser" (click)="subscribeToThisGroup()">Subscribe</button>
-                  <button class="btn btn-default btn-xs" *ngIf="group.isCurrentUserSubscribed" (click)="unSubscribeFromThisGroup()">Unsubscribe</button>
-                  <button class="btn btn-default btn-xs" *ngIf="group.currentUserIsGroupOwner">YOUR GROUP</button>
-                  <button class="btn btn-default btn-xs" *ngIf="group.isCurrentUsersMembershipPending" (click)="cancelPendingGroupMembership()">Membership Pending (Cancel?)</button>
                 </h4>
               </div>  
               <div class="panel-body">
@@ -49,55 +50,54 @@ import {ErrorComponent} from '../misc/error.component';
 
               </div>
               <div class="panel-footer">
-                <a>Group Info</a> &bull;
-                <a [routerLink]="['ApproveMembership', {group_id: group.id}]" class="">
-                  Pending Members
-                </a> 
-                &bull;
+                <a>Group Info</a> |
                 <a [routerLink]="['NewPost', {super_group_name: group.supergroup.name, group_name: group.name}]" class="">
                   Create a New Post
-                </a>
-                &bull;
-                <a [routerLink]="['EditGroup', {group_id: group.id}]" class="">
-                  Edit Group
                 </a>
               </div>
             <div>
           </div>
-
+        </div> <!-- !col -->
+        <div class="col-xs-12">
+          <table class="table table-condensed table-hover">
+            <thead>
+              <tr><th>Display Name</th><th>Approve Membership</th><th>Decline Membership</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="#pendingUser of group.members_waiting_approval">
+                <td class="col-xs-4">{{pendingUser.displayname}}</td>
+                <td class="col-xs-4"><button class="btn btn-default btn-xs" (click)="approveMembership(pendingUser.id)">Approve</button></td>
+                <td class="col-xs-4"><button class="btn btn-default btn-xs" (click)="declineMembership(pendingUser.id)">Disapprove</button></td>
+              </tr>
+            </tbody>
+          </table>
         </div> <!-- !col -->
       </div> <!-- !row -->
-      
-      <my-error [_errorMsg]="_errorMsg"></my-error>
-      
-      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser"></my-post-list>
       
     </div>  
   </div>  <!-- end top div -->
   `,
   styles: [`
-  .my-view-group .group-details-panel {
+  .my-approve-membership .group-details-panel {
     margin-bottom: 0px;
     margin-top: 10px;
   }
-  .my-view-group .panel-heading {
+  .my-approve-membership .panel-heading {
     overflow-wrap: break-word;
     word-wrap: break-word;
   }
-  .my-view-group .panel-body {
+  .my-approve-membership .panel-body {
     overflow-wrap: break-word;
     word-wrap: break-word;
   }
   `],
-  //styleUrls: ['app/group/view-group.component.css'],
-  //inputs: ['group'],
-  directives: [PostListComponent, RouterLink, ErrorComponent]
+  directives: [RouterLink, ErrorComponent]
 })
-export class ViewGroupComponent implements OnInit, OnDestroy  {
+export class ApproveMembershipComponent implements OnInit, OnDestroy  {
   
-  private group: Group;
-  private groupPosts: Post[];
-  private postTemplateType: PostTemplateType;
+  private group: Group = null;
+  //private groupPosts: Post[];
+  //private postTemplateType: PostTemplateType;
   private _loggedInUserSubcription = null;
   private _currentUser: User = null;
   private _errorMsg = null;
@@ -111,21 +111,23 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   
   ngOnInit() {
     
-    this.postTemplateType = PostTemplateType.Grouplist;
-        
-    let super_group_name = this._routeParams.get('super_group_name');
-    let group_name = this._routeParams.get('group_name');
-    
+    let group_id = this._routeParams.get('group_id');
+    console.log(group_id)
     // Only logged in uses view posts
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(
       currentUser => {
-        //if(currentUser) {
+        if(currentUser) {
+          // User logged In
           this._currentUser = currentUser;
           this._errorMsg = null;
-          this.getPostsInGroup(super_group_name, group_name);
-        //} else {
-        //  this.getPostsInGroup(super_group_name, group_name);
-        //}
+          this.getGroupWaitingList(group_id);
+        } else {
+          // User logged out
+          this._currentUser = currentUser;
+          this.group = null;
+          this._errorMsg = "User must be logged in to view this page.";
+          // Can be redirected here to the group
+        }
       },
       error => {
         this._errorMsg = error;
@@ -133,12 +135,13 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
     // Only logged in uses view post (init version)
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
-    //if(currentUser) {
+    if(currentUser) {
       this._currentUser = currentUser;
       this._errorMsg = null;
-    //} else { }
-    // Logged in or not fetch posts immidiately
-    this.getPostsInGroup(super_group_name, group_name);
+      this.getGroupWaitingList(group_id);
+    } else { 
+      this._errorMsg = "User must be logged in to view this page.";
+    }
 
   }   // !ngOnInit
   
@@ -146,25 +149,70 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   /**
    * Fetches posts in given supergroup/group
    */
-  getPostsInGroup(super_group_name: string, group_name: string) {
-    this._groupService.getPostsInGroup(super_group_name, group_name)
-      .subscribe(
-        groupAndPostList => {
-          console.log(groupAndPostList)
-          this.group = groupAndPostList.group
-          this.groupPosts = groupAndPostList.postList;
-          if(this.groupPosts.length < 1) {
-          this._errorMsg = "This group does not have any posts yet. You can help by creating the first post!"
+  getGroupWaitingList(group_id: any) {
+    this._groupService.getGroupWaitingList(group_id).subscribe(
+      res => {
+        console.log(res)
+        this.group = res
+      },
+      error => {
+        console.log(error);
+        this._errorMsg = error;  
+      });
+  }
+  
+  /**
+   * Approve a pending member
+   */
+  approveMembership(userId: any) {
+    console.log("Approving", userId);
+    if(!this.group.id) return;
+    if(!this._currentUser || !this._currentUser.id) return;
+    if(!userId) return;
+    this._groupService.approveGroupMembership(this.group.id, userId).subscribe(
+      approvedUserId => {
+        console.log("SUCCESS APPROVAL memebership", approvedUserId);
+        for(var i = 0; i < this.group.members_waiting_approval.length; i++) {
+          if(this.group.members_waiting_approval[i].id == approvedUserId) {
+            this.group.members_waiting_approval.splice(i, 1);
+            break;
           }
-        },
-        error => {
-          console.log(error);  
-        });
+        }
+      },
+      error => {
+        this._errorMsg = error;
+        console.log("ERROR", error);
+      })
+  }
+  
+  /**
+   * Decline a pending member
+   */
+  declineMembership(userId: any) {
+    console.log("Declining", userId);
+    if(!this.group.id) return;
+    if(!this._currentUser || !this._currentUser.id) return;
+    if(!userId) return;
+    this._groupService.disApproveGroupMembership(this.group.id, userId).subscribe(
+      disApprovedUserId => {
+        console.log("SUCCESS dis APPROVAL memebership", disApprovedUserId);
+        for(var i = 0; i < this.group.members_waiting_approval.length; i++) {
+          if(this.group.members_waiting_approval[i].id == disApprovedUserId) {
+            this.group.members_waiting_approval.splice(i, 1);
+            break;
+          }
+        }  
+      },
+      error => {
+        this._errorMsg = error;
+        console.log("ERROR", error);
+      })
   }
   
   /**
    * Subscribe current user to this group
    */
+  /*
   subscribeToThisGroup() {
     console.log("SUBSRIBING");
     if(!this.group.id) return;
@@ -186,44 +234,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
         console.log("ERROR", error);
       })
   }
-  
-  /**
-   * Unsubscirbe current user from this group
-   */
-  unSubscribeFromThisGroup() {
-    console.log("Un subscribing")
-    if(!this.group.id) return;
-    if(!this._currentUser || !this._currentUser.id) return;
-
-    this._groupService.unSubscribeCurrentUserFromGroup(this.group.id).subscribe(
-      res => {
-        console.log("SUCCESS UN SUBS", res);
-        this.group.isCurrentUserSubscribed = false;
-      },
-      error => {
-        this._errorMsg = error;
-        console.log("ERROR", error);
-      })
-  }
-  
-  /**
-   * Cancel the logged in users pending membership to a group that requires approval
-   */
-  cancelPendingGroupMembership() {
-    console.log("Cancelling pending membership")
-    if(!this.group.id) return;
-    if(!this._currentUser || !this._currentUser.id) return;
-    this._groupService.cancelCurrentUsersPendingMembership(this.group.id).subscribe(
-      res => {
-        console.log("SUCCESS UN SUBS pending meme", res);
-        this.group.isCurrentUsersMembershipPending = false;
-      },
-      error => {
-        this._errorMsg = error;
-        console.log("ERROR", error);
-      })
-      
-  }
+  */
   
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();

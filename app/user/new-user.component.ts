@@ -78,11 +78,6 @@ import {ErrorComponent} from '../misc/error.component';
               </div>
             </div>
             
-            <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
-              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-              <span class="sr-only">Error:</span>
-              {{_errorMsg}}
-            </div>
             <my-error [_errorMsg]="_errorMsg"></my-error>
             
             <div class="form-group">

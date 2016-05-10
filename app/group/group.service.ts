@@ -79,7 +79,22 @@ export class GroupService {
         )
         .catch(error => this._appService.handleServerErrors(error)); 
     }
-  }     // !getGroup
+  }     // !getGroup()
+  
+  /**
+   * Return a Group obj by id
+   */ 
+  getGroupById(groupId: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/getGroupById/' + groupId, options)
+      .map(
+        res => {
+          return res.json()
+      })
+      .catch(error => this._appService.handleServerErrors(error)); 
+  }     // ! getGroupById()
   
   /**
    * Get all posts in a Group
@@ -212,5 +227,77 @@ export class GroupService {
       .catch(error => this._appService.handleServerErrors(error));
     
   }       // ! subscribeCurrentUserToGroup()
+  
+  /**
+   * Cancel the logged in users pending membership to a group that requires approval
+   */
+  cancelCurrentUsersPendingMembership(groupId: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/cancelCurrentUsersPendingMembership/' + groupId, options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+    
+  }       // ! cancelCurrentUsersPendingMembership()
+  
+  /**
+   * Fetches group's waiting list if group requires approval
+   */
+  getGroupWaitingList(groupId: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/getGroupWaitingList/' + groupId, options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+    
+  }       // ! cancelCurrentUsersPendingMembership()
+  
+  /**
+   * Approve a member to join the group
+   */
+  approveGroupMembership(groupId: any, userId: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/approveGroupMembership', JSON.stringify({groupid: groupId, pendinguserid: userId}), options)
+      .map(
+        res => {
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+  }       // ! approveGroupMembership()
+  
+  /**
+   * Disapprove a member to join the group
+   */
+  disApproveGroupMembership(groupId: any, userId: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/disApproveGroupMembership', JSON.stringify({groupid: groupId, pendinguserid: userId}), options)
+      .map(
+        res => {
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+  }       // ! approveGroupMembership()
   
 }
