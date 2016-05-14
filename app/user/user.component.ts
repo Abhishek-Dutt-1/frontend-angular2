@@ -38,6 +38,12 @@ import {Router} from 'angular2/router';
                         <p class="form-control-static col-md-8">{{user.email}}</p>
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
+                        <label class="col-md-4 control-label">Other Emails</label>
+                        <div *ngFor="#email of user.extra_emails">
+                          <p class="form-control-static col-md-8">{{email.email}} | {{email.verified}}</p>
+                        </div>
+                      </div>
+                      <div class="form-group" [hidden]="!ownProfile">
                         <label class="col-md-4 control-label">Password</label>
                         <p class="form-control-static col-md-8"><i>[hidden]</i></p>
                       </div>

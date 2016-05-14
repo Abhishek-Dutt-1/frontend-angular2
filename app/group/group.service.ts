@@ -28,30 +28,23 @@ export class GroupService {
   }
   
   createNewGroup(newGroup: any) {
-    /*
-    // Server should handle these things
-    let lastGroup:Group = MOCK_GROUPS.reduceRight((left, right) => {
-                    if(left.id > right.id) return left
-                      else return right;
-                  });
-                  
-    return this._superGroupService.getSuperGroupByName(newGroup.super_group_name)
-    .then(sg => {
-      let newProperGroup = {
-        id: +lastGroup.id + 1,
-        name: newGroup.name,
-        super_group: sg,
-        owner: newGroup.owner,
-      }
-      MOCK_GROUPS.push(newProperGroup);
-      return newProperGroup;
-    });
-    */
      
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/group/createNewGroup', JSON.stringify(newGroup), options).map(
+      res => {
+        return res.json()
+      })
+      .catch(error => this._appService.handleServerErrors(error));
+  }
+  
+  editGroup(modGroup: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/editGroup', JSON.stringify(modGroup), options).map(
       res => {
         return res.json()
       })

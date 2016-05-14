@@ -12,7 +12,12 @@ import {ErrorComponent} from '../misc/error.component';
   selector: 'my-new-group',
   template: `
   <div class="my-new-group">
-    <div *ngIf="!_errorMsg && model.supergroup">
+    
+    <div *ngIf="_errorMsg">
+      <my-error [_errorMsg]=_errorMsg></my-error>
+    </div>
+    
+    <div *ngIf="_readyToEdit">
       <h3 class="col-sm-offset-2">Create a New Group:</h3>
       <form #groupForm="ngForm" class="form-horizontal" novalidate>
         <h5>{{model.supergroup.name | uppercase}}/{{model.name}}</h5>
@@ -118,11 +123,7 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
       </form>
     </div>
-    <div *ngIf="_errorMsg">
-      <my-error [_errorMsg]=_errorMsg></my-error>
-      {{_errorMsg}}
-      <button (click)="_errorMsg=false" class="btn btn-default">Back</button>
-    </div>
+
   </div>
   `,
   templateUrl: 'app/post/new-post.component.html',
@@ -146,17 +147,37 @@ import {ErrorComponent} from '../misc/error.component';
       width: 100%;
     }
   `],
-  //styleUrls: ['app/post/new-post.component.css'],
-  inputs: ['post', 'error']
+  directives: [ErrorComponent]
 })
 export class NewGroupComponent implements OnInit, OnDestroy  {
   
-  private model = null;
-  private _formErrors = null;
+  //private model = null;
+  private model = {
+    name: '',
+    description: '',
+    supergroup: null,
+    owner: null,
+    non_members_can_view: 1,
+    non_members_can_post: 0,
+    verify_members_email: 0,
+    verify_email_domains_list: [],
+    number_of_email_domains: [0],      // this tracks the number of email input fields to show in ui (purly frontend stuff)
+    membership_needs_approval: 0
+  }
+    
+  //private _formErrors = null;
+  private _formErrors = {
+    name        : { isValid: true, errMsg: ''     },
+    description : { isValid: true, errMsg: 'YOLO' },
+    emailDomain : { isValid: true, errMsg: 'YOLO' },
+    isFormValid : false
+  }
   private _errorMsg: string = null;
   private _errList:string[] = [];
   private _showSummary: boolean = false;
   private _loggedInUserSubcription = null;
+  private _readyToEdit = false;
+  private _currentUser = null;
 
   constructor(
     //private _postService: PostService,
@@ -173,35 +194,24 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
       sg => {
         // Keep model.supergroup as object and not just id as this is returned as is from the server
         // and used by the onSubmit to redirect to the new created group (thus saving a query)
-        this.model.supergroup = sg;      
+        this.model.supergroup = sg;
+        if(this._currentUser) this._readyToEdit = true;
+        console.log(this._readyToEdit)
       },
-      error => console.log(error) )
-
-    this.model = {
-      name: '',
-      description: '',
-      supergroup: null,
-      non_members_can_view: 1,
-      non_members_can_post: 0,
-      verify_members_email: 0,
-      verify_email_domains_list: [],
-      number_of_email_domains: [0],      // this tracks the number of email input fields to show in ui (purly frontend stuff)
-      membership_needs_approval: 0
-    }
-    
-    this._formErrors = {
-      name: {isValid: true, errMsg: ''},
-      description: {isValid: true, errMsg: 'YOLO'},
-      emailDomain: {isValid: true, errMsg: 'YOLO'},
-      isFormValid: false
-    }
+      error => {
+        this._errorMsg = error;
+      })
 
     // Only logged in uses can post
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
+        this._currentUser = currentUser; 
         this.model.owner = currentUser.id;
         this._errorMsg = null;
+        if(this.model.supergroup) this._readyToEdit = true;
+        console.log(this._readyToEdit)
       } else {
+        this._currentUser = null;
         this._errorMsg = "User must be logged in to create new group.";
       }
     });
@@ -209,8 +219,11 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
+      this._currentUser = currentUser;
       this.model.owner = currentUser.id;
       this._errorMsg = null;
+      if(this.model.supergroup) this._readyToEdit = true;
+      console.log(this._readyToEdit)
     } else {
       this._errorMsg = "User must be logged in to create new group.";
     }
@@ -227,27 +240,18 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
 
     ['name', 'description', 'emailDomain'].forEach( field => this.validateForm(field) );
     if(this._formErrors.name.isValid && this._formErrors.description.isValid && this._formErrors.emailDomain.isValid) {
-      console.log("FORM IS VALID")
     } else {
-      console.log("FORM IS not VALID")
       return;
     }
 
-    if(this.model.non_members_can_view == 1) this.model.non_members_can_view = true;
-    if(this.model.non_members_can_view == 0) this.model.non_members_can_view = false;
+    // Clone the model, this dosen't clones functions if any
+    let tmpModel = JSON.parse(JSON.stringify(this.model));
+    this.convertBooleanToBinary(tmpModel, false)
+    delete tmpModel.number_of_email_domains
+    tmpModel.verify_email_domains_list = tmpModel.verify_email_domains_list.map(el => el.trim()).filter(el => el);
+    tmpModel.verify_email_domains_list = tmpModel.verify_email_domains_list.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
 
-    if(this.model.non_members_can_post == 1) this.model.non_members_can_post = true;
-    if(this.model.non_members_can_post == 0) this.model.non_members_can_post = false;
-
-    if(this.model.verify_members_email == 1) this.model.verify_members_email = true;
-    if(this.model.verify_members_email == 0) this.model.verify_members_email = false;
-
-    if(this.model.membership_needs_approval == 1) this.model.membership_needs_approval = true;
-    if(this.model.membership_needs_approval == 0) this.model.membership_needs_approval = false;
-
-    delete this.model.number_of_email_domains
-
-    this._groupService.createNewGroup(this.model)
+    this._groupService.createNewGroup(tmpModel)
       .subscribe( group => {
         console.log(group)
         this._router.navigate(['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]);
@@ -255,20 +259,6 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
       error => {
         console.log(error); 
         this._errorMsg = error;
-
-        // Revive users selection
-        if ( this.model.non_members_can_view == true  ) this.model.non_members_can_view = 1;
-        if ( this.model.non_members_can_view == false ) this.model.non_members_can_view = 0;
-
-        if ( this.model.non_members_can_post == true  ) this.model.non_members_can_post = 1;
-        if ( this.model.non_members_can_post == false ) this.model.non_members_can_post = 0;
-
-        if ( this.model.verify_members_email == true  ) this.model.verify_members_email = 1;
-        if ( this.model.verify_members_email == false ) this.model.verify_members_email = 0;
-
-        if ( this.model.membership_needs_approval == true  ) this.model.membership_needs_approval = 1;
-        if ( this.model.membership_needs_approval == false ) this.model.membership_needs_approval = 0;
-
       });
 
   }
@@ -325,6 +315,40 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     event.preventDefault();
     if(this.model.number_of_email_domains.length >= 20) return;
     this.model.number_of_email_domains.push(this.model.number_of_email_domains.length);
+  }
+  
+  
+  /**
+   * Makes true/false to 1/0 or vice versa (coz radio does not seem to work with boolean)
+   */
+  convertBooleanToBinary(model: any, booleanToBinary: boolean) {
+    if(booleanToBinary) {
+      
+        if ( model.non_members_can_view == true  ) model.non_members_can_view = 1;
+        if ( model.non_members_can_view == false ) model.non_members_can_view = 0;
+
+        if ( model.non_members_can_post == true  ) model.non_members_can_post = 1;
+        if ( model.non_members_can_post == false ) model.non_members_can_post = 0;
+
+        if ( model.verify_members_email == true  ) model.verify_members_email = 1;
+        if ( model.verify_members_email == false ) model.verify_members_email = 0;
+
+        if ( model.membership_needs_approval == true  ) model.membership_needs_approval = 1;
+        if ( model.membership_needs_approval == false ) model.membership_needs_approval = 0;
+      
+    } else {
+        if ( model.non_members_can_view == 1 ) model.non_members_can_view = true;
+        if ( model.non_members_can_view == 0 ) model.non_members_can_view = false;
+
+        if ( model.non_members_can_post == 1 ) model.non_members_can_post = true;
+        if ( model.non_members_can_post == 0 ) model.non_members_can_post = false;
+
+        if ( model.verify_members_email == 1 ) model.verify_members_email = true;
+        if ( model.verify_members_email == 0 ) model.verify_members_email = false;
+
+        if ( model.membership_needs_approval == 1 ) model.membership_needs_approval = true;
+        if ( model.membership_needs_approval == 0 ) model.membership_needs_approval = false;
+    }
   }
 
   ngOnDestroy() {

@@ -12,17 +12,20 @@ import {ErrorComponent} from '../misc/error.component';
   selector: 'my-edit-group',
   template: `
   <div class="my-edit-group">
-    <div *ngIf="!_errorMsg && _model.supergroup">
-      <h3 class="col-sm-offset-2">Create a New Group:</h3>
+    
+    <my-error [_errorMsg]="_errorMsg"></my-error>
+    
+    <div *ngIf="_readyToEdit">
+    
+      <h3 class="col-sm-offset-2">Edit Group:</h3>
+      
       <form #groupForm="ngForm" class="form-horizontal" novalidate>
-        <h5>{{model.supergroup.name | uppercase}}/{{model.name}}</h5>
+        <h5>{{_model.supergroup.name | uppercase}} / {{_model.name}}</h5>
+        
         <div class="form-group">
           <label for="group_name" class="col-sm-2 control-label"> Group Name </label>
           <div class="col-sm-10">
-            <input id="group_name" type="text" class="form-control" placeholder="group_name" [(ngModel)]="model.name" (keyup)="validateForm('name')" required>
-            <div [hidden]="_formErrors.name.isValid" class="alert alert-danger">
-              {{_formErrors.name.errMsg}}
-            </div>
+            <p class="form-control-static">{{_model.name}}</p>
           </div>
         </div>
         
@@ -30,7 +33,7 @@ import {ErrorComponent} from '../misc/error.component';
           <label for="description" class="col-sm-2 control-label">Description</label>
           <div class="col-sm-10">
             <textarea type="text" rows="5" class="form-control" (keyup)="validateForm('description')"
-              [(ngModel)] = "model.description" placeholder="Tell your group members what this group is about." required></textarea>
+              [(ngModel)] = "_model.description" placeholder="Tell your group members what this group is about." required></textarea>
             <div [hidden]="_formErrors.description.isValid" class="alert alert-danger">
               {{_formErrors.description.errMsg}}
             </div>
@@ -41,10 +44,10 @@ import {ErrorComponent} from '../misc/error.component';
           <label for="membership_needs_approval" class="col-sm-2 control-label">Do users need your approval before joining this group?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="membership_needs_approval" (click)="model.membership_needs_approval = 1" [checked]="model.membership_needs_approval === 1" > Yes
+              <input type="radio" name="membership_needs_approval" (click)="_model.membership_needs_approval = 1" [checked]="_model.membership_needs_approval === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="membership_needs_approval" (click)="model.membership_needs_approval = 0" [checked]="model.membership_needs_approval === 0" > No
+              <input type="radio" name="membership_needs_approval" (click)="_model.membership_needs_approval = 0" [checked]="_model.membership_needs_approval === 0" > No
             </label>
           </div>
         </div>
@@ -53,10 +56,10 @@ import {ErrorComponent} from '../misc/error.component';
           <label for="non_members_can_view" class="col-sm-2 control-label">Are posts in this group visible to NON Members?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_view" (click)="model.non_members_can_view = 1" [checked]="model.non_members_can_view === 1" > Yes
+              <input type="radio" name="non_members_can_view" (click)="_model.non_members_can_view = 1" [checked]="_model.non_members_can_view === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_view" (click)="model.non_members_can_view = 0" [checked]="model.non_members_can_view === 0" > No
+              <input type="radio" name="non_members_can_view" (click)="_model.non_members_can_view = 0" [checked]="_model.non_members_can_view === 0" > No
             </label>
           </div>
         </div>
@@ -65,10 +68,10 @@ import {ErrorComponent} from '../misc/error.component';
           <label for="non_members_can_post" class="col-sm-2 control-label">Can NON Members post in this group?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_post" (click)="model.non_members_can_post = 1" [checked]="model.non_members_can_post === 1" > Yes
+              <input type="radio" name="non_members_can_post" (click)="_model.non_members_can_post = 1" [checked]="_model.non_members_can_post === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_post" (click)="model.non_members_can_post = 0" [checked]="model.non_members_can_post === 0" > No
+              <input type="radio" name="non_members_can_post" (click)="_model.non_members_can_post = 0" [checked]="_model.non_members_can_post === 0" > No
             </label>
           </div>
         </div>
@@ -77,22 +80,22 @@ import {ErrorComponent} from '../misc/error.component';
           <label for="verify_members_email" class="col-sm-2 control-label">Restrict membership by Email domain?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="verify_members_email" (click)="model.verify_members_email = 1" [checked]="model.verify_members_email === 1" > Yes
+              <input type="radio" name="verify_members_email" (click)="_model.verify_members_email = 1" [checked]="_model.verify_members_email === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="verify_members_email" (click)="model.verify_members_email = 0" [checked]="model.verify_members_email === 0" > No
+              <input type="radio" name="verify_members_email" (click)="_model.verify_members_email = 0" [checked]="_model.verify_members_email === 0" > No
             </label>
           </div>
         </div>
         
         
-        <div *ngIf="model.verify_members_email === 1" class="">
-          <div *ngFor="#counter of model.number_of_email_domains">
+        <div *ngIf="_model.verify_members_email === 1" class="">
+          <div *ngFor="#counter of _model.number_of_email_domains">
             <div class="form-group">
               <label for="verify_email_domains_list{counter}" class="col-sm-2 control-label">Email domain #{{counter + 1}}</label>
               <div class="col-sm-10">
                 <input type="text" name="verify_email_domains_list{counter}" id="verify_email_domains_list{counter}" 
-                    [(ngModel)] = "model.verify_email_domains_list[counter]" class="form-control" (keyup)="validateForm('emailDomain')"
+                    [(ngModel)] = "_model.verify_email_domains_list[counter]" class="form-control" (keyup)="validateForm('emailDomain')"
                     placeholder="@mycollege.edu">
               </div>
             </div>
@@ -118,11 +121,6 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
       </form>
     </div>
-    <div *ngIf="_errorMsg">
-      <my-error [_errorMsg]=_errorMsg></my-error>
-      {{_errorMsg}}
-      <button (click)="_errorMsg=false" class="btn btn-default">Back</button>
-    </div>
   </div>
   `,
   styles: [`
@@ -146,18 +144,28 @@ import {ErrorComponent} from '../misc/error.component';
     }
   `],
   //styleUrls: ['app/post/new-post.component.css'],
-  inputs: ['post', 'error']
+  inputs: ['post', 'error'],
+  directives: [ErrorComponent]
+
 })
 export class EditGroupComponent implements OnInit, OnDestroy  {
   
   private _model = null;
-  private _formErrors = null;
+  //private _formErrors = null;
+  private _formErrors = {
+    name: {isValid: true, errMsg: ''},
+    description: {isValid: true, errMsg: 'YOLO'},
+    emailDomain: {isValid: true, errMsg: 'YOLO'},
+    isFormValid: false
+  }
   private _errorMsg: string = null;
   private _errList:string[] = [];
   private _showSummary: boolean = false;
   private _loggedInUserSubcription = null;
   private _currentUser = null;
-
+  private _readyToEdit = false;
+  //private _group = null;
+  
   constructor(
     //private _postService: PostService,
     private _routeParams: RouteParams,
@@ -171,8 +179,15 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
     let groupId = this._routeParams.get('group_id');
     this._groupService.getGroupById(groupId).subscribe(
       group => {
-        console.log(group);
-        this._model.group = group;
+        // Do some post prep for the form        
+        this.convertBooleanToBinary(group, true)
+        group.number_of_email_domains = [];
+        console.log("Group", group)
+        for (var i = 0; i < group.verify_email_domains_list.length; i++) {
+          group.number_of_email_domains.push(i);
+        }
+        this._model = group;
+        if ( this._currentUser && this._currentUser.id == this._model.owner ) this._readyToEdit = true;
       },
       error => {
         this._errorMsg = error;
@@ -182,6 +197,9 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
         this._currentUser = currentUser;
+        if ( this._model && this._currentUser.id == this._model.owner ) {
+          this._readyToEdit = true;
+        }
         this._errorMsg = null;
       } else {
         this._currentUser = null;
@@ -193,31 +211,12 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
       this._currentUser = currentUser;
+      if ( this._model && this._currentUser == this._model.owner ) this._readyToEdit = true;
       this._errorMsg = null;
     } else {
       this._errorMsg = "User must be logged in to edit a group.";
     }
   
-    // DO SOMETHING WIHT THE GORUP AND CURRENT USER
-  
-    this._model = {
-      name: '',
-      description: '',
-      supergroup: null,
-      non_members_can_view: 1,
-      non_members_can_post: 0,
-      verify_members_email: 0,
-      verify_email_domains_list: [],
-      number_of_email_domains: [0],      // this tracks the number of email input fields to show in ui (purely frontend stuff)
-      membership_needs_approval: 0
-    }
-    
-    this._formErrors = {
-      name: {isValid: true, errMsg: ''},
-      description: {isValid: true, errMsg: 'YOLO'},
-      emailDomain: {isValid: true, errMsg: 'YOLO'},
-      isFormValid: false
-    }
 }
   
   /**
@@ -226,31 +225,22 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
   onSubmit(event) {
 
     event.preventDefault();
-    console.log(this.model);
+    console.log(this._model);
 
     ['name', 'description', 'emailDomain'].forEach( field => this.validateForm(field) );
     if(this._formErrors.name.isValid && this._formErrors.description.isValid && this._formErrors.emailDomain.isValid) {
-      console.log("FORM IS VALID")
     } else {
-      console.log("FORM IS not VALID")
       return;
     }
+    // Clone the model, this dosen't clones functions if any
+    let tmpModel = JSON.parse(JSON.stringify(this._model));
 
-    if(this.model.non_members_can_view == 1) this.model.non_members_can_view = true;
-    if(this.model.non_members_can_view == 0) this.model.non_members_can_view = false;
+    this.convertBooleanToBinary(tmpModel, false)
+    delete tmpModel.number_of_email_domains
+    tmpModel.verify_email_domains_list = tmpModel.verify_email_domains_list.map(el => el.trim()).filter(el => el);
+    tmpModel.verify_email_domains_list = tmpModel.verify_email_domains_list.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
 
-    if(this.model.non_members_can_post == 1) this.model.non_members_can_post = true;
-    if(this.model.non_members_can_post == 0) this.model.non_members_can_post = false;
-
-    if(this.model.verify_members_email == 1) this.model.verify_members_email = true;
-    if(this.model.verify_members_email == 0) this.model.verify_members_email = false;
-
-    if(this.model.membership_needs_approval == 1) this.model.membership_needs_approval = true;
-    if(this.model.membership_needs_approval == 0) this.model.membership_needs_approval = false;
-
-    delete this.model.number_of_email_domains
-
-    this._groupService.createNewGroup(this.model)
+    this._groupService.editGroup(tmpModel)
       .subscribe( group => {
         console.log(group)
         this._router.navigate(['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]);
@@ -258,20 +248,6 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
       error => {
         console.log(error); 
         this._errorMsg = error;
-
-        // Revive users selection
-        if ( this.model.non_members_can_view == true  ) this.model.non_members_can_view = 1;
-        if ( this.model.non_members_can_view == false ) this.model.non_members_can_view = 0;
-
-        if ( this.model.non_members_can_post == true  ) this.model.non_members_can_post = 1;
-        if ( this.model.non_members_can_post == false ) this.model.non_members_can_post = 0;
-
-        if ( this.model.verify_members_email == true  ) this.model.verify_members_email = 1;
-        if ( this.model.verify_members_email == false ) this.model.verify_members_email = 0;
-
-        if ( this.model.membership_needs_approval == true  ) this.model.membership_needs_approval = 1;
-        if ( this.model.membership_needs_approval == false ) this.model.membership_needs_approval = 0;
-
       });
 
   }
@@ -280,7 +256,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
 
     switch(field) {
       case 'name':
-        if(this.model.name.trim() && /^[a-zA-Z0-9-_]+$/.test(this.model.name.trim()) && this.model.name.length < 30) {
+        if(this._model.name.trim() && /^[a-zA-Z0-9-_]+$/.test(this._model.name.trim()) && this._model.name.length < 30) {
           this._formErrors.name.isValid = true;
         } else {
           this._formErrors.name.isValid = false;
@@ -288,7 +264,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
         }
         break;
       case 'description':
-        if(this.model.description.trim()) {
+        if(this._model.description.trim()) {
           this._formErrors.description.isValid = true;
         } else {
           this._formErrors.description.isValid = false;
@@ -296,9 +272,9 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
         }
         break;
       case 'emailDomain': 
-        if(this.model.verify_members_email == 1) {
+        if(this._model.verify_members_email == 1) {
           var emailList = [];
-          this.model.verify_email_domains_list.forEach(function(email) {
+          this._model.verify_email_domains_list.forEach(function(email) {
             if( email.trim() && !( /@(.+)/.test(email.trim()) ) ) {
               emailList.push(email.trim());
             }
@@ -326,8 +302,41 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
    */
   addMoreEmailDomainInput(event) {
     event.preventDefault();
-    if(this.model.number_of_email_domains.length >= 20) return;
-    this.model.number_of_email_domains.push(this.model.number_of_email_domains.length);
+    if(this._model.number_of_email_domains.length >= 20) return;
+    this._model.number_of_email_domains.push(this._model.number_of_email_domains.length);
+  }
+
+  /**
+   * Makes true/false to 1/0 or vice versa (coz radio does not seem to work with boolean)
+   */
+  convertBooleanToBinary(model: any, booleanToBinary: boolean) {
+    if(booleanToBinary) {
+      
+        if ( model.non_members_can_view == true  ) model.non_members_can_view = 1;
+        if ( model.non_members_can_view == false ) model.non_members_can_view = 0;
+
+        if ( model.non_members_can_post == true  ) model.non_members_can_post = 1;
+        if ( model.non_members_can_post == false ) model.non_members_can_post = 0;
+
+        if ( model.verify_members_email == true  ) model.verify_members_email = 1;
+        if ( model.verify_members_email == false ) model.verify_members_email = 0;
+
+        if ( model.membership_needs_approval == true  ) model.membership_needs_approval = 1;
+        if ( model.membership_needs_approval == false ) model.membership_needs_approval = 0;
+      
+    } else {
+        if ( model.non_members_can_view == 1 ) model.non_members_can_view = true;
+        if ( model.non_members_can_view == 0 ) model.non_members_can_view = false;
+
+        if ( model.non_members_can_post == 1 ) model.non_members_can_post = true;
+        if ( model.non_members_can_post == 0 ) model.non_members_can_post = false;
+
+        if ( model.verify_members_email == 1 ) model.verify_members_email = true;
+        if ( model.verify_members_email == 0 ) model.verify_members_email = false;
+
+        if ( model.membership_needs_approval == 1 ) model.membership_needs_approval = true;
+        if ( model.membership_needs_approval == 0 ) model.membership_needs_approval = false;
+    }
   }
 
   ngOnDestroy() {

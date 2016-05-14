@@ -25,7 +25,8 @@ import {ErrorComponent} from '../misc/error.component';
             <div class="panel panel-default group-details-panel">
               <div class="panel-heading">
                 <h4 class="panel-title">
-                  <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a> / {{group.name}}
+                  <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a> / 
+                  <a [routerLink]="['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]">{{group.name}}</a>
                   <button class="btn btn-default btn-xs" *ngIf="!group.isCurrentUserSubscribed && _currentUser" (click)="subscribeToThisGroup()">Subscribe</button>
                   <button class="btn btn-default btn-xs" *ngIf="group.isCurrentUserSubscribed" (click)="unSubscribeFromThisGroup()">Unsubscribe</button>
                   <button class="btn btn-default btn-xs" *ngIf="group.currentUserIsGroupOwner">YOUR GROUP</button>
@@ -36,16 +37,18 @@ import {ErrorComponent} from '../misc/error.component';
                 <span *ngIf="group.description">{{group.description}}</span>
                 <span *ngIf="!group.description"><i>Welcome to {{group.supergroup.name}}/{{group.name}}</i></span>
                 <hr/>
-                Non members can view: {{group.non_members_can_view}}<br/>
-                Non members can post: {{group.non_members_can_post}}<br/>
-                Verify members email: {{group.verify_members_email}}<br/>
-                Verify members email domain list: {{group.verify_members_email_list}}<br/>
-                Membership needs approval: {{group.membership_needs_approval}}<br/>
-                Members waiting approval: {{group.members_waiting_approval}}<br/>
-
-                Is current user Subscribed: {{group.isCurrentUserSubscribed}}<br/>
-                Is current user in waiting list: {{group.isCurrentUsersMembershipPending}}<br/>
-                Is current user owner of this group: {{group.currentUserIsGroupOwner}}<br/>
+                non_members_can_view: {{group.non_members_can_view}}<br/>
+                non_members_can_post: {{group.non_members_can_post}}<br/>
+                verify_members_email: {{group.verify_members_email}}<br/>
+                Verify members email domain list: <br/>
+                <div *ngFor="#emailDomain of group.verify_email_domains_list">{{emailDomain}}</div>
+                membership_needs_approval: {{group.membership_needs_approval}}<br/>
+                members_waiting_approval: {{group.members_waiting_approval}}<br/>
+                <div *ngFor="#members of group.members_waiting_approval">{{members}}</div>
+                
+                isCurrentUserSubscribed: {{group.isCurrentUserSubscribed}}<br/>
+                isCurrentUsersMembershipPending: {{group.isCurrentUsersMembershipPending}}<br/>
+                currentUserIsGroupOwner: {{group.currentUserIsGroupOwner}}<br/>
 
               </div>
               <div class="panel-footer">

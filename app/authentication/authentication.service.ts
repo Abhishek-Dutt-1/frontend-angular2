@@ -41,8 +41,8 @@ export class AuthenticationService {
             this._isUserLoggedIn = true;
             this._currentUser = user;
             this._appService.setAuthorizationHeader(token);
+            console.log("Auto logged in user frlom jwt", this._currentUser)
             this._loggedInUser.next(user);
-            console.log("Auto logged in user frlom jwt", this._currentUser)     
           }
         },
         error => {

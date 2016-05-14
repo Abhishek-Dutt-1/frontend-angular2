@@ -90,52 +90,48 @@ export class UserService {
     });
   }         // !createNewUser()
   
+  /*
   changePassword(userId: number, newPassword: string) {
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      MOCK_USERS.find(user => user.id == userId).password = newPassword
-      return Promise.resolve(MOCK_USERS.find(user => user.id == userId));
-    }
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers( this._appService.getSiteParams().headersObj );
-      let options = new RequestOptions({ headers: headers });
-      return this._http.post(backendUrl+'/passport/changepassword', JSON.stringify({userId: userId, newPassword: newPassword}), options)
-        .map(res => {
-          return res.json();
-        }).catch(error => {
-          return this._appService.handleServerErrors(error);
-        });
-    }
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/passport/changepassword', JSON.stringify({userId: userId, newPassword: newPassword}), options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
   }
+  */
   
   updateGeoSettings(userId: number, newSettings: any) {
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      var user = MOCK_USERS.find(user => user.id == userId)
-      if(user) {
-        user.international = newSettings.international;
-        user.national = newSettings.national;
-        user.state = newSettings.state;
-        user.city = newSettings.city;
-        user.local = newSettings.local;
-        return Promise.resolve(user); 
-      } else {
-        throw "User Not Found";
-      }
-    }
-    
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers( this._appService.getSiteParams().headersObj );
-      let options = new RequestOptions({ headers: headers });
-      return this._http.post(backendUrl+'/user/updateGeoSettings', JSON.stringify({userId: userId, newSettings: newSettings}), options)
-        .map(res => {
-          console.log(res);
-          return res.json();
-        }).catch(error => {
-          return this._appService.handleServerErrors(error);
-        });
-    }
-  }
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/user/updateGeoSettings', JSON.stringify({userId: userId, newSettings: newSettings}), options)
+      .map(res => {
+        console.log(res);
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }         // ! updateGeoSettings()
+  
+  /**
+   * Update user's settings on basic tab
+   */
+  updateBasicSettings(newSettings: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/user/updateBasicSettings', JSON.stringify(newSettings), options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }       // ! updateBasicSettings()
+  
   
   /**
    * returns a default user object to fill in
@@ -153,5 +149,4 @@ export class UserService {
     return defaultUser;
   }
   */
-  
 }

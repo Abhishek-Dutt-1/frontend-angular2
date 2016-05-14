@@ -123,8 +123,9 @@ export class NewUserComponent {
     local: []
     */
   };
-  private _groupList = {international: [], national: [], state: [], city: [], local: [], selectedNational: {}};
+  //private _groupList = {international: [], national: [], state: [], city: [], local: [], selectedNational: {}};
   private _errorMsg = false;
+  private _loggedInUserSubcription = null;
   
   constructor(
     private _appService: AppService,
@@ -141,6 +142,24 @@ export class NewUserComponent {
     this._superGroupService.getSuperGroupsByType('city').then( sgList => this._groupList.city = sgList );
     this._superGroupService.getSuperGroupsByType('local').then( sgList => this._groupList.local = sgList );
     */
+    
+    // Only logged in uses can post
+    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
+      if(currentUser) {
+        this._router.navigate(['HyperGroupPostListDefault']);
+      } else {
+        // User not logged in, register allowed (this should not happen)  
+      }
+    });
+    // Only logged in uses can post (init version)
+    // TODO:: Find the Observable way to do this
+    let currentUser = this._authenticationService.getLoggedInUser();
+    if(currentUser) {
+      this._router.navigate(['HyperGroupPostListDefault']);
+    } else {
+      // User not logged in, register allowed
+    }
+
   }
   
   onSubmit(event) {
@@ -153,25 +172,22 @@ export class NewUserComponent {
     this.model.city = this._groupList.city.filter(el => el.selected == true)
     this.model.local = this._groupList.local.filter(el => el.selected == true)
     */
-    
-    console.log(this.model);
-
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      this._userService.createNewUser(this.model).subscribe(
-        user => {
-          // Registeratin success
-          // redirect ot login page (TODO: Auto login the new registered user)
-          console.log(user)
-          //this._router.navigate(['ViewUser', {id: user.id}]);
-          this._router.navigate(['Login']);
-        },
-        error => {
-          // TODO:: Handle errors
-          console.log(error)
-          this._errorMsg = error;
-        }
-      )
-    }
+    this._userService.createNewUser(this.model).subscribe(
+      user => {
+        // Registeratin success
+        // redirect ot login page (TODO: Auto login the new registered user)
+        //this._router.navigate(['ViewUser', {id: user.id}]);
+        this._router.navigate(['Login']);
+      },
+      error => {
+        // TODO:: Handle errors
+        console.log(error)
+        this._errorMsg = error;
+      })
+  }
+  
+  ngOnDestroy() {
+    this._loggedInUserSubcription.unsubscribe();
   }
     
   goBack() {
