@@ -270,13 +270,7 @@ export class EditUserComponent {
     
     this._tab = this._routeParams.get('tab') || this._tab;
     console.log(this._tab)
-/*
-    this._loggedInUser = this._authenticationService.getLoggedInUser();
-    if(!this._loggedInUser) {
-      this._router.navigate(['Login']);
-      return;
-    }
-*/
+
     // Only logged in uses can post
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
@@ -318,11 +312,13 @@ export class EditUserComponent {
       return;
     }
     console.log("SUBMITTING ", this._model);
+    this._model.extra_emails = this._model.extra_emails.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
 
     this._userService.updateBasicSettings(this._model)
       .subscribe(
         res => {
           console.log(res);
+          this._authenticationService.updateCurrentUser(res);
           //this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'basic'}]);
         },
         error => {
@@ -367,7 +363,7 @@ export class EditUserComponent {
       .subscribe( updatedUser => {
         console.log(updatedUser);
         console.log(geoSettings);
-          this._authenticationService.refreshLoggedInUser(geoSettings);
+          this._authenticationService.refreshLoggedInUser(geoSettings, null);
           this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'geo'}]);
       }, 
       error => {

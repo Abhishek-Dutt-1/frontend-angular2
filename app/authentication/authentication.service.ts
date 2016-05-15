@@ -74,11 +74,11 @@ export class AuthenticationService {
       res => {
         console.log(res.json())
         let user = res.json().user || {};
-        this._currentUser = user;
         //localStorage.setItem('loggedInUserId', JSON.stringify(user.id));
         localStorage.setItem('jwt', JSON.stringify(user.jwt));
-        this._isUserLoggedIn = true;
         this._appService.setAuthorizationHeader(user.jwt);
+        this._currentUser = user;
+        this._isUserLoggedIn = true;
         this._loggedInUser.next(user);
         return user;
     })
@@ -115,13 +115,25 @@ export class AuthenticationService {
   
   /**
    * User updated his geo setting, refresh its front end cache
+   * TO BE DEPRECEATED
    */
-  refreshLoggedInUser(geoSettings: any) {
-    this._currentUser.international = geoSettings.international;
-    this._currentUser.national = geoSettings.national;
-    this._currentUser.state = geoSettings.state;
-    this._currentUser.city = geoSettings.city;
-    this._currentUser.local = geoSettings.local;
+  refreshLoggedInUser(geoSettings: any, extra_emails: any) {
+    if(geoSettings != null) {
+      this._currentUser.international = geoSettings.international;
+      this._currentUser.national = geoSettings.national;
+      this._currentUser.state = geoSettings.state;
+      this._currentUser.city = geoSettings.city;
+      this._currentUser.local = geoSettings.local;  
+    }
+    if(extra_emails != null) {
+      this._currentUser.extra_emails = extra_emails;
+    }
+  }
+  
+  updateCurrentUser(updatedUser) {
+    this._currentUser = updatedUser;
+    this._isUserLoggedIn = true;
+    this._loggedInUser.next(updatedUser);
   }
   
 }
