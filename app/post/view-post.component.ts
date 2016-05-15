@@ -9,6 +9,7 @@ import {Comment2Component} from '../comment2/comment2.component';
 import {Comment3Component} from '../comment3/comment3.component';
 import {Comment4Component} from '../comment4/comment4.component';
 import {PostTemplateType} from './post-template-types';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Component({
   selector: 'my-view-post',
@@ -18,7 +19,7 @@ import {PostTemplateType} from './post-template-types';
     
       <div *ngIf="post">
 
-        <my-post [post]="post" [type]="postTemplateType"></my-post>
+        <my-post [post]="post" [type]="postTemplateType" [currentUser]="_currentUser"></my-post>
         
         <!-- split it into comment-list component if need to reuse -->
         <div> <!-- comments start -->
@@ -79,33 +80,52 @@ import {PostTemplateType} from './post-template-types';
 })
 export class ViewPostComponent {
   
-  post: Post;
-  postTemplateType: PostTemplateType;
-    
+  private post: Post;
+  private postTemplateType: PostTemplateType;
+  private _loggedInUserSubcription = null;
+  private _currentUser = null;
+  private _errorMsg = null;
+  
   constructor(
     private _appService: AppService,
     private _postService: PostService,
-    private _routeParams: RouteParams) {
-  }
+    private _routeParams: RouteParams,
+    private _authenticationService: AuthenticationService,
+  ) { }
   
   ngOnInit() {
-    let id = this._routeParams.get('postid');
+    let postId = this._routeParams.get('postid');
     this.postTemplateType = PostTemplateType.Main;
     
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      this._postService.getPost(id).then(post => this.post = post);
-    }
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      this._postService.getPost(id).subscribe(
-        post => {
-          this.post = post;
-        },
-        error => {
-          console.log(error);
-        });
-    }
+    // Only logged in uses view posts
+    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(
+      currentUser => {
+        this._currentUser = currentUser;
+        this._errorMsg = null;
+        this.getPosts(postId);
+      },
+      error => {
+        this._errorMsg = error;
+      });
+    // Only logged in uses view post (init version)
+    // TODO:: Find the Observable way to do this
+    let currentUser = this._authenticationService.getLoggedInUser();
+      this._currentUser = currentUser;
+      this._errorMsg = null;
+    // Logged in or not fetch post immidiately
+    this.getPosts(postId);
   }
-  
+
+  getPosts(postId: any) {
+    this._postService.getPost(postId).subscribe(
+      post => {
+        this.post = post;
+      },
+      error => {
+        console.log(error);
+        this._errorMsg = error;
+      });
+  }
   /*
   goBack() {
     window.history.back();

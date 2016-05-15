@@ -78,6 +78,7 @@ export class ConfirmPostDeleteComponent implements OnInit {
     
     this._postService.getPost(postId).subscribe(
       post => {
+        console.log(post)
         this._post = post;
       },
       error => {
@@ -92,6 +93,7 @@ export class ConfirmPostDeleteComponent implements OnInit {
       deletedPost => {
         console.log("DELETE SUCCESS");
         console.log(deletedPost);
+        this._router.navigate(['ViewGroup', {super_group_name: this._post.group.supergroup.name, group_name: this._post.group.name}]);
       },
       error => {
        this._errorMsg = error; 
