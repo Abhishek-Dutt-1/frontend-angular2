@@ -157,7 +157,12 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
           this.group = groupAndPostList.group
           this.groupPosts = groupAndPostList.postList;
           if(this.groupPosts.length < 1) {
-          this._errorMsg = "This group does not have any posts yet. You can help by creating the first post!"
+            if ( this.group.non_members_can_view || this.group.isCurrentUserSubscribed ) {
+              this._errorMsg = "This group does not have any posts yet. You can help by creating the first post!"
+            } else {
+              this._errorMsg = "This group is private. Non members can not view posts in this group."
+            }
+            
           }
         },
         error => {

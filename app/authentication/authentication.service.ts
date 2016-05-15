@@ -117,6 +117,7 @@ export class AuthenticationService {
    * User updated his geo setting, refresh its front end cache
    * TO BE DEPRECEATED
    */
+  /*
   refreshLoggedInUser(geoSettings: any, extra_emails: any) {
     if(geoSettings != null) {
       this._currentUser.international = geoSettings.international;
@@ -129,6 +130,7 @@ export class AuthenticationService {
       this._currentUser.extra_emails = extra_emails;
     }
   }
+  */
   
   updateCurrentUser(updatedUser) {
     this._currentUser = updatedUser;

@@ -56,26 +56,36 @@ import {ErrorComponent} from '../misc/error.component';
           <label for="non_members_can_view" class="col-sm-2 control-label">Are posts in this group visible to NON Members?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_view" (click)="_model.non_members_can_view = 1" [checked]="_model.non_members_can_view === 1" > Yes
+              <input type="radio" name="non_members_can_view" 
+                     (click)="_model.non_members_can_view = 1" 
+                     [checked]="_model.non_members_can_view === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_view" (click)="_model.non_members_can_view = 0" [checked]="_model.non_members_can_view === 0" > No
+              <input type="radio" name="non_members_can_view" 
+                     (click)="_model.non_members_can_view = 0; _model.non_members_can_post = 0" 
+                     [checked]="_model.non_members_can_view === 0" > No
             </label>
           </div>
         </div>
         
+        <fieldset [disabled]="_model.non_members_can_view === 0">
         <div class="form-group">
           <label for="non_members_can_post" class="col-sm-2 control-label">Can NON Members post in this group?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_post" (click)="_model.non_members_can_post = 1" [checked]="_model.non_members_can_post === 1" > Yes
+              <input type="radio" name="non_members_can_post" 
+                     (click)="_model.non_members_can_post = 1" 
+                     [checked]="_model.non_members_can_post === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_post" (click)="_model.non_members_can_post = 0" [checked]="_model.non_members_can_post === 0" > No
+              <input type="radio" name="non_members_can_post" 
+                     (click)="_model.non_members_can_post = 0" 
+                     [checked]="_model.non_members_can_post === 0" > No
             </label>
           </div>
         </div>
-        
+        </fieldset>
+
         <div class="form-group">
           <label for="verify_members_email" class="col-sm-2 control-label">Restrict membership by Email domain?</label>
           <div class="col-sm-10">
@@ -188,6 +198,10 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
         }
         this._model = group;
         if ( this._currentUser && this._currentUser.id == this._model.owner ) this._readyToEdit = true;
+        if ( this._currentUser && this._currentUser.id != this._model.owner ) {
+          this._errorMsg = "Only group admin can edit group settings.";
+          this._readyToEdit = false;
+        }
       },
       error => {
         this._errorMsg = error;
@@ -197,10 +211,12 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
         this._currentUser = currentUser;
-        if ( this._model && this._currentUser.id == this._model.owner ) {
-          this._readyToEdit = true;
-        }
+        if ( this._model && this._currentUser.id == this._model.owner ) this._readyToEdit = true;
         this._errorMsg = null;
+        if ( this._model && this._currentUser.id != this._model.owner ) {
+          this._errorMsg = "Only group admin can edit group settings.";
+          this._readyToEdit = false;
+        }
       } else {
         this._currentUser = null;
         this._errorMsg = "User must be logged in to edit a group.";
@@ -211,8 +227,12 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
       this._currentUser = currentUser;
-      if ( this._model && this._currentUser == this._model.owner ) this._readyToEdit = true;
+      if ( this._model && this._currentUser.id == this._model.owner ) this._readyToEdit = true;
       this._errorMsg = null;
+      if ( this._model && this._currentUser.id != this._model.owner ) {
+          this._errorMsg = "Only group admin can edit group settings.";
+          this._readyToEdit = false;
+      }
     } else {
       this._errorMsg = "User must be logged in to edit a group.";
     }

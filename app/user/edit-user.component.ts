@@ -319,7 +319,7 @@ export class EditUserComponent {
         res => {
           console.log(res);
           this._authenticationService.updateCurrentUser(res);
-          //this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'basic'}]);
+          this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'basic'}]);
         },
         error => {
           this._errorMsg = error;
@@ -359,11 +359,12 @@ export class EditUserComponent {
     model.local = model.local.map(el => el.id);
     console.log(model)
     
-    this._userService.updateGeoSettings(this._currentUser.id, model)
-      .subscribe( updatedUser => {
-        console.log(updatedUser);
-        console.log(geoSettings);
-          this._authenticationService.refreshLoggedInUser(geoSettings, null);
+    this._userService.updateGeoSettings(this._currentUser.id, model).subscribe( 
+      updatedUser => {
+        //console.log(updatedUser);
+        //console.log(geoSettings);
+          //this._authenticationService.refreshLoggedInUser(geoSettings, null);
+          this._authenticationService.updateCurrentUser(updatedUser);
           this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'geo'}]);
       }, 
       error => {
