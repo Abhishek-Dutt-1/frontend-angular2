@@ -109,6 +109,9 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 <div class="row">
                   <div class="col-xs-6">
                     {{post.comments.length}} Comments
+                    <span *ngIf="currentUser && currentUser.id == post.postedby.id"> &bull; 
+                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                    </span>
                   </div>
                   <div class="col-xs-6">
                     <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
@@ -152,6 +155,9 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                   <div class="row">
                     <div class="col-xs-6">
                       {{post.comments.length}} Comments
+                      <span *ngIf="currentUser && currentUser.id == post.postedby.id"> &bull; 
+                        <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                      </span>
                     </div>
                     <div class="col-xs-6">
                       <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>

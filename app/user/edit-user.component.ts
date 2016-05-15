@@ -13,15 +13,20 @@ import {AuthenticationService} from '../authentication/authentication.service';
 import {ROUTER_DIRECTIVES} from "angular2/router";
 import {SuperGroup} from '../super_group/super_group';
 import {SuperGroupService} from '../super_group/super_group.service';
+import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-edit-user',
   template: `
-  <div *ngIf="_loggedInUser">
-    <div class="my-edit-user">
-      <div class="row">
-        <div class="col-xs-12 col-md-offset-3 col-md-6">
-          
+  <div class="my-edit-user">
+    <div class="row">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        
+        <div *ngIf="_errorMsg">
+          <my-error [_errorMsg]="_errorMsg"></my-error>
+        </div>
+        
+        <div *ngIf="_currentUser">
           <div class="tab-container">
             <div id="myTabs">
               <ul class="nav nav-tabs" role="tablist">
@@ -30,7 +35,6 @@ import {SuperGroupService} from '../super_group/super_group.service';
                 </li>
                 <li role="presentation" [ngClass]="{active: _tab == 'geo'}">
                   <a href="#geo" aria-controls="geo" role="tab" data-toggle="tab">Geo</a>
-
                 </li>
               </ul>
               <div class="tab-content">
@@ -40,13 +44,36 @@ import {SuperGroupService} from '../super_group/super_group.service';
                   
                     <div class="form-group">
                       <label class="col-md-4 control-label">Display Name</label>
-                      <p class="form-control-static col-md-8">{{_model.displayname}}</p>
+                      <p class="form-control-static col-md-8">{{_currentUser.displayname}}</p>
                     </div>
                     
                     <div class="form-group">
                       <label class="col-md-4 control-label">Email</label>
-                      <p class="form-control-static col-md-8">{{_model.email}}</p>
+                      <p class="form-control-static col-md-8">{{_currentUser.email}}</p>
                     </div>
+                    
+                    <div class="form-group">
+                      <label class="col-md-4 control-label">Extra Emails</label>
+                      <p class="form-control-static col-md-8">{{_model.extra_emails.length}}</p>
+                    </div>
+                    <div *ngFor="#counter of _number_of_extra_emails">
+                      <div class="form-group">
+                        <label for="extra_emails{counter}" class="col-sm-2 control-label">Extra Email #{{counter + 1}}</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="extra_emails{counter}" id="extra_emails{counter}" 
+                              [(ngModel)] = "_model.extra_emails[counter].email" class="form-control" (keyup)="validateForm('extra_emails')"
+                              placeholder="xyz@mycollege.edu">
+                        </div>
+                      </div>
+                    </div>
+                    <div [hidden]="_formErrors.extra_emails.isValid" class="alert alert-danger col-sm-offset-2 col-sm-10">
+                      {{_formErrors.extra_emails.errMsg}}
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button (click)="addMoreEmailDomainInput($event)" class="btn btn-default btn-xs">Add More</button>
+                      </div>
+                    </div> 
                     
                     <div class="form-group">
                       <label for="password" class="col-md-4 control-label">Password</label>
@@ -55,7 +82,7 @@ import {SuperGroupService} from '../super_group/super_group.service';
                           [(ngModel)] = "_model.password"
                           ngControl="password" #password = "ngForm"
                         >
-                        <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+                        <div [hidden]="password.value == '' || password.valid || password.pristine" class="alert alert-danger">
                           Password is required
                         </div>
                       </div>
@@ -82,7 +109,7 @@ import {SuperGroupService} from '../super_group/super_group.service';
                                         
                     <div class="form-group">
                       <div class="col-md-offset-4 col-md-8">
-                        <button (click)="onSubmitBasic($event)" class="btn btn-default" [disabled]="!editBasicForm.form.valid || (confirm_password.value != password.value)">Save</button>
+                        <button (click)="onSubmitBasic($event)" class="btn btn-default" [disabled]="confirm_password.value != password.value">Save</button>
                         <button (click)="gotoProfile('basic')" type="button" class="btn btn-default">Cancel</button>
                       </div>
                     </div>
@@ -209,16 +236,26 @@ import {SuperGroupService} from '../super_group/super_group.service';
     margin: 15px;
   }
   `],
+  directives: [ErrorComponent]
 })
 export class EditUserComponent {
   
   private _tab: String = 'basic';
-  private _loggedInUser: User = null;
+  //private _loggedInUser: User = null;
   private _model: any = null;
   private _errorMsg = null;
   private _errorMsgGeo = null;
 
   private _groupList = {international: [], national: [], state: [], city: [], local: [], selectedNational: {}};
+  private _number_of_extra_emails = [];
+  private _formErrors = {
+    name: {isValid: true, errMsg: ''},
+    description: {isValid: true, errMsg: 'YOLO'},
+    extra_emails: {isValid: true, errMsg: 'YOLO'},
+    isFormValid: false
+  }
+  private _loggedInUserSubcription = null;
+  private _currentUser = null;
   
   constructor(
     private _appService: AppService,
@@ -232,111 +269,30 @@ export class EditUserComponent {
   ngOnInit() {
     
     this._tab = this._routeParams.get('tab') || this._tab;
+    console.log(this._tab)
 
-    this._loggedInUser = this._authenticationService.getLoggedInUser();
-    if(!this._loggedInUser) {
-      this._router.navigate(['Login']);
-      return;
+    // Only logged in uses can post
+    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
+      if(currentUser) {
+        console.log("CURRENT USER", currentUser)
+        this._currentUser = currentUser;
+        this.initForms();
+        this._errorMsg = null;
+      } else {
+        this._currentUser = null;
+        this._errorMsg = "User must be logged in to edit profile.";
+      }
+    });
+    // Only logged in uses can post (init version)
+    // TODO:: Find the Observable way to do this
+    let currentUser = this._authenticationService.getLoggedInUser();
+    if(currentUser) {
+      this._currentUser = currentUser;
+      this.initForms();
+      this._errorMsg = null;
+    } else {
+      this._errorMsg = "User must be logged in to edit profile.";
     }
-    //console.log(this._loggedInUser);
-    this._model = this.cloneObj({}, this._loggedInUser);
-
-    this._model.password = null;
-    this._model.confirm_password = null;
-    
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      this._superGroupService.getAllSuperGroups(false).then(sgList => {
-        console.log(sgList);
-        ["international", "state", "city", "local"].forEach(hyperGroup => {
-          this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
-          for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
-            if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
-              this._groupList[hyperGroup][i].selected = true;
-            }
-          }
-        });
-        // National and International are same SuperGroups
-        this._groupList.national = sgList.filter(sg => sg.type === 'international');
-        let hyperGroup = "national"
-        for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
-          this._groupList[hyperGroup][i].selected = false;    // selected = false coz international above has made some true
-          if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
-            this._groupList[hyperGroup][i].selected = true;
-          }
-        }
-        //this._groupList.selectedNational = this.cloneObj({}, this._loggedInUser.national);
-      }).catch(err => console.log(err));
-    }
-    
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      this._superGroupService.getAllSuperGroups(false).subscribe(sgList => {
-        console.log(sgList);
-        ["international", "state", "city", "local"].forEach(hyperGroup => {
-          this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
-          for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
-            if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
-              this._groupList[hyperGroup][i].selected = true;
-            }
-          }
-        });
-        // National and International are same SuperGroups``
-        this._groupList.national = JSON.parse(JSON.stringify(sgList.filter(sg => sg.type === 'international')));
-        let hyperGroup = "national"
-        for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
-          this._groupList[hyperGroup][i].selected = false;    // selected = false coz international above has made some true
-          if( this._loggedInUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
-            this._groupList[hyperGroup][i].selected = true;
-          }
-        }
-        console.log(this._groupList)
-      },
-      error => {
-        console.log(error);
-        this._errorMsgGeo = error;
-      });
-    }
-    /*
-    this._superGroupService.getSuperGroupsByType('international').then( sgList => {
-      this._groupList.international = sgList;
-      for(var i = 0, l = this._groupList.international.length; i < l; i++) {
-        if( this._loggedInUser.settings.international.map(el => el.id).indexOf(this._groupList.international[i].id) > -1 ) {
-          this._groupList.international[i].selected = true;
-        }
-      }
-    });
-    
-    this._superGroupService.getSuperGroupsByType('national').then( sgList => {
-      this._groupList.national = sgList;
-      this._groupList.selectedNational = this._loggedInUser.settings.national;
-    });
-    
-    this._superGroupService.getSuperGroupsByType('state').then( sgList => {
-      this._groupList.state = sgList;
-      for(var i = 0, l = this._groupList.state.length; i < l; i++) {
-        if( this._loggedInUser.settings.state.map(el => el.id).indexOf(this._groupList.state[i].id) > -1 ) {
-          this._groupList.state[i].selected = true;
-        }
-      }
-    });
-    
-    this._superGroupService.getSuperGroupsByType('city').then( sgList => {
-      this._groupList.city = sgList
-      for(var i = 0, l = this._groupList.city.length; i < l; i++) {
-        if( this._loggedInUser.settings.city.map(el => el.id).indexOf(this._groupList.city[i].id) > -1 ) {
-          this._groupList.city[i].selected = true;
-        }
-      }
-    });
-    
-    this._superGroupService.getSuperGroupsByType('local').then( sgList => {
-      this._groupList.local = sgList
-      for(var i = 0, l = this._groupList.local.length; i < l; i++) {
-        if( this._loggedInUser.settings.local.map(el => el.id).indexOf(this._groupList.local[i].id) > -1 ) {
-          this._groupList.local[i].selected = true;
-        }
-      }
-    });
-    */
   }
   
   onSubmitBasic(event) {
@@ -344,38 +300,34 @@ export class EditUserComponent {
     event.preventDefault();
     this._errorMsg = null;
     
-    if(this._model.password != this._model.confirm_password) {
-      return
-    }
-    
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      if(this._model.password && this._model.confirm_password) {
-        this._userService.changePassword(this._loggedInUser.id, this._model.password)
-          .then( updatedUser => {
-            return this._authenticationService.loginUser(updatedUser)
-        }).then( user => {
-          this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'basic'}]);
-        }).catch( err => console.log(err) );
+    if ( this._model.password != null ) {
+      if ( this._model.password != this._model.confirm_password ) {
+        return
       }
     }
     
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      if(this._model.password && this._model.confirm_password) {
-        this._userService.changePassword(this._loggedInUser.id, this._model.password)
-          .subscribe(
-            res => {
-              console.log(res);
-              this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'basic'}]);
-            },
-            error => {
-              this._errorMsg = "Password must have at least 8 characters."
-            }
-          )
-      }
+    ['extra_emails'].forEach( field => this.validateForm(field) );
+    if(this._formErrors.extra_emails.isValid) {
+    } else {
+      return;
     }
+    console.log("SUBMITTING ", this._model);
+    this._model.extra_emails = this._model.extra_emails.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+
+    this._userService.updateBasicSettings(this._model)
+      .subscribe(
+        res => {
+          console.log(res);
+          this._authenticationService.updateCurrentUser(res);
+          this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'basic'}]);
+        },
+        error => {
+          this._errorMsg = error;
+        })
   }
   
   onSubmitGeo(event) {
+    
     event.preventDefault();
     
     let model = {
@@ -396,45 +348,36 @@ export class EditUserComponent {
     console.log(this._groupList.selectedNational);
     console.log(model)
     
-    var geoSettings = this.cloneObj({}, model);
+    var geoSettings = JSON.parse(JSON.stringify(model));
+    //var geoSettings = this.cloneObj({}, model);
+          
+    model.international = model.international.map(el => el.id);
+    model.national = model.national.map(el => el.id);
+    //if(model.national) model.national = model.national.id;
+    model.state = model.state.map(el => el.id);
+    model.city = model.city.map(el => el.id);
+    model.local = model.local.map(el => el.id);
+    console.log(model)
     
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      this._userService.updateGeoSettings(this._loggedInUser.id, model)
-        .then( updatedUser => {
-          this._authenticationService.loginUser(updatedUser);
-        }).then( user => {
-          this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'geo'}]);
-        }).catch( err => console.log(err) );
-    }
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      
-      model.international = model.international.map(el => el.id);
-      model.national = model.national.map(el => el.id);
-      //if(model.national) model.national = model.national.id;
-      model.state = model.state.map(el => el.id);
-      model.city = model.city.map(el => el.id);
-      model.local = model.local.map(el => el.id);
-      console.log(model)
-      
-      this._userService.updateGeoSettings(this._loggedInUser.id, model)
-        .subscribe( updatedUser => {
-          console.log(updatedUser);
-          console.log(geoSettings);
-            this._authenticationService.refreshLoggedInUser(geoSettings);
-            this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: 'geo'}]);
-        }, 
-        error => {
-          console.log(error);
-          this._errorMsgGeo = error;
-        });
-    }
+    this._userService.updateGeoSettings(this._currentUser.id, model).subscribe( 
+      updatedUser => {
+        //console.log(updatedUser);
+        //console.log(geoSettings);
+          //this._authenticationService.refreshLoggedInUser(geoSettings, null);
+          this._authenticationService.updateCurrentUser(updatedUser);
+          this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'geo'}]);
+      }, 
+      error => {
+        console.log(error);
+        this._errorMsgGeo = error;
+      });
   }
   
   /**
    * User pressed cancel
    */
   gotoProfile(tab: string) {
-    this._router.navigate(['ViewUser', {id: this._loggedInUser.id, tab: tab}])
+    this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: tab}])
   } 
   
   nationalRadioToggle(nationalId) {
@@ -447,10 +390,12 @@ export class EditUserComponent {
     }
     console.log(this._groupList.national);
   } 
+  
   /**
    * Clone or merge one or more objects. Polyfill of Object.assign
    * Ref: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
    */
+  /*
   cloneObj(target, source) {
     if (target === undefined || target === null) {
       throw new TypeError('Cannot convert undefined or null to object');
@@ -468,6 +413,115 @@ export class EditUserComponent {
       }
     }
     return output;
-  }  
+  }         // ! cloneObj()
+ */
+
+  /**
+   * Display another input box for email domain
+   * @param event
+   */
+  addMoreEmailDomainInput(event) {
+    event.preventDefault();
+    if(this._number_of_extra_emails.length >= 20) return;
+    this._model.extra_emails.push({email: 'email@email.com'});
+    this._number_of_extra_emails.push(this._number_of_extra_emails.length);
+  }       // !  addMoreEmailDomainInput
+ 
+ 
+  validateForm(field) {
+
+    switch(field) {
+      case 'name':
+        if(this._model.name.trim() && /^[a-zA-Z0-9-_]+$/.test(this._model.name.trim()) && this._model.name.length < 30) {
+          this._formErrors.name.isValid = true;
+        } else {
+          this._formErrors.name.isValid = false;
+          this._formErrors.name.errMsg = "Group name is required. No spaces, only alphabets, numbers, dashes and underscores please. Max 30 characters."
+        }
+        break;
+      case 'description':
+        if(this._model.description.trim()) {
+          this._formErrors.description.isValid = true;
+        } else {
+          this._formErrors.description.isValid = false;
+          this._formErrors.description.errMsg = "Group description is required.";
+        }
+        break;
+      case 'extra_emails': 
+        var emailList = [];
+        this._model.extra_emails.forEach(function(email) {
+          if( email.email.trim() && !( /@(.+)/.test(email.email.trim()) ) ) {
+            emailList.push(email.email.trim());
+          }
+        });
+        if(emailList.length > 0) {
+          this._formErrors.extra_emails.isValid = false;
+          this._formErrors.extra_emails.errMsg = "Invalid email domain: " + emailList.join(", ") + " Email domain's must be of the form @email.com";
+        } else {
+          this._formErrors.extra_emails.isValid = true;
+          this._formErrors.extra_emails.errMsg = '';
+        }
+        break;
+    }
+  }       // ! validateForm()
+
+  /**
+   * Initialize forms after user is logged in
+   */
+  initForms() { 
+    this._number_of_extra_emails = [];
+    for (var i = 0; i < this._currentUser.extra_emails.length; i++) {
+      this._number_of_extra_emails.push(i);
+    }
+
+    // Clone the model, this dosen't clones functions if any
+    this._model = JSON.parse(JSON.stringify(this._currentUser));
+    console.log(this._model);
+    //this._model = this.cloneObj({}, this._currentUser);
+    this._model.password = null;
+    this._model.confirm_password = null;
+    delete this._model.createdAt
+    delete this._model.updatedAt
+    delete this._model.username
+    delete this._model.displayname
+    delete this._model.email
+    delete this._model.group_membership_pending
+    delete this._model.passports
+    delete this._model.international
+    delete this._model.national
+    delete this._model.state
+    delete this._model.city
+    delete this._model.local
+    delete this._model.subscribed_groups
+    console.log(this._currentUser)
+
+    this._superGroupService.getAllSuperGroups(false).subscribe( sgList => {
+      
+      ["international", "state", "city", "local"].forEach(hyperGroup => {
+        this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
+        for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+          if( this._currentUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+            this._groupList[hyperGroup][i].selected = true;
+          }
+        }
+      });
+      // National and International are same SuperGroups
+      this._groupList.national = JSON.parse(JSON.stringify(sgList.filter(sg => sg.type === 'international')));
+      let hyperGroup = "national"
+      for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
+        this._groupList[hyperGroup][i].selected = false;    // selected = false coz international above has made some true
+        if( this._currentUser[hyperGroup].map(el => el.id).indexOf(this._groupList[hyperGroup][i].id) > -1 ) {
+          this._groupList[hyperGroup][i].selected = true;
+        }
+      }
+    },
+    error => {
+      this._errorMsgGeo = error;
+    });  
+  }     // !initFroms()
+ 
+  ngOnDestroy() {
+    this._loggedInUserSubcription.unsubscribe();
+  }
   
 }

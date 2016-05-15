@@ -28,30 +28,23 @@ export class GroupService {
   }
   
   createNewGroup(newGroup: any) {
-    /*
-    // Server should handle these things
-    let lastGroup:Group = MOCK_GROUPS.reduceRight((left, right) => {
-                    if(left.id > right.id) return left
-                      else return right;
-                  });
-                  
-    return this._superGroupService.getSuperGroupByName(newGroup.super_group_name)
-    .then(sg => {
-      let newProperGroup = {
-        id: +lastGroup.id + 1,
-        name: newGroup.name,
-        super_group: sg,
-        owner: newGroup.owner,
-      }
-      MOCK_GROUPS.push(newProperGroup);
-      return newProperGroup;
-    });
-    */
      
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/group/createNewGroup', JSON.stringify(newGroup), options).map(
+      res => {
+        return res.json()
+      })
+      .catch(error => this._appService.handleServerErrors(error));
+  }
+  
+  editGroup(modGroup: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/editGroup', JSON.stringify(modGroup), options).map(
       res => {
         return res.json()
       })
@@ -79,29 +72,42 @@ export class GroupService {
         )
         .catch(error => this._appService.handleServerErrors(error)); 
     }
-  }     // !getGroup
+  }     // !getGroup()
+  
+  /**
+   * Return a Group obj by id
+   */ 
+  getGroupById(groupId: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/getGroupById/' + groupId, options)
+      .map(
+        res => {
+          return res.json()
+      })
+      .catch(error => this._appService.handleServerErrors(error)); 
+  }     // ! getGroupById()
   
   /**
    * Get all posts in a Group
    */
   getPostsInGroup(superGroupName: string, groupName: string) {
     
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers( this._appService.getSiteParams().headersObj );
-      let options = new RequestOptions({ headers: headers });
-      return this._http.post(backendUrl+'/group/getPostsInGroup', 
-          JSON.stringify({superGroupName: superGroupName, groupName: groupName}), 
-          options)
-        .map(
-          res => {
-            //console.log(res);
-            //console.log(res.json());
-            return res.json()
-          }
-        )
-        .catch(error => this._appService.handleServerErrors(error));
-    }
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/getPostsInGroup', 
+        JSON.stringify({superGroupName: superGroupName, groupName: groupName}), 
+        options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
     
   }
 
@@ -174,5 +180,117 @@ export class GroupService {
   getGroupsBySuperGroupName(sg_name: string) {
     return Promise.resolve(MOCK_GROUPS.filter(group => group.super_group.name == sg_name));
   }
+  
+  /**
+   * Subscribe the logged in user to a grouop
+   */
+  subscribeCurrentUserToGroup(groupId: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/subscribeCurrentUserToGroup/' + groupId, options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+    
+  }       // ! subscribeCurrentUserToGroup()
+  
+  /**
+   * UnSubscribe the logged in user to a grouop
+   */
+  unSubscribeCurrentUserFromGroup(groupId: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/unSubscribeCurrentUserFromGroup/' + groupId, options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+    
+  }       // ! subscribeCurrentUserToGroup()
+  
+  /**
+   * Cancel the logged in users pending membership to a group that requires approval
+   */
+  cancelCurrentUsersPendingMembership(groupId: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/cancelCurrentUsersPendingMembership/' + groupId, options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+    
+  }       // ! cancelCurrentUsersPendingMembership()
+  
+  /**
+   * Fetches group's waiting list if group requires approval
+   */
+  getGroupWaitingList(groupId: any) {
+    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/group/getGroupWaitingList/' + groupId, options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+    
+  }       // ! cancelCurrentUsersPendingMembership()
+  
+  /**
+   * Approve a member to join the group
+   */
+  approveGroupMembership(groupId: any, userId: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/approveGroupMembership', JSON.stringify({groupid: groupId, pendinguserid: userId}), options)
+      .map(
+        res => {
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+  }       // ! approveGroupMembership()
+  
+  /**
+   * Disapprove a member to join the group
+   */
+  disApproveGroupMembership(groupId: any, userId: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/disApproveGroupMembership', JSON.stringify({groupid: groupId, pendinguserid: userId}), options)
+      .map(
+        res => {
+          return res.json()
+        }
+      )
+      .catch(error => this._appService.handleServerErrors(error));
+  }       // ! approveGroupMembership()
   
 }

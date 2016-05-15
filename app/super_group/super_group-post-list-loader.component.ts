@@ -22,7 +22,7 @@ import {PostTemplateType} from '../post/post-template-types';
             <div class="panel panel-default group-details-panel">
             
               <div class="panel-heading">
-                <h4 class="panel-title">{{_super_group.name}}</h4>
+                <h4 class="panel-title">{{_super_group.name | uppercase}}</h4>
               </div>
               
               <div class="panel-body">

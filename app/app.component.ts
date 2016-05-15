@@ -2,22 +2,24 @@ import { Component, OnInit } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from 'angular2/http';
 
-import { AppService }     from './app.service';
+import { AppService } from './app.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
-import { PostService }     from './post/post.service';
+import { PostService } from './post/post.service';
 //import { PostListLoaderComponent } from './post/post-list-loader.component';
 //import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
 import { NewPostComponent } from './post/new-post.component';
 import { ConfirmPostDeleteComponent } from './post/confirm-post-delete.component';
 
-import { SuperGroupPostListLoaderComponent }     from './super_group/super_group-post-list-loader.component';
-import { SuperGroupService }     from './super_group/super_group.service';
+import { SuperGroupPostListLoaderComponent } from './super_group/super_group-post-list-loader.component';
+import { SuperGroupService } from './super_group/super_group.service';
 
 import { GroupService } from './group/group.service';
-import { ViewGroupComponent } from './group/view-group.component';
 import { NewGroupComponent } from './group/new-group.component';
+import { ViewGroupComponent } from './group/view-group.component';
+import { EditGroupComponent } from './group/edit-group.component';
+import { ApproveMembershipComponent } from './group/approve-membership.component';
 
 import { HyperGroupPostListLoaderComponent } from './hyper_group/hyper_group-post-list-loader.component';
 
@@ -34,6 +36,7 @@ import { NewComment1LoaderComponent } from './comment1/new-comment1-loader.compo
 import { NewComment2LoaderComponent } from './comment2/new-comment2-loader.component';
 import { NewComment3LoaderComponent } from './comment3/new-comment3-loader.component';
 import { NewComment4LoaderComponent } from './comment4/new-comment4-loader.component';
+
 import { Comment1Service } from './comment1/comment1.service';
 import { Comment2Service } from './comment2/comment2.service';
 import { Comment3Service } from './comment3/comment3.service';
@@ -148,14 +151,24 @@ import { Comment4Service } from './comment4/comment4.service';
     component: ConfirmPostDeleteComponent
   },
   {
+    path: '/newgroup/:super_group_name',
+    name: 'NewGroup',
+    component: NewGroupComponent
+  },
+  {
     path: '/go/:super_group_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent
   },
   {
-    path: '/newgroup/:super_group_name',
-    name: 'NewGroup',
-    component: NewGroupComponent
+    path: '/editgroup/:group_id',
+    name: 'EditGroup',
+    component: EditGroupComponent
+  },
+  {
+    path: '/approve-membership/:group_id',
+    name: 'ApproveMembership',
+    component: ApproveMembershipComponent
   },
   {
     path: '/login',

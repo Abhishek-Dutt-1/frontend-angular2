@@ -9,17 +9,14 @@ import {AppService} from '../app.service';
 import {User} from './user';
 import {UserService} from './user.service';
 import {UserComponent} from './user.component';
+import {ErrorComponent} from '../misc/error.component';
 import {AuthenticationService} from '../authentication/authentication.service';
 
 @Component({
   selector: 'my-view-user',
   template: `
     <div class="my-view-user">
-      <div class="errorMsg alert alert-danger" role="alert" [hidden]="!_errorMsg">
-        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-        <span class="sr-only">Error:</span>
-        {{_errorMsg}}
-      </div>
+      <my-error [_errorMsg]="_errorMsg"></my-error>
       <my-user [user]="_user" [ownProfile]="_ownProfile" [tab]="_tab"></my-user>
     </div>
   `,
@@ -28,7 +25,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
     margin-top: 20px;
   }
   `],
-  directives: [UserComponent]
+  directives: [UserComponent, ErrorComponent]
 })
 export class ViewUserComponent {
   
@@ -37,6 +34,7 @@ export class ViewUserComponent {
   private _loggedInUser:User = null;
   private _ownProfile = false;
   private _errorMsg = false;
+  private _loggedInUserSubcription = null;
   
   constructor(
     private _userService: UserService,
@@ -50,28 +48,21 @@ export class ViewUserComponent {
     let id = +this._routeParams.get('id');
     this._tab = this._routeParams.get('tab') || this._tab;
 
-
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      this._userService.getUser(id).then(user => this._user = user).then(user => console.log(user));
-    }
-    
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      this._userService.getUser(id).subscribe(
-          user => {
-            if(user) {
-              this._user = user;
-            }
-          },
-          error => {
-            console.log(error);
-            this._errorMsg = error;
-          });
-    }
+    this._userService.getUser(id).subscribe(
+        user => {
+          if(user) {
+            this._user = user;
+          }
+        },
+        error => {
+          console.log(error);
+          this._errorMsg = error;
+        });
     
     // This is so that if the user logs out while viewing his own profile (i.e. this page)
     // The edit buttons are shown or hidden from the ui as needed
     // i.e. if the logged in state changes due to some other componenent, it is percolated here also
-    this._authenticationService.loggedInUser$.subscribe(user => {
+    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(user => {
       if(user) {
         this._loggedInUser = user;
         this._ownProfile = this._loggedInUser.id === id;
@@ -88,9 +79,11 @@ export class ViewUserComponent {
       this._ownProfile = this._loggedInUser.id == id;
     } else {
       this._ownProfile = false;
-    }
-    
-    
+    }  
+  }     // ! ngOnInit()
+  
+  ngOnDestroy() {
+    this._loggedInUserSubcription.unsubscribe();
   }
   
 }

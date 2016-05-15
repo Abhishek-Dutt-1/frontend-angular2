@@ -65,33 +65,18 @@ export class SuperGroupService {
    */
   getAllSuperGroups(onlySelected: boolean = true) {
     
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      return Promise.resolve(MOCK_SUPER_GROUPS).then(
-        sgs => {
-          if(onlySelected) {
-            return sgs.filter(sg => sg.selected === true);
-          }
-          else return sgs;
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers    = new Headers( this._appService.getSiteParams().headersObj );
+    let options    = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl + '/supergroup', options)
+      .map( 
+        res => {
+          return res.json();
+      })
+      .catch(error => {
+        return this._appService.handleServerErrors(error);
+        //return Observable.throw(error);
       });
-    }
-    
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers    = new Headers( this._appService.getSiteParams().headersObj );
-      let options    = new RequestOptions({ headers: headers });
-      return this._http.get(backendUrl + '/supergroup', options)
-        .map( 
-          res => {
-            console.log(res)
-            console.log(res.json())
-            return res.json();
-        })
-        .catch(error => {
-          console.log(error);
-          return this._appService.handleServerErrors(error);
-          //return Observable.throw(error);
-        });
-    }
-  }
+  }       // !getAllSuperGroups()
   
 }

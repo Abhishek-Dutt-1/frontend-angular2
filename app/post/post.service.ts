@@ -51,41 +51,28 @@ export class PostService {
   /**
    * Returns posts belonging to a geoSelection
    */
-  getPostsByHyperGroup(geoSelection: string) {
-    let user = this._authenticationService.getLoggedInUser();
-    //console.log(geoSelection);
-    //console.log(user)
-    if(!user) {
-      // No user logged in
-      // Display a posts from a default selection of super groups
-      user = this._userService.getDefaultUser();
-    }
-   
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers( this._appService.getSiteParams().headersObj );
-      let options = new RequestOptions({ headers: headers });
-      return this._http.get(backendUrl+'/post/getPostsByHyperGroup/' + geoSelection, options)
-        .map(res => {
-          console.log(res.json());
-          return res.json();
-        }).catch(error => {
-          return this._appService.handleServerErrors(error);
-        });
-    }       // !getSiteParams
-    
+  getPostsByHyperGroup(geoSelection: any) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/post/getPostsByHyperGroup/' + geoSelection, options)
+      .map(res => {
+        console.log(res.json());
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
   }         // !getPostsByGeoSelection()
   
   createNewPost(newProperPost: any) {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.post(backendUrl+'/post', JSON.stringify(newProperPost), options).map(
+    return this._http.post(backendUrl+'/post/createNewPost', JSON.stringify(newProperPost), options).map(
       res => {
         console.log(res)
         console.log(res.json())
-        return <string[]> res.json()
+        return res.json()
       })
       .catch(error => this._appService.handleServerErrors(error));  
   }     // !createNewPost()
