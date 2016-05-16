@@ -28,11 +28,12 @@ import {Component, OnInit, EventEmitter} from 'angular2/core';
   `,
   styles: [`
     .my-vote {
-      margin-top: 10px;
+      /* margin-top: 10px; */
       font-size: 14px;
-      border-radius: 10px;
-      background-color: ghostwhite;
+      border-radius: 5px;
+      background-color: rgba(248, 251, 251, 0.3);
       color: rgba(0, 0, 0, 0.3);
+      cursor: pointer;
     }
     .my-vote .vote-col-up {
       padding-right: 0;
@@ -41,7 +42,7 @@ import {Component, OnInit, EventEmitter} from 'angular2/core';
       padding-left: 0;
     }
     .my-vote .userHasVoted {
-      background-color: floralwhite;
+      background-color: ghostwhite;
       color: rgba(0, 0, 0, 0.8);  
     }
     .my-vote .vote {
@@ -50,12 +51,12 @@ import {Component, OnInit, EventEmitter} from 'angular2/core';
       padding-top: 9px;
     }
     .my-vote .up-vote {
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
     }
     .my-vote .down-vote {
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
     }
   `],
   inputs: ['_votee'],

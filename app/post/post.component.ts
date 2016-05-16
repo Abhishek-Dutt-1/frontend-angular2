@@ -47,14 +47,177 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
               <div class="post-info">
                 
                 <div class="">
-                  
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
-                      <i class="fa fa-user"></i>
+                      <!-- <i class="fa fa-user"></i> -->
                     </div>
                   </a>
+                </div>
+                <div class="pull-left">
+                  <div class="profile-name pull-left">
+                    <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
+                      {{post.postedby.displayname}}
+                    </a>
+                  </div> 
+                  <div class="bullet">&bull;</div>
+                  <div class="post-grouplink">
+                    <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
+                      go/{{post.group.supergroup.name}}/{{post.group.name}}
+                    </a>
+                  </div>
+                  <div class="clearfix"></div>
+                  <div class="post-createdat pull-left"> 
+                    {{ post.createdAt | timeAgo }} &bull;
+                  </div>
+                  <div class="post-commentstotal pull-left">
+                    {{post.comments.length}} Comments &bull; &nbsp;
+                  </div>
+                  <div class="post-delete pull-left">
+                    <span *ngIf="currentUser && currentUser.id == post.postedby.id">
+                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                    </span>
+                  </div>
+                </div> 
+                
+              </div>      <!-- ! post-info -->
+            </div>
+          </div>     <!-- ! row -->
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="vote-container">
+                <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+              </div>
+            </div>
+          </div>
+          
+        </div>      <!-- !post-container -->
+      </div>  
+    </div>     <!-- ! ngIf-row -->
+    
+    
+    
+    <div *ngIf="type === templateTypeGroupList" class="row">
+      <div class="col-xs-12">
+        <div class="post-container">
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
+                <span>{{post.title}}</span> 
+              </a>
+              <span *ngIf="post.type === 'link'"> 
+                <a target="_blank" [href]="post.link">[view link]</a>
+              </span>
+            </div>
+          </div>
+          
+          <div class="row" *ngIf="post.textTrimmed">
+            <div class="col-xs-12">
+              <div class="post-text">
+                {{post.textTrimmed}}
+              </div>
+              <div class="read-more">
+                Read more ...
+              </div>
+            </div>  
+          </div>
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="post-info">
+                
+                <div class="">
+                  <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
+                    <div class="profile-image pull-left">
+                      <!-- <i class="fa fa-user"></i> -->
+                    </div>
+                  </a>
+                </div>
+                <div class="pull-left">
+                  <div class="profile-name pull-left">
+                    <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
+                      {{post.postedby.displayname}}
+                    </a>
+                  </div> 
+                  <div class="bullet">&bull;</div>
+                  <!--
+                  <div class="post-grouplink">
+                    <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
+                      go/{{post.group.supergroup.name}}/{{post.group.name}}
+                    </a>
+                  </div>
+                  -->
+                  <div class="clearfix"></div>
+                  <div class="post-createdat pull-left"> 
+                    {{ post.createdAt | timeAgo }} &bull;
+                  </div>
+                  <div class="post-commentstotal pull-left">
+                    {{post.comments.length}} Comments &bull; &nbsp;
+                  </div>
+                  <div class="post-delete pull-left">
+                    <span *ngIf="currentUser && currentUser.id == post.postedby.id">
+                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                    </span>
+                  </div>
+                </div> 
+                
+              </div>      <!-- ! post-info -->
+            </div>
+          </div>     <!-- ! row -->
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="vote-container">
+                <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+              </div>
+            </div>
+          </div>
+          
+        </div>      <!-- !post-container -->
+      </div>  
+    </div>     <!-- ! ngIf-row -->
+    
+    
+    <div *ngIf="type === templateTypeMain" class="row">
+      <div class="col-xs-12">
+        <div class="post-container">
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
+                <span>{{post.title}}</span> 
+              </a>
+              <span *ngIf="post.type === 'link'"> 
+                <a target="_blank" [href]="post.link">[view link]</a>
+              </span>
+            </div>
+          </div>
+          
+          <div class="row" *ngIf="post.textTrimmed">
+            <div class="col-xs-12">
+              <div class="post-text">
+                <div class="post-text-wrap">
+                  {{post.text}}
+                </div>
+              </div>
+            </div>  
+          </div>
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="post-info">
+                
+                <div class="">
+                  <a [routerLink]="['ViewUser', {id: post.postedby.id}]">
+                    <div class="profile-image pull-left">
+                      <!-- <i class="fa fa-user"></i> -->
+                    </div>
+                  </a>
+                </div>
+                <div class="pull-left">
                   
-                  <div class="pull-left">
+                  <div>
                     <div class="profile-name pull-left">
                       <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                         {{post.postedby.displayname}}
@@ -66,156 +229,60 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                         go/{{post.group.supergroup.name}}/{{post.group.name}}
                       </a>
                     </div>
-                    <div class="clearfix"></div>
+                  </div>
+                  
+                  <div>
                     <div class="post-createdat pull-left"> 
                       {{ post.createdAt | timeAgo }} &bull;
                     </div>
                     <div class="post-commentstotal pull-left">
-                      {{post.comments.length}} Comments &bull; &nbsp;
-                    </div>
-                    <div class="post-delete pull-left">
-                      <span *ngIf="currentUser && currentUser.id == post.postedby.id">
-                        <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
-                      </span>
+                      {{post.comments.length}} Comments
                     </div>
                   </div>
                   
-                </div> 
-                
-                <div>
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
-                    </div>
-                  </div>
-                </div>
-                
-              </div>
-            </div>
-          </div>
-          
-        </div> <!-- !post-container -->
-      </div>  
-    </div>
-    
-    
-    
-    <div *ngIf="type === templateTypeGroupList" class="row">
-      <div class="col-xs-12">
-        <div class="post-container">
-          
-          <div class="row">
-            <div class="col-xs-12">
-              <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
-                <span>{{post.title}} </span> 
-              </a>
-              <span *ngIf="post.type === 'link'"> 
-                <a target="_blank" [href]="post.link">[view link]</a>
-              </span>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="post-text">
-                {{post.textTrimmed}}
-              </div>
-            </div>  
-          </div>
-          
-          <div class="text-muted post-info">
-            <div>
-              <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
-                <i class="fa fa-user"></i> {{post.postedby.displayname}}
-              </a> &bull; 
-               {{ post.createdAt | timeAgo }} &bull; <!-- &bull; 
-              <span (click)="gotoGroup(post.group.supergroup.name, post.group.name)">
-                go/{{post.group.supergroup.name}}/{{post.group.name}}
-              </span>
-              -->
-            </div>
-            <div>
-                <div class="row">
-                  <div class="col-xs-6">
-                    {{post.comments.length}} Comments
-                    <span *ngIf="currentUser && currentUser.id == post.postedby.id"> &bull; 
-                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
-                    </span>
-                  </div>
-                  <div class="col-xs-6">
-                    <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
-                  </div>
-                </div>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    </div>
-    
-    <div *ngIf="type === templateTypeMain">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="post-container">
-            <div class="row">
-              <div class="col-xs-12">
-                <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
-                  <span>{{post.title}}</span> 
-                </a>
-                <span *ngIf="post.type === 'link'"> 
-                  <a target="_blank" [href]="post.link">[view link]</a>
-                </span>
-              </div>
-            </div>
-            
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="post-text">
-                  {{post.text}}
-                </div>
-              </div>  
-            </div>
-            <div class="">
-              <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
-                <i class="fa fa-user"></i> {{post.postedby.displayname}} 
-              </a> &bull; {{ post.createdAt | timeAgo }} &bull; <!--
-              <a class="">
-                Edit 
-              </a> &bull; -->
-              
-                  <div class="row">
-                    <div class="col-xs-6">
-                      {{post.comments.length}} Comments
-                      <span *ngIf="currentUser && currentUser.id == post.postedby.id"> &bull; 
-                        <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                  <div>
+                    <div class="post-createdat">
+                      <span *ngIf="currentUser && currentUser.id == post.postedby.id">
+                        <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a> &bull;
                       </span>
                     </div>
-                    <div class="col-xs-6">
-                      <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+                    <div class="post-reply">
+                      <a [routerLink]="['NewComment1', {postid: post.id}]" class="">
+                      Reply 
+                      </a>
                     </div>
                   </div>
-                                
-              &bull;
-              <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
-                go/{{post.group.supergroup.name}}/{{post.group.name}} 
-              </a> &bull;
-              <a [routerLink]="['NewComment1', {postid: post.id}]" class="">
-                Reply 
-              </a>
+                  
+                </div>
+                 
+
+              </div>      <!-- ! post-info -->
+            </div>
+          </div>     <!-- ! row -->
+          
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="vote-container">
+                <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+              </div>
             </div>
           </div>
-        </div>  
-      </div>
-    </div>
+          
+        </div>      <!-- !post-container -->
+      </div>  
+    </div>     <!-- ! ngIf-row -->
     
-  </div>
-  </div>
+  </div>      <!-- my-post -->
+  </div>      <!-- ngIfPost -->
   `,
   styles: [`
+  .my-post > .row {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
   .my-post .post-container {
-    border-bottom: 1px solid lightgrey;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    /** border-bottom: 1px solid lightgrey; */
+    padding-bottom: 20px;
+    padding-top: 20px;
   }
   .my-post .post-container h5 {
     margin-bottom: 5px;
@@ -231,6 +298,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     letter-spacing: -.022em;
     word-wrap: break-word;
   }
+  /*
   .my-post .post-container .post-text {
     font-size: 24px;
     margin-top: 8px;
@@ -243,15 +311,36 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     color: rgba(0,0,0,.44);
     word-wrap: break-word;
   }
-  .my-post .post-container .read-more {
+  */
+  .my-post .post-container .post-text {
     color: rgba(0, 0, 0, 0.8);
+    display: block;
+    font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: -0.072px;
+    line-height: 27px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 8px;
+    word-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+  }
+  .my-post .post-container .post-text-wrap {
+    /*white-space: pre-wrap; */
+    white-space: pre-line;
+  }
+  .my-post .post-container .read-more {
+    color: rgba(0, 0, 0, 0.4);
     display: block;
     font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 11px;
     height: 25px;
     line-height: 25.2px;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 15px;
+    margin-bottom: 0px;
     -webkit-font-smoothing: antialiased;
   }
   .my-post .post-info {
@@ -264,7 +353,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     height: 32px;
     width: 32px;
     border: 1px solid lightgrey;
-    margin-top: 3px
+    margin-top: 3px;
   }
   .my-post .post-container .profile-name {
     cursor: pointer;
@@ -319,13 +408,24 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     line-height: 14.4px;
     color: rgba(0, 0, 0, 0.439216);
   }
+  .my-post .post-container .post-reply {
+    display: inline;
+    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    padding-left: 0px;
+    line-height: 14.4px;
+    color: rgba(0, 0, 0, 0.439216);
+  }
   .my-post .post-container .bullet {
     display: inline;
     font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 12px;
-    padding-left: 5px;
+    padding-left: 3px;
     line-height: 14.4px;
     color: rgba(0, 0, 0, 0.439216);
+  }
+  .my-post .post-container .vote-container {
+    margin-top: 15px;
   }
   `],
   inputs: ['post', 'type', 'currentUser'],
@@ -351,9 +451,8 @@ export class PostComponent implements OnInit {
     this.templateTypeList = PostTemplateType.List;
     this.templateTypeGroupList = PostTemplateType.Grouplist;
     this.templateTypeMain = PostTemplateType.Main;
-    console.log("PSOT", this.post)
-    // I define this MAXCHARS var value by hunch
-    let MAXCHARS = 150;
+
+    let MAXCHARS = 250;
     if(this.post) this.post.readmore = false;
     if(this.post && this.post.text.length > MAXCHARS) {
       this.post.textTrimmed = this.post.text.substring(0, MAXCHARS) + ' ...';
