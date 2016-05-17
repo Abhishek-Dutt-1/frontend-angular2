@@ -216,7 +216,7 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
   }
   myEfficientFn = this.debounce( () => {
 	  // All the taxing stuff you do
-    this._sticky = window.scrollY > 40;
+    this._sticky = window.scrollY > 60;
     console.log(this._sticky)  
   }, 100, false);
   // Returns a function, that, as long as it continues to be invoked, will not

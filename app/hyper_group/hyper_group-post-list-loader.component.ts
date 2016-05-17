@@ -10,33 +10,36 @@ import {SuperGroup} from '../super_group/super_group';
 import {GeoFilterComponent} from '../post/geo-filter.component';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {ErrorComponent} from '../misc/error.component';
+import {FabButtonComponent} from '../misc/fab-button.component';
 
 @Component({
   selector: 'my-hyper_group-post-list-loader',
   template: `
     <div class="my-hyper_group-post-list-loader">
-        <my-geo-filter [geoSelection]="_geoSelection" [superGroupList]="_superGroupList"></my-geo-filter>
-        <my-error [_errorMsg]="_errorMsg"></my-error>
-        <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser"></my-post-list>
-      <!-- Colored FAB button with ripple -->
+      
+      <my-geo-filter [geoSelection]="_geoSelection" [superGroupList]="_superGroupList"></my-geo-filter>
+      
+      <my-error [_errorMsg]="_errorMsg"></my-error>
+      
+      <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser"></my-post-list>
+    
       <div class="fab-button">
-        <button (click)="gotoNewPostForm()" class="">
-          New Post
-        </button>
+        <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
       </div>
+    
     </div>
   `,
   styles: [`
     .my-hyper_group-post-list-loader .fab-button {
       position: fixed;
-      right: 20px;
-      bottom: 20px;
+      right: 15px;
+      bottom: 15px;
     }
     .pre-post-list-outer-div {
       clear: both;
     }
   `],
-  directives: [PostListComponent, GeoFilterComponent, ErrorComponent]
+  directives: [PostListComponent, GeoFilterComponent, ErrorComponent, FabButtonComponent]
 })
 export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
