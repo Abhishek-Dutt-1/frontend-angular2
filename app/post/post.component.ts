@@ -298,20 +298,6 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     letter-spacing: -.022em;
     word-wrap: break-word;
   }
-  /*
-  .my-post .post-container .post-text {
-    font-size: 24px;
-    margin-top: 8px;
-    margin-left: -1.5px;
-    line-height: 1.18;
-    letter-spacing: -.022em;
-    font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Arial,sans-serif;
-    font-weight: 300;
-    font-style: normal;
-    color: rgba(0,0,0,.44);
-    word-wrap: break-word;
-  }
-  */
   .my-post .post-container .post-text {
     color: rgba(0, 0, 0, 0.8);
     display: block;

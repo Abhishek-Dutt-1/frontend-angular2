@@ -82,10 +82,11 @@ import { Comment4Service } from './comment4/comment4.service';
       border-bottom: 1px solid rgba(0,0,0,0.05);
       color: black;
       height: 60px;
-      font-size: 21px
+      font-size: 21px;
+      font-family: Roboto, UILanguageFont, Arial, sans-serif;
     }
     .my-app-component .header .logo-container {
-      padding-top: 11px;
+      padding-top: 13px;
     }
     .my-app-component .header .logo a {
       vertical-align: middle;

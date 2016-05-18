@@ -10,7 +10,7 @@ import {SuperGroup} from '../super_group/super_group'
 @Component({
   selector: 'my-geo-filter',
   template: `
-  <!--
+    <!--
     <div class="my-geo-filter" (document:scroll)="onScroll($event)" [ngClass]="{sticky: _sticky}">
     -->
     <div *ngIf="_sticky" class="dummy-div"></div>
@@ -142,7 +142,7 @@ import {SuperGroup} from '../super_group/super_group'
       .sticky {
         position: fixed;
         top: 0;
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.98);
         z-index: 10;
         margin-left: -15px;
         padding-left: 15px;

@@ -30,10 +30,8 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     </div>
   `,
   styles: [`
-    .my-hyper_group-post-list-loader .fab-button {
-      position: fixed;
-      right: 15px;
-      bottom: 15px;
+    .my-hyper_group-post-list-loader {
+
     }
     .pre-post-list-outer-div {
       clear: both;

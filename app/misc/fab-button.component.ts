@@ -11,6 +11,11 @@ import {Component, OnInit, EventEmitter} from 'angular2/core';
     </div>
   `,
   styles: [`
+    .my-fab-button {
+      position: fixed;
+      right: 15px;
+      bottom: 15px;
+    }
     .my-fab-button .buttons {
       font-size: 24px;
       padding: 11px 0 0 16px;
