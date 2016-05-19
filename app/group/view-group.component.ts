@@ -245,7 +245,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   myEfficientFn = this.debounce( () => {
 	  // All the taxing stuff you do
     this._sticky = window.scrollY > 60;
-    console.log(this._sticky)  
+    console.log(this._sticky)
   }, 100, false);
   debounce(func, wait, immediate) {
     var timeout;
