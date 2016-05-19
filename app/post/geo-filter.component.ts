@@ -1,4 +1,4 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit, OnDestroy} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {Router, RouteParams, ROUTER_DIRECTIVES} from 'angular2/router';
 //import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, ...} from 'angular2/router';
@@ -10,8 +10,12 @@ import {SuperGroup} from '../super_group/super_group'
 @Component({
   selector: 'my-geo-filter',
   template: `
-    <div class="my-geo-filter">
-    
+    <!--
+    <div class="my-geo-filter" (document:scroll)="onScroll($event)" [ngClass]="{sticky: _sticky}">
+    -->
+    <div *ngIf="_sticky" class="dummy-div"></div>
+    <div class="my-geo-filter" [ngClass]="{sticky: _sticky}">
+      
       <div class="row hidden-xs">
         <div class="col-xs-2">
           <span class="menu-item">
@@ -62,7 +66,7 @@ import {SuperGroup} from '../super_group/super_group'
       <div class="col-xs-12">
       <div>
         <div class="menu-item pull-left">
-          <div >
+          <div class="menu-link-container">
             <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'international'}]"
                 [ngClass]="{active: geoSelection == 'international'}">
               <i class="fa fa-plane"></i><span *ngIf="geoSelection == 'international'"> International</span>
@@ -71,7 +75,7 @@ import {SuperGroup} from '../super_group/super_group'
         </div>
         
         <div class="menu-item pull-left">
-          <div >
+          <div class="menu-link-container">
             <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
               [ngClass]="{active: geoSelection == 'national'}">
               <i class="fa fa-train"></i><span *ngIf="geoSelection == 'national'"> National</span>
@@ -80,7 +84,7 @@ import {SuperGroup} from '../super_group/super_group'
         </div>
         
         <div class="menu-item pull-left">
-          <div >
+          <div class="menu-link-container">
             <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
               [ngClass]="{active: geoSelection == 'state'}">
               <i class="fa fa-bus"></i><span *ngIf="geoSelection == 'state'"> State</span>
@@ -89,7 +93,7 @@ import {SuperGroup} from '../super_group/super_group'
         </div>
         
         <div class="menu-item pull-left">
-          <div >
+          <div class="menu-link-container">
             <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
               [ngClass]="{active: geoSelection == 'city'}">
               <i class="fa fa-car"></i><span *ngIf="geoSelection == 'city'"> City</span>
@@ -98,7 +102,7 @@ import {SuperGroup} from '../super_group/super_group'
         </div>
         
         <div class="menu-item pull-left">
-          <div >
+          <div class="menu-link-container">
             <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
               [ngClass]="{active: geoSelection == 'local'}">
               <i class="fa fa-bicycle"></i><span *ngIf="geoSelection == 'local'"> Local</span>
@@ -111,7 +115,7 @@ import {SuperGroup} from '../super_group/super_group'
       </div>  <!-- end row -->
 
       
-      <div class="row">
+      <div class="row hidden">
         <div class="col-xs-12">
           <div class="geo-filter-details">
             <span *ngFor="#sg of superGroupList">
@@ -128,36 +132,48 @@ import {SuperGroup} from '../super_group/super_group'
       
     </div>
   `,
-  styles: [`      
+  styles: [`
+      .dummy-div {
+        /** dummy div should be the exact height of the sticky div 
+         * this is to prevent jumping of the page
+         */
+        height: 56px;
+      }
+      .sticky {
+        position: fixed;
+        top: 0;
+        background-color: rgba(255, 255, 255, 0.98);
+        z-index: 10;
+        margin-left: -15px;
+        padding-left: 15px;
+        width: 100%;
+      }
       .my-geo-filter {
+
       }
-      .my-geo-filter .active {
-        /*
-        font-weight: bold;
-        */
-        color: red;
-      }
+      .my-geo-filter > .row {
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding-bottom: 15px;
+      }      
       .my-geo-filter .menu-item {
-        /*
-        color: #ef5350;
-        text-align: center;
-        */
         padding: 15px 15px 0px 0;
-      }
-      .my-geo-filter .menu-link {
         transition: 0.05s ease-in-out;
         display: block;
         vertical-align: baseline;
         letter-spacing: 1px;
-        text-transform: uppercase;
         text-decoration: none;
-        /*
-                color: #ef5350;
-        font-size: 12px;
-        */
+      }
+      .my-geo-filter .menu-item .menu-link {
+        color: rgba(0, 0, 0, 0.3);
+        font-size: 18px;
+        font-family: WorkSans,sans-serif;
+        text-transform: capitalize;
+      }
+      .my-geo-filter .menu-item .active {
+        color: rgba(0, 0, 0, 0.6);
       }
       .my-geo-filter .visible-xs-block .menu-link {
-        font-size: 12px;
+
       }
       .my-geo-filter .geo-filter-details {
         clear: both;
@@ -169,7 +185,7 @@ import {SuperGroup} from '../super_group/super_group'
   directives: [ROUTER_DIRECTIVES]
   
 })
-export class GeoFilterComponent implements OnInit {
+export class GeoFilterComponent implements OnInit, OnDestroy {
 
   private _international: string[] = null;
   private _national: string = null;
@@ -179,6 +195,7 @@ export class GeoFilterComponent implements OnInit {
   
   private _currentSelection: string = null;
   private _selectionDetails: string = null;
+  private _sticky:boolean = false;
 
   constructor(
     private _router: Router,
@@ -187,11 +204,46 @@ export class GeoFilterComponent implements OnInit {
     private _routeParams: RouteParams
   ) { }
   
-  ngOnInit() {}
- 
-  gotoChangeGeoSttings() {
-    this._router.navigate(['EditUser', {tab: 'geo'}]);     
+  ngOnInit() {
+    // See more at: http://www.mzan.com/article/37019491-how-to-get-value-of-this-keyword-inside-windows-scroll-event-listener-in-angu.shtml#sthash.ihJMe7X1.dpuf
+    //window.addEventListener("scroll", (event) => { this._scrollListener(event); });
+    //window.addEventListener("scroll", this._scrollListener.bind(this));
+    window.addEventListener("scroll", this.myEfficientFn);
+  } 
+  ngOnDestroy() {
+    console.log("REMOVING LIStener")
+    window.removeEventListener("scroll", this.myEfficientFn);
   }
+  myEfficientFn = this.debounce( () => {
+	  // All the taxing stuff you do
+    this._sticky = window.scrollY > 60;
+    console.log(this._sticky)  
+  }, 100, false);
+  // Returns a function, that, as long as it continues to be invoked, will not
+  // be triggered. The function will be called after it stops being called for
+  // N milliseconds. If `immediate` is passed, trigger the function on the
+  // leading edge, instead of the trailing.
+  debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    }
+  }
+
+ 
+  /*
+  gotoChangeGeoSttings() {
+    this._router.navigate(['EditUser', {tab: 'geo'}]);
+  }
+  */
     
   arraysEqual(a, b) {
     if (a === b) return true;

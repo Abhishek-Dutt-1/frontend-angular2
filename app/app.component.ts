@@ -51,14 +51,14 @@ import { Comment4Service } from './comment4/comment4.service';
       
         <div class="row">
           <div class="header">
-            <div class="col-xs-5">
-              <div class="logo"><b>
+            <div class="col-xs-7 logo-container">
+              <div class="logo">
                 <a [routerLink]="['/HyperGroupPostListDefault']">
-                  <span class="glyphicon glyphicon-home" aria-hidden="true"></span> YOLO!
-                </a></b>
+                  <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Humans.com
+                </a>
               </div>
             </div>
-            <div class="col-xs-7 user-panel-container">
+            <div class="col-xs-5 user-panel-container">
               <my-user-authentication-panel></my-user-authentication-panel>
             </div>
           </div>
@@ -75,14 +75,18 @@ import { Comment4Service } from './comment4/comment4.service';
   </div>
   `,
   styles: [`
-    .my-app-component .user-panel-container {
-      text-align: right;
-    }
     .my-app-component .header {
-      height: 40px;
+      height: 55px;
       background-color: #0277bd;
       color: white;
-      padding-top: 9px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      color: black;
+      height: 60px;
+      font-size: 21px;
+      font-family: Roboto, UILanguageFont, Arial, sans-serif;
+    }
+    .my-app-component .header .logo-container {
+      padding-top: 13px;
     }
     .my-app-component .header .logo a {
       vertical-align: middle;
@@ -90,6 +94,12 @@ import { Comment4Service } from './comment4/comment4.service';
     }
     .my-app-component .header .logo a:hover {
       text-decoration: none;
+    }
+
+    .my-app-component .header .user-panel-container {
+      text-align: right;
+      font-size: 14px;
+      padding-top: 20px;
     }
   `],
   //styleUrls: ['app/app.component.css'],

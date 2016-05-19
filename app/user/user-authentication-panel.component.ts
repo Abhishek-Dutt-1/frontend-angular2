@@ -12,7 +12,7 @@ import {User} from './user'
         <div *ngIf="!isUserLoggedIn">
           <a [routerLink]="['Login']">
             Login
-          </a> | 
+          </a><span class="auth-pipe"> | </span> 
           <a [routerLink]="['NewUser']">
             Register
           </a>
@@ -20,7 +20,8 @@ import {User} from './user'
       </div>
       <div *ngIf="isUserLoggedIn">
         <a [routerLink]="['ViewUser', {id: loggedInUser.id}]" class="displayname">{{loggedInUser.displayname}}</a>
-        <a class="btn btn-default btn-xs" (click)="logout()">Logout</a>
+        <span class="auth-pipe"> | </span>
+        <a class="auth-logout" (click)="logout()">Logout</a>
       </div>
     </div>
   `,
@@ -28,7 +29,13 @@ import {User} from './user'
     .my-user-authentication-panel .not-logged-in a {
       color: white;
     }
+    .my-user-authentication-panel .auth-pipe {
+      color: white;
+    }
     .my-user-authentication-panel a.displayname {
+      color: white;
+    }
+    .my-user-authentication-panel a.auth-logout {
       color: white;
     }
   `],
