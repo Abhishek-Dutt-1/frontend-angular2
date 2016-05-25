@@ -16,22 +16,35 @@
     "bootstrap": "^3.3.6",
     "es6-promise": "^3.0.2",
     "es6-shim": "0.35.0",
-   
     "jquery": "^2.2.2",
     "material-design-lite": "^1.1.1",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
     "systemjs": "0.19.26",
     "zone.js": "0.6.12",
-
-    "browser-sync": "^2.12.5", 
+    "browser-sync": "^2.12.5",
     "inquirer": "^1.0.2",
     "insight": "^0.8.1"
   },
   "devDependencies": {
     "concurrently": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-angular-embed-templates": "^2.2.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-html-replace": "^1.5.5",
+    "gulp-jspm-build": "0.0.15",
+    "gulp-typescript": "^2.13.4",
+    "gulp-uglify": "^1.5.3",
+    "jspm": "^0.16.34",
     "lite-server": "^2.2.0",
+    "systemjs-builder": "^0.15.17",
     "typescript": "^1.8.10",
     "typings": "^0.8.1"
+  },
+  "jspm": {
+    "dependencies": {},
+    "devDependencies": {
+      "typescript": "npm:typescript@^1.6.2"
+    }
   }
 }

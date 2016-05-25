@@ -39,3 +39,6 @@ typings/
 # Ignore js and js.map files in app and/ subfolders
 /app/**/*.js.map
 /app/**/*.js
+
+# Leave out build/
+/build/

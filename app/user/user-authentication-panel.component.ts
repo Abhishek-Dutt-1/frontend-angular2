@@ -14,7 +14,7 @@ import {User} from './user'
             Login
           </a><span class="auth-pipe"> | </span> 
           <a [routerLink]="['NewUser']">
-            Register
+            Sign up
           </a>
         </div>
       </div>

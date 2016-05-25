@@ -44,11 +44,10 @@ import { Comment4Service } from './comment4/comment4.service';
 
 @Component({
   selector: 'my-app-component',
-  templateUrl: 'app/app.component.html',
   template: `
   <div class="my-app-component">
     <div class="container">
-      
+
         <div class="row">
           <div class="header">
             <div class="col-xs-7 logo-container">
@@ -63,13 +62,13 @@ import { Comment4Service } from './comment4/comment4.service';
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-xs-12">
             <router-outlet></router-outlet>
           </div>
         </div>
-        
+
 
     </div>
   </div>
@@ -77,13 +76,26 @@ import { Comment4Service } from './comment4/comment4.service';
   styles: [`
     .my-app-component .header {
       height: 55px;
-      background-color: #0277bd;
       color: white;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-      color: black;
       height: 60px;
       font-size: 21px;
       font-family: Roboto, UILanguageFont, Arial, sans-serif;
+/*
+      background-color: #0277bd;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+*/
+background-color: #0054a6;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #0054a6), color-stop(1, #004385));
+background-image: -webkit-linear-gradient(top, #0054a6 0%, #004385 100%);
+background-image: -moz-linear-gradient(top, #0054a6 0%, #004385 100%);
+background-image: -o-linear-gradient(top, #0054a6 0%, #004385 100%);
+background-image: -ms-linear-gradient(top, #0054a6 0%, #004385 100%);
+border-bottom: 1px solid #003264;
+/*
+-webkit-box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,0.20);
+-moz-box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,0.20);
+box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,0.20);
+*/
     }
     .my-app-component .header .logo-container {
       padding-top: 13px;
@@ -125,7 +137,7 @@ import { Comment4Service } from './comment4/comment4.service';
     path: '/go/:geo',
     name: 'HyperGroupPostList',
     component: HyperGroupPostListLoaderComponent,
-  },  
+  },
   {
     path: '/go',
     name: 'HyperGroupPostListDefault',

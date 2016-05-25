@@ -12,11 +12,11 @@ import {ErrorComponent} from '../misc/error.component';
   selector: 'my-new-group',
   template: `
   <div class="my-new-group">
-    
+
     <div *ngIf="_errorMsg">
       <my-error [_errorMsg]=_errorMsg></my-error>
     </div>
-    
+
     <div *ngIf="_readyToEdit">
       <h3 class="col-sm-offset-2">Create a New Group:</h3>
       <form #groupForm="ngForm" class="form-horizontal" novalidate>
@@ -30,7 +30,7 @@ import {ErrorComponent} from '../misc/error.component';
             </div>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="description" class="col-sm-2 control-label">Description</label>
           <div class="col-sm-10">
@@ -41,7 +41,7 @@ import {ErrorComponent} from '../misc/error.component';
             </div>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="membership_needs_approval" class="col-sm-2 control-label">Do users need your approval before joining this group?</label>
           <div class="col-sm-10">
@@ -53,7 +53,7 @@ import {ErrorComponent} from '../misc/error.component';
             </label>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="non_members_can_view" class="col-sm-2 control-label">Are posts in this group visible to NON Members?</label>
           <div class="col-sm-10">
@@ -65,7 +65,7 @@ import {ErrorComponent} from '../misc/error.component';
             </label>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="non_members_can_post" class="col-sm-2 control-label">Can NON Members post in this group?</label>
           <div class="col-sm-10">
@@ -77,7 +77,7 @@ import {ErrorComponent} from '../misc/error.component';
             </label>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="verify_members_email" class="col-sm-2 control-label">Restrict membership by Email domain?</label>
           <div class="col-sm-10">
@@ -89,14 +89,14 @@ import {ErrorComponent} from '../misc/error.component';
             </label>
           </div>
         </div>
-        
-        
+
+
         <div *ngIf="model.verify_members_email === 1" class="">
           <div *ngFor="#counter of model.number_of_email_domains">
             <div class="form-group">
               <label for="verify_email_domains_list{counter}" class="col-sm-2 control-label">Email domain #{{counter + 1}}</label>
               <div class="col-sm-10">
-                <input type="text" name="verify_email_domains_list{counter}" id="verify_email_domains_list{counter}" 
+                <input type="text" name="verify_email_domains_list{counter}" id="verify_email_domains_list{counter}"
                     [(ngModel)] = "model.verify_email_domains_list[counter]" class="form-control" (keyup)="validateForm('emailDomain')"
                     placeholder="@mycollege.edu">
               </div>
@@ -112,7 +112,7 @@ import {ErrorComponent} from '../misc/error.component';
             </div>
           </div>
         </div>
-        
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="_formErrors.isFormValid">Submit</button>
@@ -126,7 +126,6 @@ import {ErrorComponent} from '../misc/error.component';
 
   </div>
   `,
-  templateUrl: 'app/post/new-post.component.html',
   styles: [`
     .my-new-group .ng-valid[required] {
       border-left: 5px solid #42A948; /* green */
@@ -150,7 +149,7 @@ import {ErrorComponent} from '../misc/error.component';
   directives: [ErrorComponent]
 })
 export class NewGroupComponent implements OnInit, OnDestroy  {
-  
+
   //private model = null;
   private model = {
     name: '',
@@ -164,7 +163,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     number_of_email_domains: [0],      // this tracks the number of email input fields to show in ui (purly frontend stuff)
     membership_needs_approval: 0
   }
-    
+
   //private _formErrors = null;
   private _formErrors = {
     name        : { isValid: true, errMsg: ''     },
@@ -187,7 +186,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     private _superGroupService: SuperGroupService,
     private _router: Router) {
   }
-  
+
   ngOnInit() {
     let super_group_name = this._routeParams.get('super_group_name');
     this._superGroupService.getSuperGroupByName(super_group_name).subscribe(
@@ -205,7 +204,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     // Only logged in uses can post
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
-        this._currentUser = currentUser; 
+        this._currentUser = currentUser;
         this.model.owner = currentUser.id;
         this._errorMsg = null;
         if(this.model.supergroup) this._readyToEdit = true;
@@ -229,7 +228,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     }
 
   }
-  
+
   /**
    * Submit the form
    */
@@ -257,7 +256,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
         this._router.navigate(['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]);
       },
       error => {
-        console.log(error); 
+        console.log(error);
         this._errorMsg = error;
       });
 
@@ -282,7 +281,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
           this._formErrors.description.errMsg = "Group description is required.";
         }
         break;
-      case 'emailDomain': 
+      case 'emailDomain':
         if(this.model.verify_members_email == 1) {
           var emailList = [];
           this.model.verify_email_domains_list.forEach(function(email) {
@@ -316,14 +315,14 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     if(this.model.number_of_email_domains.length >= 20) return;
     this.model.number_of_email_domains.push(this.model.number_of_email_domains.length);
   }
-  
-  
+
+
   /**
    * Makes true/false to 1/0 or vice versa (coz radio does not seem to work with boolean)
    */
   convertBooleanToBinary(model: any, booleanToBinary: boolean) {
     if(booleanToBinary) {
-      
+
         if ( model.non_members_can_view == true  ) model.non_members_can_view = 1;
         if ( model.non_members_can_view == false ) model.non_members_can_view = 0;
 
@@ -335,7 +334,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
 
         if ( model.membership_needs_approval == true  ) model.membership_needs_approval = 1;
         if ( model.membership_needs_approval == false ) model.membership_needs_approval = 0;
-      
+
     } else {
         if ( model.non_members_can_view == 1 ) model.non_members_can_view = true;
         if ( model.non_members_can_view == 0 ) model.non_members_can_view = false;
@@ -354,7 +353,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
   }
-  
+
   goBack() {
     window.history.back();
   }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit, NgZone} from 'angular2/core';
 import {Router} from 'angular2/router';
 import {AppService} from '../app.service';
 import {UserService} from './user.service';
@@ -7,14 +7,31 @@ import {SuperGroupService} from '../super_group/super_group.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {ErrorComponent} from '../misc/error.component';
 
+// Ref:: http://stackoverflow.com/questions/35530483/google-sign-in-for-websites-and-angular-2-using-typescript
+// Google's login API namespace
+declare var gapi:any;
+
 @Component({
   selector: 'my-new-user',
   template: `
     <div class="my-new-user">
       <div class="row">
         <div class="col-xs-12 col-md-offset-3 col-md-6">
+        
+<!--    
+<div class="login-wrapper">
+<p>You need to log in.</p>
+<div id="{{googleLoginButtonId}}"></div>
+</div>
+<div class="main-application">
+<p>Hello, {{userDisplayName}}!</p>
+</div>
+<div (click)="signOut()">Sign out</div>
+-->
 
           <h3>Welcome fellow human!</h3>
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
           <form #newUserForm="ngForm" class="form-horizontal" novalidate>
           
             <div class="form-group">
@@ -126,12 +143,61 @@ export class NewUserComponent {
   //private _groupList = {international: [], national: [], state: [], city: [], local: [], selectedNational: {}};
   private _errorMsg = false;
   private _loggedInUserSubcription = null;
-  
+/*
+googleLoginButtonId = "google-login-button";
+userAuthToken = null;
+userDisplayName = "empty";
+// Angular hook that allows for interaction with elements inserted by the
+// rendering of a view.
+ngAfterViewInit() {
+// Converts the Google login button stub to an actual button.
+gapi.signin2.render(
+this.googleLoginButtonId,
+{
+"onSuccess": this.onGoogleLoginSuccess,
+"onfailure": this.onGoogleLoginFailure,
+"scope": "profile",
+"theme": "dark",
+"longtitle": false
+});
+}
+// Triggered after a user successfully logs in using the Google external
+// login provider.
+onGoogleLoginSuccess = (loggedInUser) => {
+console.log(loggedInUser);
+//console.log(loggedInUser.getAuthResponse());
+//console.log(loggedInUser.getBasicProfile());
+this._zone.run(() => {
+var profile = loggedInUser.getBasicProfile();
+console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+console.log('Name: ' + profile.getName());
+console.log('Full Name: ' + profile.getName());
+console.log('Given Name: ' + profile.getGivenName());
+console.log('Family Name: ' + profile.getFamilyName());
+console.log('Email: ' + profile.getEmail());
+console.log('Image URL: ' + profile.getImageUrl());
+console.log(loggedInUser.getAuthResponse().id_token);
+this.userAuthToken = loggedInUser.getAuthResponse().id_token;
+this.userDisplayName = loggedInUser.getBasicProfile().getName();
+});
+}
+onGoogleLoginFailure(xx) {
+console.log("Fail", xx)
+}
+signOut() {
+let auth2 = gapi.auth2.getAuthInstance();
+auth2.signOut().then(function () {
+console.log('User signed out.');
+});
+}
+*/
+
   constructor(
     private _appService: AppService,
     private _userService: UserService,
     private _superGroupService: SuperGroupService,
     private _authenticationService: AuthenticationService,
+    private _zone: NgZone,
     private _router: Router) {}
   
   ngOnInit() {
