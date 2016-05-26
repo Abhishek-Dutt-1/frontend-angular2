@@ -1,9 +1,9 @@
-/** 
+/**
  * Displays a single comment
  */
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {Comment1} from './comment1';
-import {RouterLink} from 'angular2/router';
+import {RouterLink} from '@angular/router-deprecated';
 
 @Component({
   selector: 'my-comment1',
@@ -18,7 +18,7 @@ import {RouterLink} from 'angular2/router';
           <a [routerLink]="['ViewUser', {id: comment1.postedby.id}]">
             <i class="fa fa-user"></i> {{comment1.postedby.displayname}}
           </a>
-          &bull; 
+          &bull;
           <a [routerLink] = "['NewComment2', {postid: post.id, comment1id: comment1.id}]">Reply</a>
         </div>
       </div>

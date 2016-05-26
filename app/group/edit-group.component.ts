@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy} from 'angular2/core';
-import {RouteParams, Router} from 'angular2/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {RouteParams, Router} from '@angular/router-deprecated';
 import {Group} from '../group/group';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {GroupService} from '../group/group.service';
@@ -12,23 +12,23 @@ import {ErrorComponent} from '../misc/error.component';
   selector: 'my-edit-group',
   template: `
   <div class="my-edit-group">
-    
+
     <my-error [_errorMsg]="_errorMsg"></my-error>
-    
+
     <div *ngIf="_readyToEdit">
-    
+
       <h3 class="col-sm-offset-2">Edit Group:</h3>
-      
+
       <form #groupForm="ngForm" class="form-horizontal" novalidate>
         <h5>{{_model.supergroup.name | uppercase}} / {{_model.name}}</h5>
-        
+
         <div class="form-group">
           <label for="group_name" class="col-sm-2 control-label"> Group Name </label>
           <div class="col-sm-10">
             <p class="form-control-static">{{_model.name}}</p>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="description" class="col-sm-2 control-label">Description</label>
           <div class="col-sm-10">
@@ -39,7 +39,7 @@ import {ErrorComponent} from '../misc/error.component';
             </div>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="membership_needs_approval" class="col-sm-2 control-label">Do users need your approval before joining this group?</label>
           <div class="col-sm-10">
@@ -51,35 +51,35 @@ import {ErrorComponent} from '../misc/error.component';
             </label>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="non_members_can_view" class="col-sm-2 control-label">Are posts in this group visible to NON Members?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_view" 
-                     (click)="_model.non_members_can_view = 1" 
+              <input type="radio" name="non_members_can_view"
+                     (click)="_model.non_members_can_view = 1"
                      [checked]="_model.non_members_can_view === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_view" 
-                     (click)="_model.non_members_can_view = 0; _model.non_members_can_post = 0" 
+              <input type="radio" name="non_members_can_view"
+                     (click)="_model.non_members_can_view = 0; _model.non_members_can_post = 0"
                      [checked]="_model.non_members_can_view === 0" > No
             </label>
           </div>
         </div>
-        
+
         <fieldset [disabled]="_model.non_members_can_view === 0">
         <div class="form-group">
           <label for="non_members_can_post" class="col-sm-2 control-label">Can NON Members post in this group?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_post" 
-                     (click)="_model.non_members_can_post = 1" 
+              <input type="radio" name="non_members_can_post"
+                     (click)="_model.non_members_can_post = 1"
                      [checked]="_model.non_members_can_post === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_post" 
-                     (click)="_model.non_members_can_post = 0" 
+              <input type="radio" name="non_members_can_post"
+                     (click)="_model.non_members_can_post = 0"
                      [checked]="_model.non_members_can_post === 0" > No
             </label>
           </div>
@@ -97,14 +97,14 @@ import {ErrorComponent} from '../misc/error.component';
             </label>
           </div>
         </div>
-        
-        
+
+
         <div *ngIf="_model.verify_members_email === 1" class="">
           <div *ngFor="#counter of _model.number_of_email_domains">
             <div class="form-group">
               <label for="verify_email_domains_list{counter}" class="col-sm-2 control-label">Email domain #{{counter + 1}}</label>
               <div class="col-sm-10">
-                <input type="text" name="verify_email_domains_list{counter}" id="verify_email_domains_list{counter}" 
+                <input type="text" name="verify_email_domains_list{counter}" id="verify_email_domains_list{counter}"
                     [(ngModel)] = "_model.verify_email_domains_list[counter]" class="form-control" (keyup)="validateForm('emailDomain')"
                     placeholder="@mycollege.edu">
               </div>
@@ -120,7 +120,7 @@ import {ErrorComponent} from '../misc/error.component';
             </div>
           </div>
         </div>
-        
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="_formErrors.isFormValid">Submit</button>
@@ -159,7 +159,7 @@ import {ErrorComponent} from '../misc/error.component';
 
 })
 export class EditGroupComponent implements OnInit, OnDestroy  {
-  
+
   private _model = null;
   //private _formErrors = null;
   private _formErrors = {
@@ -175,7 +175,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
   private _currentUser = null;
   private _readyToEdit = false;
   //private _group = null;
-  
+
   constructor(
     //private _postService: PostService,
     private _routeParams: RouteParams,
@@ -184,12 +184,12 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
     private _superGroupService: SuperGroupService,
     private _router: Router) {
   }
-  
+
   ngOnInit() {
     let groupId = this._routeParams.get('group_id');
     this._groupService.getGroupById(groupId).subscribe(
       group => {
-        // Do some post prep for the form        
+        // Do some post prep for the form
         this.convertBooleanToBinary(group, true)
         group.number_of_email_domains = [];
         console.log("Group", group)
@@ -236,9 +236,9 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
     } else {
       this._errorMsg = "User must be logged in to edit a group.";
     }
-  
+
 }
-  
+
   /**
    * Submit the form
    */
@@ -266,7 +266,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
         this._router.navigate(['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]);
       },
       error => {
-        console.log(error); 
+        console.log(error);
         this._errorMsg = error;
       });
 
@@ -291,7 +291,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
           this._formErrors.description.errMsg = "Group description is required.";
         }
         break;
-      case 'emailDomain': 
+      case 'emailDomain':
         if(this._model.verify_members_email == 1) {
           var emailList = [];
           this._model.verify_email_domains_list.forEach(function(email) {
@@ -331,7 +331,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
    */
   convertBooleanToBinary(model: any, booleanToBinary: boolean) {
     if(booleanToBinary) {
-      
+
         if ( model.non_members_can_view == true  ) model.non_members_can_view = 1;
         if ( model.non_members_can_view == false ) model.non_members_can_view = 0;
 
@@ -343,7 +343,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
 
         if ( model.membership_needs_approval == true  ) model.membership_needs_approval = 1;
         if ( model.membership_needs_approval == false ) model.membership_needs_approval = 0;
-      
+
     } else {
         if ( model.non_members_can_view == 1 ) model.non_members_can_view = true;
         if ( model.non_members_can_view == 0 ) model.non_members_can_view = false;
@@ -362,7 +362,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
   }
-  
+
   goBack() {
     window.history.back();
   }

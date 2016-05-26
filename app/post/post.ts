@@ -13,4 +13,6 @@ export interface Post {
   comments: Comment1[];
   postedby: User;
   group: Group;
+  currentUserHasUpVoted: boolean;
+  currentUserHasDownVoted: boolean;
 }

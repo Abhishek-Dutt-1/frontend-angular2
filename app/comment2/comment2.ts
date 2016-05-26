@@ -6,6 +6,6 @@ export interface Comment2 {
   id: number;
   text: string;
   postedby: User;
-  commentedon: Comment1;
+  //commentedon: Comment1;
   comments?: Comment3[];
 }

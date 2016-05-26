@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteParams, Router} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {RouteParams, Router} from '@angular/router-deprecated';
 import {User} from '../user/user';
 //import {Group} from '../group/group';
 import {Comment1Service} from './comment1.service';
@@ -12,12 +12,12 @@ import {Subject} from 'rxjs/Subject';
   selector: 'my-new-comment1',
   template: `
   <div class="my-new-comment1">
-  
+
   <div *ngIf="!_errorMsg">
-  
+
     <h4>Write a New Comment:</h4>
     <form #comment1Form="ngForm" class="form-horizontal">
-      
+
       <div class="post-textarea form-group">
         <label for="text" class="col-md-1">Comment Text</label>
         <div class="col-md-11">
@@ -37,14 +37,14 @@ import {Subject} from 'rxjs/Subject';
         </div>
       </div>
     </form>
-    
+
   </div>
-  
+
   <div *ngIf="_errorMsg">
     {{_errorMsg}}
     <button (click)="goBack()" class="btn btn-default">Back</button>
   </div>
-  
+
 </div>
   `,
   //templateUrl: 'app/post/new-post.component.html',
@@ -71,35 +71,35 @@ import {Subject} from 'rxjs/Subject';
   inputs: ['post']
 })
 export class NewComment1Component {
-  
+
   private post = null;
   private _model: any = null;
   private _errorMsg: string = null;
-  
+
   constructor(
     private _comment1Service: Comment1Service,
     private _routeParams: RouteParams,
     private _authenticationService: AuthenticationService,
     private _router: Router) {
   }
-  
+
   ngOnInit() {
 
     this._model =  {
       text: 'New Comment',
       postedby: null
     }
-    
+
     // Only logged in uses can comment1
     /*
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
       this._model.postedby = currentUser;
     } else {
-      this._errorMsg = "User must be logged in to create new posts.";      
+      this._errorMsg = "User must be logged in to create new posts.";
     }
     */
-    
+
     // Only logged in uses can comment1
     this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
@@ -117,10 +117,10 @@ export class NewComment1Component {
       this._model.postedby = currentUser;
       this._errorMsg = null;
     } else {
-      this._errorMsg = "User must be logged in to reply.";      
+      this._errorMsg = "User must be logged in to reply.";
     }
   }
-  
+
   /**
    * Submit the new post form
    */
@@ -137,8 +137,8 @@ export class NewComment1Component {
         },
         error => console.log(error)
       );
-  } 
-  
+  }
+
   goBack() {
     window.history.back();
   }

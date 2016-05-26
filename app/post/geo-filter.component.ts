@@ -1,7 +1,6 @@
-import {Component, OnInit, OnDestroy} from 'angular2/core';
-import {NgClass} from 'angular2/common';
-import {Router, RouteParams, ROUTER_DIRECTIVES} from 'angular2/router';
-//import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, ...} from 'angular2/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {NgClass} from '@angular/common';
+import {Router, RouteParams, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 import {AppService} from '../app.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {User} from '../user/user';
@@ -15,7 +14,7 @@ import {SuperGroup} from '../super_group/super_group'
     -->
     <div *ngIf="_sticky" class="dummy-div"></div>
     <div class="my-geo-filter" [ngClass]="{sticky: _sticky}">
-      
+
       <div class="row hidden-xs">
         <div class="col-xs-2">
           <span class="menu-item">
@@ -24,7 +23,7 @@ import {SuperGroup} from '../super_group/super_group'
                 <i class="fa fa-plane"></i> International</a>
           </span>
         </div>
-        
+
         <div class="col-xs-2">
           <span class="menu-item">
               <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
@@ -33,7 +32,7 @@ import {SuperGroup} from '../super_group/super_group'
               </a>
           </span>
         </div>
-        
+
         <div class="col-xs-2">
           <span class="menu-item">
               <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
@@ -42,7 +41,7 @@ import {SuperGroup} from '../super_group/super_group'
               </a>
           </span>
         </div>
-        
+
         <div class="col-xs-2">
           <span class="menu-item">
               <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
@@ -51,7 +50,7 @@ import {SuperGroup} from '../super_group/super_group'
               </a>
           </span>
         </div>
-        
+
         <div class="col-xs-2">
           <span class="menu-item">
               <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
@@ -61,7 +60,7 @@ import {SuperGroup} from '../super_group/super_group'
           </span>
         </div>
       </div>  <!-- end row -->
-      
+
       <div class="row visible-xs-block">
       <div class="col-xs-12">
       <div>
@@ -73,7 +72,7 @@ import {SuperGroup} from '../super_group/super_group'
             </a>
           </div>
         </div>
-        
+
         <div class="menu-item pull-left">
           <div class="menu-link-container">
             <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
@@ -82,7 +81,7 @@ import {SuperGroup} from '../super_group/super_group'
             </a>
           </div>
         </div>
-        
+
         <div class="menu-item pull-left">
           <div class="menu-link-container">
             <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
@@ -91,7 +90,7 @@ import {SuperGroup} from '../super_group/super_group'
             </a>
           </div>
         </div>
-        
+
         <div class="menu-item pull-left">
           <div class="menu-link-container">
             <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
@@ -100,7 +99,7 @@ import {SuperGroup} from '../super_group/super_group'
             </a>
           </div>
         </div>
-        
+
         <div class="menu-item pull-left">
           <div class="menu-link-container">
             <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
@@ -109,16 +108,16 @@ import {SuperGroup} from '../super_group/super_group'
             </a>
           </div>
         </div>
-        
-      </div>  
+
+      </div>
       </div>
       </div>  <!-- end row -->
 
-      
+
       <div class="row hidden">
         <div class="col-xs-12">
           <div class="geo-filter-details">
-            <span *ngFor="#sg of superGroupList">
+            <span *ngFor="let sg of superGroupList">
               <a [routerLink]="['SuperGroupPostList', {super_group_name: sg.name}]">{{sg.name}}</a>
             </span>
             <span class="add-more">
@@ -129,12 +128,12 @@ import {SuperGroup} from '../super_group/super_group'
           </div>
         </div>
       </div> <!-- end row -->
-      
+
     </div>
   `,
   styles: [`
       .dummy-div {
-        /** dummy div should be the exact height of the sticky div 
+        /** dummy div should be the exact height of the sticky div
          * this is to prevent jumping of the page
          */
         height: 56px;
@@ -154,7 +153,7 @@ import {SuperGroup} from '../super_group/super_group'
       .my-geo-filter > .row {
         border-bottom: 1px solid rgba(0,0,0,0.05);
         padding-bottom: 15px;
-      }      
+      }
       .my-geo-filter .menu-item {
         padding: 15px 15px 0px 0;
         transition: 0.05s ease-in-out;
@@ -183,7 +182,7 @@ import {SuperGroup} from '../super_group/super_group'
     `],
   inputs: ['geoSelection', 'superGroupList'],
   directives: [ROUTER_DIRECTIVES]
-  
+
 })
 export class GeoFilterComponent implements OnInit, OnDestroy {
 
@@ -192,7 +191,7 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
   private _state: string[] = null;
   private _city: string[] = null;
   private _local: string[] = null;
-  
+
   private _currentSelection: string = null;
   private _selectionDetails: string = null;
   private _sticky:boolean = false;
@@ -203,13 +202,13 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
     private _authenticationService: AuthenticationService,
     private _routeParams: RouteParams
   ) { }
-  
+
   ngOnInit() {
     // See more at: http://www.mzan.com/article/37019491-how-to-get-value-of-this-keyword-inside-windows-scroll-event-listener-in-angu.shtml#sthash.ihJMe7X1.dpuf
     //window.addEventListener("scroll", (event) => { this._scrollListener(event); });
     //window.addEventListener("scroll", this._scrollListener.bind(this));
     window.addEventListener("scroll", this.myEfficientFn);
-  } 
+  }
   ngOnDestroy() {
     console.log("REMOVING LIStener")
     window.removeEventListener("scroll", this.myEfficientFn);
@@ -217,7 +216,7 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
   myEfficientFn = this.debounce( () => {
 	  // All the taxing stuff you do
     this._sticky = window.scrollY > 60;
-    console.log(this._sticky)  
+    console.log(this._sticky)
   }, 100, false);
   // Returns a function, that, as long as it continues to be invoked, will not
   // be triggered. The function will be called after it stops being called for
@@ -238,13 +237,13 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
     }
   }
 
- 
+
   /*
   gotoChangeGeoSttings() {
     this._router.navigate(['EditUser', {tab: 'geo'}]);
   }
   */
-    
+
   arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;

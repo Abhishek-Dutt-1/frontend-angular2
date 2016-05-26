@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy} from 'angular2/core';
-import {Router, RouteParams, RouterLink} from 'angular2/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Router, RouteParams, RouterLink} from '@angular/router-deprecated';
 import {AppService} from '../app.service';
 import {Group} from './group';
 import {User} from '../user/user';
@@ -16,18 +16,18 @@ import {FabButtonComponent} from '../misc/fab-button.component';
   //templateUrl: 'app/group/view-group.component.html',
   template: `
   <div *ngIf="group">
-  
+
     <div class="my-view-group">
-      
+
       <div class="row border-row">
         <div class="col-xs-12">
-          
-          <div *ngIf="_sticky" class="dummy-div"></div>    
+
+          <div *ngIf="_sticky" class="dummy-div"></div>
           <div class="group-details" [ngClass]="{sticky: _sticky}">
             <div class="group-name">
               <div class="row">
                 <div class="col-xs-8">
-                  <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a> / 
+                  <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a> /
                   <a [routerLink]="['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]">{{group.name}}</a>
                 </div>
                 <div class="col-xs-4">
@@ -41,7 +41,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 
         </div> <!-- !col -->
       </div> <!-- !row -->
-      
+
       <div class="row border-row">
         <div class="col-xs-12">
           <div class="group-description">
@@ -57,16 +57,16 @@ import {FabButtonComponent} from '../misc/fab-button.component';
           -->
         </div> <!-- !col -->
       </div> <!-- !row -->
-      
+
       <div class="row border-row" *ngIf="group.isCurrentUsersMembershipPending || group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner">
         <div class="col-xs-12">
           <div class="group-ops">
             <div class="sub-text sub-text-mod" *ngIf="group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner" (click)="unSubscribeFromThisGroup()">Leave Group</div>
             <div class="sub-text sub-text-mod" *ngIf="group.isCurrentUsersMembershipPending" (click)="cancelPendingGroupMembership()">Membership Pending (Cancel?)</div>
-          </div>        
+          </div>
         </div> <!-- !col -->
       </div> <!-- !row -->
-                      
+
       <div class="row border-row" *ngIf="group.currentUserIsGroupOwner">
         <div class="col-xs-12">
           <div class="admin-row">
@@ -74,7 +74,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
             <a [routerLink]="['EditGroup', {group_id: group.id}]" class="">Edit Group</a>
             &bull;
             <a [routerLink]="['ApproveMembership', {group_id: group.id}]" class="">Pending Members</a>
-          </div>        
+          </div>
         </div> <!-- !col -->
       </div> <!-- !row -->
 <!--
@@ -91,19 +91,19 @@ isCurrentUsersMembershipPending: {{group.isCurrentUsersMembershipPending}}<br/>
 currentUserIsGroupOwner: {{group.currentUserIsGroupOwner}}<br/>
 -->
       <my-error [_errorMsg]="_errorMsg"></my-error>
-            
+
       <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser"></my-post-list>
-          
+
       <div class="fab-button">
         <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
       </div>
-    
+
     </div>    <!-- my-view-group -->
   </div>  <!-- ! ngIfGroup -->
   `,
   styles: [`
   .dummy-div {
-    /** dummy div should be the exact height of the sticky div 
+    /** dummy div should be the exact height of the sticky div
      * this is to prevent jumping of the page
      */
     height: 55px;
@@ -191,7 +191,7 @@ currentUserIsGroupOwner: {{group.currentUserIsGroupOwner}}<br/>
   directives: [PostListComponent, RouterLink, ErrorComponent, FabButtonComponent]
 })
 export class ViewGroupComponent implements OnInit, OnDestroy  {
-  
+
   private group: Group;
   private groupPosts: Post[];
   private postTemplateType: PostTemplateType;
@@ -206,14 +206,14 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
     private _authenticationService: AuthenticationService,
     private _router: Router,
     private _routeParams: RouteParams) {}
-  
+
   ngOnInit() {
-    
+
     this.postTemplateType = PostTemplateType.Grouplist;
-        
+
     let super_group_name = this._routeParams.get('super_group_name');
     let group_name = this._routeParams.get('group_name');
-    
+
     // Only logged in uses view posts
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(
       currentUser => {
@@ -237,7 +237,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
     //} else { }
     // Logged in or not fetch posts immidiately
     this.getPostsInGroup(super_group_name, group_name);
-    
+
     // Sticky header. Ref: Geo-filter component for details
     window.addEventListener("scroll", this.myEfficientFn);
   }   // !ngOnInit
@@ -261,7 +261,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
       if (callNow) func.apply(context, args);
     }
   }
-  
+
   /**
    * Fetches posts in given supergroup/group
    */
@@ -278,14 +278,14 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
             } else {
               this._errorMsg = "This group is private. Non members can not view posts in this group."
             }
-            
+
           }
         },
         error => {
-          console.log(error);  
+          console.log(error);
         });
   }
-  
+
   /**
    * Subscribe current user to this group
    */
@@ -296,10 +296,10 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
     this._groupService.subscribeCurrentUserToGroup(this.group.id).subscribe(
       res => {
         console.log("SUCCESS SUBS", res);
-        // If group membership needs approval, then server wourld have added 
+        // If group membership needs approval, then server wourld have added
         // the user to waiting list or else would have directly subscribed
         if(this.group.membership_needs_approval) {
-          this.group.isCurrentUsersMembershipPending = true;          
+          this.group.isCurrentUsersMembershipPending = true;
         } else {
           this.group.isCurrentUserSubscribed = true;
         }
@@ -310,7 +310,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
         console.log("ERROR", error);
       })
   }
-  
+
   /**
    * Unsubscirbe current user from this group
    */
@@ -329,7 +329,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
         console.log("ERROR", error);
       })
   }
-  
+
   /**
    * Cancel the logged in users pending membership to a group that requires approval
    */
@@ -346,9 +346,9 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
         this._errorMsg = error;
         console.log("ERROR", error);
       })
-      
+
   }
-  
+
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
     window.removeEventListener("scroll", this.myEfficientFn);
@@ -357,9 +357,9 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   goBack() {
     window.history.back();
   }
-  
+
   gotoNewPostForm() {
     this._router.navigate(['NewPost', {super_group_name: this.group.supergroup.name, group_name: this.group.name}]);
   }
-  
+
 }

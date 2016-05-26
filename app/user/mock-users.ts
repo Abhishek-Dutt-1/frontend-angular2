@@ -10,7 +10,7 @@ export var MOCK_USERS: User[] = [
     password: '123',
     userrole: UserRoles.user,
     international: [MOCK_SUPER_GROUPS[1-1]],
-    national: MOCK_SUPER_GROUPS[3-1],
+    national: [MOCK_SUPER_GROUPS[3-1]],
     state: [MOCK_SUPER_GROUPS[5-1]],
     city: [MOCK_SUPER_GROUPS[7-1]],
     local: [MOCK_SUPER_GROUPS[9-1]]
@@ -23,7 +23,7 @@ export var MOCK_USERS: User[] = [
     password: '123',
     userrole: UserRoles.user,
     international: [MOCK_SUPER_GROUPS[4]],
-    national: MOCK_SUPER_GROUPS[1],
+    national: [MOCK_SUPER_GROUPS[1]],
     state: [MOCK_SUPER_GROUPS[5]],
     city: [MOCK_SUPER_GROUPS[2]],
     local: [MOCK_SUPER_GROUPS[3]]
@@ -36,7 +36,7 @@ export var MOCK_USERS: User[] = [
     password: '123',
     userrole: UserRoles.user,
     international: [MOCK_SUPER_GROUPS[4]],
-    national: MOCK_SUPER_GROUPS[1],
+    national: [MOCK_SUPER_GROUPS[1]],
     state: [MOCK_SUPER_GROUPS[5]],
     city: [MOCK_SUPER_GROUPS[2]],
     local: [MOCK_SUPER_GROUPS[3]]
@@ -49,11 +49,11 @@ export var MOCK_USERS: User[] = [
     password: '123',
     userrole: UserRoles.user,
     international: [MOCK_SUPER_GROUPS[4]],
-    national: MOCK_SUPER_GROUPS[1],
+    national: [MOCK_SUPER_GROUPS[1]],
     state: [MOCK_SUPER_GROUPS[5]],
     city: [MOCK_SUPER_GROUPS[2]],
     local: [MOCK_SUPER_GROUPS[3]]
-  
+
   }
-  
+
 ]

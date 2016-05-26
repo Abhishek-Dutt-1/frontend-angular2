@@ -1,16 +1,15 @@
-import {Http, Headers, RequestOptions} from 'angular2/http';
+import {Http, Headers, RequestOptions} from '@angular/http';
 import {AppService} from '../app.service';
 import {Comment1} from '../comment1/comment1';
 import {Comment3} from './comment3';
 import {Post} from '../post/post';
 import {MOCK_COMMENT1S} from '../comment1/mock-comment1s';
-import {MOCK_COMMENT3S} from './mock-comment3s';
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {AuthenticationService} from '../authentication/authentication.service';
 
 @Injectable()
 export class Comment3Service {
-  
+
   constructor(
     private _appService: AppService,
     private _http: Http
@@ -27,5 +26,5 @@ export class Comment3Service {
       })
       .catch(error => this._appService.handleServerErrors(error));
   }
-  
+
 }

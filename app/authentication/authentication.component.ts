@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteParams, Router} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {RouteParams, Router} from '@angular/router-deprecated';
 import {AuthenticationService} from './authentication.service';
 import {AppService} from '../app.service';
 
@@ -9,7 +9,7 @@ import {AppService} from '../app.service';
   <div class="my-authentication">
     <div class="row">
       <div class="col-xs-12 col-md-offset-3 col-md-6">
-    
+
         <h3>Welcome fellow human!</h3>
         <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -17,7 +17,7 @@ import {AppService} from '../app.service';
           {{_errorMsg}}
         </div>
         <form #loginForm="ngForm">
-        
+
           <!--
           <div class="form-group">
             <label for="email">Email</label>
@@ -42,7 +42,7 @@ import {AppService} from '../app.service';
               Email is required
             </div>
           </div>
-                  
+
           <div class="form-group">
             <label for="password">Password</label>
             <input id="password" type="password" class="form-control" placeholder="Password" required
@@ -54,76 +54,63 @@ import {AppService} from '../app.service';
               Password is required
             </div>
           </div>
-          
+
           <div>
             <button (click)="onSubmit($event)" [disabled]="!loginForm.form.valid" class="btn btn-default">Submit</button>
             <button (click)="goBack()" class="btn btn-default">Go Back</button>
           </div>
-          
+
           <div>
             <div [hidden]="!errorMsg">
               {{errorMsg}}
             </div>
           </div>
-          
+
         </form>
-        
+
       </div>
     </div>
   </div>
   `,
 })
 export class AuthenticationComponent {
-  
+
   model = {
     //email: null,
     identifier: null,
     password: null
   };
   private _errorMsg = null;
-  
+
   constructor(
     private _authenticationService: AuthenticationService,
     private _router: Router,
     private _appService: AppService) { }
-  
+
   onSubmit(event) {
-    
+
     event.preventDefault();
-    
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      this._authenticationService.loginUser(this.model).then(
-        user => {
-          if(user) {
-            this._router.navigate(['ViewUser', {id: user.id}]);
-          }  else {
-            this._errorMsg = "Incorrect email or password!"
-          }       
-      }).catch((reason) => {
-        console.log(reason);
-      });
-    }
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      this._authenticationService.loginUser(this.model).subscribe(
-        user => {
-          if(user) {
-            this._router.navigate(['ViewUser', {id: user.id}]);
-          }
-        },
-        error => {
-          console.log(error)
-          this._errorMsg = error;  
+
+    this._authenticationService.loginUser(this.model).subscribe(
+      user => {
+        if(user) {
+          this._router.navigate(['ViewUser', {id: user.id}]);
         }
-      );
-    }
+      },
+      error => {
+        console.log(error)
+        this._errorMsg = error;
+      }
+    );
+
   }
-  
+
   clearErrorMsg() {
     this._errorMsg = null;
   }
-    
+
   goBack() {
     window.history.back();
   }
-  
+
 }
