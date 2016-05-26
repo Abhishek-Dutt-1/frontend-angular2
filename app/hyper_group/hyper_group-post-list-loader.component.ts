@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy} from 'angular2/core';
-import {Router, RouteParams} from 'angular2/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Router, RouteParams} from '@angular/router-deprecated';
 import {Post} from '../post/post';
 import {User} from '../user/user';
 import {AppService} from '../app.service';
@@ -16,17 +16,17 @@ import {FabButtonComponent} from '../misc/fab-button.component';
   selector: 'my-hyper_group-post-list-loader',
   template: `
     <div class="my-hyper_group-post-list-loader">
-      
+
       <my-geo-filter [geoSelection]="_geoSelection" [superGroupList]="_superGroupList"></my-geo-filter>
-      
+
       <my-error [_errorMsg]="_errorMsg"></my-error>
-      
+
       <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser"></my-post-list>
-    
+
       <div class="fab-button">
         <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
       </div>
-    
+
     </div>
   `,
   styles: [`
@@ -50,8 +50,8 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   private _showUserControls: boolean = false;
   private _currentUser: User = null;
   private _loggedInUserSubcription = null;
-  
-  
+
+
   constructor(
     private _appService: AppService,
     private _authenticationService: AuthenticationService,
@@ -59,14 +59,14 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _routeParams: RouteParams
   ) { }
-  
+
   ngOnInit() {
-    
+
     this.postTemplateType = PostTemplateType.List;
-    
+
     this._geoSelection = this._routeParams.get('geo') || this._appService.getGeoSelection() || this._geoSelection;
     this._appService.setGeoSelection(this._geoSelection);
-    
+
     // Only logged in uses view posts
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(
       currentUser => {
@@ -88,9 +88,9 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     // Logged in or not fetch posts immidiately
     this.getPostsByHypergroup(this._geoSelection);
 
-    
+
   }   // !ngOnInit()
-  
+
   /**
    * Fetches posts by hypergroup
    */
@@ -100,13 +100,13 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         //console.log(resp)
         this.posts = resp.posts;
         if(this.posts.length < 1) {
-          this._errorMsg = "Your '" + this._geoSelection.toUpperCase() + "' groups do not have any posts yet. " + 
+          this._errorMsg = "Your '" + this._geoSelection.toUpperCase() + "' groups do not have any posts yet. " +
                            "Please visit your profile to subscribe to some more active groups, or create a new post yourself."
         }
-        
+
         this._superGroupList = resp.superGroupList;
         if(this._superGroupList.length < 1) {
-          this._errorMsg = "You have not subscibed to any groups in '" + this._geoSelection.toUpperCase() + "'. " + 
+          this._errorMsg = "You have not subscibed to any groups in '" + this._geoSelection.toUpperCase() + "'. " +
                            "Please visit your profile to subscribe to groups."
         }
       },
@@ -115,11 +115,11 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         this._errorMsg = error;
       });
   }
-  
+
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
   }
-  
+
   gotoNewPostForm() {
     this._router.navigate(['NewPost']);
   }

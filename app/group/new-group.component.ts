@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy} from 'angular2/core';
-import {RouteParams, Router} from 'angular2/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {RouteParams, Router} from '@angular/router-deprecated';
 import {Group} from '../group/group';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {GroupService} from '../group/group.service';
@@ -92,7 +92,7 @@ import {ErrorComponent} from '../misc/error.component';
 
 
         <div *ngIf="model.verify_members_email === 1" class="">
-          <div *ngFor="#counter of model.number_of_email_domains">
+          <div *ngFor="let counter of model.number_of_email_domains">
             <div class="form-group">
               <label for="verify_email_domains_list{counter}" class="col-sm-2 control-label">Email domain #{{counter + 1}}</label>
               <div class="col-sm-10">

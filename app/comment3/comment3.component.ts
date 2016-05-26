@@ -1,9 +1,9 @@
-/** 
+/**
  * Displays a single comment2
  */
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {Comment3} from './comment3';
-import {RouterLink} from 'angular2/router';
+import {RouterLink} from '@angular/router-deprecated';
 
 @Component({
   selector: 'my-comment3',
@@ -26,11 +26,11 @@ import {RouterLink} from 'angular2/router';
   directives: [RouterLink]
 })
 export class Comment3Component {
-  
+
   private comment3
   private post
-  
+
   constructor(
   ) { }
-  
+
 }

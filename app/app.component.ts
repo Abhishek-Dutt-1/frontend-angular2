@@ -1,9 +1,9 @@
-import { Component, OnInit } from 'angular2/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import { HTTP_PROVIDERS, JSONP_PROVIDERS } from 'angular2/http';
+import { Component, OnInit } from '@angular/core';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router-deprecated';
+import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
 
 import { AppService } from './app.service';
-import { DashboardComponent } from './dashboard/dashboard.component';
+//import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { PostService } from './post/post.service';
 //import { PostListLoaderComponent } from './post/post-list-loader.component';

@@ -1,37 +1,79 @@
 import {Group} from './group';
 import {MOCK_SUPER_GROUPS} from '../super_group/mock-super_groups';
+import {MOCK_USERS} from '../user/mock-users';
 
 // Grouop's name and urls are same
 export var MOCK_GROUPS: Group[] = [
   {
     id: 0,
     name: 'casual_international_celebrity_encounters',
-    super_group: MOCK_SUPER_GROUPS[0]
+    description: '',
+    owner: MOCK_USERS[0],
+    supergroup: MOCK_SUPER_GROUPS[0],
+    members_waiting_approval: [],
+    non_members_can_view: true,
+    isCurrentUserSubscribed: false,
+    membership_needs_approval: false,
+    isCurrentUsersMembershipPending: false
   },
   {
     id: 1,
     name: 'random',
-    super_group: MOCK_SUPER_GROUPS[0]
+    description: '',
+    owner: MOCK_USERS[0],
+    supergroup: MOCK_SUPER_GROUPS[0],
+    members_waiting_approval: [],
+    non_members_can_view: true,
+    isCurrentUserSubscribed: false,
+    membership_needs_approval: false,
+    isCurrentUsersMembershipPending: false
   },
   {
     id: 2,
     name: 'funny',
-    super_group: MOCK_SUPER_GROUPS[1]
+    description: '',
+    owner: MOCK_USERS[0],
+    supergroup: MOCK_SUPER_GROUPS[1],
+    members_waiting_approval: [],
+    non_members_can_view: true,
+    isCurrentUserSubscribed: false,
+    membership_needs_approval: false,
+    isCurrentUsersMembershipPending: false
   },
   {
     id: 3,
     name: 'interstellar_space_travel',
-    super_group: MOCK_SUPER_GROUPS[2]
+    description: '',
+    owner: MOCK_USERS[0],
+    supergroup: MOCK_SUPER_GROUPS[2],
+    members_waiting_approval: [],
+    non_members_can_view: true,
+    isCurrentUserSubscribed: false,
+    membership_needs_approval: false,
+    isCurrentUsersMembershipPending: false
   },
   {
     id: 4,
     name: 'one_true_god',
-    super_group: MOCK_SUPER_GROUPS[4]
+    description: '',
+    owner: MOCK_USERS[0],
+    supergroup: MOCK_SUPER_GROUPS[4],
+    members_waiting_approval: [],
+    non_members_can_view: true,
+    isCurrentUserSubscribed: false,
+    membership_needs_approval: false,
+    isCurrentUsersMembershipPending: false
   },
   {
     id: 5,
     name: 'nicholas_cage_fan_club',
-    super_group: MOCK_SUPER_GROUPS[3]
+    description: '',
+    owner: MOCK_USERS[0],
+    supergroup: MOCK_SUPER_GROUPS[3],
+    members_waiting_approval: [],
+    non_members_can_view: true,
+    isCurrentUserSubscribed: false,
+    membership_needs_approval: false,
+    isCurrentUsersMembershipPending: false
   }
-  
 ]

@@ -1,9 +1,9 @@
-/** 
+/**
  * Displays a single post
  */
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit} from '@angular/core';
 import {Post} from './post';
-import {Router, RouterLink} from 'angular2/router';
+import {Router, RouterLink} from '@angular/router-deprecated';
 import {PostService} from './post.service';
 import {PostTemplateType} from './post-template-types';
 import {VoteComponent} from '../misc/vote.component';
@@ -19,18 +19,18 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     <div *ngIf="type === templateTypeList || type === templateTypeGroupList" class="row">
       <div class="col-xs-12">
         <div class="post-container">
-          
+
           <div class="row">
             <div class="col-xs-12">
               <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
-                <span>{{post.title}}</span> 
+                <span>{{post.title}}</span>
               </a>
-              <span *ngIf="post.type === 'link'" class="post-type-link"> 
+              <span *ngIf="post.type === 'link'" class="post-type-link">
                 <a target="_blank" [href]="post.link">[view link]</a>
               </span>
             </div>
           </div>
-          
+
           <div class="row" *ngIf="post.text">
             <div class="col-xs-12">
               <div class="post-text">
@@ -44,13 +44,13 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                   {{post.text}}
                 </div>
               </div>
-            </div>  
+            </div>
           </div>
-          
+
           <div class="row">
             <div class="col-xs-12">
               <div class="post-info">
-                
+
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
@@ -63,7 +63,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                     <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                       {{post.postedby.displayname}}
                     </a>
-                  </div> 
+                  </div>
                   <div *ngIf="type != templateTypeGroupList">
                     <div class="bullet pull-left"> in </div>
                     <div class="post-grouplink pull-left">
@@ -73,7 +73,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                     </div>
                   </div>
                   <div class="clearfix"></div>
-                  <div class="post-createdat pull-left"> 
+                  <div class="post-createdat pull-left">
                     {{ post.createdAt | timeAgo }} &bull;
                   </div>
                   <div class="post-commentstotal pull-left">
@@ -84,12 +84,12 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                       <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
                     </span>
                   </div>
-                </div> 
-                
+                </div>
+
               </div>      <!-- ! post-info -->
             </div>
           </div>     <!-- ! row -->
-          
+
           <div class="row">
             <div class="col-xs-12">
               <div class="vote-container">
@@ -97,28 +97,28 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
               </div>
             </div>
           </div>
-          
+
         </div>      <!-- !post-container -->
-      </div>  
+      </div>
     </div>     <!-- ! ngIf-row -->
-    
-    
-    
+
+
+
     <div *ngIf="false && type === templateTypeGroupList" class="row">
       <div class="col-xs-12">
         <div class="post-container">
-          
+
           <div class="row">
             <div class="col-xs-12">
               <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
-                <span>{{post.title}}</span> 
+                <span>{{post.title}}</span>
               </a>
-              <span *ngIf="post.type === 'link'"> 
+              <span *ngIf="post.type === 'link'">
                 <a target="_blank" [href]="post.link">[view link]</a>
               </span>
             </div>
           </div>
-          
+
           <div class="row" *ngIf="post.textTrimmed">
             <div class="col-xs-12">
               <div class="post-text">
@@ -127,13 +127,13 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
               <div class="read-more">
                 Read more ...
               </div>
-            </div>  
+            </div>
           </div>
-          
+
           <div class="row">
             <div class="col-xs-12">
               <div class="post-info">
-                
+
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
@@ -146,7 +146,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                     <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                       {{post.postedby.displayname}}
                     </a>
-                  </div> 
+                  </div>
                   <div class="bullet">&bull;</div>
                   <!--
                   <div class="post-grouplink">
@@ -156,7 +156,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                   </div>
                   -->
                   <div class="clearfix"></div>
-                  <div class="post-createdat pull-left"> 
+                  <div class="post-createdat pull-left">
                     {{ post.createdAt | timeAgo }} &bull;
                   </div>
                   <div class="post-commentstotal pull-left">
@@ -167,12 +167,12 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                       <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
                     </span>
                   </div>
-                </div> 
-                
+                </div>
+
               </div>      <!-- ! post-info -->
             </div>
           </div>     <!-- ! row -->
-          
+
           <div class="row">
             <div class="col-xs-12">
               <div class="vote-container">
@@ -180,28 +180,28 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
               </div>
             </div>
           </div>
-          
+
         </div>      <!-- !post-container -->
-      </div>  
+      </div>
     </div>     <!-- ! ngIf-row -->
-    
-    
+
+
     <div *ngIf="type === templateTypeMain" class="row">
-      
+
       <div class="col-xs-12">
         <div class="post-container">
-          
+
           <div class="row">
             <div class="col-xs-12">
               <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
-                <span>{{post.title}}</span> 
+                <span>{{post.title}}</span>
               </a>
-              <span *ngIf="post.type === 'link'" class="post-type-link"> 
+              <span *ngIf="post.type === 'link'" class="post-type-link">
                 <a target="_blank" [href]="post.link">[view link]</a>
               </span>
             </div>
           </div>
-          
+
           <div class="row">
             <div class="col-xs-12">
               <div class="post-text">
@@ -218,13 +218,13 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                   </div>
                 </div>
               </div>
-            </div>  
+            </div>
           </div>
-          
+
           <div class="row">
             <div class="col-xs-12">
               <div class="post-info">
-                
+
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
@@ -237,7 +237,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                     <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                       {{post.postedby.displayname}}
                     </a>
-                  </div> 
+                  </div>
                   <div>
                     <div class="bullet pull-left"> in </div>
                     <div class="post-grouplink pull-left">
@@ -247,7 +247,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                     </div>
                   </div>
                   <div class="clearfix"></div>
-                  <div class="post-createdat pull-left"> 
+                  <div class="post-createdat pull-left">
                     {{ post.createdAt | timeAgo }} &bull;
                   </div>
                   <div class="post-commentstotal pull-left">
@@ -260,15 +260,15 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                   </div>
                   <div class="post-reply"> &nbsp;&bull;
                     <a [routerLink]="['NewComment1', {postid: post.id}]" class="">
-                      Reply 
+                      Reply
                     </a>
                   </div>
-                </div> 
-                
+                </div>
+
               </div>      <!-- ! post-info -->
             </div>
           </div>     <!-- ! row -->
-          
+
           <div class="row">
             <div class="col-xs-12">
               <div class="vote-container">
@@ -276,12 +276,12 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
               </div>
             </div>
           </div>
-          
+
         </div>      <!-- !post-container -->
-      </div>  
-      
+      </div>
+
     </div>     <!-- ! ngIf-row -->
-    
+
   </div>      <!-- my-post -->
   </div>      <!-- ngIfPost -->
   `,
@@ -424,7 +424,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
   pipes: [DateFormatPipe]
 })
 export class PostComponent implements OnInit {
-  
+
   private post                    : Post             = null;
   private type                    : string           = null;
   private templateTypeList        : PostTemplateType = null;
@@ -433,11 +433,11 @@ export class PostComponent implements OnInit {
   private _processingVote         : Boolean          = false;
   private _readmore               : Boolean          = false;
   private _textTrimmed            : string           = null;
-  
+
   constructor(
     private _postService: PostService,
     private _router: Router) { }
-  
+
   ngOnInit() {
     // TODO: Improve this
     this.templateTypeList = PostTemplateType.List;
@@ -452,7 +452,7 @@ export class PostComponent implements OnInit {
       //this._showFullText = false;     // On Post page, initally hide full text
     }
   }
-  
+
   gotoPost(id: number) {
     this._router.navigate(['ViewPost', {id: id}]);
   }
@@ -464,7 +464,7 @@ export class PostComponent implements OnInit {
     console.log("Inside post comp upvoting ", id)
     if(this._processingVote) return;
     this._processingVote = true;
-    
+
     this._postService.upVotePost(id).subscribe(
       post => {
         this._processingVote = false;
@@ -479,12 +479,12 @@ export class PostComponent implements OnInit {
         console.log("Upvote unsuccess")
       });
   }
-  
+
   downVotePost(id:number) {
     console.log("Inside post comp Down Voting ", id)
     if(this._processingVote) return;
     this._processingVote = true;
-    
+
     this._postService.downVotePost(id).subscribe(
       post => {
         this._processingVote = false;
@@ -497,6 +497,6 @@ export class PostComponent implements OnInit {
       },
       error => {
         console.log("Upvote unsuccess")
-      });  
+      });
   }
 }

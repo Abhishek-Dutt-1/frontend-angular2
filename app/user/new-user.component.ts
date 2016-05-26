@@ -1,5 +1,5 @@
-import {Component, OnInit, NgZone} from 'angular2/core';
-import {Router} from 'angular2/router';
+import {Component, OnInit, NgZone} from '@angular/core';
+import {Router} from '@angular/router-deprecated';
 import {AppService} from '../app.service';
 import {UserService} from './user.service';
 //import {GroupService} from '../group/group.service';
@@ -17,8 +17,8 @@ declare var gapi:any;
     <div class="my-new-user">
       <div class="row">
         <div class="col-xs-12 col-md-offset-3 col-md-6">
-        
-<!--    
+
+<!--
 <div class="login-wrapper">
 <p>You need to log in.</p>
 <div id="{{googleLoginButtonId}}"></div>
@@ -33,7 +33,7 @@ declare var gapi:any;
           <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
           <form #newUserForm="ngForm" class="form-horizontal" novalidate>
-          
+
             <div class="form-group">
               <label for="displayname" class="col-sm-2 control-label">Display Name</label>
               <div class="col-sm-10">
@@ -45,14 +45,14 @@ declare var gapi:any;
                   Display name is required
                 </div>
                 <div class="text-muted pull-right field-explainer">
-                  Display name will be visible on your posts and comments. 
-                  We suggest to keep it as you real world name.<br/> 
+                  Display name will be visible on your posts and comments.
+                  We suggest to keep it as you real world name.<br/>
                   Once set here it <b>cannot be changed</b>.<br/>
                   Don't worry, you can also post as <b>anonymous</b> anytime.<br/>
                 </div>
               </div>
             </div>
-                    
+
             <div class="form-group">
               <label for="email" class="col-sm-2 control-label">Email</label>
               <div class="col-sm-10">
@@ -66,7 +66,7 @@ declare var gapi:any;
                 <span class="text-muted pull-right field-explainer">Email is used to login to the site.</span>
               </div>
             </div>
-            
+
             <div class="form-group">
               <label for="password" class="col-sm-2 control-label">Password</label>
               <div class="col-sm-10">
@@ -80,7 +80,7 @@ declare var gapi:any;
                 <span class="text-muted pull-right field-explainer">Password is also used to login to the site.</span>
               </div>
             </div>
-            
+
             <div class="form-group">
               <label for="confirm_password" class="col-sm-2 control-label">Confirm Password</label>
               <div class="col-sm-10">
@@ -94,18 +94,18 @@ declare var gapi:any;
                 <span class="text-muted pull-right field-explainer">Retype password just to be sure.</span>
               </div>
             </div>
-            
+
             <my-error [_errorMsg]="_errorMsg"></my-error>
-            
+
             <div class="form-group">
               <div class="col-sm-10 col-sm-offset-2">
                 <button (click)="onSubmit($event)" [disabled]="!newUserForm.form.valid" class="btn btn-default">Submit</button>
                 <button (click)="goBack()" class="btn btn-default">Go Back</button>
               </div>
             </div>
-            
+
           </form>
-            
+
         </div>
       </div>
     </div>
@@ -126,7 +126,7 @@ declare var gapi:any;
   directives: [ErrorComponent]
 })
 export class NewUserComponent {
-  
+
   private model = {
     email: null,
     displayname: null,
@@ -199,7 +199,7 @@ console.log('User signed out.');
     private _authenticationService: AuthenticationService,
     private _zone: NgZone,
     private _router: Router) {}
-  
+
   ngOnInit() {
     /*
     this._superGroupService.getSuperGroupsByType('international').then( sgList => this._groupList.international = sgList );
@@ -208,13 +208,13 @@ console.log('User signed out.');
     this._superGroupService.getSuperGroupsByType('city').then( sgList => this._groupList.city = sgList );
     this._superGroupService.getSuperGroupsByType('local').then( sgList => this._groupList.local = sgList );
     */
-    
+
     // Only logged in uses can post
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
         this._router.navigate(['HyperGroupPostListDefault']);
       } else {
-        // User not logged in, register allowed (this should not happen)  
+        // User not logged in, register allowed (this should not happen)
       }
     });
     // Only logged in uses can post (init version)
@@ -227,7 +227,7 @@ console.log('User signed out.');
     }
 
   }
-  
+
   onSubmit(event) {
     this._errorMsg = null;
     event.preventDefault();
@@ -251,11 +251,11 @@ console.log('User signed out.');
         this._errorMsg = error;
       })
   }
-  
+
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
   }
-    
+
   goBack() {
     window.history.back();
   }

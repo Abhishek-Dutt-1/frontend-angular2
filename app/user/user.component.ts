@@ -1,9 +1,9 @@
-/** 
+/**
  * Displays a single user
  */
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from './user';
-import {Router} from 'angular2/router';
+import {Router} from '@angular/router-deprecated';
 //import {UserService} from './user.service';
 //import {AuthenticationService} from '../authentication/authentication.service';
 
@@ -14,7 +14,7 @@ import {Router} from 'angular2/router';
       <div class="my-user">
         <div class="row">
           <div class="col-xs-12 col-md-offset-3 col-md-6">
-            
+
             <div class="tab-container">
               <div class="myTabs">
                 <ul class="nav nav-tabs" role="tablist">
@@ -27,7 +27,7 @@ import {Router} from 'angular2/router';
                 </ul>
                 <div class="tab-content">
                   <div role="tabpanel" class="tab-pane" [ngClass]="{active: tab == 'basic'}" id="basic">
-                  
+
                     <div class="form-horizontal">
                       <div class="form-group">
                         <label class="col-md-4 control-label">Display Name</label>
@@ -39,7 +39,7 @@ import {Router} from 'angular2/router';
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <label class="col-md-4 control-label">Other Emails</label>
-                        <div *ngFor="#email of user.extra_emails">
+                        <div *ngFor="let email of user.extra_emails">
                           <p class="form-control-static col-md-8">{{email.email}} | {{email.verified}}</p>
                         </div>
                       </div>
@@ -53,16 +53,16 @@ import {Router} from 'angular2/router';
                         </div>
                       </div>
                     </div>
-                    
+
                   </div>
                   <div role="tabpanel" class="tab-pane" [ngClass]="{active: tab == 'geo'}" id="geo">
-                  
-                    <div [hidden]="!ownProfile">                          
+
+                    <div [hidden]="!ownProfile">
                       <div class="form-horizontal">
                         <div class="form-group">
                           <label class="col-md-4 control-label">International</label>
                           <p class="form-control-static col-md-8">
-                            <span *ngFor="#international of user.international">
+                            <span *ngFor="let international of user.international">
                               {{international.name}},
                             </span>
                           </p>
@@ -70,7 +70,7 @@ import {Router} from 'angular2/router';
                         <div class="form-group">
                           <label class="col-md-4 control-label">National</label>
                           <p class="form-control-static col-md-8">
-                            <span *ngFor="#national of user.national">
+                            <span *ngFor="let national of user.national">
                               {{national.name}}
                             </span>
                           </p>
@@ -78,7 +78,7 @@ import {Router} from 'angular2/router';
                         <div class="form-group">
                           <label class="col-md-4 control-label">State</label>
                           <p class="form-control-static col-md-8">
-                            <span *ngFor="#state of user.state">
+                            <span *ngFor="let state of user.state">
                                 {{state.name}},
                             </span>
                           </p>
@@ -86,7 +86,7 @@ import {Router} from 'angular2/router';
                         <div class="form-group">
                           <label class="col-md-4 control-label">City</label>
                           <p class="form-control-static col-md-8">
-                            <span *ngFor="#city of user.city">
+                            <span *ngFor="let city of user.city">
                               {{city.name}},
                             </span>
                           </p>
@@ -94,7 +94,7 @@ import {Router} from 'angular2/router';
                         <div class="form-group">
                           <label class="col-md-4 control-label">Local</label>
                           <p class="form-control-static col-md-8">
-                            <span *ngFor="#local of user.local">
+                            <span *ngFor="let local of user.local">
                               {{local.name}},
                             </span>
                           </p>
@@ -106,12 +106,12 @@ import {Router} from 'angular2/router';
                         </div>
                       </div>
                     </div>
-                  
+
                   </div>
                 </div> <!-- !tab-content -->
               </div> <!-- !tab -->
             </div>
-                  
+
           </div>
         </div>
       </div>
@@ -129,18 +129,18 @@ import {Router} from 'angular2/router';
   inputs: ['user', 'ownProfile', 'tab']
 })
 export class UserComponent {
-  
+
   private user: User
   private ownProfile: Boolean
-  
+
   constructor(
     private _router: Router
   ) {
   }
-  
+
   ngOnInit() {
   }
-  
+
   gotoEditUser(goWhere:string) {
     this._router.navigate(['EditUser', {tab: goWhere}]);
   }
