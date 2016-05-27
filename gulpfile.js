@@ -11,7 +11,7 @@ var embedTemplates = require('gulp-angular-embed-templates');
 
 gulp.task('tscompile', function () {
     var tsResult = gulp.src('app/**/*.ts')
-        .pipe(embedTemplates({sourceType:'ts', basePath: '.'})) // inline templates
+        //.pipe(embedTemplates({sourceType:'ts', basePath: '.'})) // inline templates
         .pipe(tsc(tsProject));
 
     return tsResult.js
@@ -24,10 +24,10 @@ gulp.task('bundle', ['tscompile'], function () {
     var builder = new SystemBuilder('./', {
         paths: {
             '*': '*.js',
-            "angular2-jwt": "node_modules/angular2-jwt/angular2-jwt.js"
+            //"angular2-jwt": "node_modules/angular2-jwt/angular2-jwt.js"
         },
         meta: {
-            'angular2/*': {
+            '@angular/*': {
                 build: false
             },
             'rxjs/*': {
@@ -37,5 +37,5 @@ gulp.task('bundle', ['tscompile'], function () {
     });
 
     return builder.bundle('build/main', 'build/app.bundle.js');
-    //return builder.buildStatic('build/js/main', 'build/js/app.bundle.js', { format: 'es6' });
+    //return builder.buildStatic('build/main', 'build/app.bundle.js', { format: 'cjs' });
 });

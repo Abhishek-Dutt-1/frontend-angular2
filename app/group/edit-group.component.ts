@@ -100,7 +100,7 @@ import {ErrorComponent} from '../misc/error.component';
 
 
         <div *ngIf="_model.verify_members_email === 1" class="">
-          <div *ngFor="#counter of _model.number_of_email_domains">
+          <div *ngFor="let counter of _model.number_of_email_domains">
             <div class="form-group">
               <label for="verify_email_domains_list{counter}" class="col-sm-2 control-label">Email domain #{{counter + 1}}</label>
               <div class="col-sm-10">

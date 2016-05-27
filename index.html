@@ -18,10 +18,11 @@
   <script src="node_modules/systemjs/dist/system.src.js"></script>
   <!-- 2. Configure SystemJS -->
   <script src="systemjs.config.js"></script>
+<!--
   <script>
     System.import('app').catch(function(err){ console.error(err); });
   </script>
-
+-->
   <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="styles.css">
 
@@ -48,21 +49,39 @@
 -->
 <!--
 <script src="build/app.bundle.js"></script>
+-->
 <script>
 System.config({
+    /*
     packages: {
         'build/': {
             format: 'register',
             defaultExtension: 'js'
         }
     },
+    */
+    /*
+    meta: {
+    //'build/main': {
+    'build/app.bundle.js': {
+      format: 'cjs',
+      defaultExtension: 'js'
+    }
+  },*/
+  /*
+    map: {
+      //'app':                        'app', // 'dist',
+      '@angular':                   'node_modules/@angular',
+      'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
+      'rxjs':                       'node_modules/rxjs'
+    },*/
     bundles: {
-//        'build/js/app.bundle': ['main']
+        'build/app.bundle.js': ['build/main']
     }
 });
 System.import('build/main').then(null, console.error.bind(console));
 </script>
--->
+
 </head>
 
 <body>

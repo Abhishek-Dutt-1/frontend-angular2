@@ -12,7 +12,6 @@ import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-new-post',
-  //templateUrl: 'app/post/new-post.component.html',
   template: `
   <div class="my-new-post">
 
