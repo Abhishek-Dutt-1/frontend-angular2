@@ -153,7 +153,6 @@ import {ErrorComponent} from '../misc/error.component';
       width: 100%;
     }
   `],
-  //styleUrls: ['app/post/new-post.component.css'],
   inputs: ['post', 'error'],
   directives: [ErrorComponent]
 

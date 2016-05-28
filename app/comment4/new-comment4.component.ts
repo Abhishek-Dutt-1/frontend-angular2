@@ -48,7 +48,6 @@ import {AuthenticationService} from '../authentication/authentication.service';
 
 </div>
   `,
-  //templateUrl: 'app/post/new-post.component.html',
   styles: [`
     .my-new-comment4 .ng-valid[required] {
       border-left: 5px solid #42A948; /* green */

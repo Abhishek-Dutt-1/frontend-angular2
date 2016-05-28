@@ -47,7 +47,6 @@ import {Subject} from 'rxjs/Subject';
 
 </div>
   `,
-  //templateUrl: 'app/post/new-post.component.html',
   styles: [`
     .my-new-post .ng-valid[required] {
       border-left: 5px solid #42A948; /* green */

@@ -15,7 +15,6 @@ import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-approve-membership',
-  //templateUrl: 'app/group/view-group.component.html',
   template: `
   <div class="my-approve-membership">
 

@@ -13,7 +13,6 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 
 @Component({
   selector: 'my-view-group',
-  //templateUrl: 'app/group/view-group.component.html',
   template: `
   <div *ngIf="group">
 
