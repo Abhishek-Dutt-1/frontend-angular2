@@ -42,6 +42,7 @@
     "gulp-rollup": "^1.9.0",
     "gulp-typescript": "^2.13.4",
     "gulp-uglify": "^1.5.3",
+    "gulp-zip": "^3.2.0",
     "jspm": "^0.16.34",
     "lite-server": "^2.2.0",
     "systemjs-builder": "^0.15.17",

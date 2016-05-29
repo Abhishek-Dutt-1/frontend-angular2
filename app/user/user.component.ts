@@ -3,7 +3,7 @@
  */
 import {Component, OnInit} from '@angular/core';
 import {User} from './user';
-import {Router} from '@angular/router-deprecated';
+import {Router, RouterLink} from '@angular/router-deprecated';
 //import {UserService} from './user.service';
 //import {AuthenticationService} from '../authentication/authentication.service';
 
@@ -17,16 +17,22 @@ import {Router} from '@angular/router-deprecated';
 
             <div class="tab-container">
               <div class="myTabs">
-                <ul class="nav nav-tabs" role="tablist">
+                <ul class="nav nav-tabs" role="tablist1">
                   <li role="presentation" [ngClass]="{active: tab == 'basic'}">
+                    <!--
                     <a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic</a>
+                    -->
+                    <a [routerLink]="['ViewUser', {id: user.id, tab: 'basic'}]" aria-controls="basic" role="tab" data-toggle1="tab">Basic</a>
                   </li>
                   <li role="presentation" [hidden]="!ownProfile" [ngClass]="{active: tab == 'geo'}">
+                    <!--
                     <a href="#geo" aria-controls="geo" role="tab" data-toggle="tab">Geo</a>
+                    -->
+                    <a [routerLink]="['ViewUser', {id: user.id, tab: 'geo'}]" aria-controls="geo" role="tab" data-toggle1="tab">Geo</a>
                   </li>
                 </ul>
                 <div class="tab-content">
-                  <div role="tabpanel" class="tab-pane" [ngClass]="{active: tab == 'basic'}" id="basic">
+                  <div role="tabpanel1" class="tab-pane" [ngClass]="{active: tab == 'basic'}" id="basic">
 
                     <div class="form-horizontal">
                       <div class="form-group">
@@ -55,7 +61,7 @@ import {Router} from '@angular/router-deprecated';
                     </div>
 
                   </div>
-                  <div role="tabpanel" class="tab-pane" [ngClass]="{active: tab == 'geo'}" id="geo">
+                  <div role="tabpanel1" class="tab-pane" [ngClass]="{active: tab == 'geo'}" id="geo">
 
                     <div [hidden]="!ownProfile">
                       <div class="form-horizontal">
@@ -126,6 +132,7 @@ import {Router} from '@angular/router-deprecated';
   }
   `],
   //styleUrls: ['app/post/post.component.css'],
+  directives: [RouterLink],
   inputs: ['user', 'ownProfile', 'tab']
 })
 export class UserComponent {

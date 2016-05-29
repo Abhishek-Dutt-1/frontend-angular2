@@ -6,57 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <base href="/">
-  <!-- Bootstrap -->
-  <!--
-  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
--->
   <title>Tick Talk</title>
-
-  <!-- 1. Load libraries -->
-  <!-- Polyfill(s) for older browsers -->
-  <!--
+<!--------------------------------------------------------------------------------->
+<!-- -->
   <script src="node_modules/core-js/client/shim.min.js"></script>
   <script src="node_modules/zone.js/dist/zone.js"></script>
   <script src="node_modules/reflect-metadata/Reflect.js"></script>
   <script src="node_modules/systemjs/dist/system.src.js"></script>
--->
-  <!-- 2. Configure SystemJS -->
-  <!--
   <script src="systemjs.config.js"></script>
   <script>
     System.import('app').catch(function(err){ console.error(err); });
   </script>
   <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="styles.css">
--->
-  <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
-<!--
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<!--  no bootstrap
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 -->
+
 <!--------------------------------------------------------------------------------->
 
-<!--  ====  Pre RC 1 loader ===
-  <script>
-    System.config({
-      transpiler: 'typescript',
-      typescriptOptions: { emitDecoratorMetadata: true },
-      packages: {
-        'app': {defaultExtension: 'ts'},
-        "angular2-jwt": {
-            defaultExtension: 'js'
-        }
-      },
-      map: {
-          "angular2-jwt": "node_modules/angular2-jwt/angular2-jwt.js"
-      }
-    });
-    System.import('app/main')
-      .then(null, console.error.bind(console));
-  </script>
--->
-
-<!--
+<!--  for non-SFX bundles
 <script>
 System.config({
     /*
@@ -89,17 +60,15 @@ System.config({
 System.import('build/main').then(null, console.error.bind(console));
 </script>
 -->
-
+<!-- DIST.1
 <script src="dist/vendor.min.js"></script>
 <link rel="stylesheet" href="dist/dist/css/styles.min.css">
-
+ -->
 </head>
-
 <body>
-
   <my-app-component>Loading...</my-app-component>
-
+<!-- DIST.2 for SFX bundles
   <script src="dist/app.min.js"></script>
-
+-->
 </body>
 </html>

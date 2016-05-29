@@ -8,6 +8,7 @@ var tsc = require('gulp-typescript');
 var tsProject = tsc.createProject('tsconfig.json');
 var embedTemplates = require('gulp-angular-embed-templates');
 var clean = require('gulp-clean');
+const zip = require('gulp-zip');
 
 
 gulp.task('default', function() {
@@ -31,7 +32,7 @@ gulp.task('bundlelib', function () {
     'node_modules/zone.js/dist/zone.js',
     'node_modules/reflect-metadata/Reflect.js',
     'node_modules/jquery/dist/jquery.min.js',
-    //'node_modules/bootstrap/dist/js/bootstrap.min.js'
+    //'node_modules/bootstrap/dist/js/bootstrap.min.js'   // no bootstrap
   ])
     .pipe(uglify())
     //.pipe(rollup({sourceMap: false}))
@@ -157,4 +158,10 @@ gulp.task('compress', ['bundle2'], function() {
   return gulp.src('build/app.min.js')
     .pipe(uglify())
     .pipe(gulp.dest('dist'));
+});
+
+gulp.task('zip', () => {
+	return gulp.src(['dist/*', 'index.html'])
+		.pipe(zip('Archive.zip'))
+		.pipe(gulp.dest('.'));
 });
