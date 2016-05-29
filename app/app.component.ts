@@ -53,7 +53,7 @@ import { Comment4Service } from './comment4/comment4.service';
             <div class="col-xs-7 logo-container">
               <div class="logo">
                 <a [routerLink]="['/HyperGroupPostListDefault']">
-                  <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Humans.com
+                  <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Angry.City
                 </a>
               </div>
             </div>

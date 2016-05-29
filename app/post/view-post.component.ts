@@ -126,6 +126,10 @@ export class ViewPostComponent {
         this._errorMsg = error;
       });
   }
+  
+  ngOnDestroy() {
+    this._loggedInUserSubcription.unsubscribe();
+  }
   /*
   goBack() {
     window.history.back();
