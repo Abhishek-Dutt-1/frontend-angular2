@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteParams, Router} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {RouteParams, Router} from '@angular/router-deprecated';
 import {User} from '../user/user';
 import {Post} from '../post/post';
 //import {Group} from '../group/group';
@@ -13,12 +13,12 @@ import {AuthenticationService} from '../authentication/authentication.service';
   selector: 'my-new-comment3',
   template: `
   <div class="my-new-comment3">
-  
+
   <div *ngIf="!_errorMsg">
-  
+
     <h4>Write a New Comment:</h4>
     <form #comment3Form="ngForm" class="form-horizontal">
-      
+
       <div class="post-textarea form-group">
         <label for="text" class="col-md-1">Comment Text</label>
         <div class="col-md-11">
@@ -38,17 +38,16 @@ import {AuthenticationService} from '../authentication/authentication.service';
         </div>
       </div>
     </form>
-    
+
   </div>
-  
+
   <div *ngIf="_errorMsg">
     {{_errorMsg}}
     <button (click)="goBack()" class="btn btn-default">Back</button>
   </div>
-  
+
 </div>
   `,
-  //templateUrl: 'app/post/new-post.component.html',
   styles: [`
     .my-new-comment3 .ng-valid[required] {
       border-left: 5px solid #42A948; /* green */
@@ -72,35 +71,35 @@ import {AuthenticationService} from '../authentication/authentication.service';
   inputs: ['comment2', 'post']
 })
 export class NewComment3Component {
-  
+
   private post: Post = null;
   private comment2 = null;
   private _model: any = null;
   private _errorMsg: string = null;
-  
+
   constructor(
     private _comment3Service: Comment3Service,
     private _routeParams: RouteParams,
     private _authenticationService: AuthenticationService,
     private _router: Router) {
   }
-  
+
   ngOnInit() {
 
     this._model =  {
-      text: 'New Comment', 
+      text: 'New Comment',
     }
-    
+
     /*
     // Only logged in uses can comment1
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
       this._model.postedby = currentUser;
     } else {
-      this._errorMsg = "User must be logged in to create new posts.";      
+      this._errorMsg = "User must be logged in to create new posts.";
     }
     */
-    
+
     // Only logged in uses can comment2
     this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
@@ -118,10 +117,10 @@ export class NewComment3Component {
       this._model.postedby = currentUser;
       this._errorMsg = null;
     } else {
-      this._errorMsg = "User must be logged in to reply.";      
+      this._errorMsg = "User must be logged in to reply.";
     }
   }
-  
+
   /**
    * Submit the new post form
    */
@@ -129,7 +128,7 @@ export class NewComment3Component {
 
     event.preventDefault();
     this._model.commentedon = this.comment2
-  
+
     this._comment3Service.createNewComment3(this._model)
       .subscribe(
         comment3 => {
@@ -138,7 +137,7 @@ export class NewComment3Component {
         error => console.log(error)
       );
   }
-  
+
   goBack() {
     window.history.back();
   }

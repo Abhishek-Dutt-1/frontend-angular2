@@ -1,10 +1,10 @@
-/** 
+/**
  * Displays a single comment3
  */
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {Comment4} from './comment4';
-import {RouterLink} from 'angular2/router';
-//import {Router} from 'angular2/router';
+import {RouterLink} from '@angular/router-deprecated';
+//import {Router} from '@angular/router';
 //import {PostService} from './post.service';
 
 @Component({

@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteParams, Router} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {RouteParams, Router} from '@angular/router-deprecated';
 import {AppService} from '../app.service';
 import {Post} from './post';
 import {Group} from '../group/group';
@@ -12,7 +12,6 @@ import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-new-post',
-  //templateUrl: 'app/post/new-post.component.html',
   template: `
   <div class="my-new-post">
 
@@ -20,15 +19,15 @@ import {ErrorComponent} from '../misc/error.component';
     <div *ngIf="_errorMsg">
       <button (click)="goBack()" class="btn btn-default">Back</button>
     </div>
-    
+
     <div *ngIf="!_errorMsg">
       <h3>Create a New Post</h3>
 
       <form #postForm="ngForm" class="form-horizontal" novalidate>
-        
+
         <div class="post-select form-group">
           <label for="type" class="col-sm-2 control-label">Post Type</label>
-          <span *ngFor="#postType of _postTypes">
+          <span *ngFor="let postType of _postTypes">
             <div class="radio-inline">
               <label>
                 <input type="radio" name="type" (click)="model.type = postType" [checked]="postType === model.type"> {{postType}}
@@ -36,7 +35,7 @@ import {ErrorComponent} from '../misc/error.component';
             </div>
           </span>
         </div>
-        
+
         <div class="post-text form-group">
           <label for="title" class="col-sm-2 control-label">Title</label>
           <div class="col-sm-10">
@@ -49,7 +48,7 @@ import {ErrorComponent} from '../misc/error.component';
             </div>
           </div>
         </div>
-        
+
         <div *ngIf="model.type == 'link'">
           <div class="post-text form-group">
             <label for="link" class="col-sm-2 control-label">Link</label>
@@ -64,7 +63,7 @@ import {ErrorComponent} from '../misc/error.component';
             </div>
           </div>
         </div>
-        
+
         <div class="post-textarea form-group">
           <label for="text" class="col-sm-2 control-label">Text</label>
           <div class="col-sm-10">
@@ -77,7 +76,7 @@ import {ErrorComponent} from '../misc/error.component';
             </div>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label class="col-sm-2 control-label">Group</label>
           <p class="form-control-static col-md-10">
@@ -96,7 +95,7 @@ import {ErrorComponent} from '../misc/error.component';
             Group is required
           </div>
         </div>
-        
+
         <!--
         <div class="post-text">
           <label for="group" class="">Search Group</label>
@@ -110,7 +109,7 @@ import {ErrorComponent} from '../misc/error.component';
           </div>
         </div>
         -->
-        
+
         <div class="post-text form-group" *ngIf="_showGroupSearchBox">
           <label for="group" class="col-sm-2 control-label">Search Groups (and click on the name to select)</label>
           <div class="col-sm-10">
@@ -125,14 +124,14 @@ import {ErrorComponent} from '../misc/error.component';
             -->
           </div>
         </div>
-              
+
         <ul>
-        <li *ngFor="#item of items | async" (click)="selectSuperGroupSlashGroup(item)" class="form-control-static">{{item.supergroup.name | uppercase}}/{{item.name}}</li>
+        <li *ngFor="let item of items | async" (click)="selectSuperGroupSlashGroup(item)" class="form-control-static">{{item.supergroup.name | uppercase}}/{{item.name}}</li>
         <!--
         <li *ngFor="#item of itemsV1" (click)="selectSuperGroupSlashGroup(item.super_group.name+'/'+item.name)">{{item.super_group.name}}/{{item.name}}</li>
         -->
         </ul>
-        
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
@@ -168,13 +167,13 @@ import {ErrorComponent} from '../misc/error.component';
   directives: [ErrorComponent]
 })
 export class NewPostComponent {
-  
+
   private _postTypes          = ['text', 'link'];
   private model               = null;
   private _errorMsg: string   = null;
-  private _showGroupSearchBox = true;       
+  private _showGroupSearchBox = true;
   //private _searchGroup      = '';
-  
+
   constructor(
     private _postService           : PostService,
     private _routeParams           : RouteParams,
@@ -182,14 +181,14 @@ export class NewPostComponent {
     private _groupService          : GroupService,
     private _router                : Router,
     private _appService            : AppService
-  ) 
+  )
   { }
-  
+
   ngOnInit() {
-    
+
     let super_group_name = this._routeParams.get('super_group_name');
     let group_name       = this._routeParams.get('group_name');
-    
+
     let superGroupSlashGroup = null;
     if(super_group_name && group_name) {
       //superGroupSlashGroup = super_group_name + '/' + group_name;
@@ -211,15 +210,15 @@ export class NewPostComponent {
       superGroupSlashGroup = group_name;
     }
     //this._searchGroup = superGroupSlashGroup;
-    
+
     this.model =  {
       title: 'Post Title',
-      link: '', 
-      text: 'Post Text', 
+      link: '',
+      text: 'Post Text',
       type: this._postTypes[0],
       group: superGroupSlashGroup,
     }
-    
+
     // Only logged in uses can post
     this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
@@ -236,13 +235,13 @@ export class NewPostComponent {
       this.model.postedby = currentUser;
       this._errorMsg = null;
     } else {
-      this._errorMsg = "User must be logged in to create new posts.";      
+      this._errorMsg = "User must be logged in to create new posts.";
     }
-    
+
   }
-  
+
   /**
-   * Auto complete super_group/group  
+   * Auto complete super_group/group
    */
   // Final version
   private _searchTermStream = new Subject<string>();
@@ -250,7 +249,7 @@ export class NewPostComponent {
     this._searchTermStream.next(term);
     console.log(term)
   }
-  items:Observable<string[]> = this._searchTermStream
+  items:Observable<string> = this._searchTermStream
     .debounceTime(500)
     .distinctUntilChanged()
     .switchMap((term:string) => this._groupService.searchGroups(term));
@@ -269,7 +268,7 @@ export class NewPostComponent {
     )
   }
   */
-  
+
   /**
    * User clicked on a gog/group from the autocomplete dropdown list
    */
@@ -277,16 +276,16 @@ export class NewPostComponent {
     this.model.group = item;
     //this.model.superGroupSlashGroup = item.supergroup.name+'/'+item.name;
   }
-  
+
   /**
    * Submit the new post form
    */
   onSubmit(event) {
-    
+
     event.preventDefault();
-    
+
     if(!this.model.group) return;
-    
+
     let properModel = {
       title    : this.model.title,
       link     : this.model.link || null,
@@ -295,9 +294,9 @@ export class NewPostComponent {
       postedby : this.model.postedby.id,
       group    : this.model.group.id
     }
-    
+
     console.log(properModel);
-    
+
     this._postService.createNewPost(properModel).subscribe(
       post => {
         console.log(post);
@@ -308,7 +307,7 @@ export class NewPostComponent {
         console.log(error);
       });
   }
-  
+
   goBack() {
     window.history.back();
   }

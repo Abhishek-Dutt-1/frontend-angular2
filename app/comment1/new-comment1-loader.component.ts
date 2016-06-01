@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {RouteParams} from '@angular/router-deprecated';
 import {Post} from '../post/post';
 import {PostComponent} from '../post/post.component';
 import {PostService} from '../post/post.service';
@@ -25,23 +25,23 @@ export class NewComment1LoaderComponent implements OnInit {
   private _post: Post;
   private _postTemplateType: PostTemplateType;
   private _postid: number = null;
-  
+
   constructor(
     private _postService: PostService,
     private _routeParams: RouteParams
   ) { }
-  
+
   ngOnInit() {
     this._postTemplateType = PostTemplateType.Main;
-    
+
     this._postid = +this._routeParams.get('postid');
-    
+
     this._postService.getPost(this._postid).subscribe(post => {
       this._post = post;
     });
-    
+
   }
-  
+
   gotoNewPostForm() {
     //this._router.navigate(['NewPost']);
   }

@@ -1,34 +1,32 @@
 import {Group} from './group';
 import {MOCK_GROUPS} from './mock-groups';
-import {Injectable} from 'angular2/core';
-import {Http, Headers, RequestOptions} from 'angular2/http';
+import {Injectable} from '@angular/core';
 import {MOCK_POSTS} from '../post/mock-posts';
-import {Http, Jsonp, Response, URLSearchParams} from 'angular2/http';
-import {Headers, RequestOptions} from 'angular2/http';
+import {Headers, RequestOptions, Http, Jsonp, Response, URLSearchParams} from '@angular/http';
 import {SuperGroupService} from '../super_group/super_group.service';
 import {AppService} from '../app.service';
 @Injectable()
 export class GroupService {
-  
+
   constructor(
     private _appService: AppService,
     private _superGroupService: SuperGroupService,
-    private _http: Http, 
+    private _http: Http,
     private jsonp: Jsonp) {}
-  
+
   getGroups() {
     return Promise.resolve(MOCK_GROUPS);
   }
-  
+
   // See the "Take it slow" appendix
   getGroupsSlowly() {
     return new Promise<Group[]>(resolve =>
       setTimeout(()=>resolve(MOCK_GROUPS), 2000) // 2 seconds
     );
   }
-  
+
   createNewGroup(newGroup: any) {
-     
+
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -38,9 +36,9 @@ export class GroupService {
       })
       .catch(error => this._appService.handleServerErrors(error));
   }
-  
+
   editGroup(modGroup: any) {
-    
+
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -50,18 +48,18 @@ export class GroupService {
       })
       .catch(error => this._appService.handleServerErrors(error));
   }
-  
+
   /**
    * Return a Group obj by name and supergroups name
-   */ 
+   */
   getGroup(superGroupName: string, groupName: string) {
 
     if(this._appService.getSiteParams().servicesMode === 'server') {
       let backendUrl = this._appService.getSiteParams().backendUrl;
       let headers = new Headers( this._appService.getSiteParams().headersObj );
       let options = new RequestOptions({ headers: headers });
-      return this._http.post(backendUrl+'/group/getGroupByName', 
-          JSON.stringify({superGroupName: superGroupName, groupName: groupName}), 
+      return this._http.post(backendUrl+'/group/getGroupByName',
+          JSON.stringify({superGroupName: superGroupName, groupName: groupName}),
           options)
         .map(
           res => {
@@ -70,13 +68,13 @@ export class GroupService {
             return res.json()
           }
         )
-        .catch(error => this._appService.handleServerErrors(error)); 
+        .catch(error => this._appService.handleServerErrors(error));
     }
   }     // !getGroup()
-  
+
   /**
    * Return a Group obj by id
-   */ 
+   */
   getGroupById(groupId: any) {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
@@ -86,19 +84,19 @@ export class GroupService {
         res => {
           return res.json()
       })
-      .catch(error => this._appService.handleServerErrors(error)); 
+      .catch(error => this._appService.handleServerErrors(error));
   }     // ! getGroupById()
-  
+
   /**
    * Get all posts in a Group
    */
   getPostsInGroup(superGroupName: string, groupName: string) {
-    
+
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.post(backendUrl+'/group/getPostsInGroup', 
-        JSON.stringify({superGroupName: superGroupName, groupName: groupName}), 
+    return this._http.post(backendUrl+'/group/getPostsInGroup',
+        JSON.stringify({superGroupName: superGroupName, groupName: groupName}),
         options)
       .map(
         res => {
@@ -108,7 +106,7 @@ export class GroupService {
         }
       )
       .catch(error => this._appService.handleServerErrors(error));
-    
+
   }
 
   /**
@@ -116,8 +114,9 @@ export class GroupService {
    * TODO:: SETUP BACKEND TO TEST THIS
    * TODO:: CHANGE JSONP TO HTTP
    */
-  searchGroups(searchTermArray: string[]) {
-    
+  searchGroups(searchTermArray: string) {
+
+    /*
     if(this._appService.getSiteParams().servicesMode === 'local') {
       // Temp use a local promise version
       return Promise.resolve(MOCK_GROUPS).then(
@@ -132,60 +131,58 @@ export class GroupService {
             if(searchTermArray.length == 2) {
               return (group.name.indexOf(searchTermArray[1]) > -1) && (group.super_group.name.indexOf(searchTermArray[0]) > -1)
             }
-            
-          }));      
-    }
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      /*
-      // Finally should use this observable version
-      let searchUrl = 'http://en.wikipedia.org/w/api.php'
-      console.log(searchTermArray)
-      var params = new URLSearchParams();
-      params.set('search', searchTermArray);       // the user's search value
-      params.set('action', 'opensearch');
-      params.set('format', 'json');
-      params.set('callback', 'JSONP_CALLBACK');
-      return this.jsonp
-                .get(searchUrl, { search: params })
-                .map(request => <string[]> request.json()[1]);
-      */
-      console.log(searchTermArray)
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers( this._appService.getSiteParams().headersObj );
-      let options = new RequestOptions({ headers: headers });
-      return this._http.post(backendUrl+'/group/fuzzySearchGroupsByName', JSON.stringify({searchStr: searchTermArray}), options).map(
-        res => {
-          console.log(res)
-          console.log(res.json())
-          return <string[]> res.json()
-        }
-      )
-      .catch(error => this._appService.handleServerErrors(error)); 
 
-    }   // !'sever'
+          }));
+    }
+    */
+
+    /*
+    // Finally should use this observable version
+    let searchUrl = 'http://en.wikipedia.org/w/api.php'
+    console.log(searchTermArray)
+    var params = new URLSearchParams();
+    params.set('search', searchTermArray);       // the user's search value
+    params.set('action', 'opensearch');
+    params.set('format', 'json');
+    params.set('callback', 'JSONP_CALLBACK');
+    return this.jsonp
+              .get(searchUrl, { search: params })
+              .map(request => <string[]> request.json()[1]);
+    */
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/fuzzySearchGroupsByName', JSON.stringify({searchStr: searchTermArray}), options).map(
+      res => {
+        console.log(res)
+        console.log(res.json())
+        return <string[]> res.json()
+      }
+    )
+    .catch(error => this._appService.handleServerErrors(error));
   }
-  
+
   /**
    * Returns a list of groups based on its type
    */
   getGroupsBySuperGroupType(groupType: string) {
     return Promise.resolve(MOCK_GROUPS).then(
-      groups => groups.filter(group => group.super_group.type === groupType)
+      groups => groups.filter(group => group.supergroup.type === groupType)
     );
   }
-  
+
   /**
    * Returns list of all groups belonging to the given super group
    */
   getGroupsBySuperGroupName(sg_name: string) {
-    return Promise.resolve(MOCK_GROUPS.filter(group => group.super_group.name == sg_name));
+    return Promise.resolve(MOCK_GROUPS.filter(group => group.supergroup.name == sg_name));
   }
-  
+
   /**
    * Subscribe the logged in user to a grouop
    */
   subscribeCurrentUserToGroup(groupId: any) {
-    
+
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -198,14 +195,14 @@ export class GroupService {
         }
       )
       .catch(error => this._appService.handleServerErrors(error));
-    
+
   }       // ! subscribeCurrentUserToGroup()
-  
+
   /**
    * UnSubscribe the logged in user to a grouop
    */
   unSubscribeCurrentUserFromGroup(groupId: any) {
-    
+
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -218,14 +215,14 @@ export class GroupService {
         }
       )
       .catch(error => this._appService.handleServerErrors(error));
-    
+
   }       // ! subscribeCurrentUserToGroup()
-  
+
   /**
    * Cancel the logged in users pending membership to a group that requires approval
    */
   cancelCurrentUsersPendingMembership(groupId: any) {
-    
+
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -238,14 +235,14 @@ export class GroupService {
         }
       )
       .catch(error => this._appService.handleServerErrors(error));
-    
+
   }       // ! cancelCurrentUsersPendingMembership()
-  
+
   /**
    * Fetches group's waiting list if group requires approval
    */
   getGroupWaitingList(groupId: any) {
-    
+
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -258,9 +255,9 @@ export class GroupService {
         }
       )
       .catch(error => this._appService.handleServerErrors(error));
-    
+
   }       // ! cancelCurrentUsersPendingMembership()
-  
+
   /**
    * Approve a member to join the group
    */
@@ -276,7 +273,7 @@ export class GroupService {
       )
       .catch(error => this._appService.handleServerErrors(error));
   }       // ! approveGroupMembership()
-  
+
   /**
    * Disapprove a member to join the group
    */
@@ -292,5 +289,5 @@ export class GroupService {
       )
       .catch(error => this._appService.handleServerErrors(error));
   }       // ! approveGroupMembership()
-  
+
 }

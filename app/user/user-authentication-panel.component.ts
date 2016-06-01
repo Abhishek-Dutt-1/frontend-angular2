@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {Router, ROUTER_DIRECTIVES} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
 import {UserService} from './user.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {User} from './user'
@@ -12,9 +12,9 @@ import {User} from './user'
         <div *ngIf="!isUserLoggedIn">
           <a [routerLink]="['Login']">
             Login
-          </a><span class="auth-pipe"> | </span> 
+          </a><span class="auth-pipe"> | </span>
           <a [routerLink]="['NewUser']">
-            Register
+            Sign up
           </a>
         </div>
       </div>
@@ -42,10 +42,10 @@ import {User} from './user'
   directives: [ROUTER_DIRECTIVES]
 })
 export class UserAuthenticationPanelComponent {
-  
+
   private isUserLoggedIn = false;
   private loggedInUser:User = null;
-  
+
   constructor(
     private _userService: UserService,
     private _authenticationService: AuthenticationService
@@ -60,7 +60,7 @@ export class UserAuthenticationPanelComponent {
       }
     });
   }
-  
+
   ngOnInit() {
     // Apperently Auth service and its constructor are run before this component is able to subscribe.
     // So old user fetched from localStorage, while is update in the auth service,
@@ -68,7 +68,7 @@ export class UserAuthenticationPanelComponent {
     this.loggedInUser = this._authenticationService.getLoggedInUser() || this.loggedInUser;
     this.isUserLoggedIn = this.loggedInUser? true : false || this.isUserLoggedIn
   }
-  
+
   logout() {
     this._authenticationService.logoutUser()
   }

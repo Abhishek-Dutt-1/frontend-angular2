@@ -1,8 +1,8 @@
 /**
  * Approve or decline memberships for a group
  */
-import {Component, OnInit, OnDestroy} from 'angular2/core';
-import {Router, RouteParams, RouterLink} from 'angular2/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Router, RouteParams, RouterLink} from '@angular/router-deprecated';
 import {AppService} from '../app.service';
 import {Group} from './group';
 import {User} from '../user/user';
@@ -15,24 +15,23 @@ import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-approve-membership',
-  //templateUrl: 'app/group/view-group.component.html',
   template: `
   <div class="my-approve-membership">
-    
+
     <my-error [_errorMsg]="_errorMsg"></my-error>
-    
+
     <div *ngIf="group">
-      
+
       <div class="row">
         <div class="col-xs-12">
-          
-          <div class="group-details">  
+
+          <div class="group-details">
             <div class="panel panel-default group-details-panel">
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a> / {{group.name}}
                 </h4>
-              </div>  
+              </div>
               <div class="panel-body">
                 <span *ngIf="group.description">{{group.description}}</span>
                 <span *ngIf="!group.description"><i>Welcome to {{group.supergroup.name}}/{{group.name}}</i></span>
@@ -73,8 +72,8 @@ import {ErrorComponent} from '../misc/error.component';
           </table>
         </div> <!-- !col -->
       </div> <!-- !row -->
-      
-    </div>  
+
+    </div>
   </div>  <!-- end top div -->
   `,
   styles: [`
@@ -94,7 +93,7 @@ import {ErrorComponent} from '../misc/error.component';
   directives: [RouterLink, ErrorComponent]
 })
 export class ApproveMembershipComponent implements OnInit, OnDestroy  {
-  
+
   private group: Group = null;
   //private groupPosts: Post[];
   //private postTemplateType: PostTemplateType;
@@ -108,9 +107,9 @@ export class ApproveMembershipComponent implements OnInit, OnDestroy  {
     private _authenticationService: AuthenticationService,
     private _router: Router,
     private _routeParams: RouteParams) {}
-  
+
   ngOnInit() {
-    
+
     let group_id = this._routeParams.get('group_id');
     console.log(group_id)
     // Only logged in uses view posts
@@ -139,13 +138,13 @@ export class ApproveMembershipComponent implements OnInit, OnDestroy  {
       this._currentUser = currentUser;
       this._errorMsg = null;
       this.getGroupWaitingList(group_id);
-    } else { 
+    } else {
       this._errorMsg = "User must be logged in to view this page.";
     }
 
   }   // !ngOnInit
-  
-  
+
+
   /**
    * Fetches posts in given supergroup/group
    */
@@ -157,10 +156,10 @@ export class ApproveMembershipComponent implements OnInit, OnDestroy  {
       },
       error => {
         console.log(error);
-        this._errorMsg = error;  
+        this._errorMsg = error;
       });
   }
-  
+
   /**
    * Approve a pending member
    */
@@ -184,7 +183,7 @@ export class ApproveMembershipComponent implements OnInit, OnDestroy  {
         console.log("ERROR", error);
       })
   }
-  
+
   /**
    * Decline a pending member
    */
@@ -201,14 +200,14 @@ export class ApproveMembershipComponent implements OnInit, OnDestroy  {
             this.group.members_waiting_approval.splice(i, 1);
             break;
           }
-        }  
+        }
       },
       error => {
         this._errorMsg = error;
         console.log("ERROR", error);
       })
   }
-  
+
   /**
    * Subscribe current user to this group
    */
@@ -220,10 +219,10 @@ export class ApproveMembershipComponent implements OnInit, OnDestroy  {
     this._groupService.subscribeCurrentUserToGroup(this.group.id).subscribe(
       res => {
         console.log("SUCCESS SUBS", res);
-        // If group membership needs approval, then server wourld have added 
+        // If group membership needs approval, then server wourld have added
         // the user to waiting list or else would have directly subscribed
         if(this.group.membership_needs_approval) {
-          this.group.isCurrentUsersMembershipPending = true;          
+          this.group.isCurrentUsersMembershipPending = true;
         } else {
           this.group.isCurrentUserSubscribed = true;
         }
@@ -235,16 +234,16 @@ export class ApproveMembershipComponent implements OnInit, OnDestroy  {
       })
   }
   */
-  
+
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
   }
   goBack() {
     window.history.back();
   }
-  
+
   gotoNewPostForm() {
-    this._router.navigate(['NewPost', {super_group_name: this.group.super_group.name, group_name: this.group.name}]);
+    this._router.navigate(['NewPost', {super_group_name: this.group.supergroup.name, group_name: this.group.name}]);
   }
-  
+
 }

@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {RouteParams} from '@angular/router-deprecated';
 import {Post} from '../post/post';
 import {PostService} from '../post/post.service';
 import {Comment2} from '../comment2/comment2';
@@ -27,12 +27,12 @@ export class NewComment3LoaderComponent implements OnInit {
 
   private _post: Post;
   private _comment2: Comment2;
-  
+
   constructor(
     private _postService: PostService,
     private _routeParams: RouteParams
   ) {}
-  
+
   ngOnInit() {
     let postid     = this._routeParams.get('postid');
     let comment2id = this._routeParams.get('comment2id');
@@ -49,12 +49,12 @@ export class NewComment3LoaderComponent implements OnInit {
         post => {
           console.log(post);
           this._post = post;
-          
+
           var tmpComment2 = null;
           post.comments.find(function(comment1) {
             if(tmpComment2) return true;
             tmpComment2 = comment1.comments.find(function(comment2) {
-              return comment2.id == comment2id; 
+              return comment2.id == comment2id;
             })
             return false;
           })

@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {Router, RouteParams, RouterLink} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, RouteParams, RouterLink} from '@angular/router-deprecated';
 import {SuperGroup} from './super_group';
 import {SuperGroupService} from './super_group.service';
 import {GroupService} from '../group/group.service';
@@ -13,18 +13,18 @@ import {ErrorComponent} from '../misc/error.component';
   selector: 'my-super-group-post-list-loader',
   template: `
   <div *ngIf="_super_group && _groups">
-    
+
     <my-error [_errorMsg]="_errorMsg"></my-error>
-    
+
     <div class="my-super-group-post-list-loader">
-      
+
       <div class="row">
         <div class="col-xs-12">
-          
+
           <div class="group-details">
-          
+
             <div class="group-details-panel">
-            
+
               <div class="row border-row">
                 <div class="col-xs-12">
                   <div class="supergroup-name">
@@ -32,21 +32,21 @@ import {ErrorComponent} from '../misc/error.component';
                   </div>
                 </div>
               </div>
-              
+
               <div class="row border-row">
                 <div class="col-xs-12">
                   <div class="group-list">
-                    <div *ngFor="#group of _groups">
+                    <div *ngFor="let group of _groups">
                       <a [routerLink]="['ViewGroup', {super_group_name: _super_group.name, group_name: group.name}]">&bull; {{group.name}}</a>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div class="row border-row">
                 <div class="col-xs-12">
                   <div class="supergroup-ops">
-                    <a [routerLink]="['NewGroup', {super_group_name: _super_group.name}]"> 
+                    <a [routerLink]="['NewGroup', {super_group_name: _super_group.name}]">
                       Create a new group within {{_super_group.name | uppercase}}
                     </a>
                     <a (click)="gotoNewPostForm()" class="hidden">
@@ -55,17 +55,17 @@ import {ErrorComponent} from '../misc/error.component';
                   </div>
                 </div>
               </div>
-              
+
             <div>
-            
+
           </div>
-          
+
         </div> <!-- !col -->
       </div> <!-- !row -->
-      
+
       <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"></my-post-list>
-      
-    </div>  
+
+    </div>
   </div>  <!-- end top div -->
   `,
   styles: [`
@@ -117,20 +117,20 @@ import {ErrorComponent} from '../misc/error.component';
  * But that idea was abandaoned later as it would make it similar to hyper groups
  */
 export class SuperGroupPostListLoaderComponent {
-  
+
   private _groups: Group[];
   private _super_group_name: string;
   private _super_group: SuperGroup;
   private _errorMsg: String = null;
-  
+
   constructor(
     private _groupService: GroupService,
     private _superGroupService: SuperGroupService,
     private _router: Router,
     private _routeParams: RouteParams) {}
-  
+
   ngOnInit() {
-        
+
     this._super_group_name = this._routeParams.get('super_group_name');
 
     this._superGroupService.getSuperGroupByName(this._super_group_name)
@@ -144,13 +144,13 @@ export class SuperGroupPostListLoaderComponent {
           this._errorMsg = error;
         });
   }
-  
+
   goBack() {
     window.history.back();
   }
-  
+
   gotoNewPostForm() {
     //this._router.navigate(['NewPost', {gog_name: this.group.parent_group.name, group_name: this.group.name}]);
   }
-  
+
 }

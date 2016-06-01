@@ -1,4 +1,4 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'my-error',
@@ -9,7 +9,7 @@ import {Component, OnInit} from 'angular2/core';
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
           <span class="sr-only">Error:</span>
           {{_errorMsg}}
-        </div>      
+        </div>
       </div>
     </div>
   `,
@@ -21,9 +21,9 @@ import {Component, OnInit} from 'angular2/core';
   inputs: ['_errorMsg']
 })
 export class ErrorComponent {
-  
+
   private _errorMsg = null;
-  
+
   constructor( ) { }
 
 }

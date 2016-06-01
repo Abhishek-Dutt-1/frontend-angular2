@@ -6,81 +6,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <base href="/">
-
-  <!-- Bootstrap -->
-  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
   <title>Tick Talk</title>
-
-  <!-- IE required polyfills, in this exact order -->
-  <script src="node_modules/es6-shim/es6-shim.min.js"></script>
-  <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>
-<!--
-  <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
--->
-  <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
-<!--
-  <script src="https://code.angularjs.org/2.0.0-beta.8/angular2-polyfills.js"></script>
--->
+<!--------------------------------------------------------------------------------->
+  <script src="node_modules/core-js/client/shim.min.js"></script>
+  <script src="node_modules/zone.js/dist/zone.js"></script>
+  <script src="node_modules/reflect-metadata/Reflect.js"></script>
   <script src="node_modules/systemjs/dist/system.src.js"></script>
-<!--
-  <script src="node_modules/systemjs/dist/system.js"></script>
--->
-
-  <script src="https://code.angularjs.org/tools/typescript.js"></script>
-  <script src="node_modules/rxjs/bundles/Rx.js"></script>
-<!--
-  <script src="https://code.angularjs.org/2.0.0-beta.8/Rx.js"></script>
-  -->
-  <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
-  <script src="node_modules/angular2/bundles/router.dev.js"></script>
-  <script src="node_modules/angular2/bundles/http.dev.js"></script>
-
-  <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="styles.css">
-
-<!--
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
-<script src="/node_modules/material-design-lite/material.min.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
--->
+  <script src="systemjs.config.js"></script>
   <script>
-    System.config({
-      transpiler: 'typescript', 
-      typescriptOptions: { emitDecoratorMetadata: true }, 
-      packages: {
-        'app': {defaultExtension: 'ts'},
-        "angular2-jwt": {
+    System.import('app').catch(function(err){ console.error(err); });
+  </script>
+  <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- -->
+<!--  no bootstrap
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+-->
+
+<!--------------------------------------------------------------------------------->
+
+<!--  for non-SFX bundles
+<script>
+System.config({
+    /*
+    packages: {
+        'build/': {
+            format: 'register',
             defaultExtension: 'js'
         }
-      },
-      map: {
-          "angular2-jwt": "node_modules/angular2-jwt/angular2-jwt.js"
-      } 
-    });
-    System.import('app/main')
-      .then(null, console.error.bind(console));
-  </script>
+    },
+    */
+    /*
+    meta: {
+    //'build/main': {
+    'build/app.bundle.js': {
+      format: 'cjs',
+      defaultExtension: 'js'
+    }
+  },*/
+  /*
+    map: {
+      //'app':                        'app', // 'dist',
+      '@angular':                   'node_modules/@angular',
+      'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
+      'rxjs':                       'node_modules/rxjs'
+    },*/
+    bundles: {
+        'build/minified/app.bundle.js': ['build/main']
+    }
+});
+System.import('build/main').then(null, console.error.bind(console));
+</script>
+-->
+<!-- DIST.1 -->
+<!--
+<script src="dist/vendor.min.js"></script>
+<link rel="stylesheet" href="dist/dist/css/styles.min.css">
+-->
 </head>
-
 <body>
-  
   <my-app-component>Loading...</my-app-component>
-  
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <!--
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  -->
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-</body>  
+
+<!-- DIST.2 for SFX bundles -->
+<!--
+  <script src="dist/app.min.js"></script>
+-->
+</body>
 </html>

@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter} from 'angular2/core';
+import {Component, OnInit, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'my-fab-button',
@@ -19,14 +19,14 @@ import {Component, OnInit, EventEmitter} from 'angular2/core';
     .my-fab-button .buttons {
       font-size: 24px;
       padding: 11px 0 0 16px;
-      box-shadow: 0px 5px 11px -2px rgba(0, 0, 0, 0.18), 
+      box-shadow: 0px 5px 11px -2px rgba(0, 0, 0, 0.18),
                   0px 4px 12px -7px rgba(0, 0, 0, 0.15);
       border-radius: 50%;
       display: block;
       width: 56px;
       height: 56px;
       -webkit-transition: all .1s ease-out;
-              transition: all .1s ease-out;  
+              transition: all .1s ease-out;
       background-color: rgba(0, 182, 255, 0.05);
       color: rgba(0, 0, 0, 0.35);
     }
@@ -36,14 +36,14 @@ import {Component, OnInit, EventEmitter} from 'angular2/core';
   outputs: ['clicked']
 })
 export class FabButtonComponent implements OnInit {
-  
+
   private _votee = null;
   public clicked: EventEmitter<any> = new EventEmitter();
-  
+
   constructor( ) { }
-  
+
   ngOnInit() {}
-  
+
   buttonClicked(event) {
     event.preventDefault();
     console.log("Button clicked ", event);

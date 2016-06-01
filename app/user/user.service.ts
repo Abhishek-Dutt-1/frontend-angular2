@@ -1,51 +1,67 @@
 import {User} from './user';
 import {MOCK_USERS} from './mock-users';
-import {Injectable} from 'angular2/core';
+import {Injectable} from '@angular/core';
 import {GroupService} from '../group/group.service';
 import {UserRoles} from './user-roles';
 import {AppService} from '../app.service';
-import {Http, Headers, RequestOptions} from 'angular2/http';
+import {Http, Headers, RequestOptions} from '@angular/http';
 import {Subject, Observable, Observer} from 'rxjs/Rx';
 import {MOCK_SUPER_GROUPS} from '../super_group/mock-super_groups';
 
 @Injectable()
 export class UserService {
-  
+
   constructor(
     private _groupService: GroupService,
     private _appService: AppService,
     private _http: Http
   ) { }
-  
+
   getUsers() {
     return Promise.resolve(MOCK_USERS);
   }
-  
+
+  /**
+   * Get user by id
+   */
   getUser(id: number) {
-    
-    if(this._appService.getSiteParams().servicesMode === 'local') {
-      return Promise.resolve(MOCK_USERS.find(user => user.id == id));
-    }
-    
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers({ 'Content-Type': 'application/json' });
-      let options = new RequestOptions({ headers: headers });
-      return this._http.get(backendUrl+'/user/'+id, options)
-      .map( 
-        res => {
-          let user = res.json();
-          return user;
-      })
-      .catch(
-        error => {
-          return this._appService.handleServerErrors(error);
-        }
-      );
-    }
-    
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    //return this._http.get(backendUrl+'/user/'+id, options)
+    return this._http.get(backendUrl+'/user/getuserbyid/'+id, options)
+    .map(
+      res => {
+        let user = res.json();
+        return user;
+    })
+    .catch(
+      error => {
+        return this._appService.handleServerErrors(error);
+      }
+    );
   }
-  
+
+  /**
+   * Get user obj from a token
+   */
+  getUserByToken(token: string) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/user/getUserByToken', JSON.stringify({token: token}), options)
+    .map(
+      res => {
+        let user = res.json();
+        return user;
+    })
+    .catch(
+      error => {
+        return this._appService.handleServerErrors(error);
+      }
+    );
+  }
+
   createNewUser(newUser: any) {
     // Serve should handle these things
     /*
@@ -70,11 +86,12 @@ export class UserService {
       local: newUser.local
       */
     }
-    
+
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this._http.post(backendUrl+'/auth/local/register', JSON.stringify(newProperUser), options)
+    //return this._http.post(backendUrl+'/auth/local/register', JSON.stringify(newProperUser), options)
+    return this._http.post(backendUrl+'/auth/registeruserlocal', JSON.stringify(newProperUser), options)
     .map(
       res => {
         let user = res;
@@ -89,7 +106,7 @@ export class UserService {
         return this._appService.handleServerErrors(error);
     });
   }         // !createNewUser()
-  
+
   /*
   changePassword(userId: number, newPassword: string) {
     let backendUrl = this._appService.getSiteParams().backendUrl;
@@ -103,7 +120,7 @@ export class UserService {
       });
   }
   */
-  
+
   updateGeoSettings(userId: number, newSettings: any) {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
@@ -116,7 +133,7 @@ export class UserService {
         return this._appService.handleServerErrors(error);
       });
   }         // ! updateGeoSettings()
-  
+
   /**
    * Update user's settings on basic tab
    */
@@ -131,8 +148,8 @@ export class UserService {
         return this._appService.handleServerErrors(error);
       });
   }       // ! updateBasicSettings()
-  
-  
+
+
   /**
    * returns a default user object to fill in
    * whernever a logged in user is requried but is not available
@@ -149,4 +166,52 @@ export class UserService {
     return defaultUser;
   }
   */
+
+  /**
+   *  Verfiy primary email from a token
+   */
+  verifyEmailToken(token: string) {
+
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/verifyemail/' + token, options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }   // !verifyEmailToken
+
+  /**
+   *  Verfiy extra email from a token
+   */
+  verifyExtraEmailToken(token: string) {
+
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/verifyemail2/' + token, options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }   // !verifyEmailToken
+
+  /**
+   *  Verfiy email from a token
+   */
+  resendVerificationEmail(email) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/email/resendVerificationEmail/', JSON.stringify( { email: email } ), options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }         //  ! resendVerificationEmail
+
 }

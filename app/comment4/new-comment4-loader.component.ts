@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteParams} from 'angular2/router';
+import {Component, OnInit} from '@angular/core';
+import {RouteParams} from '@angular/router-deprecated';
 import {Post} from '../post/post';
 import {PostService} from '../post/post.service';
 import {Comment3} from '../comment3/comment3';
@@ -28,13 +28,13 @@ export class NewComment4LoaderComponent implements OnInit {
   private _post: Post;
   private _comment3: Comment3;
   //private _comment1id: number = null;
-  
+
   constructor(
     private _postService: PostService,
     //private _comment2Service: Comment2Service,
     private _routeParams: RouteParams
   ) {}
-  
+
   ngOnInit() {
     let postid     = this._routeParams.get('postid');
     let comment3id = this._routeParams.get('comment3id');

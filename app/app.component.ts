@@ -1,9 +1,9 @@
-import { Component, OnInit } from 'angular2/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import { HTTP_PROVIDERS, JSONP_PROVIDERS } from 'angular2/http';
+import { Component, OnInit } from '@angular/core';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from '@angular/router-deprecated';
+import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
 
 import { AppService } from './app.service';
-import { DashboardComponent } from './dashboard/dashboard.component';
+//import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { PostService } from './post/post.service';
 //import { PostListLoaderComponent } from './post/post-list-loader.component';
@@ -26,6 +26,8 @@ import { HyperGroupPostListLoaderComponent } from './hyper_group/hyper_group-pos
 import { NewUserComponent } from './user/new-user.component';
 import { ViewUserComponent } from './user/view-user.component';
 import { EditUserComponent } from './user/edit-user.component';
+import { VerifyEmailComponent } from './misc/verify-email.component';
+import { VerifyExtraEmailComponent } from './misc/verify-extra-email.component';
 import { UserService } from './user/user.service';
 import { UserAuthenticationPanelComponent } from './user/user-authentication-panel.component';
 
@@ -44,17 +46,16 @@ import { Comment4Service } from './comment4/comment4.service';
 
 @Component({
   selector: 'my-app-component',
-  templateUrl: 'app/app.component.html',
   template: `
   <div class="my-app-component">
     <div class="container">
-      
+
         <div class="row">
           <div class="header">
             <div class="col-xs-7 logo-container">
               <div class="logo">
                 <a [routerLink]="['/HyperGroupPostListDefault']">
-                  <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Humans.com
+                  <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Angry.City
                 </a>
               </div>
             </div>
@@ -63,13 +64,13 @@ import { Comment4Service } from './comment4/comment4.service';
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-xs-12">
             <router-outlet></router-outlet>
           </div>
         </div>
-        
+
 
     </div>
   </div>
@@ -77,13 +78,26 @@ import { Comment4Service } from './comment4/comment4.service';
   styles: [`
     .my-app-component .header {
       height: 55px;
-      background-color: #0277bd;
       color: white;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-      color: black;
       height: 60px;
       font-size: 21px;
       font-family: Roboto, UILanguageFont, Arial, sans-serif;
+/*
+      background-color: #0277bd;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+*/
+background-color: #0054a6;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #0054a6), color-stop(1, #004385));
+background-image: -webkit-linear-gradient(top, #0054a6 0%, #004385 100%);
+background-image: -moz-linear-gradient(top, #0054a6 0%, #004385 100%);
+background-image: -o-linear-gradient(top, #0054a6 0%, #004385 100%);
+background-image: -ms-linear-gradient(top, #0054a6 0%, #004385 100%);
+border-bottom: 1px solid #003264;
+/*
+-webkit-box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,0.20);
+-moz-box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,0.20);
+box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,0.20);
+*/
     }
     .my-app-component .header .logo-container {
       padding-top: 13px;
@@ -125,7 +139,7 @@ import { Comment4Service } from './comment4/comment4.service';
     path: '/go/:geo',
     name: 'HyperGroupPostList',
     component: HyperGroupPostListLoaderComponent,
-  },  
+  },
   {
     path: '/go',
     name: 'HyperGroupPostListDefault',
@@ -189,13 +203,25 @@ import { Comment4Service } from './comment4/comment4.service';
     path: '/register',
     name: 'NewUser',
     component: NewUserComponent
-  },/*
+  },
+  {
+    path: '/verifyemail/:token',
+    name: 'VerifyEmail',
+    component: VerifyEmailComponent
+  },,
+  {
+    path: '/verifyemail2/:token',
+    name: 'VerifyExtraEmail',
+    component: VerifyExtraEmailComponent
+  },
+/*
   {
     // Edit User Profile (with tab)
     path: '/user/edit/:tab',
     name: 'EditUserTab',
     component: EditUserComponent
-  },*/
+  },
+*/
   {
     // Edit User Profile (no tab)
     path: '/user/edit',

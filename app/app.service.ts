@@ -1,29 +1,29 @@
-import {Injectable} from 'angular2/core';
-import {Http, Headers, RequestOptions} from 'angular2/http';
+import {Injectable} from '@angular/core';
+import {Http, Headers, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 
 @Injectable()
 export class AppService {
-  
+
   private _geoSelection: string = null;
   private _jwt: string = null;
-  
+
   constructor() {}
-  
+
   /**
    * Save the geo location page (i.e. int'l, national, city etc)
    */
   setGeoSelection(geoSelection: string) {
     this._geoSelection = geoSelection;
   }
-  
+
   /**
    * Return last saved geo location
    */
   getGeoSelection() {
     return this._geoSelection;
   }
-  
+
   /**
    * services = 'local' || 'server'
    * 'local' will user mock arrays, 'server' will conncect to backend
@@ -32,16 +32,17 @@ export class AppService {
     return {
       servicesMode: 'server',
       backendUrl: 'http://localhost:1337',
+      //backendUrl: 'http://54.169.107.132:1337',
       headersObj: this.getHttpHeaders()
     }
   }
-  
+
   /**
    * Get HTTP headers (basically auth header if needed)
    */
   getHttpHeaders() {
     let headersObj = {};
-    headersObj['Content-Type'] = 'application/json';  
+    headersObj['Content-Type'] = 'application/json';
     if(this._jwt) {
       headersObj['Authorization'] = 'bearer ' + this._jwt;
     }
@@ -59,7 +60,7 @@ export class AppService {
   unsetAuthorizationHeader() {
     this._jwt = null;
   }
-  
+
   handleServerErrors(error: any) {
     // In a real world app, we might send the error to remote logging infrastructure
     let errMsg = "";
@@ -73,7 +74,7 @@ export class AppService {
         errMsg = error._body || "User must be logged in!";
       } else if (error.status === 500) {
         errMsg = error.json().details || error.json() || error._body || "Server Error";
-      } else if (error.json().type === "error") { 
+      } else if (error.json().type === "error") {
         // Handle XMLHttpRequestProgressEvent::ERR_CONNECTION_REFUSED i.e. Server not up
         errMsg = "Server not responding, Please try again later.";
       } else if(error.json()) {
