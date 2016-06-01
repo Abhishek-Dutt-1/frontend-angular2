@@ -4,7 +4,8 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from './user';
 import {Router, RouterLink} from '@angular/router-deprecated';
-//import {UserService} from './user.service';
+import {UserService} from './user.service';
+import {ErrorComponent} from '../misc/error.component';
 //import {AuthenticationService} from '../authentication/authentication.service';
 
 @Component({
@@ -14,6 +15,8 @@ import {Router, RouterLink} from '@angular/router-deprecated';
       <div class="my-user">
         <div class="row">
           <div class="col-xs-12 col-md-offset-3 col-md-6">
+
+            <my-error [_errorMsg]="_errorMsg"></my-error>
 
             <div class="tab-container">
               <div class="myTabs">
@@ -41,12 +44,15 @@ import {Router, RouterLink} from '@angular/router-deprecated';
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <label class="col-md-4 control-label">Email</label>
-                        <p class="form-control-static col-md-8">{{user.email}}</p>
+                        <p class="form-control-static col-md-8">{{user.email}} | Verified: {{user.emailverified}}
+                          <span *ngIf="!user.emailverified">| <span (click)="resendVerificationEmail(user.email)">Resend Verification Email</span></span>
+                        </p>
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
                         <label class="col-md-4 control-label">Other Emails</label>
                         <div *ngFor="let email of user.extra_emails">
-                          <p class="form-control-static col-md-8">{{email.email}} | {{email.verified}}</p>
+                          <p class="form-control-static col-md-8">{{email.email}} | Verified: {{email.emailverified}}</p>
+                          <span *ngIf="!email.emailverified">| <span (click)="resendVerificationEmail(email.email)">Resend Verification Email</span></span>
                         </div>
                       </div>
                       <div class="form-group" [hidden]="!ownProfile">
@@ -132,23 +138,39 @@ import {Router, RouterLink} from '@angular/router-deprecated';
   }
   `],
   //styleUrls: ['app/post/post.component.css'],
-  directives: [RouterLink],
+  directives: [RouterLink, ErrorComponent],
   inputs: ['user', 'ownProfile', 'tab']
 })
 export class UserComponent {
 
   private user: User
   private ownProfile: Boolean
+  private _errorMsg = null;
 
   constructor(
-    private _router: Router
-  ) {
-  }
+    private _router: Router,
+    private _userService: UserService
+  ) { }
 
   ngOnInit() {
   }
 
   gotoEditUser(goWhere:string) {
     this._router.navigate(['EditUser', {tab: goWhere}]);
+  }
+
+  /**
+   * Resend email verification email
+   */
+  resendVerificationEmail(email) {
+      this._userService.resendVerificationEmail(email).subscribe(
+        data => {
+          console.log(data);
+        },
+        error => {
+          console.log("Error", error);
+          this._errorMsg = error;
+        }
+      )
   }
 }

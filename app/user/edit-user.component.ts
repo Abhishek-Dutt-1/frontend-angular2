@@ -4,7 +4,7 @@
  * this could have user+other stuff
  */
 import {Component, OnInit} from '@angular/core';
-import {Router, RouteParams, ROUTER_DIRECTIVES} from '@angular/router-deprecated';
+import {Router, RouteParams, ROUTER_DIRECTIVES, RouterLink} from '@angular/router-deprecated';
 import {User} from './user';
 import {AppService} from '../app.service';
 import {UserService} from './user.service';
@@ -28,16 +28,22 @@ import {ErrorComponent} from '../misc/error.component';
         <div *ngIf="_currentUser">
           <div class="tab-container">
             <div id="myTabs">
-              <ul class="nav nav-tabs" role="tablist">
+              <ul class="nav nav-tabs" role="tablist1">
                 <li role="presentation" [ngClass]="{active: _tab == 'basic'}">
-                  <a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic</a>
+                  <!--
+                  <a href="#basic" aria-controls="basic" role="tab" data-toggle1="tab">Basic</a>
+                  -->
+                  <a [routerLink]="['EditUser', {tab: 'basic'}]" aria-controls="basic" role="tab" data-toggle1="tab">Basic</a>
                 </li>
                 <li role="presentation" [ngClass]="{active: _tab == 'geo'}">
-                  <a href="#geo" aria-controls="geo" role="tab" data-toggle="tab">Geo</a>
+                  <!--
+                  <a href="#geo" aria-controls="geo" role="tab" data-toggle1="tab">Geo</a>
+                  -->
+                  <a [routerLink]="['EditUser', {tab: 'geo'}]" aria-controls="geo" role="tab" data-toggle1="tab">Geo</a>
                 </li>
               </ul>
               <div class="tab-content">
-                <div role="tabpanel" class="tab-pane" [ngClass]="{active: _tab == 'basic'}" id="basic">
+                <div role="tabpanel1" class="tab-pane" [ngClass]="{active: _tab == 'basic'}" id="basic">
 
                   <form #editBasicForm="ngForm" class="form-horizontal">
 
@@ -53,7 +59,7 @@ import {ErrorComponent} from '../misc/error.component';
 
                     <div class="form-group">
                       <label class="col-md-4 control-label">Extra Emails</label>
-                      <p class="form-control-static col-md-8">{{_model.extra_emails.length}}</p>
+                      <p class="form-control-static col-md-8 hidden">{{_model.extra_emails.length}}</p>
                     </div>
                     <div *ngFor="let counter of _number_of_extra_emails">
                       <div class="form-group">
@@ -117,7 +123,7 @@ import {ErrorComponent} from '../misc/error.component';
 
                 </div>
 
-                <div role="tabpanel" class="tab-pane" [ngClass]="{active: _tab == 'geo'}" id="geo">
+                <div role="tabpanel1" class="tab-pane" [ngClass]="{active: _tab == 'geo'}" id="geo">
 
                   <div class="alert alert-danger" role="alert" [hidden]="!_errorMsgGeo">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -235,7 +241,7 @@ import {ErrorComponent} from '../misc/error.component';
     margin: 15px;
   }
   `],
-  directives: [ErrorComponent]
+  directives: [RouterLink, ErrorComponent]
 })
 export class EditUserComponent {
 
@@ -310,10 +316,13 @@ export class EditUserComponent {
     } else {
       return;
     }
-    console.log("SUBMITTING ", this._model);
-    this._model.extra_emails = this._model.extra_emails.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
 
-    this._userService.updateBasicSettings(this._model)
+    //this._model.extra_emails = this._model.extra_emails.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+    let tmpModel = JSON.parse(JSON.stringify(this._model));
+    tmpModel.extra_emails = tmpModel.extra_emails.filter(function(item, i, ar){ return ar.map(emailObj => emailObj.email).indexOf(item.email) === i; });
+    tmpModel.extra_emails = tmpModel.extra_emails.filter( emailObj => emailObj.email !== this._currentUser.email );
+
+    this._userService.updateBasicSettings(tmpModel)
       .subscribe(
         res => {
           console.log(res);

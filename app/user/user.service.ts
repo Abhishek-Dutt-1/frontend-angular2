@@ -28,7 +28,8 @@ export class UserService {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this._http.get(backendUrl+'/user/'+id, options)
+    //return this._http.get(backendUrl+'/user/'+id, options)
+    return this._http.get(backendUrl+'/user/getuserbyid/'+id, options)
     .map(
       res => {
         let user = res.json();
@@ -89,7 +90,8 @@ export class UserService {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this._http.post(backendUrl+'/auth/local/register', JSON.stringify(newProperUser), options)
+    //return this._http.post(backendUrl+'/auth/local/register', JSON.stringify(newProperUser), options)
+    return this._http.post(backendUrl+'/auth/registeruserlocal', JSON.stringify(newProperUser), options)
     .map(
       res => {
         let user = res;
@@ -164,4 +166,52 @@ export class UserService {
     return defaultUser;
   }
   */
+
+  /**
+   *  Verfiy primary email from a token
+   */
+  verifyEmailToken(token: string) {
+
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/verifyemail/' + token, options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }   // !verifyEmailToken
+
+  /**
+   *  Verfiy extra email from a token
+   */
+  verifyExtraEmailToken(token: string) {
+
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/verifyemail2/' + token, options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }   // !verifyEmailToken
+
+  /**
+   *  Verfiy email from a token
+   */
+  resendVerificationEmail(email) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/email/resendVerificationEmail/', JSON.stringify( { email: email } ), options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }         //  ! resendVerificationEmail
+
 }

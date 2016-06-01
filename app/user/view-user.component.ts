@@ -27,7 +27,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
   `],
   directives: [UserComponent, ErrorComponent]
 })
-export class ViewUserComponent {
+export class ViewUserComponent implements OnInit {
 
   private _tab: string = 'basic';
   private _user: User = null;
@@ -51,6 +51,7 @@ export class ViewUserComponent {
     this._userService.getUser(id).subscribe(
         user => {
           if(user) {
+            console.log("View user", user);
             this._user = user;
           }
         },

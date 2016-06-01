@@ -50,6 +50,7 @@ export class AuthenticationService {
         error => {
           // token found but server did not sent a user
           console.log(error);
+          this.logoutUser();
           return this._appService.handleServerErrors(error)
         }
       );

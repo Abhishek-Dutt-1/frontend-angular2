@@ -26,6 +26,8 @@ import { HyperGroupPostListLoaderComponent } from './hyper_group/hyper_group-pos
 import { NewUserComponent } from './user/new-user.component';
 import { ViewUserComponent } from './user/view-user.component';
 import { EditUserComponent } from './user/edit-user.component';
+import { VerifyEmailComponent } from './misc/verify-email.component';
+import { VerifyExtraEmailComponent } from './misc/verify-extra-email.component';
 import { UserService } from './user/user.service';
 import { UserAuthenticationPanelComponent } from './user/user-authentication-panel.component';
 
@@ -201,13 +203,25 @@ box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,
     path: '/register',
     name: 'NewUser',
     component: NewUserComponent
-  },/*
+  },
+  {
+    path: '/verifyemail/:token',
+    name: 'VerifyEmail',
+    component: VerifyEmailComponent
+  },,
+  {
+    path: '/verifyemail2/:token',
+    name: 'VerifyExtraEmail',
+    component: VerifyExtraEmailComponent
+  },
+/*
   {
     // Edit User Profile (with tab)
     path: '/user/edit/:tab',
     name: 'EditUserTab',
     component: EditUserComponent
-  },*/
+  },
+*/
   {
     // Edit User Profile (no tab)
     path: '/user/edit',
