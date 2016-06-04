@@ -44,6 +44,8 @@ import { Comment2Service } from './comment2/comment2.service';
 import { Comment3Service } from './comment3/comment3.service';
 import { Comment4Service } from './comment4/comment4.service';
 
+import { MemeService } from './meme/meme.service';
+
 @Component({
   selector: 'my-app-component',
   template: `
@@ -131,7 +133,8 @@ box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,
     GroupService,
     SuperGroupService,
     UserService,
-    AuthenticationService
+    AuthenticationService,
+    MemeService
   ]
 })
 @RouteConfig([

@@ -7,6 +7,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
 //import {GroupService} from '../group/group.service';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
+import {MemeSelectorComponent} from '../meme/meme-selector.component';
 
 @Component({
   selector: 'my-new-comment1',
@@ -16,13 +17,13 @@ import {Subject} from 'rxjs/Subject';
   <div *ngIf="!_errorMsg">
 
     <h4>Write a New Comment:</h4>
-    <form #comment1Form="ngForm" class="form-horizontal">
+    <form #comment1Form="ngForm" class="form-horizontal" novalidate>
 
       <div class="post-textarea form-group">
         <label for="text" class="col-md-1">Comment Text</label>
         <div class="col-md-11">
           <textarea class="form-control" rows="5" required
-            [(ngModel)] = "_model.text"
+            [(ngModel)] = "_model.text" placeholder="New Comment"
             ngControl = "text" #text="ngForm"
           ></textarea>
           <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
@@ -30,10 +31,19 @@ import {Subject} from 'rxjs/Subject';
           </div>
         </div>
       </div>
+
+      <div class="form-group" *ngIf="_showMemeList">
+        <label for="meme-selector" class="col-md-1">Meme Selector</label>
+        <div class="col-md-11">
+          <my-meme-selector></my-meme-selector>
+        </div>
+      </div>
+
       <div class="form-group">
         <div class="col-md-offset-1 col-md-11">
           <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!comment1Form.form.valid">Submit</button>
           <button (click)="goBack()" class="btn btn-default">Cancel</button>
+          <button (click)="_showMemeList = !_showMemeList" class="btn btn-default btn-sm pull-right">Meme</button>
         </div>
       </div>
     </form>
@@ -67,13 +77,15 @@ import {Subject} from 'rxjs/Subject';
       width: 100%;
     }
   `],
-  inputs: ['post']
+  inputs: ['post'],
+  directives: [MemeSelectorComponent]
 })
 export class NewComment1Component {
 
   private post = null;
   private _model: any = null;
   private _errorMsg: string = null;
+  private _showMemeList: boolean = false;
 
   constructor(
     private _comment1Service: Comment1Service,
@@ -85,7 +97,7 @@ export class NewComment1Component {
   ngOnInit() {
 
     this._model =  {
-      text: 'New Comment',
+      text: '',
       postedby: null
     }
 

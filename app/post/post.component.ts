@@ -137,7 +137,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
-                      <!-- <i class="fa fa-user"></i> -->
+                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage">
                     </div>
                   </a>
                 </div>
@@ -228,7 +228,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
-                      <!-- <i class="fa fa-user"></i> -->
+                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage">
                     </div>
                   </a>
                 </div>
@@ -353,6 +353,8 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
   }
   .my-post .post-container .profileimage {
     width: 32px;
+    opacity:0.5;
+    filter:alpha(opacity=50);
   }
   .my-post .post-container .post-info .post-info-text {
     padding-left: 10px;
