@@ -58,6 +58,15 @@ import {ErrorComponent} from '../misc/error.component';
                     </div>
 
                     <div class="form-group">
+                      <label for="profileimage" class="col-md-4 control-label">Profile Image URL</label>
+                      <div class="col-md-8">
+                        <input id="profileimage" type="text" class="form-control" placeholder="Image URL"
+                          [(ngModel)] = "_model.profileimage" ngControl="profileimage" #profileimage = "ngForm"
+                        >
+                      </div>
+                    </div>
+
+                    <div class="form-group">
                       <label class="col-md-4 control-label">Extra Emails</label>
                       <p class="form-control-static col-md-8 hidden">{{_model.extra_emails.length}}</p>
                     </div>

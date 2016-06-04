@@ -54,7 +54,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
-                      <!-- <i class="fa fa-user"></i> -->
+                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage">
                     </div>
                   </a>
                 </div>
@@ -81,7 +81,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                   </div>
                   <div class="post-delete pull-left">
                     <span *ngIf="currentUser && currentUser.id == post.postedby.id">
-                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">Delete</a>
                     </span>
                   </div>
                 </div>
@@ -91,7 +91,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
           </div>     <!-- ! row -->
 
           <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-6">
               <div class="vote-container">
                 <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
               </div>
@@ -164,7 +164,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                   </div>
                   <div class="post-delete pull-left">
                     <span *ngIf="currentUser && currentUser.id == post.postedby.id">
-                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">Delete</a>
                     </span>
                   </div>
                 </div>
@@ -255,7 +255,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                   </div>
                   <div class="post-delete pull-left">
                     <span *ngIf="currentUser && currentUser.id == post.postedby.id">
-                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]"> Delete </a>
+                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">Delete</a>
                     </span>
                   </div>
                   <div class="post-reply"> &nbsp;&bull;
@@ -347,8 +347,12 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
   .my-post .post-container .profile-image {
     height: 32px;
     width: 32px;
-    border: 1px solid lightgrey;
+    /* border: 1px solid lightgrey; */
     margin-top: 3px;
+    overflow: hidden;
+  }
+  .my-post .post-container .profileimage {
+    width: 32px;
   }
   .my-post .post-container .post-info .post-info-text {
     padding-left: 10px;
@@ -379,9 +383,11 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     font-size: 14px;
     line-height: 19.6px;
     text-decoration: none;
+    /*
     width: 80%;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    */
   }
   .my-post .post-container .post-createdat {
     display: inline;

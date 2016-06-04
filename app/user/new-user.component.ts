@@ -38,17 +38,17 @@ declare var gapi:any;
               <label for="displayname" class="col-sm-2 control-label">Display Name</label>
               <div class="col-sm-10">
                 <input id="displayname" type="text" class="form-control" placeholder="Display name" required
-                  [(ngModel)] = "model.displayname"
+                  [(ngModel)] = "model.displayname" maxlength="30"
                   ngControl = "displayname" #displayname = "ngForm"
                 >
                 <div [hidden]="displayname.valid || displayname.pristine" class="alert alert-danger">
-                  Display name is required
+                  Display name is required. Maximum 30 characters.
                 </div>
-                <div class="text-muted pull-right field-explainer">
+                <div class="text-muted field-explainer">
                   Display name will be visible on your posts and comments.
                   We suggest to keep it as you real world name.<br/>
                   Once set here it <b>cannot be changed</b>.<br/>
-                  Don't worry, you can also post as <b>anonymous</b> anytime.<br/>
+                  Don't worry, you can also post as <b>Anonymous</b> anytime.<br/>
                 </div>
               </div>
             </div>
@@ -63,7 +63,7 @@ declare var gapi:any;
                 <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
                   Email is required
                 </div>
-                <span class="text-muted pull-right field-explainer">Email is used to login to the site.</span>
+                <span class="text-muted field-explainer">Email is used to login to the site.</span>
               </div>
             </div>
 
@@ -77,7 +77,7 @@ declare var gapi:any;
                 <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
                   Password is required
                 </div>
-                <span class="text-muted pull-right field-explainer">Password is also used to login to the site.</span>
+                <span class="text-muted field-explainer">Password is also used to login to the site.</span>
               </div>
             </div>
 
@@ -91,7 +91,7 @@ declare var gapi:any;
                 <div [hidden]="(confirm_password.value == password.value) || confirm_password.pristine" class="alert alert-danger">
                   Passwords do not match.
                 </div>
-                <span class="text-muted pull-right field-explainer">Retype password just to be sure.</span>
+                <span class="text-muted field-explainer">Retype password just to be sure.</span>
               </div>
             </div>
 
@@ -118,7 +118,7 @@ declare var gapi:any;
       border-left: 5px solid #a94442; /* red */
     }
     .my-new-user .field-explainer {
-      text-align: right;
+/*      text-align: right; */
       font-size: 0.9em;
       font-style: italic;
     }

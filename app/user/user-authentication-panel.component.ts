@@ -34,6 +34,9 @@ import {User} from './user'
     }
     .my-user-authentication-panel a.displayname {
       color: white;
+      white-space: nowrap;
+      text-overflow: clip;
+      overflow: scroll;
     }
     .my-user-authentication-panel a.auth-logout {
       color: white;

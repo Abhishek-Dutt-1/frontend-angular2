@@ -52,8 +52,7 @@ export class GroupService {
   /**
    * Return a Group obj by name and supergroups name
    */
-  getGroup(superGroupName: string, groupName: string) {
-
+  getGroup(superGroupName: String, groupName: String) {
     if(this._appService.getSiteParams().servicesMode === 'server') {
       let backendUrl = this._appService.getSiteParams().backendUrl;
       let headers = new Headers( this._appService.getSiteParams().headersObj );

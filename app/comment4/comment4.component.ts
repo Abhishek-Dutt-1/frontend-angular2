@@ -18,7 +18,7 @@ import {RouterLink} from '@angular/router-deprecated';
             {{comment4.text}}
           </div>
           <i class="fa fa-user"></i> {{comment4.postedby.displayname}}
-          | <span>Reply</span>
+          <span class="hidden">| Reply</span>
         </div>
       </div>
     </div>

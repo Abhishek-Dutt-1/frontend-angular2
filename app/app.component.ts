@@ -48,7 +48,7 @@ import { Comment4Service } from './comment4/comment4.service';
   selector: 'my-app-component',
   template: `
   <div class="my-app-component">
-    <div class="container">
+    <div class="container-fluid">
 
         <div class="row">
           <div class="header">

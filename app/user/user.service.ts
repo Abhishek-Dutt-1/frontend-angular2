@@ -107,19 +107,20 @@ export class UserService {
     });
   }         // !createNewUser()
 
-  /*
-  changePassword(userId: number, newPassword: string) {
+  /**
+   * Change user's password
+   */
+  resetPassword(newPassword: string) {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.post(backendUrl+'/passport/changepassword', JSON.stringify({userId: userId, newPassword: newPassword}), options)
+    return this._http.post(backendUrl+'/passport/changepassword', JSON.stringify( { newPassword: newPassword } ), options)
       .map(res => {
         return res.json();
       }).catch(error => {
         return this._appService.handleServerErrors(error);
       });
   }
-  */
 
   updateGeoSettings(userId: number, newSettings: any) {
     let backendUrl = this._appService.getSiteParams().backendUrl;
@@ -214,4 +215,48 @@ export class UserService {
       });
   }         //  ! resendVerificationEmail
 
+  /**
+   * Update Profile image url
+   */
+  updateProfileImage(profileimage: string) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/user/updateProfileImage/', JSON.stringify( { profileimage: profileimage } ), options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }         // ! updateProfileImage
+
+  /**
+   * Add an extra email
+   */
+  addExtraEmail(extraEmail: string) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/user/addExtraEmail/', JSON.stringify( { extraEmail: extraEmail } ), options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }
+
+  /**
+  * Add an extra email
+  */
+  deleteExtraEmail( extraEmailId: string ) {
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl + '/user/deleteExtraEmail/' + extraEmailId, options)
+      .map(res => {
+        return res.json();
+      }).catch(error => {
+        return this._appService.handleServerErrors(error);
+      });
+  }
 }
