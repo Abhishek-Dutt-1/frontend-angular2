@@ -22,7 +22,7 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
             </div>
           </div>
         </div>
-
+        
       </div>
     </div>
   `,

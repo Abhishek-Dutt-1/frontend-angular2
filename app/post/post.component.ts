@@ -91,7 +91,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
           </div>     <!-- ! row -->
 
           <div class="row">
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12 col-sm-4">
               <div class="vote-container">
                 <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
               </div>

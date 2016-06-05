@@ -88,6 +88,9 @@ import {ErrorComponent} from '../misc/error.component';
 </div>
   `,
   styles: [`
+    .my-new-comment4 .meme-image-col {
+      padding-right: 0;
+    }
     .my-new-comment4 .ng-valid[required] {
       border-left: 5px solid #42A948; /* green */
     }
