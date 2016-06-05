@@ -22,12 +22,24 @@ import {MemeSelectorComponent} from '../meme/meme-selector.component';
       <div class="post-textarea form-group">
         <label for="text" class="col-md-1">Comment Text</label>
         <div class="col-md-11">
-          <textarea class="form-control" rows="5" required
-            [(ngModel)] = "_model.text" placeholder="New Comment"
-            ngControl = "text" #text="ngForm"
-          ></textarea>
-          <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
-            Text is required
+          <div class="row">
+
+            <div *ngIf="_model.meme_image_url" class="col-xs-2 meme-image-col">
+              <div class="meme-image-container ">
+                <img src="{{_model.meme_image_url}}" class="meme-image img-responsive img-rounded  center-block">
+              </div>
+            </div>
+
+            <div [ngClass]="{'col-xs-9': _model.meme_image_url, 'col-xs-12': !_model.meme_image_url}">
+              <textarea class="form-control" rows="5"
+                [(ngModel)] = "_model.text" placeholder="New Comment"
+                ngControl = "text" #text="ngForm"
+              ></textarea>
+              <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
+                Text is required
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -35,7 +47,7 @@ import {MemeSelectorComponent} from '../meme/meme-selector.component';
       <div class="form-group" *ngIf="_showMemeList">
         <label for="meme-selector" class="col-md-1">Meme Selector</label>
         <div class="col-md-11">
-          <my-meme-selector></my-meme-selector>
+          <my-meme-selector (memeSelected)="memeClicked($event)"></my-meme-selector>
         </div>
       </div>
 
@@ -58,23 +70,14 @@ import {MemeSelectorComponent} from '../meme/meme-selector.component';
 </div>
   `,
   styles: [`
-    .my-new-post .ng-valid[required] {
-      border-left: 5px solid #42A948; /* green */
+    .my-new-comment1 .meme-image-col {
+      padding-right: 0;
     }
-    .my-new-post .ng-invalid {
-      border-left: 5px solid #a94442; /* red */
+    .my-new-comment1 .meme-image-container {
+      /* padding: 5px;
+      width: 150px; */
     }
-    .my-new-post form {
-      min-width: 250px;
-    }
-    .my-new-post .post-textarea textarea{
-      width: 100%;
-    }
-    .my-new-post .post-text input{
-      width: 100%;
-    }
-    .my-new-post .post-select select{
-      width: 100%;
+    .my-new-comment1 .meme-image {
     }
   `],
   inputs: ['post'],
@@ -140,14 +143,17 @@ export class NewComment1Component {
     event.preventDefault();
     this._model.commentedon = this.post
 
-    let newPost = this._comment1Service.createNewComment1(this._model)
+    let newPost = this._comment1Service.createNewComment1( this._model )
       .subscribe(
         comment1 => {
-          console.log(comment1)
           this._router.navigate(['ViewPost', {postid: this.post.id}]);
         },
         error => console.log(error)
       );
+  }
+
+  memeClicked(memeImageUrl: string) {
+    this._model.meme_image_url = memeImageUrl;
   }
 
   goBack() {

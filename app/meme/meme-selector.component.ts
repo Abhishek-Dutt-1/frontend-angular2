@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, EventEmitter} from '@angular/core';
 import {Router, RouteParams, RouterLink} from '@angular/router-deprecated';
 import {AppService} from '../app.service';
 import {ErrorComponent} from '../misc/error.component';
@@ -15,13 +15,13 @@ import {MemeService} from './meme.service';
       <div class="row">
         <div class="col-xs-2">
           <div *ngFor="let memecat of _memeList.memecategories">
-            <div class="btn btn-default btn-xs" (click)="memeCatNameClicked(memecat.id)">{{memecat.name}}</div>
+            <div class="btn btn-default btn-xs btn-block" (click)="memeCatNameClicked(memecat.id)">{{memecat.name}}</div>
           </div>
         </div> <!-- !col -->
-        <div class="col-xs-10">
+        <div class="col-xs-10 meme-pane">
           <div *ngFor="let meme of _displayedMemeList">
-            <div class="meme-image-container">
-              <img src="{{meme.imageurl}}" class="meme-image">
+            <div class="meme-image-container pull-left" (click)="selectMeme(meme)">
+              <img src="{{meme.imageurl}}" class="meme-image img-rounded">
             </div>
           </div>
         </div>
@@ -33,6 +33,9 @@ import {MemeService} from './meme.service';
   </div>  <!-- ! div -->
   `,
   styles: [`
+    .my-meme-selector .meme-pane {
+      padding-left: 0px;
+    }
     .my-meme-selector .meme-image {
       width: 100px;
     }
@@ -40,7 +43,9 @@ import {MemeService} from './meme.service';
       padding: 3px;
     }
   `],
-  directives: [RouterLink, ErrorComponent]
+  directives: [RouterLink, ErrorComponent],
+  outputs: ['memeSelected']
+
 })
 export class MemeSelectorComponent implements OnInit {
 
@@ -48,6 +53,7 @@ export class MemeSelectorComponent implements OnInit {
   private _memeList = { memeList: [], memecategories: [] };
   private _selectedMemeCatId = null;
   private _displayedMemeList = [];
+  public memeSelected: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private _appService: AppService,
@@ -69,9 +75,15 @@ export class MemeSelectorComponent implements OnInit {
       })
   }   // !ngOnInit
 
+  // User clicked on a meme category name
   memeCatNameClicked(memeCatId) {
     this._selectedMemeCatId = memeCatId
     this._displayedMemeList = this._memeList.memeList.filter( meme => meme.categories.some( cat => cat.id === memeCatId ));
+  }
+
+  // User clicked on a meme
+  selectMeme(selectedMeme) {
+    this.memeSelected.next(selectedMeme.imageurl);
   }
 
 }

@@ -8,6 +8,8 @@ import {AuthenticationService} from '../authentication/authentication.service';
 //import {GroupService} from '../group/group.service';
 //import {Observable} from 'rxjs/Observable';
 //import {Subject} from 'rxjs/Subject';
+import {MemeSelectorComponent} from '../meme/meme-selector.component';
+import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-new-comment2',
@@ -17,30 +19,51 @@ import {AuthenticationService} from '../authentication/authentication.service';
   <div *ngIf="!_errorMsg">
 
     <h4>Write a New Comment:</h4>
-    <form #comment1Form="ngForm" class="form-horizontal">
+    <form #comment1Form="ngForm" class="form-horizontal" novalidate>
 
       <div class="post-textarea form-group">
         <label for="text" class="col-md-1">Comment Text</label>
         <div class="col-md-11">
-          <textarea class="form-control" rows="5" required
-            [(ngModel)] = "_model.text"
-            ngControl = "text" #text="ngForm"
-          ></textarea>
-          <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
-            Text is required
-          </div>
+          <div class="row">
+
+            <div *ngIf="_model.meme_image_url" class="col-xs-2 meme-image-col">
+              <div class="meme-image-container ">
+                <img src="{{_model.meme_image_url}}" class="meme-image img-responsive img-rounded  center-block">
+              </div>
+            </div>
+
+            <div [ngClass]="{'col-xs-9': _model.meme_image_url, 'col-xs-12': !_model.meme_image_url}">
+              <textarea class="form-control" rows="5"
+                [(ngModel)] = "_model.text" placeholder="New Comment" ngControl = "text" #text="ngForm"
+              ></textarea>
+              <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
+                Text is required
+              </div>
+            </div>
+
+          </div>        <!-- ! row -->
+        </div>
+      </div>      <!-- ! post-textarea -->
+
+      <div class="form-group" *ngIf="_showMemeList">
+        <label for="meme-selector" class="col-md-1">Meme Selector</label>
+        <div class="col-md-11">
+          <my-meme-selector (memeSelected)="memeClicked($event)"></my-meme-selector>
         </div>
       </div>
+
       <div class="form-group">
         <div class="col-md-offset-1 col-md-11">
           <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!comment1Form.form.valid">Submit</button>
           <button (click)="goBack()" class="btn btn-default">Cancel</button>
+          <button (click)="_showMemeList = !_showMemeList" class="btn btn-default btn-sm pull-right">Meme</button>
         </div>
       </div>
     </form>
 
   </div>
 
+<my-error [_errorMsg]="_errorMsg"></my-error>
   <div *ngIf="_errorMsg">
     {{_errorMsg}}
     <button (click)="goBack()" class="btn btn-default">Back</button>
@@ -68,14 +91,17 @@ import {AuthenticationService} from '../authentication/authentication.service';
       width: 100%;
     }
   `],
-  inputs: ['comment1', 'post']
+  inputs: ['comment1', 'post'],
+  directives: [MemeSelectorComponent, ErrorComponent]
+
 })
 export class NewComment2Component {
 
   private post: Post = null;
   private comment1 = null;
   private _model: any = null;
-  private _errorMsg: string = null;
+  private _errorMsg: string = "YOLO";
+  private _showMemeList: boolean = false;
 
   constructor(
     private _comment2Service: Comment2Service,
@@ -87,7 +113,8 @@ export class NewComment2Component {
   ngOnInit() {
 
     this._model =  {
-      text: 'New Comment',
+      text: '',
+      postedby: null
     }
 
     /*
@@ -136,7 +163,11 @@ export class NewComment2Component {
         },
         error => console.log(error)
       );
+  }
 
+  memeClicked(memeImageUrl: string) {
+    console.log("Inside post comp upvoting ", memeImageUrl);
+    this._model.meme_image_url = memeImageUrl;
   }
 
   goBack() {
