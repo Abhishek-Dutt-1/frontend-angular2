@@ -87,6 +87,30 @@ import {ErrorComponent} from '../misc/error.component';
         </fieldset>
 
         <div class="form-group">
+          <label for="allow_anon_posts" class="col-sm-2 control-label">Allow anonymous posts?</label>
+          <div class="col-sm-10">
+            <label class="checkbox-inline">
+              <input type="radio" name="allow_anon_posts" (click)="_model.allow_anon_posts = 1" [checked]="_model.allow_anon_posts === 1" > Yes
+            </label>
+            <label class="checkbox-inline">
+              <input type="radio" name="allow_anon_posts" (click)="_model.allow_anon_posts = 0" [checked]="_model.allow_anon_posts === 0" > No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="allow_anon_comments" class="col-sm-2 control-label">Allow anonymous comments?</label>
+          <div class="col-sm-10">
+            <label class="checkbox-inline">
+              <input type="radio" name="allow_anon_comments" (click)="_model.allow_anon_comments = 1" [checked]="_model.allow_anon_comments === 1" > Yes
+            </label>
+            <label class="checkbox-inline">
+              <input type="radio" name="allow_anon_comments" (click)="_model.allow_anon_comments = 0" [checked]="_model.allow_anon_comments === 0" > No
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label for="verify_members_email" class="col-sm-2 control-label">Restrict membership by Email domain?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
@@ -268,7 +292,6 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
         console.log(error);
         this._errorMsg = error;
       });
-
   }
 
   validateForm(field) {
@@ -343,6 +366,12 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
         if ( model.membership_needs_approval == true  ) model.membership_needs_approval = 1;
         if ( model.membership_needs_approval == false ) model.membership_needs_approval = 0;
 
+        if ( model.allow_anon_posts == true  ) model.allow_anon_posts = 1;
+        if ( model.allow_anon_posts == false ) model.allow_anon_posts = 0;
+
+        if ( model.allow_anon_comments == true  ) model.allow_anon_comments = 1;
+        if ( model.allow_anon_comments == false ) model.allow_anon_comments = 0;
+
     } else {
         if ( model.non_members_can_view == 1 ) model.non_members_can_view = true;
         if ( model.non_members_can_view == 0 ) model.non_members_can_view = false;
@@ -355,6 +384,12 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
 
         if ( model.membership_needs_approval == 1 ) model.membership_needs_approval = true;
         if ( model.membership_needs_approval == 0 ) model.membership_needs_approval = false;
+
+        if ( model.allow_anon_posts == 1 ) model.allow_anon_posts = true;
+        if ( model.allow_anon_posts == 0 ) model.allow_anon_posts = false;
+
+        if ( model.allow_anon_comments == 1 ) model.allow_anon_comments = true;
+        if ( model.allow_anon_comments == 0 ) model.allow_anon_comments = false;
     }
   }
 

@@ -63,7 +63,7 @@ import {ErrorComponent} from '../misc/error.component';
               <tr><th>Display Name</th><th>Approve Membership</th><th>Decline Membership</th>
             </thead>
             <tbody>
-              <tr *ngFor="#pendingUser of group.members_waiting_approval">
+              <tr *ngFor="let pendingUser of group.members_waiting_approval">
                 <td class="col-xs-4">{{pendingUser.displayname}}</td>
                 <td class="col-xs-4"><button class="btn btn-default btn-xs" (click)="approveMembership(pendingUser.id)">Approve</button></td>
                 <td class="col-xs-4"><button class="btn btn-default btn-xs" (click)="declineMembership(pendingUser.id)">Disapprove</button></td>

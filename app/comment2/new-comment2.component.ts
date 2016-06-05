@@ -16,7 +16,7 @@ import {ErrorComponent} from '../misc/error.component';
   template: `
   <div class="my-new-comment2">
 
-  <div *ngIf="!_errorMsg">
+  <div>
 
     <h4>Write a New Comment:</h4>
     <form #comment1Form="ngForm" class="form-horizontal" novalidate>
@@ -64,6 +64,8 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
       </div>
 
+      <my-error [_errorMsg]="_errorMsg"></my-error>
+
       <div class="form-group">
         <div class="col-md-offset-1 col-md-11">
           <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!comment1Form.form.valid">Submit</button>
@@ -73,12 +75,6 @@ import {ErrorComponent} from '../misc/error.component';
       </div>
     </form>
 
-  </div>
-
-<my-error [_errorMsg]="_errorMsg"></my-error>
-  <div *ngIf="_errorMsg">
-    {{_errorMsg}}
-    <button (click)="goBack()" class="btn btn-default">Back</button>
   </div>
 
 </div>
@@ -144,7 +140,7 @@ export class NewComment2Component {
     // Only logged in uses can comment2
     this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
-        console.log("State change ", currentUser)
+        //console.log("State change ", currentUser)
         this._model.postedby = currentUser;
         this._errorMsg = null;
       } else {
@@ -184,12 +180,14 @@ export class NewComment2Component {
         comment1 => {
           this._router.navigate(['ViewPost', {postid: this.post.id}]);
         },
-        error => console.log(error)
-      );
+        error => {
+          //console.log(error)
+          this._errorMsg = error;
+      });
   }
 
   memeClicked(memeImageUrl: string) {
-    console.log("Inside post comp upvoting ", memeImageUrl);
+    //console.log("Inside post comp upvoting ", memeImageUrl);
     this._model.meme_image_url = memeImageUrl;
   }
 

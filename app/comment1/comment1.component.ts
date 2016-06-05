@@ -4,6 +4,7 @@
 import {Component} from '@angular/core';
 import {Comment1} from './comment1';
 import {RouterLink} from '@angular/router-deprecated';
+import {DateFormatPipe} from '../misc/date-format.pipe';
 
 @Component({
   selector: 'my-comment1',
@@ -38,6 +39,22 @@ import {RouterLink} from '@angular/router-deprecated';
                       <img *ngIf="comment1.postedby.profileimage" src="{{comment1.postedby.profileimage}}" class="profileimage img-rounded">
                     </div>
                   </a>
+
+                  <div class=" pull-left">
+                    <div class="profile-name">
+                      <a class="" [routerLink]="['ViewUser', {id: comment1.postedby.id}]">
+                        {{comment1.postedby.displayname}}
+                      </a>
+                    </div>
+                    &bull;
+                    <a [routerLink] = "['NewComment2', {postid: post.id, comment1id: comment1.id}]">Reply</a>
+                    <div class="clearfix"></div>
+                    <div class="comment-createdat">
+                      {{ comment1.createdAt | timeAgo }}
+                    </div>
+                  </div>
+
+                  <!--
                   <div class="profile-name pull-left">
                     <a class="" [routerLink]="['ViewUser', {id: comment1.postedby.id}]">
                       {{comment1.postedby.displayname}}
@@ -45,7 +62,11 @@ import {RouterLink} from '@angular/router-deprecated';
                   </div>
                   &nbsp;&bull;
                   <a [routerLink] = "['NewComment2', {postid: post.id, comment1id: comment1.id}]">Reply</a>
+                  <div class="comment-createdat">
+                    {{ comment1.createdAt | timeAgo }}
+                  </div>
                 </div>
+                -->
 
               </div>
             </div>
@@ -81,9 +102,18 @@ import {RouterLink} from '@angular/router-deprecated';
     font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 14px;
   }
+  .my-comment1 .comment-createdat {
+    display: inline;
+    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    /* padding-left: 10px; */
+    line-height: 14.4px;
+    color: rgba(0, 0, 0, 0.439216);
+  }
   `],
   inputs: ['comment1', 'post'],
-  directives: [RouterLink]
+  directives: [RouterLink],
+  pipes: [DateFormatPipe]
 })
 export class Comment1Component {
   private post;

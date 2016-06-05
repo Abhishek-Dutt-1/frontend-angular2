@@ -9,13 +9,14 @@ import {AuthenticationService} from '../authentication/authentication.service';
 //import {Observable} from 'rxjs/Observable';
 //import {Subject} from 'rxjs/Subject';
 import {MemeSelectorComponent} from '../meme/meme-selector.component';
+import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-new-comment4',
   template: `
   <div class="my-new-comment4">
 
-  <div *ngIf="!_errorMsg">
+  <div>
 
     <h4>Write a New Comment:</h4>
     <form #comment4Form="ngForm" class="form-horizontal" novalidate>
@@ -71,6 +72,8 @@ import {MemeSelectorComponent} from '../meme/meme-selector.component';
         </div>
       </div>
 
+      <my-error [_errorMsg]="_errorMsg"></my-error>
+
       <div class="form-group">
         <div class="col-md-offset-1 col-md-11">
           <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!comment4Form.form.valid">Submit</button>
@@ -80,11 +83,6 @@ import {MemeSelectorComponent} from '../meme/meme-selector.component';
       </div>
     </form>
 
-  </div>
-
-  <div *ngIf="_errorMsg">
-    {{_errorMsg}}
-    <button (click)="goBack()" class="btn btn-default">Back</button>
   </div>
 
 </div>
@@ -113,7 +111,7 @@ import {MemeSelectorComponent} from '../meme/meme-selector.component';
     }
   `],
   inputs: ['comment3', 'post'],
-  directives: [MemeSelectorComponent]
+  directives: [MemeSelectorComponent, ErrorComponent]
 })
 export class NewComment4Component {
 
@@ -191,8 +189,10 @@ export class NewComment4Component {
         comment => {
           this._router.navigate(['ViewPost', {postid: this.post.id}]);
         },
-        error => console.log(error)
-      );
+        error => {
+          //console.log(error)
+          this._errorMsg = error;
+        });
   }
 
   memeClicked(memeImageUrl: string) {

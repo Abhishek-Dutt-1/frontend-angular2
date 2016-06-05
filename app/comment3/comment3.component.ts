@@ -4,6 +4,7 @@
 import {Component} from '@angular/core';
 import {Comment3} from './comment3';
 import {RouterLink} from '@angular/router-deprecated';
+import {DateFormatPipe} from '../misc/date-format.pipe';
 
 @Component({
   selector: 'my-comment3',
@@ -44,15 +45,22 @@ import {RouterLink} from '@angular/router-deprecated';
                       <img *ngIf="comment3.postedby.profileimage" src="{{comment3.postedby.profileimage}}" class="profileimage  img-circle">
                     </div>
                   </a>
-                  <div class="profile-name pull-left">
-                    <a class="" [routerLink]="['ViewUser', {id: comment3.postedby.id}]">
-                      {{comment3.postedby.displayname}}
-                    </a>
-                  </div>
-                  &nbsp;&bull;
-                  <a [routerLink] = "['NewComment4', {postid: post.id, comment3id: comment3.id}]">Reply</a>
-                </div>
 
+                  <div class=" pull-left">
+                    <div class="profile-name">
+                      <a class="" [routerLink]="['ViewUser', {id: comment3.postedby.id}]">
+                        {{comment3.postedby.displayname}}
+                      </a>
+                    </div>
+                    &bull;
+                    <a [routerLink] = "['NewComment4', {postid: post.id, comment3id: comment3.id}]">Reply</a>
+                    <div class="clearfix"></div>
+                    <div class="comment-createdat">
+                      {{ comment3.createdAt | timeAgo }}
+                    </div>
+                  </div>
+
+                </div>    <!-- ! postedby-info -->
               </div>
             </div>
           </div>    <!-- ! row -->
@@ -88,9 +96,18 @@ import {RouterLink} from '@angular/router-deprecated';
     font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 14px;
   }
+  .my-comment3 .comment-createdat {
+    display: inline;
+    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    /* padding-left: 10px; */
+    line-height: 14.4px;
+    color: rgba(0, 0, 0, 0.439216);
+  }
   `],
   inputs: ['comment3', 'post'],
-  directives: [RouterLink]
+  directives: [RouterLink],
+  pipes: [DateFormatPipe]
 })
 export class Comment3Component {
 

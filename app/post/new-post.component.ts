@@ -15,12 +15,7 @@ import {ErrorComponent} from '../misc/error.component';
   template: `
   <div class="my-new-post">
 
-    <my-error [_errorMsg]="_errorMsg"></my-error>
-    <div *ngIf="_errorMsg">
-      <button (click)="goBack()" class="btn btn-default">Back</button>
-    </div>
-
-    <div *ngIf="!_errorMsg">
+    <div>     <!--  *ng If="!_errorMsg" -->
       <h3>Create a New Post</h3>
 
       <form #postForm="ngForm" class="form-horizontal" novalidate>
@@ -144,6 +139,8 @@ import {ErrorComponent} from '../misc/error.component';
           </div>
         </div>
 
+        <my-error [_errorMsg]="_errorMsg"></my-error>
+        
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>

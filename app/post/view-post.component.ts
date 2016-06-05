@@ -64,13 +64,13 @@ import {AuthenticationService} from '../authentication/authentication.service';
     padding: 10px 0;
   }
   .my-view-post .comment-list .level-2 {
-    padding: 10px 10px 0px 20px;
+    padding: 10px 10px 0px 40px;
   }
   .my-view-post .comment-list .level-3 {
-    padding: 10px 10px 0px 20px;
+    padding: 10px 10px 0px 40px;
   }
   .my-view-post .comment-list .level-4 {
-    padding: 10px 10px 0px 20px;
+    padding: 10px 10px 0px 40px;
   }
   `],
   //styleUrls: ['app/post/view-post.component.css'],
@@ -126,7 +126,7 @@ export class ViewPostComponent {
         this._errorMsg = error;
       });
   }
-  
+
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
   }

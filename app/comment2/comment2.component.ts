@@ -4,6 +4,7 @@
 import {Component} from '@angular/core';
 import {Comment2} from './comment2';
 import {RouterLink} from '@angular/router-deprecated';
+import {DateFormatPipe} from '../misc/date-format.pipe';
 
 @Component({
   selector: 'my-comment2',
@@ -35,13 +36,21 @@ import {RouterLink} from '@angular/router-deprecated';
                       <img *ngIf="comment2.postedby.profileimage" src="{{comment2.postedby.profileimage}}" class="profileimage img-circle">
                     </div>
                   </a>
-                  <div class="profile-name pull-left">
-                    <a class="" [routerLink]="['ViewUser', {id: comment2.postedby.id}]">
-                      {{comment2.postedby.displayname}}
-                    </a>
+
+                  <div class=" pull-left">
+                    <div class="profile-name">
+                      <a class="" [routerLink]="['ViewUser', {id: comment2.postedby.id}]">
+                        {{comment2.postedby.displayname}}
+                      </a>
+                    </div>
+                    &bull;
+                    <a [routerLink] = "['NewComment3', {postid: post.id, comment2id: comment2.id}]">Reply</a>
+                    <div class="clearfix"></div>
+                    <div class="comment-createdat">
+                      {{ comment2.createdAt | timeAgo }}
+                    </div>
                   </div>
-                  &nbsp;&bull;
-                  <a [routerLink] = "['NewComment3', {postid: post.id, comment2id: comment2.id}]">Reply</a>
+
                 </div>
 
               </div>
@@ -86,9 +95,18 @@ import {RouterLink} from '@angular/router-deprecated';
     font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 14px;
   }
+  .my-comment2 .comment-createdat {
+    display: inline;
+    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    /* padding-left: 10px; */
+    line-height: 14.4px;
+    color: rgba(0, 0, 0, 0.439216);
+  }
   `],
   inputs: ['comment2', 'post'],
-  directives: [RouterLink]
+  directives: [RouterLink],
+  pipes: [DateFormatPipe]
 })
 export class Comment2Component {
 
