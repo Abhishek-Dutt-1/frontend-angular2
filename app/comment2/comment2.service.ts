@@ -21,7 +21,7 @@ export class Comment2Service {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.post(backendUrl+'/comment2', JSON.stringify(newComment2), options).map(
+    return this._http.post(backendUrl+'/comment2/createNewComment2', JSON.stringify(newComment2), options).map(
       res => {
         return res.json()
       })

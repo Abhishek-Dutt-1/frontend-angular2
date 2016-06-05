@@ -30,7 +30,7 @@ import {MemeSelectorComponent} from '../meme/meme-selector.component';
                 <img src="{{_model.meme_image_url}}" class="meme-image img-responsive img-rounded  center-block">
               </div>
             </div>
-            <div [ngClass]="{'col-xs-9': _model.meme_image_url, 'col-xs-12': !_model.meme_image_url}">
+            <div [ngClass]="{'col-xs-10': _model.meme_image_url, 'col-xs-12': !_model.meme_image_url}">
               <textarea class="form-control" rows="5"
                 [(ngModel)] = "_model.text" placeholder="New Comment"
                 ngControl = "text" #text="ngForm"
@@ -57,6 +57,18 @@ import {MemeSelectorComponent} from '../meme/meme-selector.component';
         <label for="meme-selector" class="col-md-1">Meme Selector</label>
         <div class="col-md-11">
           <my-meme-selector (memeSelected)="memeClicked($event)"></my-meme-selector>
+        </div>
+      </div>
+
+      <div class="post-as-anon form-group">
+        <label for="post-as-anon" class="col-sm-2 control-label">Post As Anonymous</label>
+        <div class="radio-inline">
+          <label  class="radio-inline">
+            <input type="radio" name="post-as-anon" (click)="_model.post_as_anon = 1"  [checked]="_model.post_as_anon === 1"> Yes
+          </label>
+          <label  class="radio-inline">
+            <input type="radio" name="post-as-anon" (click)="_model.post_as_anon = 0" [checked]="_model.post_as_anon === 0"> No
+          </label>
         </div>
       </div>
 
@@ -123,6 +135,9 @@ export class NewComment3Component {
 
     this._model =  {
       text: '',
+      meme_image_url: '',
+      postedby: null,
+      post_as_anon: 0
     }
 
     /*
@@ -163,8 +178,17 @@ export class NewComment3Component {
 
     event.preventDefault();
     this._model.commentedon = this.comment2
+    let properModel = {
+      text           : this._model.text || null,
+      meme_image_url : this._model.meme_image_url || null,
+      postedby       : this._model.postedby.id,
+      commentedon    : this._model.commentedon.id,
+      parent_post_id : this.post.id,
+      post_as_anon   : this._model.post_as_anon ? true : false
+    }
 
-    this._comment3Service.createNewComment3(this._model)
+    //this._comment3Service.createNewComment3(this._model)
+    this._comment3Service.createNewComment3( properModel )
       .subscribe(
         comment3 => {
           this._router.navigate(['ViewPost', {postid: this.post.id}]);

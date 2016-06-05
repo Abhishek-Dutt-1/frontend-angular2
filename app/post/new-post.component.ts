@@ -132,6 +132,18 @@ import {ErrorComponent} from '../misc/error.component';
         -->
         </ul>
 
+        <div class="post-as-anon form-group">
+          <label for="post-as-anon" class="col-sm-2 control-label">Post As Anonymous</label>
+          <div class="radio-inline">
+            <label  class="radio-inline">
+              <input type="radio" name="post-as-anon" (click)="model.post_as_anon = 1"  [checked]="model.post_as_anon === 1"> Yes
+            </label>
+            <label  class="radio-inline">
+              <input type="radio" name="post-as-anon" (click)="model.post_as_anon = 0" [checked]="model.post_as_anon === 0"> No
+            </label>
+          </div>
+        </div>
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
@@ -217,6 +229,7 @@ export class NewPostComponent {
       text: 'Post Text',
       type: this._postTypes[0],
       group: superGroupSlashGroup,
+      post_as_anon: 0
     }
 
     // Only logged in uses can post
@@ -292,7 +305,8 @@ export class NewPostComponent {
       text     : this.model.text || null,
       type     : this.model.type,
       postedby : this.model.postedby.id,
-      group    : this.model.group.id
+      group    : this.model.group.id,
+      post_as_anon : this.model.post_as_anon ? true : false
     }
 
     console.log(properModel);

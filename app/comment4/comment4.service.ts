@@ -20,7 +20,7 @@ export class Comment4Service {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.post(backendUrl+'/comment4', JSON.stringify(newComment4), options).map(
+    return this._http.post(backendUrl+'/comment4/createNewComment4', JSON.stringify(newComment4), options).map(
       res => {
         return res.json()
       })

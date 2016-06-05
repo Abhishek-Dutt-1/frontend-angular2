@@ -54,7 +54,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
-                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage">
+                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage img-circle">
                     </div>
                   </a>
                 </div>
@@ -137,7 +137,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
-                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage">
+                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage img-circle">
                     </div>
                   </a>
                 </div>
@@ -228,7 +228,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
-                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage">
+                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage img-circle">
                     </div>
                   </a>
                 </div>
