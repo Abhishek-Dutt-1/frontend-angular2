@@ -30,8 +30,8 @@ import {FabButtonComponent} from '../misc/fab-button.component';
                   <a [routerLink]="['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]">{{group.name}}</a>
                 </div>
                 <div class="col-xs-4">
-                  <div class="sub-text" *ngIf="!group.isCurrentUserSubscribed && !group.isCurrentUsersMembershipPending && _currentUser" (click)="subscribeToThisGroup()">
-                    Join Group
+                  <div class="pull-right btn btn-sm btn-default sub-text" *ngIf="!group.isCurrentUserSubscribed && !group.isCurrentUsersMembershipPending && _currentUser" (click)="subscribeToThisGroup()">
+                    Subscribe
                   </div>
                 </div>
               </div>
@@ -60,8 +60,11 @@ import {FabButtonComponent} from '../misc/fab-button.component';
       <div class="row border-row" *ngIf="group.isCurrentUsersMembershipPending || group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner">
         <div class="col-xs-12">
           <div class="group-ops">
-            <div class="sub-text sub-text-mod" *ngIf="group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner" (click)="unSubscribeFromThisGroup()">Leave Group</div>
-            <div class="sub-text sub-text-mod" *ngIf="group.isCurrentUsersMembershipPending" (click)="cancelPendingGroupMembership()">Membership Pending (Cancel?)</div>
+          <!--
+            <div class="sub-text sub-text-mod" *ngIf="group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner" (click)="unSubscribeFromThisGroup()">Unsubscribe Group</div>
+            -->
+            <div class="btn btn-xs btn-link sub-text" *ngIf="group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner" (click)="unSubscribeFromThisGroup()">Unsubscribe</div>
+            <div class="btn btn-xs btn-link sub-text" *ngIf="group.isCurrentUsersMembershipPending" (click)="cancelPendingGroupMembership()">Membership Pending (Cancel?)</div>
           </div>
         </div> <!-- !col -->
       </div> <!-- !row -->
@@ -167,23 +170,7 @@ currentUserIsGroupOwner: {{group.currentUserIsGroupOwner}}<br/>
   }
   .my-view-group .sub-text {
     color: rgba(0, 0, 0, 0.4);
-    padding-top: 6px;
-    font-size: 12px;
-    text-align: right;
   }
-  .my-view-group .sub-text-mod {
-    text-align: left;
-    padding-top: 0px;
-    font-size: 15px;
-  }
-  /*
-  .my-view-group .panel-heading {
-
-  }
-  .my-view-group .panel-body {
-
-  }
-  */
   `],
   //styleUrls: ['app/group/view-group.component.css'],
   //inputs: ['group'],
@@ -244,7 +231,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   myEfficientFn = this.debounce( () => {
 	  // All the taxing stuff you do
     this._sticky = window.scrollY > 60;
-    console.log(this._sticky)
+    //console.log(this._sticky)
   }, 100, false);
   debounce(func, wait, immediate) {
     var timeout;
@@ -268,7 +255,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
     this._groupService.getPostsInGroup(super_group_name, group_name)
       .subscribe(
         groupAndPostList => {
-          console.log(groupAndPostList)
+          //console.log(groupAndPostList)
           this.group = groupAndPostList.group
           this.groupPosts = groupAndPostList.postList;
           if(this.groupPosts.length < 1) {
@@ -277,11 +264,11 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
             } else {
               this._errorMsg = "This group is private. Non members can not view posts in this group."
             }
-
           }
         },
         error => {
-          console.log(error);
+          //console.log(error);
+          this._errorMsg = error;
         });
   }
 
@@ -289,12 +276,11 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
    * Subscribe current user to this group
    */
   subscribeToThisGroup() {
-    console.log("SUBSRIBING");
     if(!this.group.id) return;
     if(!this._currentUser || !this._currentUser.id) return;
     this._groupService.subscribeCurrentUserToGroup(this.group.id).subscribe(
       res => {
-        console.log("SUCCESS SUBS", res);
+        //console.log("SUCCESS SUBS", res);
         // If group membership needs approval, then server wourld have added
         // the user to waiting list or else would have directly subscribed
         if(this.group.membership_needs_approval) {
@@ -302,11 +288,10 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
         } else {
           this.group.isCurrentUserSubscribed = true;
         }
-
       },
       error => {
         this._errorMsg = error;
-        console.log("ERROR", error);
+        //console.log("ERROR", error);
       })
   }
 
@@ -314,18 +299,18 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
    * Unsubscirbe current user from this group
    */
   unSubscribeFromThisGroup() {
-    console.log("Un subscribing")
+    //console.log("Un subscribing")
     if(!this.group.id) return;
     if(!this._currentUser || !this._currentUser.id) return;
 
     this._groupService.unSubscribeCurrentUserFromGroup(this.group.id).subscribe(
       res => {
-        console.log("SUCCESS UN SUBS", res);
+        //console.log("SUCCESS UN SUBS", res);
         this.group.isCurrentUserSubscribed = false;
       },
       error => {
         this._errorMsg = error;
-        console.log("ERROR", error);
+        //console.log("ERROR", error);
       })
   }
 
@@ -333,17 +318,17 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
    * Cancel the logged in users pending membership to a group that requires approval
    */
   cancelPendingGroupMembership() {
-    console.log("Cancelling pending membership")
+    //console.log("Cancelling pending membership")
     if(!this.group.id) return;
     if(!this._currentUser || !this._currentUser.id) return;
     this._groupService.cancelCurrentUsersPendingMembership(this.group.id).subscribe(
       res => {
-        console.log("SUCCESS UN SUBS pending meme", res);
+        //console.log("SUCCESS UN SUBS pending meme", res);
         this.group.isCurrentUsersMembershipPending = false;
       },
       error => {
         this._errorMsg = error;
-        console.log("ERROR", error);
+        //console.log("ERROR", error);
       })
 
   }
@@ -351,8 +336,8 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
     window.removeEventListener("scroll", this.myEfficientFn);
-
   }
+
   goBack() {
     window.history.back();
   }

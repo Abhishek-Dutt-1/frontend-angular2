@@ -51,12 +51,12 @@ export class ViewUserComponent implements OnInit {
     this._userService.getUser(id).subscribe(
         user => {
           if(user) {
-            console.log("View user", user);
+            //console.log("View user", user);
             this._user = user;
           }
         },
         error => {
-          console.log(error);
+          //console.log(error);
           this._errorMsg = error;
         });
 

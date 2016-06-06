@@ -9,6 +9,7 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {MemeSelectorComponent} from '../meme/meme-selector.component';
 import {ErrorComponent} from '../misc/error.component';
+import {AppService} from '../app.service';
 
 @Component({
   selector: 'my-new-comment1',
@@ -21,8 +22,8 @@ import {ErrorComponent} from '../misc/error.component';
     <form #comment1Form="ngForm" class="form-horizontal" novalidate>
 
       <div class="post-textarea form-group">
-        <label for="text" class="col-md-1">Comment Text</label>
-        <div class="col-md-11">
+        <label for="text" class="control-label col-sm-2">Comment Text</label>
+        <div class="col-sm-10">
           <div class="row">
 
             <div *ngIf="_model.meme_image_url" class="col-xs-2 meme-image-col">
@@ -46,15 +47,15 @@ import {ErrorComponent} from '../misc/error.component';
       </div>
 
       <div class="form-group" *ngIf="_showMemeList">
-        <label for="meme-selector" class="col-md-1">Meme Selector</label>
-        <div class="col-md-11">
+        <label for="meme-selector" class="col-sm-2">Meme Selector</label>
+        <div class="col-sm-10">
           <my-meme-selector (memeSelected)="memeClicked($event)"></my-meme-selector>
         </div>
       </div>
 
       <div class="post-as-anon form-group">
         <label for="post-as-anon" class="col-sm-2 control-label">Post As Anonymous</label>
-        <div class="radio-inline">
+        <div class="col-sm-10">
           <label  class="radio-inline">
             <input type="radio" name="post-as-anon" (click)="_model.post_as_anon = 1"  [checked]="_model.post_as_anon === 1"> Yes
           </label>
@@ -67,7 +68,7 @@ import {ErrorComponent} from '../misc/error.component';
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
       <div class="form-group">
-        <div class="col-md-offset-1 col-md-11">
+        <div class="col-sm-offset-2 col-md-10">
           <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!comment1Form.form.valid">Submit</button>
           <button (click)="goBack()" class="btn btn-default">Cancel</button>
           <button (click)="_showMemeList = !_showMemeList" class="btn btn-default btn-sm pull-right">Meme</button>
@@ -101,6 +102,7 @@ export class NewComment1Component {
   private _showMemeList: boolean = false;
 
   constructor(
+    private _appService: AppService,
     private _comment1Service: Comment1Service,
     private _routeParams: RouteParams,
     private _authenticationService: AuthenticationService,
@@ -129,7 +131,6 @@ export class NewComment1Component {
     // Only logged in uses can comment1
     this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
-        console.log("State change ", currentUser)
         this._model.postedby = currentUser;
         this._errorMsg = null;
       } else {
@@ -170,7 +171,6 @@ export class NewComment1Component {
           this._router.navigate(['ViewPost', {postid: this.post.id}]);
         },
         error => {
-          console.log(error)
           this._errorMsg = error;
         });
   }
@@ -181,6 +181,9 @@ export class NewComment1Component {
 
   goBack() {
     window.history.back();
+  }
+
+  ngOnDestroy() {
   }
 
 }

@@ -22,7 +22,7 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
             </div>
           </div>
         </div>
-        
+
       </div>
     </div>
   `,
@@ -73,11 +73,11 @@ export class VoteComponent implements OnInit{
   ngOnInit() {}
 
   upVotePost(id) {
-    console.log("Up voting post with ", id);
+    //console.log("Up voting post with ", id);
     this.upVote.next(id);
   }
   downVotePost(id) {
-    console.log("Down voting post with ", id);
+    //console.log("Down voting post with ", id);
     this.downVote.next(id);
   }
 }

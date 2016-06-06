@@ -15,7 +15,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
         <div class="col-xs-12">
 
           <div class="row">
-            <div *ngIf="comment2.meme_image_url" class="col-xs-6 col-sm-3 meme-image-col">
+            <div *ngIf="comment2.meme_image_url" class="col-xs-4 col-sm-3 col-md-2 meme-image-col">
               <div class="meme-image-container ">
                 <img src="{{comment2.meme_image_url}}" class="meme-image img-responsive img-rounded  center-block">
               </div>

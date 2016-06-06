@@ -31,89 +31,112 @@ export class PostService {
 
   getPost(id: any) {
 
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers( this._appService.getSiteParams().headersObj );
-      let options = new RequestOptions({ headers: headers });
-      return this._http.get(backendUrl+'/post/getPostById/' + id, options)
-        .map(res => {
-          console.log(res.json());
-          let post = res.json().post;
-          post.comments = res.json().comments;
-          return post;
-        }).catch(error => {
-          return this._appService.handleServerErrors(error);
-        });
-    }
-
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/post/getPostById/' + id, options)
+      .map(res => {
+        //console.log(res.json());
+        this._appService.spinner(false);
+        let post = res.json().post;
+        post.comments = res.json().comments;
+        return post;
+      }).catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error);
+      });
   }
 
   /**
    * Returns posts belonging to a geoSelection
    */
   getPostsByHyperGroup(geoSelection: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.get(backendUrl+'/post/getPostsByHyperGroup/' + geoSelection, options)
       .map(res => {
-        console.log(res.json());
+        //console.log(res.json());
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }         // !getPostsByGeoSelection()
 
   createNewPost(newProperPost: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/post/createNewPost', JSON.stringify(newProperPost), options).map(
       res => {
-        console.log(res)
-        console.log(res.json())
+        //console.log(res)
+        //console.log(res.json())
+        this._appService.spinner(false);
         return res.json()
       })
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }     // !createNewPost()
 
   deletePostById(postId: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers    = new Headers( this._appService.getSiteParams().headersObj );
     let options    = new RequestOptions({ headers: headers });
     return this._http.get(backendUrl+'/post/deletePostById/' + postId, options).map(
       res => {
-        console.log(res)
-        console.log(res.json())
+        //console.log(res)
+        //console.log(res.json())
+        this._appService.spinner(false);
         return res.json()
       })
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }   // !deletePostById()
 
   upVotePost(id: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.get(backendUrl+'/post/upVotePost/'+id, options).map(
       res => {
-        console.log(res);
-        console.log(res.json());
+        //console.log(res);
+        //console.log(res.json());
+        this._appService.spinner(false);
         return res.json();
       })
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }
 
   downVotePost(id: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.get(backendUrl+'/post/downVotePost/'+id, options).map(
       res => {
-        console.log(res);
-        console.log(res.json());
+        //console.log(res);
+        //console.log(res.json());
+        this._appService.spinner(false);
         return res.json();
       })
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }
 
 }

@@ -25,6 +25,7 @@ export class UserService {
    * Get user by id
    */
   getUser(id: number) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -32,11 +33,12 @@ export class UserService {
     return this._http.get(backendUrl+'/user/getuserbyid/'+id, options)
     .map(
       res => {
-        let user = res.json();
-        return user;
+        this._appService.spinner(false);
+        return res.json();
     })
     .catch(
       error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       }
     );
@@ -46,17 +48,19 @@ export class UserService {
    * Get user obj from a token
    */
   getUserByToken(token: string) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/user/getUserByToken', JSON.stringify({token: token}), options)
     .map(
       res => {
-        let user = res.json();
-        return user;
+        this._appService.spinner(false);
+        return res.json();
     })
     .catch(
       error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       }
     );
@@ -87,6 +91,7 @@ export class UserService {
       */
     }
 
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -95,14 +100,16 @@ export class UserService {
     .map(
       res => {
         let user = res;
-        console.log(user);
-        console.log(user.json());
+        //console.log(user);
+        //console.log(user.json());
         user = res.json().user;
+        this._appService.spinner(false);
         return user;
     })
     .catch(
       error => {
-        console.log(error);
+        this._appService.spinner(false);
+        //console.log(error);
         return this._appService.handleServerErrors(error);
     });
   }         // !createNewUser()
@@ -111,26 +118,32 @@ export class UserService {
    * Change user's password
    */
   resetPassword(newPassword: string) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/passport/changepassword', JSON.stringify( { newPassword: newPassword } ), options)
       .map(res => {
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }
 
   updateGeoSettings(userId: number, newSettings: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/user/updateGeoSettings', JSON.stringify({userId: userId, newSettings: newSettings}), options)
       .map(res => {
-        console.log(res);
+        //console.log(res);
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }         // ! updateGeoSettings()
@@ -139,13 +152,16 @@ export class UserService {
    * Update user's settings on basic tab
    */
   updateBasicSettings(newSettings: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/user/updateBasicSettings', JSON.stringify(newSettings), options)
       .map(res => {
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }       // ! updateBasicSettings()
@@ -172,14 +188,16 @@ export class UserService {
    *  Verfiy primary email from a token
    */
   verifyEmailToken(token: string) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.get(backendUrl+'/verifyemail/' + token, options)
       .map(res => {
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }   // !verifyEmailToken
@@ -188,14 +206,16 @@ export class UserService {
    *  Verfiy extra email from a token
    */
   verifyExtraEmailToken(token: string) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.get(backendUrl+'/verifyemail2/' + token, options)
       .map(res => {
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }   // !verifyEmailToken
@@ -204,13 +224,16 @@ export class UserService {
    *  Verfiy email from a token
    */
   resendVerificationEmail(email) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl + '/email/resendVerificationEmail/', JSON.stringify( { email: email } ), options)
       .map(res => {
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }         //  ! resendVerificationEmail
@@ -219,13 +242,16 @@ export class UserService {
    * Update Profile image url
    */
   updateProfileImage(profileimage: string) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl + '/user/updateProfileImage/', JSON.stringify( { profileimage: profileimage } ), options)
       .map(res => {
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }         // ! updateProfileImage
@@ -234,13 +260,16 @@ export class UserService {
    * Add an extra email
    */
   addExtraEmail(extraEmail: string) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl + '/user/addExtraEmail/', JSON.stringify( { extraEmail: extraEmail } ), options)
       .map(res => {
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }
@@ -249,13 +278,16 @@ export class UserService {
   * Add an extra email
   */
   deleteExtraEmail( extraEmailId: string ) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.get(backendUrl + '/user/deleteExtraEmail/' + extraEmailId, options)
       .map(res => {
+        this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
   }

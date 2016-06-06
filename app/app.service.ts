@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Subject, Observable, Observer} from 'rxjs/Rx';
 
 @Injectable()
 export class AppService {
@@ -9,6 +9,20 @@ export class AppService {
   private _jwt: string = null;
 
   constructor() {}
+
+  /**
+   * Show/hide global spinner
+   */
+  private _showSpinner = new Subject<boolean>();
+  showSpinner$ = this._showSpinner.asObservable();
+  spinner(state?: boolean) {
+    if (state || state == null) {
+      // undefined == null : true
+      this._showSpinner.next(true);
+    } else {
+      this._showSpinner.next(false);
+    }
+  }
 
   /**
    * Save the geo location page (i.e. int'l, national, city etc)

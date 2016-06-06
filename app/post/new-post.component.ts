@@ -22,20 +22,20 @@ import {ErrorComponent} from '../misc/error.component';
 
         <div class="post-select form-group">
           <label for="type" class="col-sm-2 control-label">Post Type</label>
-          <span *ngFor="let postType of _postTypes">
-            <div class="radio-inline">
-              <label>
-                <input type="radio" name="type" (click)="model.type = postType" [checked]="postType === model.type"> {{postType}}
+          <div class="col-sm-10">
+            <span *ngFor="let postType of _postTypes">
+              <label class="radio-inline">
+                <input type="radio" name="type" (click)="model.type = postType" [checked]="postType === model.type"> {{postType | uppercase}} &nbsp;&nbsp;
               </label>
-            </div>
-          </span>
+            </span>
+          </div>
         </div>
 
         <div class="post-text form-group">
           <label for="title" class="col-sm-2 control-label">Title</label>
           <div class="col-sm-10">
             <input id="title" type="text" class="form-control" required
-              [(ngModel)] = "model.title"
+              [(ngModel)] = "model.title" placeholder="Post title"
               ngControl = "title" #title="ngForm"
             >
             <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
@@ -49,7 +49,7 @@ import {ErrorComponent} from '../misc/error.component';
             <label for="link" class="col-sm-2 control-label">Link</label>
             <div class="col-sm-10">
               <input id="link" type="url" class="form-control" required
-                [(ngModel)] = "model.link"
+                [(ngModel)] = "model.link" placeholder="Paste URL here"
                 ngControl = "link" #link="ngForm"
               >
               <div [hidden]="link.valid || link.pristine" class="alert alert-danger">
@@ -62,8 +62,8 @@ import {ErrorComponent} from '../misc/error.component';
         <div class="post-textarea form-group">
           <label for="text" class="col-sm-2 control-label">Text</label>
           <div class="col-sm-10">
-            <textarea type="text" class="form-control" rows="5" required
-              [(ngModel)] = "model.text"
+            <textarea type="text" class="form-control" rows="5"
+              [(ngModel)] = "model.text" placeholder="Post text"
               ngControl = "text" #text="ngForm"
             ></textarea>
             <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
@@ -74,62 +74,47 @@ import {ErrorComponent} from '../misc/error.component';
 
         <div class="form-group">
           <label class="col-sm-2 control-label">Group</label>
-          <p class="form-control-static col-md-10">
-            <span *ngIf="model.group">
-              {{model.group.supergroup.name | uppercase}}/{{model.group.name}}
-            </span>
-            <span *ngIf="!model.group">
-              <i>[No Group Selected]</i>
-            </span>
-          </p>
-          <input id="group" type="text" class="hidden" required
-            [(ngModel)] = "model.group"
-            ngControl = "group" #group="ngForm"
-          >
-          <div [hidden]="group.valid || !postForm.form.submitted" class="alert alert-danger">
-            Group is required
-          </div>
-        </div>
-
-        <!--
-        <div class="post-text">
-          <label for="group" class="">Search Group</label>
-          <input id="group" type="text" class="" required
-            [(ngModel)] = "model.superGroupSlashGroup"
-            ngControl = "superGroupSlashGroup" #superGroupSlashGroup="ngForm"
-            (keyup)="search(superGroupSlashGroup.value)"
-          >
-          <div [hidden]="superGroupSlashGroup.valid || superGroupSlashGroup.pristine" class="alert alert-danger">
-            Group is required
-          </div>
-        </div>
-        -->
-
-        <div class="post-text form-group" *ngIf="_showGroupSearchBox">
-          <label for="group" class="col-sm-2 control-label">Search Groups (and click on the name to select)</label>
           <div class="col-sm-10">
-            <input id="group" type="text" class="form-control"
-              ngControl = "searchGroupTmp" #searchGroupTmp="ngForm"
-              (keyup)="search(searchGroupTmp.value)"
-            >
-            <!--
-            <div [hidden]="_searchGroup.valid || _searchGroup.pristine" class="alert alert-danger">
-              Group is required
+            <div class="">
+              <p class="form-control-static">
+                <span *ngIf="model.group">
+                  {{model.group.supergroup.name | uppercase}}/{{model.group.name}}
+                </span>
+                <span *ngIf="!model.group"><i>No Group Selected</i></span>
+              </p>
+              <input id="group" type="text" class="hidden" required
+                [(ngModel)] = "model.group"
+                ngControl = "group" #group="ngForm">
+              <div [hidden]="group.valid || !postForm.form.submitted" class="alert alert-danger">
+                Group is required
+              </div>
             </div>
-            -->
-          </div>
-        </div>
 
-        <ul>
-        <li *ngFor="let item of items | async" (click)="selectSuperGroupSlashGroup(item)" class="form-control-static">{{item.supergroup.name | uppercase}}/{{item.name}}</li>
-        <!--
-        <li *ngFor="#item of itemsV1" (click)="selectSuperGroupSlashGroup(item.super_group.name+'/'+item.name)">{{item.super_group.name}}/{{item.name}}</li>
-        -->
-        </ul>
+            <div class="row" *ngIf="_showGroupSearchBox">
+              <div class="col-xs-12">
+                <div class="post-text form-group1">
+                  <label for="group-search" class="search-group-label">Search Groups (and click on the name to select)</label>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <input id="group-search" type="text" class="form-control"
+                  ngControl = "searchGroupTmp" #searchGroupTmp="ngForm"
+                  (keyup)="search(searchGroupTmp.value)">
+              </div>
+              <div class="col-sm-12">
+                <button class="btn btn-sm btn-default search-results" *ngFor="let item of items | async" (click)="selectSuperGroupSlashGroup(item)">
+                  {{item.supergroup.name | uppercase}}/{{item.name}}
+                </button>
+                {{items.length}}
+              </div>
+
+            </div>      <!-- ! row -->
+          </div>    <!-- col-sm-10 -->
+        </div>      <!-- ! form-group -->
 
         <div class="post-as-anon form-group">
           <label for="post-as-anon" class="col-sm-2 control-label">Post As Anonymous</label>
-          <div class="radio-inline">
+          <div class="col-sm-10">
             <label  class="radio-inline">
               <input type="radio" name="post-as-anon" (click)="model.post_as_anon = 1"  [checked]="model.post_as_anon === 1"> Yes
             </label>
@@ -140,7 +125,7 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
 
         <my-error [_errorMsg]="_errorMsg"></my-error>
-        
+
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
@@ -171,6 +156,12 @@ import {ErrorComponent} from '../misc/error.component';
     .my-new-post .post-select select{
       width: 100%;
     }
+    .my-new-post .search-group-label {
+      color: rgba(0, 0, 0, 0.4);
+    }
+    .my-new-post .search-results {
+       margin: 10px 10px 0 0;
+     }
   `],
   inputs: ['post'],
   directives: [ErrorComponent]
@@ -182,6 +173,7 @@ export class NewPostComponent {
   private _errorMsg: string   = null;
   private _showGroupSearchBox = true;
   //private _searchGroup      = '';
+  private _loggedInUserSubcription = null;
 
   constructor(
     private _postService           : PostService,
@@ -221,16 +213,16 @@ export class NewPostComponent {
     //this._searchGroup = superGroupSlashGroup;
 
     this.model =  {
-      title: 'Post Title',
+      title: '',
       link: '',
-      text: 'Post Text',
+      text: '',
       type: this._postTypes[0],
       group: superGroupSlashGroup,
       post_as_anon: 0
     }
 
     // Only logged in uses can post
-    this._authenticationService.loggedInUser$.subscribe(currentUser => {
+    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
         this.model.postedby = currentUser;
         this._errorMsg = null;
@@ -317,6 +309,10 @@ export class NewPostComponent {
         this._errorMsg = error;
         console.log(error);
       });
+  }
+
+  ngOnDestroy() {
+    this._loggedInUserSubcription.unsubscribe();
   }
 
   goBack() {

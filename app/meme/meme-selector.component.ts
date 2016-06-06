@@ -68,7 +68,7 @@ export class MemeSelectorComponent implements OnInit {
         if(memes && memes.memecategories && memes.memecategories.length > 0) {
           this.memeCatNameClicked(memes.memecategories[0].id);
         }
-        console.log(this._memeList)
+        //console.log(this._memeList)
       },
       error => {
           this._errorMsg = error;

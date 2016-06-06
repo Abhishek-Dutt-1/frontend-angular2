@@ -30,19 +30,21 @@ export class SuperGroupService {
       return sgs.name == sg_name;
     }));
     */
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers    = new Headers( this._appService.getSiteParams().headersObj );
     let options    = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl + '/supergroup/getSuperGroupByName', JSON.stringify({superGroupName: sg_name}), options)
       .map(
         res => {
-          console.log(res)
-          console.log(res.json())
+          //console.log(res)
+          //console.log(res.json())
+          this._appService.spinner(false);
           return res.json();
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
         //return Observable.throw(error);
       });
@@ -64,16 +66,18 @@ export class SuperGroupService {
    * selected super groups are hi quality super groups which are selected by admins
    */
   getAllSuperGroups(onlySelected: boolean = true) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers    = new Headers( this._appService.getSiteParams().headersObj );
     let options    = new RequestOptions({ headers: headers });
     return this._http.get(backendUrl + '/supergroup', options)
       .map(
         res => {
+          this._appService.spinner(false);
           return res.json();
       })
       .catch(error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
         //return Observable.throw(error);
       });

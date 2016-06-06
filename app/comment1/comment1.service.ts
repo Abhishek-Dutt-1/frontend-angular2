@@ -38,15 +38,19 @@ export class Comment1Service {
 
     return Promise.resolve(newProperComment1);
     */
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/comment1/createNewComment1', JSON.stringify(newComment1), options).map(
       res => {
+        this._appService.spinner(false);
         return res.json()
       })
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
 
   }
 }

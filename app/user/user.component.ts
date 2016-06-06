@@ -14,7 +14,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
     <div *ngIf="user">
       <div class="my-user">
         <div class="row">
-          <div class="col-xs-12 col-md-offset-3 col-md-6">
+          <div class="col-xs-12 col-md-12">
 
             <my-error [_errorMsg]="_errorMsg"></my-error>
 
@@ -38,134 +38,181 @@ import {AuthenticationService} from '../authentication/authentication.service';
                   <div role="tabpanel1" class="tab-pane" [ngClass]="{active: tab == 'basic'}" id="basic">
 
                     <div class="form-horizontal">
-                      <div class="form-group">
-                        <label class="col-md-4 control-label">Display Name</label>
-                        <p class="form-control-static col-md-8">{{user.displayname}}</p>
-                      </div>
-                      <div class="form-group">
-                        <label class="col-md-4 control-label">Profile Image</label>
-                        <img *ngIf="user.profileimage" src="{{user.profileimage}}" class="profileimage">
-                        <div *ngIf="!_editProfileImage && ownProfile" >
-                          <p *ngIf="!user.profileimage" class="form-control-static col-md-8"><i>[No Profile Image]</i></p>
-                          <button class="btn btn-xs btn-default" (click)="_editProfileImage = true">Change Profile Image</button>
-                        </div>
-                        <div *ngIf="_editProfileImage && ownProfile">
-                          <input type="text" class="form-control col-md-8" placeholder="Image url" [(ngModel)]="_editInPlaceModel.profileimage">
-                          <button class="btn btn-xs btn-default" (click)="updateProfileImage()">Save</button>
-                          <button class="btn btn-xs btn-default" (click)="_editProfileImage = false">Cancel</button>
-                        </div>
 
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label">Display Name</label>
+                        <p class="form-control-static col-sm-10">{{user.displayname}}</p>
                       </div>
-                      <div class="form-group" [hidden]="!ownProfile">
-                        <label class="col-md-4 control-label">Email</label>
-                        <p class="form-control-static col-md-8">{{user.email}} | Verified: {{user.emailverified}}
-                          <span *ngIf="!user.emailverified">| <span (click)="resendVerificationEmail(user.email)">Resend Verification Email</span></span>
-                        </p>
-                      </div>
-                      <div class="form-group" [hidden]="!ownProfile">
-                        <label class="col-md-4 control-label">Extra Emails</label>
-                        <div *ngFor="let email of user.extra_emails">
-                          <p class="form-control-static col-md-8">{{email.email}} | Verified: {{email.emailverified}}
-                            <span *ngIf="!email.emailverified">| <span (click)="resendVerificationEmail(email.email)">Resend Verification Email</span></span>
-                            | <span (click)="deleteExtraEmail(email.id)"> DELETE EMAIL </span>
-                          </p>
-                        </div>
-                        <div *ngIf="!_editInPlaceModel.showForm.addExtraEmail">
-                          <button class="btn btn-xs btn-default" (click)="_editInPlaceModel.showForm.addExtraEmail = true">Add Extra Email</button>
-                        </div>
-                        <div *ngIf="_editInPlaceModel.showForm.addExtraEmail">
-                          <div>
-                            <input type="text" placeholder="email@domain.com" [(ngModel)]="_editInPlaceModel.extraEmail"
-                              (keyup)="validateEmail(_editInPlaceModel.extraEmail)" class="form-control" >
-                              <div [hidden]="_editInPlaceModel.errors.extraEmail.isValid" class="alert alert-danger col-sm-12">
-                                Invalid email.
+
+                      <div class="form-group" *ngIf="ownProfile">
+                        <label class="col-sm-2 control-label">Profile Image</label>
+                        <div class="col-sm-10">
+                          <img *ngIf="user.profileimage" src="{{user.profileimage}}" class="profileimage">
+                          <div *ngIf="!_editProfileImage" >
+                            <div *ngIf="!user.profileimage" class="form-control-static"><i>Too #cool for profile pic.</i></div>
+                            <button class="btn btn-xs btn-default" (click)="_editProfileImage = true">Change Profile Image</button>
+                          </div>
+                          <div *ngIf="_editProfileImage">
+                            <div class="row">
+                              <div class="col-xs-12">
+                                <input type="text" class="form-control" placeholder="Image url" [(ngModel)]="_editInPlaceModel.profileimage">
                               </div>
-                              <button class="btn btn-xs btn-default" (click)="addExtraEmail()" [disabled]="!_editInPlaceModel.errors.extraEmail.isValid" >Save</button>
-                              <button class="btn btn-xs btn-default" (click)="_editInPlaceModel.showForm.addExtraEmail = false">Cancel</button>
                             </div>
+                            <div class="row">
+                              <div class="col-xs-12">
+                                <button class="btn btn-xs btn-default" (click)="updateProfileImage()">Save</button>
+                                <button class="btn btn-xs btn-default" (click)="_editProfileImage = false">Cancel</button>
+                              </div>
+                            </div>    <!-- ! row -->
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group" [hidden]="!ownProfile">
+                        <label class="col-sm-2 control-label">Primary Email</label>
+                        <div class="form-control-static col-sm-10">{{user.email}}
+                          <i *ngIf="user.emailverified" class="fa fa-check-circle-o email-tick verified" aria-hidden="true"></i>
+                          <i *ngIf="!user.emailverified" class="fa fa-exclamation-circle email-tick notverified" aria-hidden="true"></i>
+                          <span *ngIf="!user.emailverified">
+                            <span class="btn btn-xs btn-default" (click)="resendVerificationEmail(user.email)">Resend Verification Email</span>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="form-group" [hidden]="!ownProfile">
+                        <label class="col-sm-2 control-label">Extra Emails</label>
+                        <div class="col-sm-10">
+
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div *ngFor="let email of user.extra_emails">
+                                <div class="form-control-static">{{email.email}}
+                                  <i *ngIf="email.emailverified" class="fa fa-check-circle-o email-tick verified" aria-hidden="true"></i>
+                                  <i *ngIf="!email.emailverified" class="fa fa-exclamation-circle email-tick notverified" aria-hidden="true"></i>
+                                  <span *ngIf="!email.emailverified">
+                                    <span class="btn btn-xs btn-default" (click)="resendVerificationEmail(email.email)">Resend Verification Email</span>
+                                  </span>
+                                  <span class="btn btn-xs btn-default" (click)="deleteExtraEmail(email.id)">Remove Email</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div *ngIf="!_editInPlaceModel.showForm.addExtraEmail">
+                                <button class="btn btn-xs btn-default" (click)="_editInPlaceModel.showForm.addExtraEmail = true">Add Extra Email</button>
+                              </div>
+                              <div *ngIf="_editInPlaceModel.showForm.addExtraEmail">
+                                <div>
+                                  <input type="text" placeholder="email@domain.com" [(ngModel)]="_editInPlaceModel.extraEmail"
+                                    (keyup)="validateEmail(_editInPlaceModel.extraEmail)" class="form-control" >
+                                    <div [hidden]="_editInPlaceModel.errors.extraEmail.isValid" class="alert alert-danger col-sm-12">
+                                      Invalid email.
+                                    </div>
+                                    <button class="btn btn-xs btn-default" (click)="addExtraEmail()" [disabled]="!_editInPlaceModel.errors.extraEmail.isValid" >Save</button>
+                                    <button class="btn btn-xs btn-default" (click)="_editInPlaceModel.showForm.addExtraEmail = false">Cancel</button>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+
                         </div>
                       </div>
 
 
                       <div class="form-group" [hidden]="!ownProfile">
+
                         <div *ngIf="!_editInPlaceModel.showForm.resetPassword">
-                          <label class="col-md-4 control-label">Password</label>
-                          <p class="form-control-static col-md-8"><i>[hidden]</i></p>
-                          <button class="btn btn-xs btn-default" (click)="_editInPlaceModel.showForm.resetPassword = true">Change Password</button>
+                          <label class="col-sm-2 control-label">Password</label>
+                          <div class="col-sm-10">
+                            <p class="form-control-static"><i>[hidden]</i></p>
+                            <button class="btn btn-xs btn-default" (click)="_editInPlaceModel.showForm.resetPassword = true">Change Password</button>
+                          </div>
                         </div>
+
                         <div *ngIf="_editInPlaceModel.showForm.resetPassword">
                           <div>
-                            <label for="resetPassword" class="col-md-4 control-label">Password</label>
-                            <input id="resetPassword" type="password" [(ngModel)]="_editInPlaceModel.resetPassword" (keyup)="validatePassword()" class="form-control" minlength="8">
-                            <div [hidden]="_editInPlaceModel.errors.resetPassword.minlength" class="alert alert-danger col-sm-12">
-                                Password must be atleast 8 characters long.
+                            <label for="resetPassword" class="col-sm-2 control-label">Password</label>
+                            <div class="col-sm-10">
+                              <input id="resetPassword" type="password" [(ngModel)]="_editInPlaceModel.resetPassword" (keyup)="validatePassword()" class="form-control" minlength="8">
+                              <div [hidden]="_editInPlaceModel.errors.resetPassword.minlength" class="alert alert-danger col-sm-12">
+                                  Password must be atleast 8 characters long.
+                              </div>
                             </div>
-                            <label for="resetPasswordConfirm" class="col-md-4 control-label">Confirm Password</label>
-                            <input id="resetPasswordConfirm" type="password" [(ngModel)]="_editInPlaceModel.resetPasswordConfirm" (keyup)="validatePasswordConfirm()" class="form-control">
-                            <div [hidden]="_editInPlaceModel.errors.resetPassword.passwordMatch" class="alert alert-danger col-sm-12">
-                                Passwords do not match.
+                            <label for="resetPasswordConfirm" class="col-sm-2 control-label">Confirm Password</label>
+                            <div class="col-sm-10">
+                              <input id="resetPasswordConfirm" type="password" [(ngModel)]="_editInPlaceModel.resetPasswordConfirm" (keyup)="validatePasswordConfirm()" class="form-control">
+                              <div [hidden]="_editInPlaceModel.errors.resetPassword.passwordMatch" class="alert alert-danger">
+                                  Passwords do not match.
+                              </div>
                             </div>
-                            <button class="btn btn-xs btn-default" (click)="resetPassword()" [disabled]="!_editInPlaceModel.errors.resetPassword.isValid">Save</button>
-                            <button class="btn btn-xs btn-default" (click)="_editInPlaceModel.showForm.resetPassword = false">Cancel</button>
+                            <div class="col-sm-offset-2 col-sm-10">
+                              <button class="btn btn-xs btn-default" (click)="resetPassword()" [disabled]="!_editInPlaceModel.errors.resetPassword.isValid">Save</button>
+                              <button class="btn btn-xs btn-default" (click)="_editInPlaceModel.showForm.resetPassword = false">Cancel</button>
+                            </div>
                           </div>
                         </div>
 
                       </div>
-
+                      <!--
                       <div class="form-group" [hidden]="true || !ownProfile">
-                        <div class="col-md-offset-4 col-md-8">
+                        <div class="col-sm-offset-2 col-sm-10">
                           <button (click)="gotoEditUser('basic')" class="btn btn-default">Edit</button>
                         </div>
                       </div>
+                      -->
                     </div>
 
                   </div>
+
                   <div role="tabpanel1" class="tab-pane" [ngClass]="{active: tab == 'geo'}" id="geo">
 
                     <div [hidden]="!ownProfile">
                       <div class="form-horizontal">
                         <div class="form-group">
-                          <label class="col-md-4 control-label">International</label>
-                          <p class="form-control-static col-md-8">
+                          <label class="col-sm-2 control-label">International</label>
+                          <p class="form-control-static col-sm-10">
                             <span *ngFor="let international of user.international">
                               {{international.name}},
                             </span>
                           </p>
                         </div>
                         <div class="form-group">
-                          <label class="col-md-4 control-label">National</label>
-                          <p class="form-control-static col-md-8">
+                          <label class="col-sm-2 control-label">National</label>
+                          <p class="form-control-static col-sm-10">
                             <span *ngFor="let national of user.national">
                               {{national.name}}
                             </span>
                           </p>
                         </div>
                         <div class="form-group">
-                          <label class="col-md-4 control-label">State</label>
-                          <p class="form-control-static col-md-8">
+                          <label class="col-sm-2 control-label">State</label>
+                          <p class="form-control-static col-sm-10">
                             <span *ngFor="let state of user.state">
                                 {{state.name}},
                             </span>
                           </p>
                         </div>
                         <div class="form-group">
-                          <label class="col-md-4 control-label">City</label>
-                          <p class="form-control-static col-md-8">
+                          <label class="col-sm-2 control-label">City</label>
+                          <p class="form-control-static col-sm-10">
                             <span *ngFor="let city of user.city">
                               {{city.name}},
                             </span>
                           </p>
                         </div>
                         <div class="form-group">
-                          <label class="col-md-4 control-label">Local</label>
-                          <p class="form-control-static col-md-8">
+                          <label class="col-sm-2 control-label">Local</label>
+                          <p class="form-control-static col-sm-10">
                             <span *ngFor="let local of user.local">
                               {{local.name}},
                             </span>
                           </p>
                         </div>
                         <div class="form-group">
-                          <div class="col-md-offset-4 col-md-8">
+                          <div class="col-sm-offset-2 col-sm-10">
                             <button (click)="gotoEditUser('geo')" class="btn btn-default">Edit</button>
                           </div>
                         </div>
@@ -191,6 +238,15 @@ import {AuthenticationService} from '../authentication/authentication.service';
   }
   .my-user .profileimage {
     height: 100px;
+  }
+  .my-user .email-tick {
+    font-size: 1.4em;
+  }
+  .my-user .verified {
+    color: green;
+  }
+  .my-user .notverified {
+    color: red;
   }
   `],
   //styleUrls: ['app/post/post.component.css'],

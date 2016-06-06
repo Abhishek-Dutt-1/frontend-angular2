@@ -7,12 +7,15 @@ import {Comment1Component} from '../comment1/comment1.component';
 import {Comment1Service} from '../comment1/comment1.service';
 import {NewComment2Component} from './new-comment2.component';
 import {PostTemplateType} from '../post/post-template-types';
+import {AppService} from '../app.service';
+import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-new-comment2-loader',
   template: `
     <div class="my-new-comment2-loader">
-        <h4>Reply to</h4>
+        <h2>Reply to</h2>
+        <my-error [_errorMsg]="_errorMsg"></my-error>
         <my-comment1 [comment1]="_comment1" [post]="_post"></my-comment1>
         <my-new-comment2 [comment1]="_comment1" [post]="_post"></my-new-comment2>
     </div>
@@ -21,15 +24,17 @@ import {PostTemplateType} from '../post/post-template-types';
     .my-new-comment2-loader {
     }
   `],
-  directives: [Comment1Component, NewComment2Component]
+  directives: [Comment1Component, NewComment2Component, ErrorComponent]
 })
 export class NewComment2LoaderComponent implements OnInit {
 
   private _post: Post;
   private _comment1: Comment1;
+  private _errorMsg = null;
   //private _comment1id: number = null;
 
   constructor(
+    private _appService: AppService,
     private _postService: PostService,
     //private _comment1Service: Comment1Service,
     private _routeParams: RouteParams
@@ -49,12 +54,17 @@ export class NewComment2LoaderComponent implements OnInit {
     this._postService.getPost(postid)
       .subscribe(
         post => {
-          console.log(post);
+          //console.log(post);
           this._post = post;
           this._comment1 = post.comments.find(function(comment) {return comment.id == comment1id;})
         },
-        error => console.log(error)
-      );
+        error => {
+          //console.log(error);
+          this._errorMsg = error;
+        });
+  }
+
+  ngOnDestroy() {
   }
 
 }

@@ -15,6 +15,57 @@ import {SuperGroup} from '../super_group/super_group'
     <div *ngIf="_sticky" class="dummy-div"></div>
     <div class="my-geo-filter" [ngClass]="{sticky: _sticky}">
 
+          <div class="row hidden-xs">
+            <div class="col-xs-12">
+
+              <div class="pull-left">
+                <span class="menu-item">
+                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'international'}]"
+                      [ngClass]="{active: geoSelection == 'international'}">
+                      <i class="fa fa-plane"></i> International</a>
+                </span>
+              </div>
+
+              <div class="pull-left">
+                <span class="menu-item">
+                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
+                      [ngClass]="{active: geoSelection == 'national'}">
+                      <i class="fa fa-train"></i> National
+                    </a>
+                </span>
+              </div>
+
+              <div class="pull-left">
+                <span class="menu-item">
+                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
+                      [ngClass]="{active: geoSelection == 'state'}">
+                      <i class="fa fa-bus"></i> State
+                    </a>
+                </span>
+              </div>
+
+              <div class="pull-left">
+                <span class="menu-item">
+                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
+                      [ngClass]="{active: geoSelection == 'city'}">
+                      <i class="fa fa-car"></i> City
+                    </a>
+                </span>
+              </div>
+
+              <div class="pull-left">
+                <span class="menu-item">
+                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
+                      [ngClass]="{active: geoSelection == 'local'}">
+                      <i class="fa fa-bicycle"></i> Local
+                    </a>
+                </span>
+              </div>
+
+            </div>    <!-- ! col-xs-12 -->
+          </div>  <!-- end row -->
+
+<!--
       <div class="row hidden-xs">
         <div class="col-xs-2">
           <span class="menu-item">
@@ -169,7 +220,7 @@ import {SuperGroup} from '../super_group/super_group'
         text-transform: capitalize;
       }
       .my-geo-filter .menu-item .active {
-        color: rgba(0, 0, 0, 0.6);
+        color: rgba(0, 0, 0, 0.8);
       }
       .my-geo-filter .visible-xs-block .menu-link {
 
@@ -210,7 +261,7 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
     window.addEventListener("scroll", this.myEfficientFn);
   }
   ngOnDestroy() {
-    console.log("REMOVING LIStener")
+    //console.log("REMOVING LIStener")
     window.removeEventListener("scroll", this.myEfficientFn);
   }
   myEfficientFn = this.debounce( () => {

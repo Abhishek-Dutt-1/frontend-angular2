@@ -29,7 +29,7 @@ export class AuthenticationService {
   ) {
     // Load a logged in user if any
     let token = JSON.parse(localStorage.getItem('jwt'));
-    console.log("Found jwt ",token);
+    //console.log("Found jwt ",token);
 
     //this._jwtHelper.decodeToken(token),
     //this._jwtHelper.getTokenExpirationDate(token),
@@ -37,20 +37,23 @@ export class AuthenticationService {
 
     if(token) {
       //let userId = this._jwtHelper.decodeToken(token);
+      this._appService.spinner();
       this._userService.getUserByToken(token).subscribe(
         user => {
           if(user) {
             this._isUserLoggedIn = true;
             this._currentUser = user;
             this._appService.setAuthorizationHeader(token);
-            console.log("Auto logged in user from jwt", this._currentUser)
+            //console.log("Auto logged in user from jwt", this._currentUser)
+            this._appService.spinner(false);
             this._loggedInUser.next(user);
           }
         },
         error => {
           // token found but server did not sent a user
-          console.log(error);
+          //console.log(error);
           this.logoutUser();
+          this._appService.spinner(false);
           return this._appService.handleServerErrors(error)
         }
       );
@@ -95,10 +98,12 @@ export class AuthenticationService {
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     //let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
+    this._appService.spinner();
     return this._http.post(backendUrl+'/auth/local', JSON.stringify(userInfo), options)
     .map(
       res => {
-        console.log(res.json())
+        //console.log(res.json())
+        this._appService.spinner(false);
         let user = res.json().user || {};
         localStorage.setItem('jwt', JSON.stringify(user.jwt));
         this._appService.setAuthorizationHeader(user.jwt);
@@ -109,6 +114,7 @@ export class AuthenticationService {
     })
     .catch(
       error => {
+        this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
         /*
         console.log(error)

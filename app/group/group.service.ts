@@ -26,71 +26,88 @@ export class GroupService {
   }
 
   createNewGroup(newGroup: any) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/group/createNewGroup', JSON.stringify(newGroup), options).map(
       res => {
+        this._appService.spinner(false);
         return res.json()
       })
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }
 
   editGroup(modGroup: any) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/group/editGroup', JSON.stringify(modGroup), options).map(
       res => {
+        this._appService.spinner(false);
         return res.json()
       })
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }
 
   /**
    * Return a Group obj by name and supergroups name
    */
   getGroup(superGroupName: String, groupName: String) {
-    if(this._appService.getSiteParams().servicesMode === 'server') {
-      let backendUrl = this._appService.getSiteParams().backendUrl;
-      let headers = new Headers( this._appService.getSiteParams().headersObj );
-      let options = new RequestOptions({ headers: headers });
-      return this._http.post(backendUrl+'/group/getGroupByName',
-          JSON.stringify({superGroupName: superGroupName, groupName: groupName}),
-          options)
-        .map(
-          res => {
-            console.log(res);
-            console.log(res.json());
-            return res.json()
-          }
-        )
-        .catch(error => this._appService.handleServerErrors(error));
-    }
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/group/getGroupByName',
+        JSON.stringify({superGroupName: superGroupName, groupName: groupName}),
+        options)
+      .map(
+        res => {
+          //console.log(res);
+          //console.log(res.json());
+          this._appService.spinner(false);
+          return res.json()
+        }
+      )
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
+
   }     // !getGroup()
 
   /**
    * Return a Group obj by id
    */
   getGroupById(groupId: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.get(backendUrl+'/group/getGroupById/' + groupId, options)
       .map(
         res => {
+          this._appService.spinner(false);
           return res.json()
       })
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }     // ! getGroupById()
 
   /**
    * Get all posts in a Group
    */
   getPostsInGroup(superGroupName: string, groupName: string) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -101,10 +118,14 @@ export class GroupService {
         res => {
           //console.log(res);
           //console.log(res.json());
+          this._appService.spinner(false);
           return res.json()
         }
       )
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
 
   }
 
@@ -148,6 +169,7 @@ export class GroupService {
               .get(searchUrl, { search: params })
               .map(request => <string[]> request.json()[1]);
     */
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -155,10 +177,14 @@ export class GroupService {
       res => {
         console.log(res)
         console.log(res.json())
+        this._appService.spinner(false);
         return <string[]> res.json()
       }
     )
-    .catch(error => this._appService.handleServerErrors(error));
+    .catch(error => {
+      this._appService.spinner(false);
+      return this._appService.handleServerErrors(error)
+    });
   }
 
   /**
@@ -181,7 +207,7 @@ export class GroupService {
    * Subscribe the logged in user to a grouop
    */
   subscribeCurrentUserToGroup(groupId: any) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -190,10 +216,14 @@ export class GroupService {
         res => {
           //console.log(res);
           //console.log(res.json());
+          this._appService.spinner(false);
           return res.json()
         }
       )
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
 
   }       // ! subscribeCurrentUserToGroup()
 
@@ -201,7 +231,7 @@ export class GroupService {
    * UnSubscribe the logged in user to a grouop
    */
   unSubscribeCurrentUserFromGroup(groupId: any) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -210,10 +240,14 @@ export class GroupService {
         res => {
           //console.log(res);
           //console.log(res.json());
+          this._appService.spinner(false);
           return res.json()
         }
       )
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
 
   }       // ! subscribeCurrentUserToGroup()
 
@@ -221,7 +255,7 @@ export class GroupService {
    * Cancel the logged in users pending membership to a group that requires approval
    */
   cancelCurrentUsersPendingMembership(groupId: any) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -230,10 +264,14 @@ export class GroupService {
         res => {
           //console.log(res);
           //console.log(res.json());
+          this._appService.spinner(false);
           return res.json()
         }
       )
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
 
   }       // ! cancelCurrentUsersPendingMembership()
 
@@ -241,7 +279,7 @@ export class GroupService {
    * Fetches group's waiting list if group requires approval
    */
   getGroupWaitingList(groupId: any) {
-
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
@@ -250,10 +288,14 @@ export class GroupService {
         res => {
           //console.log(res);
           //console.log(res.json());
+          this._appService.spinner(false);
           return res.json()
         }
       )
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
 
   }       // ! cancelCurrentUsersPendingMembership()
 
@@ -261,32 +303,42 @@ export class GroupService {
    * Approve a member to join the group
    */
   approveGroupMembership(groupId: any, userId: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/group/approveGroupMembership', JSON.stringify({groupid: groupId, pendinguserid: userId}), options)
       .map(
         res => {
+          this._appService.spinner(false);
           return res.json()
         }
       )
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }       // ! approveGroupMembership()
 
   /**
    * Disapprove a member to join the group
    */
   disApproveGroupMembership(groupId: any, userId: any) {
+    this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/group/disApproveGroupMembership', JSON.stringify({groupid: groupId, pendinguserid: userId}), options)
       .map(
         res => {
+          this._appService.spinner(false);
           return res.json()
         }
       )
-      .catch(error => this._appService.handleServerErrors(error));
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }       // ! approveGroupMembership()
 
 }

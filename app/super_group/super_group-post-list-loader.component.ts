@@ -8,6 +8,7 @@ import {Group} from '../group/group';
 import {PostListComponent} from '../post/post-list.component';
 import {PostTemplateType} from '../post/post-template-types';
 import {ErrorComponent} from '../misc/error.component';
+import {AppService} from '../app.service';
 
 @Component({
   selector: 'my-super-group-post-list-loader',
@@ -124,6 +125,7 @@ export class SuperGroupPostListLoaderComponent {
   private _errorMsg: String = null;
 
   constructor(
+    private _appService: AppService,
     private _groupService: GroupService,
     private _superGroupService: SuperGroupService,
     private _router: Router,
@@ -140,7 +142,7 @@ export class SuperGroupPostListLoaderComponent {
           this._groups = superGroup.groups;
         },
         error => {
-          console.log(error);
+          //console.log(error);
           this._errorMsg = error;
         });
   }
@@ -151,6 +153,8 @@ export class SuperGroupPostListLoaderComponent {
 
   gotoNewPostForm() {
     //this._router.navigate(['NewPost', {gog_name: this.group.parent_group.name, group_name: this.group.name}]);
+  }
+  ngOnDestroy() {
   }
 
 }

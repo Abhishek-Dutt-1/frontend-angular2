@@ -93,8 +93,9 @@ export class ViewPostComponent {
   ) { }
 
   ngOnInit() {
+
     let postId = this._routeParams.get('postid');
-    console.log(PostTemplateType)
+    //console.log(PostTemplateType)
     this.postTemplateType = PostTemplateType.Main;
 
     // Only logged in uses view posts
@@ -122,7 +123,7 @@ export class ViewPostComponent {
         this.post = post;
       },
       error => {
-        console.log(error);
+        //console.log(error);
         this._errorMsg = error;
       });
   }

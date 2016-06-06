@@ -8,7 +8,9 @@ import {PostService} from './post.service';
 import {PostTemplateType} from './post-template-types';
 import {VoteComponent} from '../misc/vote.component';
 import {DateFormatPipe} from '../misc/date-format.pipe';
-
+import {PostMetaPanelComponent} from './post-meta-panel.component';
+import {ErrorComponent} from '../misc/error.component';
+import {AppService} from '../app.service';
 
 @Component({
   selector: 'my-post',
@@ -49,6 +51,8 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
 
           <div class="row">
             <div class="col-xs-12">
+              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+<!--
               <div class="post-info">
 
                 <div class="">
@@ -77,9 +81,9 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                     {{ post.createdAt | timeAgo }} &bull;
                   </div>
                   <div class="post-commentstotal pull-left">
-                    {{post.comments.length}} Comments &bull; &nbsp;
+                    {{post.comments.length}} Comments
                   </div>
-                  <div class="post-delete pull-left">
+                  <div class="post-delete pull-left">&bull; &nbsp;
                     <span *ngIf="currentUser && currentUser.id == post.postedby.id">
                       <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">Delete</a>
                     </span>
@@ -87,6 +91,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 </div>
 
               </div>      <!-- ! post-info -->
+
             </div>
           </div>     <!-- ! row -->
 
@@ -132,8 +137,10 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="post-info">
 
+              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+              <!--
+              <div class="post-info">
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
@@ -148,13 +155,6 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                     </a>
                   </div>
                   <div class="bullet">&bull;</div>
-                  <!--
-                  <div class="post-grouplink">
-                    <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
-                      go/{{post.group.supergroup.name}}/{{post.group.name}}
-                    </a>
-                  </div>
-                  -->
                   <div class="clearfix"></div>
                   <div class="post-createdat pull-left">
                     {{ post.createdAt | timeAgo }} &bull;
@@ -168,8 +168,8 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                     </span>
                   </div>
                 </div>
-
               </div>      <!-- ! post-info -->
+
             </div>
           </div>     <!-- ! row -->
 
@@ -223,8 +223,9 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
 
           <div class="row">
             <div class="col-xs-12">
+              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+              <!--
               <div class="post-info">
-
                 <div class="">
                   <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                     <div class="profile-image pull-left">
@@ -266,11 +267,12 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 </div>
 
               </div>      <!-- ! post-info -->
+
             </div>
           </div>     <!-- ! row -->
 
           <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-4">
               <div class="vote-container">
                 <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
               </div>
@@ -281,6 +283,8 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
       </div>
 
     </div>     <!-- ! ngIf-row -->
+
+    <my-error [_errorMsg]="_errorMsg"></my-error>
 
   </div>      <!-- my-post -->
   </div>      <!-- ngIfPost -->
@@ -338,97 +342,12 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     margin-top: 15px;
     margin-bottom: 0px;
   }
-  .my-post .post-info {
-    font-size: 12px;
-    margin-top: 15px;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-  }
-  .my-post .post-container .profile-image {
-    height: 32px;
-    width: 32px;
-    /* border: 1px solid lightgrey; */
-    margin-top: 3px;
-    overflow: hidden;
-  }
-  .my-post .post-container .profileimage {
-    width: 32px;
-    opacity:0.5;
-    filter:alpha(opacity=50);
-  }
-  .my-post .post-container .post-info .post-info-text {
-    padding-left: 10px;
-    width: 88%;
-  }
-  .my-post .post-container .profile-name {
-    cursor: pointer;
-    display: inline;
-    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: normal;
-    height: auto;
-    letter-spacing: normal;
-    line-height: 19.6px;
-    text-decoration: none;
-    unicode-bidi: isolate;
-    visibility: visible;
-    white-space: nowrap;
-    width: auto;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-  .my-post .post-container .post-grouplink {
-    cursor: pointer;
-    display: inline;
-    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 14px;
-    line-height: 19.6px;
-    text-decoration: none;
-    /*
-    width: 80%;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    */
-  }
-  .my-post .post-container .post-createdat {
-    display: inline;
-    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 12px;
-    /* padding-left: 10px; */
-    line-height: 14.4px;
-    color: rgba(0, 0, 0, 0.439216);
-  }
-  .my-post .post-container .post-commentstotal {
-    display: inline;
-    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 12px;
-    padding-left: 5px;
-    line-height: 14.4px;
-    color: rgba(0, 0, 0, 0.439216);
-  }
-  .my-post .post-container .post-reply {
-    display: inline;
-    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 12px;
-    padding-left: 0px;
-    line-height: 14.4px;
-    color: rgba(0, 0, 0, 0.439216);
-  }
-  .my-post .post-container .bullet {
-    display: inline;
-    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 12px;
-    line-height: 1.8;
-    color: rgba(0, 0, 0, 0.439216);
-    padding: 0 5px;
-  }
   .my-post .post-container .vote-container {
     margin-top: 15px;
   }
   `],
   inputs: ['post', 'type', 'currentUser'],
-  directives: [RouterLink, VoteComponent],
+  directives: [RouterLink, VoteComponent, PostMetaPanelComponent, ErrorComponent],
   pipes: [DateFormatPipe]
 })
 export class PostComponent implements OnInit {
@@ -441,13 +360,15 @@ export class PostComponent implements OnInit {
   private _processingVote         : Boolean          = false;
   private _readmore               : Boolean          = false;
   private _textTrimmed            : string           = null;
+  private _errorMsg               : string           = null;
 
   constructor(
+    private _appService: AppService,
     private _postService: PostService,
     private _router: Router) { }
 
   ngOnInit() {
-    // TODO: Improve this
+    // TODO: Improve this   // :sync with post-meta-panel
     this.templateTypeList = PostTemplateType.List;
     this.templateTypeGroupList = PostTemplateType.Grouplist;
     this.templateTypeMain = PostTemplateType.Main;
@@ -469,7 +390,7 @@ export class PostComponent implements OnInit {
    * User clicked upvote
    */
   upVotePost(id:number) {
-    console.log("Inside post comp upvoting ", id)
+    //console.log("Inside post comp upvoting ", id)
     if(this._processingVote) return;
     this._processingVote = true;
 
@@ -481,15 +402,18 @@ export class PostComponent implements OnInit {
         this.post.downvotes = post.downvotes;
         this.post.currentUserHasUpVoted = post.currentUserHasUpVoted;
         this.post.currentUserHasDownVoted = post.currentUserHasDownVoted;
-        console.log("UpVote susccess");
+        //console.log("UpVote susccess");
+        this._errorMsg = null;
       },
       error => {
-        console.log("Upvote unsuccess")
+        this._processingVote = false;
+        //console.log("Upvote unsuccess")
+        this._errorMsg = error;
       });
   }
 
   downVotePost(id:number) {
-    console.log("Inside post comp Down Voting ", id)
+    //console.log("Inside post comp Down Voting ", id)
     if(this._processingVote) return;
     this._processingVote = true;
 
@@ -501,10 +425,17 @@ export class PostComponent implements OnInit {
         this.post.downvotes = post.downvotes;
         this.post.currentUserHasUpVoted = post.currentUserHasUpVoted;
         this.post.currentUserHasDownVoted = post.currentUserHasDownVoted;
-        console.log("Down Vote susccess");
+        //console.log("Down Vote susccess");
+        this._errorMsg = null;
       },
       error => {
-        console.log("Upvote unsuccess")
+        //console.log("Upvote unsuccess")
+        this._processingVote = false;
+        this._errorMsg = error;
       });
   }
+
+  ngOnDestroy() {
+  }
+
 }

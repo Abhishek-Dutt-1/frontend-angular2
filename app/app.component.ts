@@ -45,6 +45,7 @@ import { Comment3Service } from './comment3/comment3.service';
 import { Comment4Service } from './comment4/comment4.service';
 
 import { MemeService } from './meme/meme.service';
+import { SpinnerComponent } from './misc/spinner.component';
 
 @Component({
   selector: 'my-app-component',
@@ -73,6 +74,7 @@ import { MemeService } from './meme/meme.service';
           </div>
         </div>
 
+        <my-spinner></my-spinner>
 
     </div>
   </div>
@@ -119,7 +121,7 @@ box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,
     }
   `],
   //styleUrls: ['app/app.component.css'],
-  directives: [ROUTER_DIRECTIVES, UserAuthenticationPanelComponent],
+  directives: [ROUTER_DIRECTIVES, UserAuthenticationPanelComponent, SpinnerComponent],
   providers: [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
