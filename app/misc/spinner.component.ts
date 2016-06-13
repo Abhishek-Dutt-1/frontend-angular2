@@ -14,8 +14,13 @@ import {AppService} from '../app.service';
   styles: [`
   .my-spinner {
     position: fixed;
-    right: 15px;
-    bottom: 15px;
+    bottom: 0;
+    left: 0;
+    animation: fadein 2s;
+  }
+  @keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
   `],
   //inputs: ['']
@@ -25,6 +30,7 @@ export class SpinnerComponent implements OnInit {
   //private _errorMsg = null;
   private _showHideSpinner: boolean = false;
   private _showSpinnerSubcription = null;
+  private _setTimeout = null;
 
   constructor(
     private _appService: AppService
@@ -33,7 +39,15 @@ export class SpinnerComponent implements OnInit {
   ngOnInit() {
     this._showSpinnerSubcription = this._appService.showSpinner$.subscribe(
       spinnerState => {
-        this._showHideSpinner = spinnerState;
+        //this._showHideSpinner = spinnerState;
+        if ( spinnerState ) {
+          this._setTimeout = setTimeout( () => {
+            this._showHideSpinner = spinnerState;
+          }, 1000)
+        } else {
+          clearTimeout(this._setTimeout);
+          this._showHideSpinner = spinnerState;
+        }
       },
       error => {
         console.log("Error", error);

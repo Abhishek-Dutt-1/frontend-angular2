@@ -14,7 +14,8 @@ exports.MOCK_USERS = [
         national: [mock_super_groups_1.MOCK_SUPER_GROUPS[3 - 1]],
         state: [mock_super_groups_1.MOCK_SUPER_GROUPS[5 - 1]],
         city: [mock_super_groups_1.MOCK_SUPER_GROUPS[7 - 1]],
-        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[9 - 1]]
+        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[9 - 1]],
+        extra_emails: []
     },
     {
         id: 2,
@@ -28,7 +29,8 @@ exports.MOCK_USERS = [
         national: [mock_super_groups_1.MOCK_SUPER_GROUPS[1]],
         state: [mock_super_groups_1.MOCK_SUPER_GROUPS[5]],
         city: [mock_super_groups_1.MOCK_SUPER_GROUPS[2]],
-        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[3]]
+        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[3]],
+        extra_emails: []
     },
     {
         id: 3,
@@ -42,7 +44,8 @@ exports.MOCK_USERS = [
         national: [mock_super_groups_1.MOCK_SUPER_GROUPS[1]],
         state: [mock_super_groups_1.MOCK_SUPER_GROUPS[5]],
         city: [mock_super_groups_1.MOCK_SUPER_GROUPS[2]],
-        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[3]]
+        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[3]],
+        extra_emails: []
     },
     {
         id: 4,
@@ -56,7 +59,8 @@ exports.MOCK_USERS = [
         national: [mock_super_groups_1.MOCK_SUPER_GROUPS[1]],
         state: [mock_super_groups_1.MOCK_SUPER_GROUPS[5]],
         city: [mock_super_groups_1.MOCK_SUPER_GROUPS[2]],
-        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[3]]
+        local: [mock_super_groups_1.MOCK_SUPER_GROUPS[3]],
+        extra_emails: []
     }
 ];
 //# sourceMappingURL=mock-users.js.map

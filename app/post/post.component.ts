@@ -19,7 +19,8 @@ import {AppService} from '../app.service';
   <div class="my-post">
 
     <div *ngIf="type === templateTypeList || type === templateTypeGroupList" class="row">
-      <div class="col-xs-12">
+
+      <div class="col-xs-12 visible-xs-block visible-sm-block">
         <div class="post-container">
 
           <div class="row">
@@ -36,15 +37,8 @@ import {AppService} from '../app.service';
           <div class="row" *ngIf="post.text">
             <div class="col-xs-12">
               <div class="post-text">
-                <div *ngIf="_textTrimmed">
-                  {{_textTrimmed}}
-                  <div class="read-more">
-                    Read more ...
-                  </div>
-                </div>
-                <div *ngIf="!_textTrimmed">
-                  {{post.text}}
-                </div>
+                <div *ngIf="_textTrimmed">{{_textTrimmed}}<div class="read-more">Read more ...</div></div>
+                <div *ngIf="!_textTrimmed">{{post.text}}</div>
               </div>
             </div>
           </div>
@@ -52,51 +46,11 @@ import {AppService} from '../app.service';
           <div class="row">
             <div class="col-xs-12">
               <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
-<!--
-              <div class="post-info">
-
-                <div class="">
-                  <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
-                    <div class="profile-image pull-left">
-                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage img-circle">
-                    </div>
-                  </a>
-                </div>
-                <div class="post-info-text pull-left">
-                  <div class="profile-name pull-left">
-                    <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
-                      {{post.postedby.displayname}}
-                    </a>
-                  </div>
-                  <div *ngIf="type != templateTypeGroupList">
-                    <div class="bullet pull-left"> in </div>
-                    <div class="post-grouplink pull-left">
-                      <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
-                        {{post.group.supergroup.name}}/{{post.group.name}}
-                      </a>
-                    </div>
-                  </div>
-                  <div class="clearfix"></div>
-                  <div class="post-createdat pull-left">
-                    {{ post.createdAt | timeAgo }} &bull;
-                  </div>
-                  <div class="post-commentstotal pull-left">
-                    {{post.comments.length}} Comments
-                  </div>
-                  <div class="post-delete pull-left">&bull; &nbsp;
-                    <span *ngIf="currentUser && currentUser.id == post.postedby.id">
-                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">Delete</a>
-                    </span>
-                  </div>
-                </div>
-
-              </div>      <!-- ! post-info -->
-
             </div>
           </div>     <!-- ! row -->
 
           <div class="row">
-            <div class="col-xs-12 col-sm-4">
+            <div class="col-xs-12">
               <div class="vote-container">
                 <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
               </div>
@@ -104,7 +58,57 @@ import {AppService} from '../app.service';
           </div>
 
         </div>      <!-- !post-container -->
-      </div>
+      </div>      <!-- !visible-xs/sm-block -->
+
+      <div class="col-xs-12 hidden-xs hidden-sm">
+        <div class="post-container">
+
+          <div class="row">
+
+            <div class="col-xs-1">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="vote-container">
+                    <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-11">
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
+                    <span>{{post.title}}</span>
+                  </a>
+                  <span *ngIf="post.type === 'link'" class="post-type-link">
+                    <a target="_blank" [href]="post.link">[view link]</a>
+                  </span>
+                </div>
+              </div>
+
+              <div class="row" *ngIf="post.text">
+                <div class="col-xs-12">
+                  <div class="post-text">
+                    <div *ngIf="_textTrimmed">{{_textTrimmed}}<div class="read-more">Read more ...</div></div>
+                    <div *ngIf="!_textTrimmed">{{post.text}}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+                </div>
+              </div>     <!-- ! row -->
+
+            </div>
+          </div>
+
+        </div>      <!-- !post-container -->
+      </div>        <!-- !hidden-xs/sm -->
+
     </div>     <!-- ! ngIf-row -->
 
 
@@ -137,39 +141,7 @@ import {AppService} from '../app.service';
 
           <div class="row">
             <div class="col-xs-12">
-
               <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
-              <!--
-              <div class="post-info">
-                <div class="">
-                  <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
-                    <div class="profile-image pull-left">
-                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage img-circle">
-                    </div>
-                  </a>
-                </div>
-                <div class="pull-left">
-                  <div class="profile-name pull-left">
-                    <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
-                      {{post.postedby.displayname}}
-                    </a>
-                  </div>
-                  <div class="bullet">&bull;</div>
-                  <div class="clearfix"></div>
-                  <div class="post-createdat pull-left">
-                    {{ post.createdAt | timeAgo }} &bull;
-                  </div>
-                  <div class="post-commentstotal pull-left">
-                    {{post.comments.length}} Comments &bull; &nbsp;
-                  </div>
-                  <div class="post-delete pull-left">
-                    <span *ngIf="currentUser && currentUser.id == post.postedby.id">
-                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">Delete</a>
-                    </span>
-                  </div>
-                </div>
-              </div>      <!-- ! post-info -->
-
             </div>
           </div>     <!-- ! row -->
 
@@ -188,7 +160,7 @@ import {AppService} from '../app.service';
 
     <div *ngIf="type === templateTypeMain" class="row">
 
-      <div class="col-xs-12">
+      <div class="col-xs-12 visible-xs-block visible-sm-block">
         <div class="post-container">
 
           <div class="row">
@@ -224,55 +196,11 @@ import {AppService} from '../app.service';
           <div class="row">
             <div class="col-xs-12">
               <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
-              <!--
-              <div class="post-info">
-                <div class="">
-                  <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
-                    <div class="profile-image pull-left">
-                      <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage img-circle">
-                    </div>
-                  </a>
-                </div>
-                <div class="post-info-text pull-left">
-                  <div class="profile-name pull-left">
-                    <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
-                      {{post.postedby.displayname}}
-                    </a>
-                  </div>
-                  <div>
-                    <div class="bullet pull-left"> in </div>
-                    <div class="post-grouplink pull-left">
-                      <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
-                        {{post.group.supergroup.name}}/{{post.group.name}}
-                      </a>
-                    </div>
-                  </div>
-                  <div class="clearfix"></div>
-                  <div class="post-createdat pull-left">
-                    {{ post.createdAt | timeAgo }} &bull;
-                  </div>
-                  <div class="post-commentstotal pull-left">
-                    {{post.comments.length}} Comments &bull; &nbsp;
-                  </div>
-                  <div class="post-delete pull-left">
-                    <span *ngIf="currentUser && currentUser.id == post.postedby.id">
-                      <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">Delete</a>
-                    </span>
-                  </div>
-                  <div class="post-reply"> &nbsp;&bull;
-                    <a [routerLink]="['NewComment1', {postid: post.id}]" class="">
-                      Reply
-                    </a>
-                  </div>
-                </div>
-
-              </div>      <!-- ! post-info -->
-
             </div>
           </div>     <!-- ! row -->
 
           <div class="row">
-            <div class="col-xs-12 col-sm-4">
+            <div class="col-xs-12">
               <div class="vote-container">
                 <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
               </div>
@@ -280,7 +208,62 @@ import {AppService} from '../app.service';
           </div>
 
         </div>      <!-- !post-container -->
-      </div>
+      </div>      <!-- !visible-xs/sm-block -->
+
+      <div class="col-xs-12 hidden-xs hidden-sm">
+        <div class="post-container">
+
+          <div class="row">
+
+            <div class="col-xs-1">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="vote-container">
+                    <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-11">
+              <div class="row">
+                <div class="col-xs-12">
+                  <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
+                    <span>{{post.title}}</span>
+                  </a>
+                  <span *ngIf="post.type === 'link'" class="post-type-link">
+                    <a target="_blank" [href]="post.link">[view link]</a>
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="post-text">
+                    <div *ngIf="_readmore">
+                      {{_textTrimmed}}
+                      <div class="read-more" (click)="_readmore = false">
+                        Show more ...
+                      </div>
+                    </div>
+                    <div *ngIf="!_readmore" class="post-text-wrap">
+                      {{post.text}}
+                      <div *ngIf="_textTrimmed" class="read-more" (click)="_readmore = true">
+                        Show less
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+                </div>
+              </div>     <!-- ! row -->
+            </div>
+          </div>
+
+        </div>      <!-- !post-container -->
+      </div>      <!-- !hidden-xs/sm -->
 
     </div>     <!-- ! ngIf-row -->
 
