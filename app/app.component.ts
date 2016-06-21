@@ -22,6 +22,7 @@ import { EditGroupComponent } from './group/edit-group.component';
 import { ApproveMembershipComponent } from './group/approve-membership.component';
 
 import { HyperGroupPostListLoaderComponent } from './hyper_group/hyper_group-post-list-loader.component';
+import { HyperGroupService } from './hyper_group/hyper_group.service';
 
 import { NewUserComponent } from './user/new-user.component';
 import { ViewUserComponent } from './user/view-user.component';
@@ -134,6 +135,7 @@ box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,
     PostService,
     GroupService,
     SuperGroupService,
+    HyperGroupService,
     UserService,
     AuthenticationService,
     MemeService

@@ -291,4 +291,27 @@ export class UserService {
         return this._appService.handleServerErrors(error);
       });
   }
+
+  /**
+   * Returns a Super groups and groups in a Hyper group for a user
+   * To be displayed in the sidebar
+   */
+  getHyperGroupHierarchy(currentUser, hyperGroup: string) {
+
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers    = new Headers( this._appService.getSiteParams().headersObj );
+    let options    = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/user/getHyperGroupHierarchy', JSON.stringify({hyperGroup: hyperGroup}), options)
+      .map(
+        res => {
+          this._appService.spinner(false);
+          return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error);
+      });
+  }
+
 }

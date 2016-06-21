@@ -15,7 +15,7 @@ import {AppService} from '../app.service';
   .my-spinner {
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 50%;
     animation: fadein 2s;
   }
   @keyframes fadein {
@@ -41,6 +41,7 @@ export class SpinnerComponent implements OnInit {
       spinnerState => {
         //this._showHideSpinner = spinnerState;
         if ( spinnerState ) {
+          clearTimeout(this._setTimeout);
           this._setTimeout = setTimeout( () => {
             this._showHideSpinner = spinnerState;
           }, 1000)

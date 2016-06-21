@@ -4,6 +4,7 @@ import {Post} from '../post/post';
 import {User} from '../user/user';
 import {AppService} from '../app.service';
 import {PostService} from '../post/post.service';
+import {UserService} from '../user/user.service';
 import {PostListComponent} from '../post/post-list.component';
 import {PostTemplateType} from '../post/post-template-types';
 import {SuperGroup} from '../super_group/super_group';
@@ -11,6 +12,7 @@ import {GeoFilterComponent} from '../post/geo-filter.component';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {ErrorComponent} from '../misc/error.component';
 import {FabButtonComponent} from '../misc/fab-button.component';
+import {HyperGroupSidebarComponent} from './hyper_group-sidebar.component';
 
 @Component({
   selector: 'my-hyper_group-post-list-loader',
@@ -19,9 +21,15 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 
       <my-geo-filter [geoSelection]="_geoSelection" [superGroupList]="_superGroupList"></my-geo-filter>
 
-      <my-error [_errorMsg]="_errorMsg"></my-error>
-
-      <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser"></my-post-list>
+      <div class="row">
+        <div class="col-xs-10 post-list-area">
+          <my-error [_errorMsg]="_errorMsg"></my-error>
+          <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser"></my-post-list>
+        </div>
+        <div class="col-xs-2">
+          <my-hyper_group-sidebar [hierarchy]="_sidebarHierarchy"></my-hyper_group-sidebar>
+        </div>
+      </div>
 
       <div class="fab-button">
         <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
@@ -31,20 +39,23 @@ import {FabButtonComponent} from '../misc/fab-button.component';
   `,
   styles: [`
     .my-hyper_group-post-list-loader {
-
     }
     .pre-post-list-outer-div {
       clear: both;
     }
+    .my-hyper_group-post-list-loader .post-list-area {
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
+    }
   `],
-  directives: [PostListComponent, GeoFilterComponent, ErrorComponent, FabButtonComponent]
+  directives: [PostListComponent, GeoFilterComponent, ErrorComponent, HyperGroupSidebarComponent, FabButtonComponent]
 })
 export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
   private posts: Post[];
+  private _sidebarHierarchy: any[] = null;
   private postTemplateType: PostTemplateType;
   //private parent_gorup: Group_Of_Groups;
-  private _geoSelection: string = 'national';
+  private _geoSelection: string = null;
   private _superGroupList: SuperGroup[];
   private _errorMsg = null;
   private _showUserControls: boolean = false;
@@ -54,6 +65,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private _appService: AppService,
+    private _userService: UserService,
     private _authenticationService: AuthenticationService,
     private _postService: PostService,
     private _router: Router,
@@ -64,7 +76,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
     this.postTemplateType = PostTemplateType.List;
 
-    this._geoSelection = this._routeParams.get('geo') || this._appService.getGeoSelection() || this._geoSelection;
+    this._geoSelection = this._routeParams.get('geo') || this._appService.getGeoSelection() || 'national';
     this._appService.setGeoSelection(this._geoSelection);
 
     // Only logged in uses view posts
@@ -74,8 +86,10 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
           this._currentUser = currentUser;
           this._errorMsg = null;
           this.getPostsByHypergroup(this._geoSelection);
+          this.getHyperGroupHierarchy(this._currentUser, this._geoSelection);
         } else {
           this.getPostsByHypergroup(this._geoSelection);
+          this.getHyperGroupHierarchy(this._currentUser, this._geoSelection);
         }
       });
     // Only logged in uses view post (init version)
@@ -87,7 +101,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     } else { }
     // Logged in or not fetch posts immidiately
     this.getPostsByHypergroup(this._geoSelection);
-
+    this.getHyperGroupHierarchy(this._currentUser, this._geoSelection);
 
   }   // !ngOnInit()
 
@@ -114,6 +128,21 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         //console.log(error);
         this._errorMsg = error;
       });
+  }
+
+
+  /**
+   * Returns a Super groups and groups in a Hyper group for a user
+   * To be displayed in the sidebar
+   */
+  getHyperGroupHierarchy(currentUser, hyperGroup) {
+    this._userService.getHyperGroupHierarchy(currentUser, hyperGroup).subscribe(
+      resp => {
+        this._sidebarHierarchy = resp;
+      },
+      error => {
+        this._errorMsg = error;
+    })
   }
 
   ngOnDestroy() {

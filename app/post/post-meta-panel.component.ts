@@ -28,7 +28,7 @@ import {PostTemplateType} from './post-template-types';
               <div class="bullet pull-left"> in </div>
               <div class="post-grouplink pull-left">
                 <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
-                  {{post.group.supergroup.name}}/{{post.group.name}}
+                  {{post.group.supergroup.name | uppercase}}/{{post.group.name}}
                 </a>
               </div>
             </div>
