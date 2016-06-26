@@ -62,15 +62,13 @@ export class SuperGroupService {
 
   /**
    * Returns a list of all super groups (usually for users to select)
-   * @onlySelected: Return only selected super groups or all of them
-   * selected super groups are hi quality super groups which are selected by admins
    */
-  getAllSuperGroups(onlySelected: boolean = true) {
+  getAllSuperGroups() {
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers    = new Headers( this._appService.getSiteParams().headersObj );
     let options    = new RequestOptions({ headers: headers });
-    return this._http.get(backendUrl + '/supergroup', options)
+    return this._http.post(backendUrl + '/supergroup/getAllSupergroups', JSON.stringify({}), options)
       .map(
         res => {
           this._appService.spinner(false);

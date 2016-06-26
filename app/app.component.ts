@@ -60,7 +60,7 @@ import { SpinnerComponent } from './misc/spinner.component';
               <div class="logo">
                 <a [routerLink]="['/HyperGroupPostListDefault']">
                   <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Angry.City
-                </a>
+                </a> <small>[stealth mode]</small>
               </div>
             </div>
             <div class="col-xs-5 user-panel-container">

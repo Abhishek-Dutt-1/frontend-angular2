@@ -305,6 +305,7 @@ export class UserService {
     return this._http.post(backendUrl + '/user/getHyperGroupHierarchy', JSON.stringify({hyperGroup: hyperGroup}), options)
       .map(
         res => {
+          console.log(res.json());
           this._appService.spinner(false);
           return res.json();
       })
@@ -314,4 +315,47 @@ export class UserService {
       });
   }
 
+  /**
+   * Subscribe user to a Super Group
+   */
+  subscribeSuperGroup(sgId: any, hyperGroup: any) {
+
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers    = new Headers( this._appService.getSiteParams().headersObj );
+    let options    = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/user/subscribeSuperGroup', JSON.stringify( { sgId: sgId, hyperGroup: hyperGroup } ), options)
+      .map(
+        res => {
+          console.log(res.json());
+          this._appService.spinner(false);
+          return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error);
+      });
+  }
+
+  /**
+   * Subscribe user to a Super Group
+   */
+  unSubscribeSuperGroup(sgId: any, hyperGroup: any) {
+
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers    = new Headers( this._appService.getSiteParams().headersObj );
+    let options    = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/user/unSubscribeSuperGroup', JSON.stringify( { sgId: sgId, hyperGroup: hyperGroup } ), options)
+      .map(
+        res => {
+          console.log(res.json());
+          this._appService.spinner(false);
+          return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error);
+      });
+  }
 }

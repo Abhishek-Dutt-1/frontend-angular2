@@ -27,7 +27,7 @@ import {HyperGroupSidebarComponent} from './hyper_group-sidebar.component';
           <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser"></my-post-list>
         </div>
         <div class="col-xs-2">
-          <my-hyper_group-sidebar [hierarchy]="_sidebarHierarchy"></my-hyper_group-sidebar>
+          <my-hyper_group-sidebar [hierarchy]="_sidebarHierarchy" [hyperGroup]="_geoSelection"></my-hyper_group-sidebar>
         </div>
       </div>
 

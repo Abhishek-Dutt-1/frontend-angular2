@@ -493,7 +493,7 @@ export class EditUserComponent {
 
     // Clone the model, this dosen't clones functions if any
     this._model = JSON.parse(JSON.stringify(this._currentUser));
-    console.log(this._model);
+    //console.log(this._model);
     //this._model = this.cloneObj({}, this._currentUser);
     this._model.password = null;
     this._model.confirm_password = null;
@@ -510,10 +510,10 @@ export class EditUserComponent {
     delete this._model.city
     delete this._model.local
     delete this._model.subscribed_groups
-    console.log(this._currentUser)
+    //console.log(this._currentUser)
 
-    this._superGroupService.getAllSuperGroups(false).subscribe( sgList => {
-
+    this._superGroupService.getAllSuperGroups().subscribe( sgList => {
+//console.log(sgList)
       ["international", "state", "city", "local"].forEach(hyperGroup => {
         this._groupList[hyperGroup] = sgList.filter(sg => sg.type === hyperGroup);
         for(var i = 0, l = this._groupList[hyperGroup].length; i < l; i++) {
