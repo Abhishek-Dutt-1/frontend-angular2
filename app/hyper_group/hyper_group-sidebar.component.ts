@@ -28,6 +28,11 @@ import {AuthenticationService} from '../authentication/authentication.service';
               </div>
               <div class="row">
                 <div class="col-xs-12">
+                  <div>{{sg.description}}</div>
+                </div>
+              </div>
+              <div class="row hidden">
+                <div class="col-xs-12">
                   <dl>
                     <div *ngFor="let group of sg.groups">
                       <dt><a [routerLink]="['ViewGroup', {super_group_name: sg.name, group_name: group.name}]">{{group.name}}</a></dt>

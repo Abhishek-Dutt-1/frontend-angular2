@@ -22,11 +22,11 @@ import {HyperGroupSidebarComponent} from './hyper_group-sidebar.component';
       <my-geo-filter [geoSelection]="_geoSelection" [superGroupList]="_superGroupList"></my-geo-filter>
 
       <div class="row">
-        <div class="col-xs-10 post-list-area">
+        <div class="col-md-10 post-list-area">
           <my-error [_errorMsg]="_errorMsg"></my-error>
           <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser"></my-post-list>
         </div>
-        <div class="col-xs-2">
+        <div class="col-md-2 hidden-xs hidden-sm">
           <my-hyper_group-sidebar [hierarchy]="_sidebarHierarchy" [hyperGroup]="_geoSelection"></my-hyper_group-sidebar>
         </div>
       </div>

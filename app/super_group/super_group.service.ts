@@ -22,14 +22,10 @@ export class SuperGroupService {
 
   /**
    * Returns a Super group obj be name
+   * DEPRICATED
    */
   getSuperGroupByName(sg_name: string) {
 
-    /*
-    return Promise.resolve(MOCK_SUPER_GROUPS.find(sgs => {
-      return sgs.name == sg_name;
-    }));
-    */
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers    = new Headers( this._appService.getSiteParams().headersObj );
@@ -37,16 +33,12 @@ export class SuperGroupService {
     return this._http.post(backendUrl + '/supergroup/getSuperGroupByName', JSON.stringify({superGroupName: sg_name}), options)
       .map(
         res => {
-          //console.log(res)
-          //console.log(res.json())
           this._appService.spinner(false);
           return res.json();
       })
       .catch(error => {
-        //console.log(error);
         this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
-        //return Observable.throw(error);
       });
 
   }
@@ -80,5 +72,26 @@ export class SuperGroupService {
         //return Observable.throw(error);
       });
   }       // !getAllSuperGroups()
+
+  /**
+   * Returns the Supergroup, its groups and thier posts
+   * for displaying on Supergroup's post lists page
+   */
+  getSupergroupAndPosts(superGroup: string) {
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers    = new Headers( this._appService.getSiteParams().headersObj );
+    let options    = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/supergroup/getSupergroupAndPosts', JSON.stringify( { superGroup: superGroup } ), options)
+      .map(
+        res => {
+          this._appService.spinner(false);
+          return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error);
+      });
+  }     // !getSupergroupAndPosts
 
 }
