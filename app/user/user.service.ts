@@ -349,7 +349,6 @@ export class UserService {
     return this._http.post(backendUrl + '/user/unSubscribeSuperGroup', JSON.stringify( { sgId: sgId, hyperGroup: hyperGroup } ), options)
       .map(
         res => {
-          console.log(res.json());
           this._appService.spinner(false);
           return res.json();
       })

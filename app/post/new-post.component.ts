@@ -98,14 +98,13 @@ import {ErrorComponent} from '../misc/error.component';
               </div>
               <div class="col-sm-12">
                 <input id="group-search" type="text" class="form-control"
-                  ngControl = "searchGroupTmp" #searchGroupTmp="ngForm"
+                  ngControl = "searchGroupTmp" #searchGroupTmp="ngForm" [(ngModel)]="_searchString"
                   (keyup)="search(searchGroupTmp.value)">
               </div>
               <div class="col-sm-12">
                 <button class="btn btn-sm btn-default search-results" *ngFor="let item of items | async" (click)="selectSuperGroupSlashGroup(item)">
                   {{item.supergroup.name | uppercase}}/{{item.name}}
                 </button>
-                {{items.length}}
               </div>
 
             </div>      <!-- ! row -->
@@ -174,6 +173,7 @@ export class NewPostComponent {
   private _showGroupSearchBox = true;
   //private _searchGroup      = '';
   private _loggedInUserSubcription = null;
+  private _searchString       = '';
 
   constructor(
     private _postService           : PostService,
@@ -187,8 +187,8 @@ export class NewPostComponent {
 
   ngOnInit() {
 
-    let super_group_name = this._routeParams.get('super_group_name');
-    let group_name       = this._routeParams.get('group_name');
+    let super_group_name = this._routeParams.get('super_group_name') || null;
+    let group_name       = this._routeParams.get('group_name') || null;
 
     let superGroupSlashGroup = null;
     if(super_group_name && group_name) {
@@ -196,20 +196,21 @@ export class NewPostComponent {
       this._showGroupSearchBox = false;
       this._groupService.getGroup(super_group_name, group_name).subscribe(
         group => {
-          console.log(group);
           this.model.group = group;
         },
         error => {
           this._showGroupSearchBox = true;
-          console.log(error)
         })     // !subscribe
     }
     if(super_group_name && !group_name) {
-      superGroupSlashGroup = super_group_name;
+      this._searchString = super_group_name + '/';
+      //superGroupSlashGroup = super_group_name;
     }
+    /*
     if(!super_group_name && group_name) {
       superGroupSlashGroup = group_name;
     }
+    */
     //this._searchGroup = superGroupSlashGroup;
 
     this.model =  {
@@ -217,7 +218,7 @@ export class NewPostComponent {
       link: '',
       text: '',
       type: this._postTypes[0],
-      group: superGroupSlashGroup,
+      //group: superGroupSlashGroup,
       post_as_anon: 0
     }
 
@@ -226,6 +227,7 @@ export class NewPostComponent {
       if(currentUser) {
         this.model.postedby = currentUser;
         this._errorMsg = null;
+        this.search(this._searchString);    // <-- This works
       } else {
         this._errorMsg = "User must be logged in to create new posts.";
       }
@@ -233,9 +235,10 @@ export class NewPostComponent {
     // Only logged in uses can post (init version)
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
-    if(currentUser) {
+    if( currentUser ) {
       this.model.postedby = currentUser;
       this._errorMsg = null;
+      this.search(this._searchString);      // <-- This does not works
     } else {
       this._errorMsg = "User must be logged in to create new posts.";
     }
@@ -249,7 +252,6 @@ export class NewPostComponent {
   private _searchTermStream = new Subject<string>();
   search(term: string) {
     this._searchTermStream.next(term);
-    console.log(term)
   }
   items:Observable<string> = this._searchTermStream
     .debounceTime(500)

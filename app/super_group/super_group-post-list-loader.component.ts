@@ -11,6 +11,7 @@ import {PostTemplateType} from '../post/post-template-types';
 import {ErrorComponent} from '../misc/error.component';
 import {AppService} from '../app.service';
 import {AuthenticationService} from '../authentication/authentication.service';
+import {FabButtonComponent} from '../misc/fab-button.component';
 
 @Component({
   selector: 'my-super-group-post-list-loader',
@@ -65,9 +66,9 @@ import {AuthenticationService} from '../authentication/authentication.service';
                 </div>
               </div>
 
-            </div>
+            </div>    <!-- ! group-details-panel -->
 
-          </div>
+          </div>    <!-- group-details -->
 
         </div> <!-- !col -->
       </div> <!-- !row -->
@@ -75,6 +76,10 @@ import {AuthenticationService} from '../authentication/authentication.service';
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
       <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser"></my-post-list>
+
+      <div class="fab-button">
+        <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
+      </div>
 
     </div>
   </div>  <!-- end top div -->
@@ -129,7 +134,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
     color: rgba(0, 0, 0, 0.6);
   }
   `],
-  directives: [PostListComponent, RouterLink, ErrorComponent]
+  directives: [PostListComponent, RouterLink, ErrorComponent, FabButtonComponent]
 })
 /**
  * This compnenet was supposed to show a list of posts (hence the name)
@@ -180,20 +185,6 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     } else { }
     // Logged in or not fetch posts immidiately
     this.getSupergroupAndPosts(this._super_group_name);
-
-/////
-/*
-    this._superGroupService.getSuperGroupByName(this._super_group_name)
-      .subscribe(
-        superGroup => {
-          this._super_group = superGroup;
-          this._groups = superGroup.groups;
-        },
-        error => {
-          //console.log(error);
-          this._errorMsg = error;
-        });
-        */
   }
 
   getSupergroupAndPosts(superGroup) {
@@ -219,7 +210,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   }
 
   gotoNewPostForm() {
-    //this._router.navigate(['NewPost', {gog_name: this.group.parent_group.name, group_name: this.group.name}]);
+    this._router.navigate( [ 'NewPost', {super_group_name: this._super_group.name } ] );
   }
 
   ngOnDestroy() {

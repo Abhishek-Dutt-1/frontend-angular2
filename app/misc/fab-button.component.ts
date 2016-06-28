@@ -46,7 +46,6 @@ export class FabButtonComponent implements OnInit {
 
   buttonClicked(event) {
     event.preventDefault();
-    console.log("Button clicked ", event);
     this.clicked.next('noop');
   }
 

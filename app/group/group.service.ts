@@ -175,8 +175,6 @@ export class GroupService {
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/group/fuzzySearchGroupsByName', JSON.stringify({searchStr: searchTermArray}), options).map(
       res => {
-        console.log(res)
-        console.log(res.json())
         this._appService.spinner(false);
         return <string[]> res.json()
       }

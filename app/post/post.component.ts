@@ -236,7 +236,7 @@ import {AppService} from '../app.service';
                   </span>
                 </div>
               </div>
-              <div class="row">
+              <div class="row" *ngIf="post.text">
                 <div class="col-xs-12">
                   <div class="post-text">
                     <div *ngIf="_readmore">

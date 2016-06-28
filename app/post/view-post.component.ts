@@ -17,41 +17,69 @@ import {AuthenticationService} from '../authentication/authentication.service';
     <div class="my-view-post">
 
       <div *ngIf="post">
-
-        <my-post [post]="post" [type]="postTemplateType" [currentUser]="_currentUser"></my-post>
+        <div class="row">
+          <div class="col-xs-12">
+            <my-post [post]="post" [type]="postTemplateType" [currentUser]="_currentUser"></my-post>
+          </div>
+        </div>
 
         <!-- split it into comment-list component if need to reuse -->
-        <div> <!-- comments start -->
-          <!-- Replies to Post -->
-          <div class="comment-list level-1">
-            <div *ngFor="let comment1 of post.comments" class="comment-level-1">
-              <my-comment1 [comment1]="comment1" [post]="post"></my-comment1>
+        <div class="row"> <!-- comments start -->
+          <div class="col-xs-12">
+            <!-- Replies to Post -->
+            <div class="comment-list level-1">
+              <div *ngFor="let comment1 of post.comments" class="comment-level-1">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <my-comment1 [comment1]="comment1" [post]="post"></my-comment1>
 
-              <!-- Replies to comments (Level 2) -->
-              <div *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">
-                <div *ngFor="let comment2 of comment1.comments" class="comment-level-2">
-                  <my-comment2 [comment2]="comment2" [post]="post"></my-comment2>
+                    <!-- Replies to comments (Level 2) -->
+                    <div *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">
+                      <div *ngFor="let comment2 of comment1.comments" class="comment-level-2">
 
-                  <!-- Replies to reply (Level 3) -->
-                  <div *ngIf="comment2.comments && comment2.comments.length > 0" class="comment-list level-3">
-                    <div *ngFor="let comment3 of comment2.comments" class="comment-level-3">
-                      <my-comment3 [comment3]="comment3" [post]="post"></my-comment3>
+                        <div class="row">
+                          <div class="col-xs-12">
+                            <my-comment2 [comment2]="comment2" [post]="post"></my-comment2>
 
-                      <!-- Replies to reply (Level 3) -->
-                      <div *ngIf="comment3.comments && comment3.comments.length > 0" class="comment-list level-4">
-                        <div *ngFor="let comment4 of comment3.comments" class="comment-level-3">
-                          <my-comment4 [comment4]="comment4" [post]="post"></my-comment4>
+                            <!-- Replies to reply (Level 3) -->
+                            <div *ngIf="comment2.comments && comment2.comments.length > 0" class="comment-list level-3">
+                              <div *ngFor="let comment3 of comment2.comments" class="comment-level-3">
 
+                                <div class="row">
+                                  <div class="col-xs-12">
+                                    <my-comment3 [comment3]="comment3" [post]="post"></my-comment3>
+
+                                    <!-- Replies to reply (Level 3) -->
+                                    <div *ngIf="comment3.comments && comment3.comments.length > 0" class="comment-list level-4">
+                                      <div *ngFor="let comment4 of comment3.comments" class="comment-level-4">
+
+                                        <div class="row">
+                                          <div class="col-xs-12">
+                                            <my-comment4 [comment4]="comment4" [post]="post"></my-comment4>
+                                          </div>
+                                        </div>
+
+                                      </div>      <!-- comment-list-4 -->
+                                    </div>
+
+                                  </div>
+                                </div>
+
+                              </div>      <!-- comment-list-3 -->
+                            </div>
+
+                          </div>
                         </div>
-                      </div>
 
+                      </div>     <!-- comment-level-2 -->
                     </div>
+
                   </div>
-
                 </div>
-              </div>
 
+              </div>    <!-- comment-level-1 -->
             </div>
+
           </div>
         </div>  <!-- end comments -->
 
