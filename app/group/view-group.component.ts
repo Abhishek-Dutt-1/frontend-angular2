@@ -25,14 +25,24 @@ import {FabButtonComponent} from '../misc/fab-button.component';
           <div class="group-details" [ngClass]="{sticky: _sticky}">
             <div class="group-name">
               <div class="row">
-                <div class="col-xs-8">
+                <div class="col-xs-10 col-sm-8">
                   <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a> /
                   <a [routerLink]="['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]">{{group.name}}</a>
                 </div>
-                <div class="col-xs-4">
-                  <div class="pull-right btn btn-sm btn-default sub-text" *ngIf="!group.isCurrentUserSubscribed && !group.isCurrentUsersMembershipPending && _currentUser" (click)="subscribeToThisGroup()">
+                <div class="col-xs-2 col-sm-4">
+
+                  <div class="new-post hidden-xs">
+                    <div>
+                      <div class="pull-right btn btn-sm btn-default new-post-button" (click)='gotoNewPostForm($event)'>
+                        <i class="fa fa-pencil" aria-hidden="true"></i> &nbsp;New Post
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pull-right btn btn-sm btn-default subscribe-button" *ngIf="!group.isCurrentUserSubscribed && !group.isCurrentUsersMembershipPending && _currentUser" (click)="subscribeToThisGroup()">
                     Subscribe
                   </div>
+
                 </div>
               </div>
             </div>
@@ -96,7 +106,7 @@ currentUserIsGroupOwner: {{group.currentUserIsGroupOwner}}<br/>
 
       <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser"></my-post-list>
 
-      <div class="fab-button">
+      <div class="fab-button visible-xs-block">
         <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
       </div>
 
@@ -170,6 +180,18 @@ currentUserIsGroupOwner: {{group.currentUserIsGroupOwner}}<br/>
   }
   .my-view-group .sub-text {
     color: rgba(0, 0, 0, 0.4);
+  }
+  .my-view-group .subscribe-button {
+    color: rgba(0, 0, 0, 0.4);
+    padding: 3px 15px 3px 10px;
+    margin-right: 15px;
+  }
+  .my-view-group .new-post {
+    padding-top: 0px;
+  }
+  .my-view-group .new-post-button {
+    color: rgba(0, 0, 0, 0.4);
+    padding: 3px 15px 3px 10px;
   }
   `],
   //styleUrls: ['app/group/view-group.component.css'],

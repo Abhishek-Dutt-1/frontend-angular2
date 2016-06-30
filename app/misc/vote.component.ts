@@ -52,7 +52,10 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
       /* margin-top: 10px; */
       font-size: 14px;
       border-radius: 5px;
+      /*
       background-color: rgba(248, 251, 251, 0.3);
+      */
+      background-color: rgba(245, 217, 217, 0.07);
       color: rgba(0, 0, 0, 0.3);
       cursor: pointer;
     }
@@ -63,7 +66,10 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
       padding-left: 0;
     }
     .my-vote .userHasVoted {
+      /*
       background-color: ghostwhite;
+      */
+      background-color: #fff8f8;
       color: rgba(0, 0, 0, 0.8);
     }
     .my-vote .vote {
@@ -91,14 +97,20 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
     .my-vote-vertical .vote-vertical {
       height: 40px;
       font-size: 14px;
+      /*
       background-color: rgba(248, 251, 251, 0.3);
+      */
+      background-color: rgba(245, 217, 217, 0.07);
       color: rgba(0, 0, 0, 0.3);
       cursor: pointer;
       text-align: center;
       padding-top: 9px;
     }
     .my-vote-vertical .userHasVotedVertical {
+      /*
       background-color: ghostwhite;
+      */
+      background-color: #fff8f8;
       color: rgba(0, 0, 0, 0.8);
     }
   `],

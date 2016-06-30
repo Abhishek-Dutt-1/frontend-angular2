@@ -15,6 +15,7 @@ import {PostTemplateType} from './post-template-types';
             <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
               <div class="profile-image pull-left">
                 <img *ngIf="post.postedby.profileimage" src="{{post.postedby.profileimage}}" class="profileimage img-circle">
+                <img *ngIf="!post.postedby.profileimage" src="images/user-default.png" class="profileimage img-circle">
               </div>
             </a>
           </div>
@@ -59,6 +60,9 @@ import {PostTemplateType} from './post-template-types';
     </div>
   `,
   styles: [`
+    .my-post-meta-panel a {
+      color: #af2b2b;
+    }
     .my-post-meta-panel .post-info {
       font-size: 12px;
       margin-top: 15px;

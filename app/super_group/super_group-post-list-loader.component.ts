@@ -28,13 +28,23 @@ import {FabButtonComponent} from '../misc/fab-button.component';
             <div class="group-details-panel">
 
               <div class="row border-row">
-                <div class="col-xs-12">
+                <div class="col-sm-10">
                   <div class="supergroup-name">
                     <h3>
                     <a [routerLink]="['SuperGroupPostList', {super_group_name: _super_group.name}]">
                       {{_super_group.name | uppercase}} / &nbsp;<small>{{_super_group.description}}</small>
                     </a>
                     </h3>
+                  </div>
+                </div>
+
+                <div class="col-sm-2 hidden-xs">
+                  <div class="new-post">
+                    <div>
+                      <div class="pull-right btn btn-sm btn-default new-post-button" (click)='gotoNewPostForm($event)'>
+                        <i class="fa fa-pencil" aria-hidden="true"></i> &nbsp;New Post
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -77,7 +87,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 
       <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser"></my-post-list>
 
-      <div class="fab-button">
+      <div class="fab-button visible-xs-block">
         <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
       </div>
 
@@ -132,6 +142,13 @@ import {FabButtonComponent} from '../misc/fab-button.component';
   }
   .my-super-group-post-list-loader .supergroup-ops a {
     color: rgba(0, 0, 0, 0.6);
+  }
+  .my-super-group-post-list-loader .new-post {
+    padding-top: 15px;
+  }
+  .my-super-group-post-list-loader .new-post-button {
+    color: rgba(0, 0, 0, 0.4);
+    padding: 3px 15px 3px 10px;
   }
   `],
   directives: [PostListComponent, RouterLink, ErrorComponent, FabButtonComponent]

@@ -13,17 +13,19 @@ export class GroupService {
     private _superGroupService: SuperGroupService,
     private _http: Http,
     private jsonp: Jsonp) {}
-
+/*
   getGroups() {
     return Promise.resolve(MOCK_GROUPS);
   }
-
+*/
   // See the "Take it slow" appendix
+  /*
   getGroupsSlowly() {
     return new Promise<Group[]>(resolve =>
       setTimeout(()=>resolve(MOCK_GROUPS), 2000) // 2 seconds
     );
   }
+  */
 
   createNewGroup(newGroup: any) {
     this._appService.spinner();

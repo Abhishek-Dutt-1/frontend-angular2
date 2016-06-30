@@ -106,8 +106,8 @@ import {ErrorComponent} from '../misc/error.component';
                   {{item.supergroup.name | uppercase}}/{{item.name}}
                 </button>
               </div>
-
             </div>      <!-- ! row -->
+
           </div>    <!-- col-sm-10 -->
         </div>      <!-- ! form-group -->
 

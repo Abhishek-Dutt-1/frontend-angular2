@@ -31,7 +31,7 @@ import {HyperGroupSidebarComponent} from './hyper_group-sidebar.component';
         </div>
       </div>
 
-      <div class="fab-button">
+      <div class="fab-button visible-xs-block">
         <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
       </div>
 

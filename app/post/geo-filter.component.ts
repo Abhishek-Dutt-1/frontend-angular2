@@ -62,106 +62,68 @@ import {SuperGroup} from '../super_group/super_group'
                 </span>
               </div>
 
+              <div class="new-post">
+                <div>
+                  <a class="pull-right btn btn-sm btn-default new-post-button" [routerLink]="['NewPost']">
+                    <i class="fa fa-pencil" aria-hidden="true"></i> &nbsp;New Post
+                  </a>
+                </div>
+              </div>
+
             </div>    <!-- ! col-xs-12 -->
           </div>  <!-- end row -->
 
-<!--
-      <div class="row hidden-xs">
-        <div class="col-xs-2">
-          <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'international'}]"
-                [ngClass]="{active: geoSelection == 'international'}">
-                <i class="fa fa-plane"></i> International</a>
-          </span>
-        </div>
-
-        <div class="col-xs-2">
-          <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
-                [ngClass]="{active: geoSelection == 'national'}">
-                <i class="fa fa-train"></i> National
-              </a>
-          </span>
-        </div>
-
-        <div class="col-xs-2">
-          <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
-                [ngClass]="{active: geoSelection == 'state'}">
-                <i class="fa fa-bus"></i> State
-              </a>
-          </span>
-        </div>
-
-        <div class="col-xs-2">
-          <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
-                [ngClass]="{active: geoSelection == 'city'}">
-                <i class="fa fa-car"></i> City
-              </a>
-          </span>
-        </div>
-
-        <div class="col-xs-2">
-          <span class="menu-item">
-              <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
-                [ngClass]="{active: geoSelection == 'local'}">
-                <i class="fa fa-bicycle"></i> Local
-              </a>
-          </span>
-        </div>
-      </div>  <!-- end row -->
-
       <div class="row visible-xs-block">
-      <div class="col-xs-12">
-      <div>
-        <div class="menu-item pull-left">
-          <div class="menu-link-container">
-            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'international'}]"
-                [ngClass]="{active: geoSelection == 'international'}">
-              <i class="fa fa-plane"></i><span *ngIf="geoSelection == 'international'"> International</span>
-            </a>
-          </div>
-        </div>
+        <div class="col-xs-12">
 
-        <div class="menu-item pull-left">
-          <div class="menu-link-container">
-            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
-              [ngClass]="{active: geoSelection == 'national'}">
-              <i class="fa fa-train"></i><span *ngIf="geoSelection == 'national'"> National</span>
-            </a>
-          </div>
-        </div>
+          <div>
+            <div class="menu-item pull-left">
+              <div class="menu-link-container">
+                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'international'}]"
+                    [ngClass]="{active: geoSelection == 'international'}">
+                  <i class="fa fa-plane"></i><span *ngIf="geoSelection == 'international'"> International</span>
+                </a>
+              </div>
+            </div>
 
-        <div class="menu-item pull-left">
-          <div class="menu-link-container">
-            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
-              [ngClass]="{active: geoSelection == 'state'}">
-              <i class="fa fa-bus"></i><span *ngIf="geoSelection == 'state'"> State</span>
-            </a>
-          </div>
-        </div>
+            <div class="menu-item pull-left">
+              <div class="menu-link-container">
+                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
+                  [ngClass]="{active: geoSelection == 'national'}">
+                  <i class="fa fa-train"></i><span *ngIf="geoSelection == 'national'"> National</span>
+                </a>
+              </div>
+            </div>
 
-        <div class="menu-item pull-left">
-          <div class="menu-link-container">
-            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
-              [ngClass]="{active: geoSelection == 'city'}">
-              <i class="fa fa-car"></i><span *ngIf="geoSelection == 'city'"> City</span>
-            </a>
-          </div>
-        </div>
+            <div class="menu-item pull-left">
+              <div class="menu-link-container">
+                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
+                  [ngClass]="{active: geoSelection == 'state'}">
+                  <i class="fa fa-bus"></i><span *ngIf="geoSelection == 'state'"> State</span>
+                </a>
+              </div>
+            </div>
 
-        <div class="menu-item pull-left">
-          <div class="menu-link-container">
-            <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
-              [ngClass]="{active: geoSelection == 'local'}">
-              <i class="fa fa-bicycle"></i><span *ngIf="geoSelection == 'local'"> Local</span>
-            </a>
-          </div>
-        </div>
+            <div class="menu-item pull-left">
+              <div class="menu-link-container">
+                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
+                  [ngClass]="{active: geoSelection == 'city'}">
+                  <i class="fa fa-car"></i><span *ngIf="geoSelection == 'city'"> City</span>
+                </a>
+              </div>
+            </div>
 
-      </div>
-      </div>
+            <div class="menu-item pull-left">
+              <div class="menu-link-container">
+                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
+                  [ngClass]="{active: geoSelection == 'local'}">
+                  <i class="fa fa-bicycle"></i><span *ngIf="geoSelection == 'local'"> Local</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>  <!-- end row -->
 
 
@@ -196,6 +158,7 @@ import {SuperGroup} from '../super_group/super_group'
         z-index: 10;
         margin-left: -15px;
         padding-left: 15px;
+        padding-right: 15px;
         width: 100%;
       }
       .my-geo-filter {
@@ -204,9 +167,10 @@ import {SuperGroup} from '../super_group/super_group'
       .my-geo-filter > .row {
         border-bottom: 1px solid rgba(0,0,0,0.05);
         padding-bottom: 15px;
+        padding-top: 15px;
       }
       .my-geo-filter .menu-item {
-        padding: 15px 15px 0px 0;
+        padding: 0 15px 0px 0;
         transition: 0.05s ease-in-out;
         display: block;
         vertical-align: baseline;
@@ -229,6 +193,13 @@ import {SuperGroup} from '../super_group/super_group'
         clear: both;
         text-transform: uppercase;
         font-size: 11px;
+      }
+      .my-geo-filter .new-post {
+        padding-top: 0px;
+      }
+      .my-geo-filter .new-post-button {
+        color: rgba(0, 0, 0, 0.4);
+        padding: 3px 15px 3px 10px;
       }
     `],
   inputs: ['geoSelection', 'superGroupList'],

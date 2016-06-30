@@ -45,7 +45,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
           </div>
 
         </div>
-      </div>    <!-- row -->
+      </div>    <!-- row1 -->
 
       <!-- Suggested Super Groups -->
       <div class="row1" *ngIf="hierarchy.suggestedSgs.length > 0">
@@ -67,7 +67,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
           </div>
 
         </div>
-      </div>    <!-- row -->
+      </div>    <!-- row1 -->
 
 
       <!-- Other available Super Groups -->
@@ -90,7 +90,15 @@ import {AuthenticationService} from '../authentication/authentication.service';
           </div>
 
         </div>
-      </div>    <!-- row -->
+      </div>    <!-- row1 -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="message-meta">
+            Suggestion for a new Group? Message us at <a [routerLink]="['ViewGroup', {super_group_name: 'Global', group_name: 'Meta'}]">GLOBAL/Meta</a>.
+          </div>
+        </div>
+      </div>  <!-- !row -->
 
     </div>
   </div>    <!-- ngIf -->
@@ -99,9 +107,17 @@ import {AuthenticationService} from '../authentication/authentication.service';
     .my-hyper_group-sidebar {
       padding-top: 10px;
     }
+    .my-hyper_group-sidebar a {
+      color: #af2b2b;
+    }
     .my-hyper_group-sidebar .add-super-group-plus {
       padding-top: 8px;
       paddding-right: 10px;
+    }
+    .my-hyper_group-sidebar .message-meta {
+      font-style: italic;
+      font-size: x-small;
+      margin-top: 15px;
     }
   `],
   directives: [RouterLink, ErrorComponent],

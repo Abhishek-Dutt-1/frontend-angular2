@@ -18,26 +18,7 @@ export class Comment1Service {
   ) { }
 
   createNewComment1(newComment1: any) {
-    /*
-    // Server should handle these things
-    let lastComment1: Comment1 = MOCK_COMMENT1S.reduceRight((left, right) => {
-                    if(left.id > right.id) return left
-                      else return right;
-                  });
-    // Add Comment1
-    let newProperComment1 = {
-      id: +lastComment1.id + 1,
-      text: newComment1.text,
-      comments: [],
-      postedby: newComment1.postedby,
-    }
-    MOCK_COMMENT1S.push(newProperComment1);
 
-    // Add Comment1 to Post
-    MOCK_POSTS.find(post => post.id == commentedOn.id).comments.push(newProperComment1);
-
-    return Promise.resolve(newProperComment1);
-    */
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
@@ -51,6 +32,41 @@ export class Comment1Service {
         this._appService.spinner(false);
         return this._appService.handleServerErrors(error)
       });
+  }       // ! createNewComment1
 
+  /**
+   *
+   */
+  upVoteComment1(id: any) {
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/comment1/upVoteComment1/' + id, options).map(
+      res => {
+        this._appService.spinner(false);
+        return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
   }
+
+  downVoteComment1(id: any) {
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(backendUrl+'/comment1/downVoteComment1/' + id, options).map(
+      res => {
+        this._appService.spinner(false);
+        return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
+  }
+
 }

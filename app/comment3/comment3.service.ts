@@ -31,4 +31,39 @@ export class Comment3Service {
       });
   }
 
+  /**
+   *
+   */
+  upVoteComment3(id: any) {
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get( backendUrl + '/comment3/upVoteComment3/' + id, options ).map(
+      res => {
+        this._appService.spinner(false);
+        return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
+  }
+
+  downVoteComment3(id: any) {
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get( backendUrl + '/comment3/downVoteComment3/' + id, options ).map(
+      res => {
+        this._appService.spinner(false);
+        return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
+  }
+
 }

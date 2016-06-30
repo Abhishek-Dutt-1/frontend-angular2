@@ -60,7 +60,7 @@ import { SpinnerComponent } from './misc/spinner.component';
               <div class="logo">
                 <a [routerLink]="['/HyperGroupPostListDefault']">
                   <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Angry.City
-                </a> <small>[stealth mode]</small>
+                </a> <small>[alpha]</small>
               </div>
             </div>
             <div class="col-xs-5 user-panel-container">
@@ -88,21 +88,21 @@ import { SpinnerComponent } from './misc/spinner.component';
       font-size: 21px;
       font-family: Roboto, UILanguageFont, Arial, sans-serif;
 /*
-      background-color: #0277bd;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-*/
 background-color: #0054a6;
 background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #0054a6), color-stop(1, #004385));
 background-image: -webkit-linear-gradient(top, #0054a6 0%, #004385 100%);
-background-image: -moz-linear-gradient(top, #0054a6 0%, #004385 100%);
-background-image: -o-linear-gradient(top, #0054a6 0%, #004385 100%);
-background-image: -ms-linear-gradient(top, #0054a6 0%, #004385 100%);
-border-bottom: 1px solid #003264;
-/*
--webkit-box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,0.20);
--moz-box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,0.20);
-box-shadow: 0px 10px 10px rgba(0,0,0,0.10), inset 0px -1px 0px rgba(255,255,255,0.20);
+background-image:    -moz-linear-gradient(top, #0054a6 0%, #004385 100%);
+background-image:      -o-linear-gradient(top, #0054a6 0%, #004385 100%);
+background-image:     -ms-linear-gradient(top, #0054a6 0%, #004385 100%);
 */
+background-color: #e40606;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e40606), color-stop(1, #980505));
+background-image: -webkit-linear-gradient(top, #e40606 0%, #980505 100%);
+background-image:    -moz-linear-gradient(top, #e40606 0%, #980505 100%);
+background-image:      -o-linear-gradient(top, #e40606 0%, #980505 100%);
+background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
+
+      border-bottom: 1px solid #003264;
     }
     .my-app-component .header .logo-container {
       padding-top: 13px;

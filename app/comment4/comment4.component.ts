@@ -4,9 +4,9 @@
 import {Component} from '@angular/core';
 import {Comment4} from './comment4';
 import {RouterLink} from '@angular/router-deprecated';
-//import {Router} from '@angular/router';
-//import {PostService} from './post.service';
 import {DateFormatPipe} from '../misc/date-format.pipe';
+import {Comment4Service} from '../comment4/comment4.service';
+import {CommentvoteComponent} from '../misc/commentvote.component';
 
 @Component({
   selector: 'my-comment4',
@@ -15,9 +15,14 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     <div class="my-comment4">
       <div class="row">
 
-        <div class="col-xs-12">
-          <div class="row">
+        <div class="col-xs-2 col-sm-1">
+          <div class="commentvote-container">
+            <my-commentvote [_votee]='comment4' (upVote)='upVoteComment4($event)' (downVote)='downVoteComment4($event)'></my-commentvote>
+          </div>
+        </div>
 
+        <div class="col-xs-10 col-sm-11 comment-main">
+          <div class="row">
             <div *ngIf="comment4.meme_image_url" class="col-xs-4 col-sm-3 col-md-2 meme-image-col">
               <div class="meme-image-container ">
                 <img src="{{comment4.meme_image_url}}" class="meme-image img-responsive img-rounded  center-block">
@@ -29,7 +34,6 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                 {{comment4.text}}
               </div>
             </div>
-
           </div>    <!-- ! row -->
 
           <div class="row">
@@ -39,6 +43,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
                   <a class="" [routerLink]="['ViewUser', {id: comment4.postedby.id}]">
                     <div class="profile-image-container pull-left">
                       <img *ngIf="comment4.postedby.profileimage" src="{{comment4.postedby.profileimage}}" class="profileimage img-circle">
+                      <img *ngIf="!comment4.postedby.profileimage" src="images/user-default.png" class="profileimage img-circle">
                     </div>
                   </a>
                   <div class=" pull-left">
@@ -57,13 +62,6 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
             </div>
           </div>    <!-- ! row -->
 
-          <!--
-          <div class="">
-            {{comment4.text}}
-          </div>
-          <i class="fa fa-user"></i> {{comment4.postedby.displayname}}
-          <span class="hidden">| Reply</span>
-          -->
         </div>
 
       </div>
@@ -73,6 +71,9 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
   styles: [`
   .my-comment4 .meme-image-col {
     padding-right: 0;
+  }
+  .my-comment4 .comment-main {
+    padding-left: 0;
   }
   .my-comment4 .profile-image-container {
     height: 32px;
@@ -105,9 +106,58 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
   }
   `],
   inputs: ['comment4', 'post'],
-  directives: [RouterLink],
+  directives: [RouterLink, CommentvoteComponent],
   pipes: [DateFormatPipe]
 })
 export class Comment4Component {
-  constructor() { }
+
+  private post;
+  private comment4;
+  private _processingVote: Boolean = false;
+  private _errorMsg: string = null;
+
+  constructor(
+    private _comment4Service: Comment4Service
+  ) { }
+
+  /**
+   * User clicked upvote
+   */
+  upVoteComment4(id:number) {
+    if(this._processingVote) return;
+    this._processingVote = true;
+
+    this._comment4Service.upVoteComment4(id).subscribe(
+      comment4 => {
+        this._processingVote = false;
+        this.comment4.upvotes = comment4.upvotes;
+        this.comment4.downvotes = comment4.downvotes;
+        this.comment4.currentUserHasUpVoted = comment4.currentUserHasUpVoted;
+        this.comment4.currentUserHasDownVoted = comment4.currentUserHasDownVoted;
+        this._errorMsg = null;
+      },
+      error => {
+        this._processingVote = false;
+        this._errorMsg = error;
+      });
+  }
+
+  downVoteComment4(id:number) {
+    if(this._processingVote) return;
+    this._processingVote = true;
+    this._comment4Service.downVoteComment4(id).subscribe(
+      comment4 => {
+        this._processingVote = false;
+        this.comment4.upvotes = comment4.upvotes;
+        this.comment4.downvotes = comment4.downvotes;
+        this.comment4.currentUserHasUpVoted = comment4.currentUserHasUpVoted;
+        this.comment4.currentUserHasDownVoted = comment4.currentUserHasDownVoted;
+        this._errorMsg = null;
+      },
+      error => {
+        this._processingVote = false;
+        this._errorMsg = error;
+      });
+  }
+
 }

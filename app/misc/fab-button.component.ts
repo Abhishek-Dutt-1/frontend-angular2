@@ -5,8 +5,9 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
   template: `
     <div class="my-fab-button">
       <div class="buttons" (click)="buttonClicked($event)">
-        <div> <i class="fa fa-pencil" aria-hidden="true"></i>
- </div>
+        <div>
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </div>
       </div>
     </div>
   `,
@@ -27,7 +28,10 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
       height: 56px;
       -webkit-transition: all .1s ease-out;
               transition: all .1s ease-out;
+/*
       background-color: rgba(0, 182, 255, 0.05);
+      */
+      background-color: rgba(255, 73, 0, 0.05);
       color: rgba(0, 0, 0, 0.35);
     }
   `],
