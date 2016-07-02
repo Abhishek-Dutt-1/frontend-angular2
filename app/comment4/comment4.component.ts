@@ -15,13 +15,13 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
     <div class="my-comment4">
       <div class="row">
 
-        <div class="col-xs-2 col-sm-1">
+        <div class="1col-xs-2 1col-sm-1">
           <div class="commentvote-container">
             <my-commentvote [_votee]='comment4' (upVote)='upVoteComment4($event)' (downVote)='downVoteComment4($event)'></my-commentvote>
           </div>
         </div>
 
-        <div class="col-xs-10 col-sm-11 comment-main">
+        <div class="col-xs-8 col-sm-10 comment-main">
           <div class="row">
             <div *ngIf="comment4.meme_image_url" class="col-xs-4 col-sm-3 col-md-2 meme-image-col">
               <div class="meme-image-container ">
@@ -29,11 +29,17 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
               </div>
             </div>
 
-            <div class="col-xs-6 col-sm-9">
+            <div *ngIf="comment4.meme_image_url" class="col-xs-8 col-sm-9 col-md-10">
               <div>
                 {{comment4.text}}
               </div>
             </div>
+            <div *ngIf="!comment4.meme_image_url" class="col-xs-12">
+              <div>
+                {{comment4.text}}
+              </div>
+            </div>
+
           </div>    <!-- ! row -->
 
           <div class="row">
@@ -74,6 +80,7 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
   }
   .my-comment4 .comment-main {
     padding-left: 0;
+    padding-right: 0;
   }
   .my-comment4 .profile-image-container {
     height: 32px;
@@ -103,6 +110,11 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
     /* padding-left: 10px; */
     line-height: 14.4px;
     color: rgba(0, 0, 0, 0.439216);
+  }
+  .my-comment4 .commentvote-container {
+    float: left;
+    margin-left: 15px;
+    margin-right: 15px;
   }
   `],
   inputs: ['comment4', 'post'],

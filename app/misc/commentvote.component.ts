@@ -28,6 +28,7 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
   `,
   styles: [`
     .my-commentvote {
+      width: 30px;
       font-size: 14px;
       border-radius: 5px;
       background-color: rgba(245, 217, 217, 0.07);
