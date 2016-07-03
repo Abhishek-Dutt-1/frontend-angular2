@@ -47,6 +47,7 @@ import { Comment4Service } from './comment4/comment4.service';
 
 import { MemeService } from './meme/meme.service';
 import { SpinnerComponent } from './misc/spinner.component';
+import { AddSupergroupsComponent } from './misc/add-supergroups.component';
 
 @Component({
   selector: 'my-app-component',
@@ -60,7 +61,7 @@ import { SpinnerComponent } from './misc/spinner.component';
               <div class="logo">
                 <a [routerLink]="['/HyperGroupPostListDefault']">
                   <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Angry.City
-                </a> <small>[alpha]</small>
+                </a> <sup class="alpha">&alpha;</sup>
               </div>
             </div>
             <div class="col-xs-5 user-panel-container">
@@ -110,15 +111,18 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     .my-app-component .header .logo a {
       vertical-align: middle;
       color: white;
+      font-weight: bold;
+      text-shadow: 3px 3px 3px rgba(0,0,0,0.5)
     }
     .my-app-component .header .logo a:hover {
       text-decoration: none;
     }
-
     .my-app-component .header .user-panel-container {
       text-align: right;
       font-size: 14px;
       padding-top: 20px;
+    }
+    .my-app-component .header .alpha {
     }
   `],
   //styleUrls: ['app/app.component.css'],
@@ -266,6 +270,11 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     path: '/reply4/:postid/:comment3id',
     name: 'NewComment4',
     component: NewComment4LoaderComponent
+  },
+  {
+    path: '/sub/:hypergroup',
+    name: 'AddSupergroups',
+    component: AddSupergroupsComponent
   }
 ])
 export class AppComponent { }

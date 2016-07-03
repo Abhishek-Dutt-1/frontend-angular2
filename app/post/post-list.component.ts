@@ -6,12 +6,12 @@ import {PostComponent} from './post.component';
   template: `
     <div class="my-post-list">
       <div *ngFor="let post of posts">
-        <my-post [post]="post" [type]="postTemplateType" [currentUser]="currentUser"></my-post>
+        <my-post [post]="post" [type]="postTemplateType" [currentUser]="currentUser" [view]="view"></my-post>
       </div>
     </div>
   `,
   directives: [PostComponent],
-  inputs: ["posts",  "postTemplateType", "currentUser"]
+  inputs: ["posts",  "postTemplateType", "currentUser", "view"]
 
 })
 export class PostListComponent implements OnInit {

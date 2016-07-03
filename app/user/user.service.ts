@@ -305,7 +305,7 @@ export class UserService {
     return this._http.post(backendUrl + '/user/getHyperGroupHierarchy', JSON.stringify({hyperGroup: hyperGroup}), options)
       .map(
         res => {
-          console.log(res.json());
+          //console.log(res.json());
           this._appService.spinner(false);
           return res.json();
       })

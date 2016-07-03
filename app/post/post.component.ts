@@ -45,7 +45,7 @@ import {AppService} from '../app.service';
 
           <div class="row">
             <div class="col-xs-12">
-              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type" [view]="view"></my-post-meta-panel>
             </div>
           </div>     <!-- ! row -->
 
@@ -99,7 +99,7 @@ import {AppService} from '../app.service';
 
               <div class="row">
                 <div class="col-xs-12">
-                  <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+                  <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type" [view]="view"></my-post-meta-panel>
                 </div>
               </div>     <!-- ! row -->
 
@@ -141,7 +141,7 @@ import {AppService} from '../app.service';
 
           <div class="row">
             <div class="col-xs-12">
-              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type" [view]="view"></my-post-meta-panel>
             </div>
           </div>     <!-- ! row -->
 
@@ -195,7 +195,7 @@ import {AppService} from '../app.service';
 
           <div class="row">
             <div class="col-xs-12">
-              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type" [view]="view"></my-post-meta-panel>
             </div>
           </div>     <!-- ! row -->
 
@@ -256,7 +256,7 @@ import {AppService} from '../app.service';
               </div>
               <div class="row">
                 <div class="col-xs-12">
-                  <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type"></my-post-meta-panel>
+                  <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type" [view]="view"></my-post-meta-panel>
                 </div>
               </div>     <!-- ! row -->
             </div>
@@ -329,7 +329,7 @@ import {AppService} from '../app.service';
     margin-top: 15px;
   }
   `],
-  inputs: ['post', 'type', 'currentUser'],
+  inputs: ['post', 'type', 'currentUser', 'view'],
   directives: [RouterLink, VoteComponent, PostMetaPanelComponent, ErrorComponent],
   pipes: [DateFormatPipe]
 })

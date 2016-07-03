@@ -85,7 +85,8 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
-      <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser"></my-post-list>
+      <my-post-list [posts]="_postsSticky" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
+      <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
 
       <div class="fab-button visible-xs-block">
         <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
@@ -160,6 +161,8 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
   private _posts: Post[];
+  private _postsSticky: Post[];
+  private _view = "supergroup";
   private _groups: Group[];
   private _super_group_name: string;
   private _super_group: SuperGroup;
@@ -208,12 +211,13 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
     this._superGroupService.getSupergroupAndPosts(superGroup).subscribe(
       resp => {
-        console.log(resp);
+        //console.log(resp);
         this._errorMsg = null;
         this._super_group = resp.superGroup;
         this._groups = resp.superGroup.groups;
         this._posts = resp.posts;
-        if(this._posts.length < 1) {
+        this._postsSticky = resp.postsSticky;
+        if( this._posts.length + this._postsSticky.length < 1 ) {
           this._errorMsg = "No posts here. You can create the first one!"
         }
       },

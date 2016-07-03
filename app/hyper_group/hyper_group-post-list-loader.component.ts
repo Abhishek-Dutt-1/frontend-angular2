@@ -24,7 +24,8 @@ import {HyperGroupSidebarComponent} from './hyper_group-sidebar.component';
       <div class="row">
         <div class="col-md-10 post-list-area">
           <my-error [_errorMsg]="_errorMsg"></my-error>
-          <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser"></my-post-list>
+          <my-post-list [posts]="postsSticky" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
+          <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
         </div>
         <div class="col-md-2 hidden-xs hidden-sm">
           <my-hyper_group-sidebar [hierarchy]="_sidebarHierarchy" [hyperGroup]="_geoSelection"></my-hyper_group-sidebar>
@@ -52,6 +53,8 @@ import {HyperGroupSidebarComponent} from './hyper_group-sidebar.component';
 export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
   private posts: Post[];
+  private postsSticky: Post[];
+  private _view = "hypergroup";
   private _sidebarHierarchy: any[] = null;
   private postTemplateType: PostTemplateType;
   //private parent_gorup: Group_Of_Groups;
@@ -113,15 +116,16 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
       resp => {
         //console.log(resp)
         this.posts = resp.posts;
-        if(this.posts.length < 1) {
+        this.postsSticky = resp.postsSticky;
+        if(this.posts.length + this.postsSticky.length < 1) {
           this._errorMsg = "Your '" + this._geoSelection.toUpperCase() + "' groups do not have any posts yet. " +
-                           "Please visit your profile to subscribe to some more active groups, or create a new post yourself."
+                           "Please subscribe to some more active groups, or create a new post yourself."
         }
 
         this._superGroupList = resp.superGroupList;
         if(this._superGroupList.length < 1) {
           this._errorMsg = "You have not subscibed to any groups in '" + this._geoSelection.toUpperCase() + "'. " +
-                           "Please visit your profile to subscribe to groups."
+                           "Please subscribe to more groups to view posts."
         }
       },
       error => {

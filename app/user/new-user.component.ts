@@ -45,10 +45,8 @@ declare var gapi:any;
                   Display name is required. Maximum 30 characters.
                 </div>
                 <div class="text-muted field-explainer">
-                  Display name will be visible on your posts and comments.
-                  We suggest to keep it as you real world name.<br/>
-                  Once set here it <b>cannot be changed</b>.<br/>
-                  Don't worry, you can also post as <b>Anonymous</b> anytime.<br/>
+                  Display name will be visible on your posts and comments.<br/>
+                  Once set here it cannot be changed.
                 </div>
               </div>
             </div>
@@ -95,11 +93,18 @@ declare var gapi:any;
               </div>
             </div>
 
+            <div class="form-group">
+              <label class="col-sm-2 control-label"></label>
+              <div class="col-sm-10">
+                <p class="form-control-static"><i>By clicking on Sign up, you agree to Angry.City's terms & conditions and privacy policy.</i></p>
+              </div>
+            </div>
+
             <my-error [_errorMsg]="_errorMsg"></my-error>
 
             <div class="form-group">
               <div class="col-sm-10 col-sm-offset-2">
-                <button (click)="onSubmit($event)" [disabled]="!newUserForm.form.valid" class="btn btn-default">Submit</button>
+                <button (click)="onSubmit($event)" [disabled]="!newUserForm.form.valid" class="btn btn-default">Sign Up</button>
                 <button (click)="goBack()" class="btn btn-default">Go Back</button>
               </div>
             </div>

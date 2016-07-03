@@ -40,6 +40,7 @@ import {User} from './user'
     }
     .my-user-authentication-panel a.auth-logout {
       color: white;
+      cursor: pointer;
     }
   `],
   directives: [ROUTER_DIRECTIVES]

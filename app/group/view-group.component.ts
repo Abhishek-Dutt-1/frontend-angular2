@@ -58,21 +58,12 @@ import {FabButtonComponent} from '../misc/fab-button.component';
             <span *ngIf="group.description">{{group.description}}</span>
             <span *ngIf="!group.description"><i>Welcome to {{group.supergroup.name}}/{{group.name}}</i></span>
           </div>
-          <!--
-          <div class="group-description">
-            <div class="group-label">Group owner</div>
-            <span *ngIf="group.owner.displayname">{{group.owner.displayname}}</span>
-          </div>
-          -->
         </div> <!-- !col -->
       </div> <!-- !row -->
 
       <div class="row border-row" *ngIf="group.isCurrentUsersMembershipPending || group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner">
         <div class="col-xs-12">
           <div class="group-ops">
-          <!--
-            <div class="sub-text sub-text-mod" *ngIf="group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner" (click)="unSubscribeFromThisGroup()">Unsubscribe Group</div>
-            -->
             <div class="btn btn-xs btn-link sub-text" *ngIf="group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner" (click)="unSubscribeFromThisGroup()">Unsubscribe</div>
             <div class="btn btn-xs btn-link sub-text" *ngIf="group.isCurrentUsersMembershipPending" (click)="cancelPendingGroupMembership()">Membership Pending (Cancel?)</div>
           </div>
@@ -89,22 +80,11 @@ import {FabButtonComponent} from '../misc/fab-button.component';
           </div>
         </div> <!-- !col -->
       </div> <!-- !row -->
-<!--
-non_members_can_view: {{group.non_members_can_view}}<br/>
-non_members_can_post: {{group.non_members_can_post}}<br/>
-verify_members_email: {{group.verify_members_email}}<br/>
-Verify members email domain list: <br/>
-<div *ngFor="#emailDomain of group.verify_email_domains_list">{{emailDomain}}</div>
-membership_needs_approval: {{group.membership_needs_approval}}<br/>
-members_waiting_approval: {{group.members_waiting_approval}}<br/>
-<div *ngFor="#members of group.members_waiting_approval">{{members}}</div>
-isCurrentUserSubscribed: {{group.isCurrentUserSubscribed}}<br/>
-isCurrentUsersMembershipPending: {{group.isCurrentUsersMembershipPending}}<br/>
-currentUserIsGroupOwner: {{group.currentUserIsGroupOwner}}<br/>
--->
+
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
-      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser"></my-post-list>
+      <my-post-list [posts]="groupPostsSticky" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view"></my-post-list>
+      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view"></my-post-list>
 
       <div class="fab-button visible-xs-block">
         <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
@@ -202,6 +182,8 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
 
   private group: Group;
   private groupPosts: Post[];
+  private groupPostsSticky: Post[];
+  private _view = "group";
   private postTemplateType: PostTemplateType;
   private _loggedInUserSubcription = null;
   private _currentUser: User = null;
@@ -278,9 +260,10 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
       .subscribe(
         groupAndPostList => {
           //console.log(groupAndPostList)
-          this.group = groupAndPostList.group
+          this.group = groupAndPostList.group;
           this.groupPosts = groupAndPostList.postList;
-          if(this.groupPosts.length < 1) {
+          this.groupPostsSticky = groupAndPostList.postListSticky;
+          if( this.groupPosts.length + this.groupPostsSticky.length < 1 ) {
             if ( this.group.non_members_can_view || this.group.isCurrentUserSubscribed ) {
               this._errorMsg = "This group does not have any posts yet. You can help by creating the first post!"
             } else {

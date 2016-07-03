@@ -62,11 +62,20 @@ import {SuperGroup} from '../super_group/super_group'
                 </span>
               </div>
 
-              <div class="new-post">
-                <div>
-                  <a class="pull-right btn btn-sm btn-default new-post-button" [routerLink]="['NewPost']">
-                    <i class="fa fa-pencil" aria-hidden="true"></i> &nbsp;New Post
-                  </a>
+              <div class="pull-right">
+                <div class="new-post pull-right">
+                  <div>
+                    <a class="btn btn-sm btn-default new-post-button" [routerLink]="['NewPost']">
+                      <i class="fa fa-pencil" aria-hidden="true"></i> &nbsp;New Post
+                    </a>
+                  </div>
+                </div>
+                <div class="hidden-md pull-right">
+                  <div class="add-supergroups-button">
+                    <a class="1pull-right btn btn-sm btn-default new-post-button" [routerLink]="[ 'AddSupergroups', { hypergroup: geoSelection } ]">
+                      <i class="fa fa-plus" aria-hidden="true"></i> &nbsp;Groups
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -121,6 +130,15 @@ import {SuperGroup} from '../super_group/super_group'
                 </a>
               </div>
             </div>
+
+            <div class="menu-item pull-right add-supergroups">
+              <div class="menu-link-container">
+                <a class="menu-link" [routerLink]="[ 'AddSupergroups', { hypergroup: geoSelection } ]">
+                  <i class="fa fa-plus"></i>
+                </a>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -198,8 +216,17 @@ import {SuperGroup} from '../super_group/super_group'
         padding-top: 0px;
       }
       .my-geo-filter .new-post-button {
+        /*
         color: rgba(0, 0, 0, 0.4);
+        */
+        color: #af2b2b;
         padding: 3px 15px 3px 10px;
+      }
+      .my-geo-filter .add-supergroups {
+        padding-right: 0;
+      }
+      .my-geo-filter .add-supergroups-button {
+        padding-right: 10px;
       }
     `],
   inputs: ['geoSelection', 'superGroupList'],

@@ -103,7 +103,7 @@ import {ErrorComponent} from '../misc/error.component';
               </div>
               <div class="col-sm-12">
                 <button class="btn btn-sm btn-default search-results" *ngFor="let item of items | async" (click)="selectSuperGroupSlashGroup(item)">
-                  {{item.supergroup.name | uppercase}}/{{item.name}}
+                  {{item.supergroup.name}}/{{item.name}}
                 </button>
               </div>
             </div>      <!-- ! row -->
@@ -120,6 +120,20 @@ import {ErrorComponent} from '../misc/error.component';
             <label  class="radio-inline">
               <input type="radio" name="post-as-anon" (click)="model.post_as_anon = 0" [checked]="model.post_as_anon === 0"> No
             </label>
+          </div>
+        </div>
+
+        <div *ngIf="model.postedby && model.group">
+          <div class="sticky-post form-group" [ngClass]="{ hidden: model.group.owner !== model.postedby.id }">
+            <label for="sticky-post" class="col-sm-2 control-label">Sticky Post</label>
+            <div class="col-sm-10">
+              <label  class="radio-inline">
+                <input type="radio" name="sticky-post" (click)="model.sticky_post = 1"  [checked]="model.sticky_post === 1"> Yes
+              </label>
+              <label  class="radio-inline">
+                <input type="radio" name="sticky-post" (click)="model.sticky_post = 0" [checked]="model.sticky_post === 0"> No
+              </label>
+            </div>
           </div>
         </div>
 
@@ -196,6 +210,7 @@ export class NewPostComponent {
       this._showGroupSearchBox = false;
       this._groupService.getGroup(super_group_name, group_name).subscribe(
         group => {
+          console.log(group)
           this.model.group = group;
         },
         error => {
@@ -219,7 +234,8 @@ export class NewPostComponent {
       text: '',
       type: this._postTypes[0],
       //group: superGroupSlashGroup,
-      post_as_anon: 0
+      post_as_anon: 0,
+      sticky_post: 0,
     }
 
     // Only logged in uses can post
@@ -236,6 +252,7 @@ export class NewPostComponent {
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
     if( currentUser ) {
+      console.log(currentUser)
       this.model.postedby = currentUser;
       this._errorMsg = null;
       this.search(this._searchString);      // <-- This does not works
@@ -297,7 +314,8 @@ export class NewPostComponent {
       type     : this.model.type,
       postedby : this.model.postedby.id,
       group    : this.model.group.id,
-      post_as_anon : this.model.post_as_anon ? true : false
+      post_as_anon : this.model.post_as_anon ? true : false,
+      sticky_level : this.model.sticky_post ? 1 : 0     // 1 for group, 0 for no sticky
     }
 
     console.log(properModel);

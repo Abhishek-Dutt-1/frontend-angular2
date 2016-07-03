@@ -29,10 +29,14 @@ import {PostTemplateType} from './post-template-types';
               <div class="bullet pull-left"> in </div>
               <div class="post-grouplink pull-left">
                 <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
-                  {{post.group.supergroup.name | uppercase}}/{{post.group.name}}
+                  {{post.group.supergroup.name}}/{{post.group.name}}
                 </a>
               </div>
             </div>
+            <div *ngIf="_isSticky">
+              <div class="bullet pull-left"> &bull; [Sticky Post] </div>
+            </div>
+
             <div class="clearfix"></div>
             <div class="post-createdat pull-left">
               {{ post.createdAt | timeAgo }} &bull;
@@ -157,7 +161,7 @@ import {PostTemplateType} from './post-template-types';
       color: rgba(0, 0, 0, 0.439216);
     }
   `],
-  inputs: ['post', 'currentUser', 'type'],
+  inputs: ['post', 'currentUser', 'type', 'view'],
   directives: [RouterLink],
   pipes: [DateFormatPipe]
   //outputs: ['upVote', 'downVote']
@@ -171,6 +175,9 @@ export class PostMetaPanelComponent implements OnInit{
   private templateTypeList        : PostTemplateType = null;
   private templateTypeGroupList   : PostTemplateType = null;
   private templateTypeMain        : PostTemplateType = null;
+  private post = null;
+  private view = null;
+  private _isSticky = false;
 
   constructor( ) { }
 
@@ -179,16 +186,10 @@ export class PostMetaPanelComponent implements OnInit{
     this.templateTypeList = PostTemplateType.List;
     this.templateTypeGroupList = PostTemplateType.Grouplist;
     this.templateTypeMain = PostTemplateType.Main;
+
+    if ( [1, 3, 5, 7].indexOf(this.post.sticky_level) > -1 && this.view == 'group'      ) this._isSticky = true;
+    if ( [2, 3, 7].indexOf(this.post.sticky_level) > -1    && this.view == 'supergroup' ) this._isSticky = true;
+    if ( [4, 5, 6, 7].indexOf(this.post.sticky_level) > -1 && this.view == 'hypergroup' ) this._isSticky = true;
   }
 
-/*
-  upVotePost(id) {
-    console.log("Up voting post with ", id);
-    this.upVote.next(id);
-  }
-  downVotePost(id) {
-    console.log("Down voting post with ", id);
-    this.downVote.next(id);
-  }
-*/
 }
