@@ -24,6 +24,7 @@ export class SuperGroupService {
    * Returns a Super group obj be name
    * DEPRICATED
    */
+   /*
   getSuperGroupByName(sg_name: string) {
 
     this._appService.spinner();
@@ -40,7 +41,24 @@ export class SuperGroupService {
         this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });
+  }
+  */
 
+  getSupergroupWithGroups(sg_name: string) {
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers    = new Headers( this._appService.getSiteParams().headersObj );
+    let options    = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl + '/supergroup/getSupergroupWithGroups', JSON.stringify({superGroupName: sg_name}), options)
+      .map(
+        res => {
+          this._appService.spinner(false);
+          return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error);
+      });
   }
 
   /**

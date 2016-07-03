@@ -13,6 +13,7 @@ import { NewPostComponent } from './post/new-post.component';
 import { ConfirmPostDeleteComponent } from './post/confirm-post-delete.component';
 
 import { SuperGroupPostListLoaderComponent } from './super_group/super_group-post-list-loader.component';
+import { ViewGroupListComponent } from './super_group/view-grouplist.component';
 import { SuperGroupService } from './super_group/super_group.service';
 
 import { GroupService } from './group/group.service';
@@ -47,7 +48,8 @@ import { Comment4Service } from './comment4/comment4.service';
 
 import { MemeService } from './meme/meme.service';
 import { SpinnerComponent } from './misc/spinner.component';
-import { AddSupergroupsComponent } from './misc/add-supergroups.component';
+import { AddSupergroupsComponent } from './hyper_group/add-supergroups.component';
+
 
 @Component({
   selector: 'my-app-component',
@@ -194,6 +196,11 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     path: '/go/:super_group_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent
+  },
+  {
+    path: '/groups/:supergroup',
+    name: 'ViewGroupList',
+    component: ViewGroupListComponent
   },
   {
     path: '/editgroup/:group_id',

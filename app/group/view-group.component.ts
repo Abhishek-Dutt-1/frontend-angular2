@@ -26,6 +26,9 @@ import {FabButtonComponent} from '../misc/fab-button.component';
             <div class="group-name">
               <div class="row">
                 <div class="col-xs-10 col-sm-8">
+                  <a class="menu-link" [routerLink]="[ '/HyperGroupPostList', { geo: _hyper_group } ]">
+                    <i class="fa" [ngClass]="{'fa-plane': _hyper_group == 'international', 'fa-train': _hyper_group == 'national', 'fa-bus': _hyper_group === 'state', 'fa-car': _hyper_group === 'city', 'fa-bicycle': _hyper_group === 'local' }"></i> /
+                  </a>
                   <a [routerLink]="['SuperGroupPostList', {super_group_name: group.supergroup.name}]">{{group.supergroup.name | uppercase}}</a> /
                   <a [routerLink]="['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]">{{group.name}}</a>
                 </div>
@@ -181,6 +184,9 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 export class ViewGroupComponent implements OnInit, OnDestroy  {
 
   private group: Group;
+  private _super_group = null;
+  private _hyper_group = null;
+
   private groupPosts: Post[];
   private groupPostsSticky: Post[];
   private _view = "group";
@@ -261,6 +267,13 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
         groupAndPostList => {
           //console.log(groupAndPostList)
           this.group = groupAndPostList.group;
+          this._super_group = this.group.supergroup;
+          this._hyper_group = this._super_group.type;
+          if ( this._super_group.type == 'international' ) {
+            if ( this._currentUser.national.find( group => group.id === this._super_group.id ) ) {
+              this._hyper_group = 'national'
+            }
+          }
           this.groupPosts = groupAndPostList.postList;
           this.groupPostsSticky = groupAndPostList.postListSticky;
           if( this.groupPosts.length + this.groupPostsSticky.length < 1 ) {

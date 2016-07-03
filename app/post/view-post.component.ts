@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RouteParams} from '@angular/router-deprecated';
+import {Router, RouteParams, RouterLink} from '@angular/router-deprecated';
 import {AppService} from '../app.service';
 import {Post} from './post';
 import {PostService} from './post.service';
@@ -10,13 +10,47 @@ import {Comment3Component} from '../comment3/comment3.component';
 import {Comment4Component} from '../comment4/comment4.component';
 import {PostTemplateType} from './post-template-types';
 import {AuthenticationService} from '../authentication/authentication.service';
+import {FabButtonComponent} from '../misc/fab-button.component';
 
 @Component({
   selector: 'my-view-post',
   template: `
     <div class="my-view-post">
-
       <div *ngIf="post">
+
+        <div class="group-details">
+          <div class="group-details-panel">
+            <div class="row border-row">
+              <div class="col-xs-12 group-name-row ">
+                <div class="supergroup-name pull-left">
+                  <div>
+                    <a class="menu-link" [routerLink]="[ '/HyperGroupPostList', { geo: _hyper_group } ]">
+                      <i class="fa" [ngClass]="{'fa-plane': _hyper_group == 'international', 'fa-train': _hyper_group == 'national', 'fa-bus': _hyper_group === 'state', 'fa-car': _hyper_group === 'city', 'fa-bicycle': _hyper_group === 'local' }"></i> /
+                    </a>
+                    <a [routerLink]="['SuperGroupPostList', {super_group_name: _super_group.name}]">
+                      {{_super_group.name | uppercase}} / <small class="hidden">{{_super_group.description}}</small>
+                    </a>
+                    <a [routerLink]="['ViewGroup', {super_group_name: _group.supergroup.name, group_name: _group.name}]">
+                      {{_group.name}} / <small class="hidden">{{_group.description}}</small>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="pull-right">
+                  <div class="new-post pull-right hidden-xs">
+                    <div>
+                      <a class="btn btn-sm btn-default new-post-button" [routerLink]="[ 'NewPost', {super_group_name: _group.supergroup.name, group_name: _group.name} ]">
+                        <i class="fa fa-pencil" aria-hidden="true"></i> &nbsp;New Post
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>    <!-- ! group-details-panel -->
+        </div>    <!-- group-details -->
+
         <div class="row">
           <div class="col-xs-12">
             <my-post [post]="post" [type]="postTemplateType" [currentUser]="_currentUser"></my-post>
@@ -83,6 +117,10 @@ import {AuthenticationService} from '../authentication/authentication.service';
           </div>
         </div>  <!-- end comments -->
 
+        <div class="fab-button visible-xs-block">
+          <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
+        </div>
+
       </div>  <!-- end ifPost -->
     </div>
   `,
@@ -100,9 +138,44 @@ import {AuthenticationService} from '../authentication/authentication.service';
   .my-view-post .comment-list .level-4 {
     padding: 10px 0px 0px 40px;
   }
+  .my-view-post .group-name-row {
+    margin: 20px 0;
+  }
+  .my-view-post .supergroup-name {
+    transition: 0.05s ease-in-out;
+    display: block;
+    vertical-align: baseline;
+    letter-spacing: 1px;
+    font-size: 18px;
+    font-family: WorkSans,sans-serif;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    color: rgba(0, 0, 0, 0.6);
+    text-decoration: none;
+  }
+  .my-view-post .supergroup-name a {
+    color: rgba(0, 0, 0, 0.6);
+    text-decoration: none;
+  }
+  .my-view-post .border-row {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  .my-view-post .post-list-area {
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  .my-view-post .new-post {
+    /* padding-top: 15px; */
+  }
+  .my-view-post .new-post-button {
+    padding: 3px 15px 3px 10px;
+    color: #af2b2b;
+  }
+  .my-view-post .add-supergroups-button {
+    padding-right: 10px;
+  }
   `],
   //styleUrls: ['app/post/view-post.component.css'],
-  directives: [PostComponent, Comment1Component, Comment2Component, Comment3Component, Comment4Component]
+  directives: [RouterLink, PostComponent, FabButtonComponent, Comment1Component, Comment2Component, Comment3Component, Comment4Component]
   //////inputs: ['post']////
 })
 export class ViewPostComponent {
@@ -112,11 +185,15 @@ export class ViewPostComponent {
   private _loggedInUserSubcription = null;
   private _currentUser = null;
   private _errorMsg = null;
+  private _group = null;
+  private _super_group = null;
+  private _hyper_group = null;
 
   constructor(
     private _appService: AppService,
     private _postService: PostService,
     private _routeParams: RouteParams,
+    private _router: Router,
     private _authenticationService: AuthenticationService
   ) { }
 
@@ -150,6 +227,14 @@ export class ViewPostComponent {
       post => {
         //console.log(post)
         this.post = post;
+        this._group = post.group;
+        this._super_group = post.group.supergroup;
+        this._hyper_group = post.group.supergroup.type;
+        if ( this._hyper_group == 'international' ) {
+          if ( this._currentUser && this._currentUser.national.find( group => group.id === this._super_group.id ) ) {
+            this._hyper_group = 'national'
+          }
+        }
       },
       error => {
         //console.log(error);
@@ -160,6 +245,11 @@ export class ViewPostComponent {
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
   }
+
+  gotoNewPostForm() {
+    this._router.navigate(['NewPost', {super_group_name: this._group.supergroup.name, group_name: this._group.name}]);
+  }
+
   /*
   goBack() {
     window.history.back();
