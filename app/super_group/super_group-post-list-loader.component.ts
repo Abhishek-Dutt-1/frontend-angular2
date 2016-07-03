@@ -148,8 +148,8 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     padding-top: 15px;
   }
   .my-super-group-post-list-loader .new-post-button {
-    color: rgba(0, 0, 0, 0.4);
     padding: 3px 15px 3px 10px;
+    color: #af2b2b;
   }
   `],
   directives: [PostListComponent, RouterLink, ErrorComponent, FabButtonComponent]

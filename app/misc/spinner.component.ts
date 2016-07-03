@@ -14,8 +14,8 @@ import {AppService} from '../app.service';
   styles: [`
   .my-spinner {
     position: fixed;
-    bottom: 0;
-    left: 50%;
+    bottom: 15px;
+    left: 15px;
     animation: fadein 2s;
   }
   @keyframes fadein {
@@ -31,6 +31,7 @@ export class SpinnerComponent implements OnInit {
   private _showHideSpinner: boolean = false;
   private _showSpinnerSubcription = null;
   private _setTimeout = null;
+  private _spinnerHistory: number = 0;
 
   constructor(
     private _appService: AppService
@@ -41,13 +42,19 @@ export class SpinnerComponent implements OnInit {
       spinnerState => {
         //this._showHideSpinner = spinnerState;
         if ( spinnerState ) {
-          clearTimeout(this._setTimeout);
-          this._setTimeout = setTimeout( () => {
-            this._showHideSpinner = spinnerState;
-          }, 1000)
+          //clearTimeout(this._setTimeout);
+          ++this._spinnerHistory;
+          if ( this._spinnerHistory == 1 )  {
+            this._setTimeout = setTimeout( () => {
+              this._showHideSpinner = spinnerState;
+            }, 1000)
+          }
         } else {
-          clearTimeout(this._setTimeout);
-          this._showHideSpinner = spinnerState;
+          this._spinnerHistory = this._spinnerHistory <= 0 ? 0 : --this._spinnerHistory;
+          if (this._spinnerHistory === 0) {
+            clearTimeout(this._setTimeout);
+            this._showHideSpinner = spinnerState;     // i.e. false
+          }
         }
       },
       error => {

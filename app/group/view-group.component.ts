@@ -170,8 +170,8 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     padding-top: 0px;
   }
   .my-view-group .new-post-button {
-    color: rgba(0, 0, 0, 0.4);
     padding: 3px 15px 3px 10px;
+    color: #af2b2b;
   }
   `],
   //styleUrls: ['app/group/view-group.component.css'],

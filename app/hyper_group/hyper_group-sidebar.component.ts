@@ -26,7 +26,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
                   <div class="pull-right"><div class="add-super-group-plus" (click)="unSubscribeSuperGroup(sg, hyperGroup)"><i class="fa fa-minus" aria-hidden="true"></i></div></div>
                 </div>
               </div>
-              <div class="row">
+              <div class="row hidden">
                 <div class="col-xs-12">
                   <div>{{sg.description}}</div>
                 </div>

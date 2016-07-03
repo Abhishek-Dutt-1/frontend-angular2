@@ -148,6 +148,7 @@ export class ViewPostComponent {
   getPosts(postId: any) {
     this._postService.getPost(postId).subscribe(
       post => {
+        //console.log(post)
         this.post = post;
       },
       error => {
