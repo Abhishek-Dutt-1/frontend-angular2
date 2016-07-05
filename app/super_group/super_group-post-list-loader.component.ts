@@ -170,7 +170,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     // Only logged in uses view post (init version)
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
-    if(currentUser) {
+    if( currentUser ) {
       this._currentUser = currentUser;
       this._errorMsg = null;
     } else { }
@@ -188,7 +188,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         this._groups = resp.superGroup.groups;
         this._hyper_group = this._super_group.type;
         if ( this._super_group.type == 'international' ) {
-          if ( this._currentUser.national.find( group => group.id === this._super_group.id ) ) {
+          if ( this._currentUser && this._currentUser.national.find( group => group.id === this._super_group.id ) ) {
             this._hyper_group = 'national'
           }
         }

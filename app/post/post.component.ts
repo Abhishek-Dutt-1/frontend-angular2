@@ -18,6 +18,8 @@ import {AppService} from '../app.service';
   <div *ngIf="post">
   <div class="my-post">
 
+    <my-error [_errorMsg]="_errorMsg"></my-error>
+
     <div *ngIf="type === templateTypeList || type === templateTypeGroupList" class="row">
 
       <div class="col-xs-12 visible-xs-block visible-sm-block">
@@ -110,7 +112,6 @@ import {AppService} from '../app.service';
       </div>        <!-- !hidden-xs/sm -->
 
     </div>     <!-- ! ngIf-row -->
-
 
 
     <div *ngIf="false && type === templateTypeGroupList" class="row">
@@ -266,8 +267,6 @@ import {AppService} from '../app.service';
       </div>      <!-- !hidden-xs/sm -->
 
     </div>     <!-- ! ngIf-row -->
-
-    <my-error [_errorMsg]="_errorMsg"></my-error>
 
   </div>      <!-- my-post -->
   </div>      <!-- ngIfPost -->

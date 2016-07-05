@@ -210,7 +210,7 @@ export class NewPostComponent {
       this._showGroupSearchBox = false;
       this._groupService.getGroup(super_group_name, group_name).subscribe(
         group => {
-          console.log(group)
+          //console.log(group)
           this.model.group = group;
         },
         error => {
@@ -305,7 +305,7 @@ export class NewPostComponent {
 
     event.preventDefault();
 
-    if(!this.model.group) return;
+    if( !this.model.group || !this.model.postedby ) return;
 
     let properModel = {
       title    : this.model.title,

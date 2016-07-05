@@ -21,10 +21,8 @@ export class SuperGroupService {
   */
 
   /**
-   * Returns a Super group obj be name
-   * DEPRICATED
+   * Returns a Super group obj be name (for new group form)
    */
-   /*
   getSuperGroupByName(sg_name: string) {
 
     this._appService.spinner();
@@ -42,7 +40,6 @@ export class SuperGroupService {
         return this._appService.handleServerErrors(error);
       });
   }
-  */
 
   getSupergroupWithGroups(sg_name: string) {
     this._appService.spinner();

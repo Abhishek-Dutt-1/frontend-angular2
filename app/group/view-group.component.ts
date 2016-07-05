@@ -266,11 +266,12 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
       .subscribe(
         groupAndPostList => {
           //console.log(groupAndPostList)
+          this._errorMsg = null;
           this.group = groupAndPostList.group;
           this._super_group = this.group.supergroup;
           this._hyper_group = this._super_group.type;
           if ( this._super_group.type == 'international' ) {
-            if ( this._currentUser.national.find( group => group.id === this._super_group.id ) ) {
+            if ( this._currentUser && this._currentUser.national.find( group => group.id === this._super_group.id ) ) {
               this._hyper_group = 'national'
             }
           }

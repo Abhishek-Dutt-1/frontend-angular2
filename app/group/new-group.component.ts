@@ -195,7 +195,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
         // and used by the onSubmit to redirect to the new created group (thus saving a query)
         this.model.supergroup = sg;
         if(this._currentUser) this._readyToEdit = true;
-        console.log(this._readyToEdit)
+        //console.log(this._readyToEdit)
       },
       error => {
         this._errorMsg = error;
@@ -222,7 +222,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
       this.model.owner = currentUser.id;
       this._errorMsg = null;
       if(this.model.supergroup) this._readyToEdit = true;
-      console.log(this._readyToEdit)
+      //console.log(this._readyToEdit)
     } else {
       this._errorMsg = "User must be logged in to create new group.";
     }

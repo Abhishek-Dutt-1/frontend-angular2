@@ -6,7 +6,7 @@ import {PostTemplateType} from './post-template-types';
 @Component({
   selector: 'my-post-meta-panel',
   template: `
-    <div *ngIf="true || _votee">
+    <div *ngIf="post && post.postedby">
       <div class="my-post-meta-panel">
 
         <div class="post-info">

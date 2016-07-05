@@ -115,9 +115,10 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     this._postService.getPostsByHyperGroup(geoSelection).subscribe(
       resp => {
         //console.log(resp)
+        this._errorMsg = null;
         this.posts = resp.posts;
         this.postsSticky = resp.postsSticky;
-        if(this.posts.length + this.postsSticky.length < 1) {
+        if( this.posts.length + this.postsSticky.length < 1 ) {
           this._errorMsg = "Your '" + this._geoSelection.toUpperCase() + "' groups do not have any posts yet. " +
                            "Please subscribe to some more active groups, or create a new post yourself."
         }
