@@ -27,6 +27,12 @@ import {MemeService} from './meme.service';
         </div>
       </div> <!-- !row -->
 
+      <div class="row">
+        <div class="col-xs-12">
+          <small><i>Images courtesy Memeful (<a href="http://memeful.com/" target="_blank">memeful.com</a>)</i></small>
+        </div>
+      </div>
+
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
     </div>    <!-- my-meme-selector -->
