@@ -38,10 +38,10 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
               </div>
               <div class="comment-delete pull-left" *ngIf="currentUser && comment.postedby && currentUser.id == comment.postedby.id">
                 <span>&bull;
-                  <a *ngIf="commentLevel == 1" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 1, commentid: comment.id } ]">[Delete Comment]</a>
-                  <a *ngIf="commentLevel == 2" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 2, commentid: comment.id } ]">[Delete Comment]</a>
-                  <a *ngIf="commentLevel == 3" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 3, commentid: comment.id } ]">[Delete Comment]</a>
-                  <a *ngIf="commentLevel == 4" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 4, commentid: comment.id } ]">[Delete Comment]</a>
+                  <a *ngIf="commentLevel == 1" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 1, commentid: comment.id } ]">[Delete]</a>
+                  <a *ngIf="commentLevel == 2" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 2, commentid: comment.id } ]">[Delete]</a>
+                  <a *ngIf="commentLevel == 3" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 3, commentid: comment.id } ]">[Delete]</a>
+                  <a *ngIf="commentLevel == 4" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 4, commentid: comment.id } ]">[Delete]</a>
                 </span>
               </div>
 
@@ -54,6 +54,9 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
   </div>
   `,
   styles: [`
+    .my-comment-meta-panel a {
+      color: #af2b2b;
+    }
     .my-comment-meta-panel .profile-image-container {
       height: 32px;
       width: 32px;

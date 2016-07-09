@@ -48,8 +48,13 @@ import {PostTemplateType} from './post-template-types';
                 Reply
               </a>
             </div>
-            <div class="post-delete 1pull-left" *ngIf="currentUser && currentUser.id == post.postedby.id">
-              <span>&nbsp;
+            <div class="post-delete pull-left" *ngIf="currentUser && currentUser.id == post.postedby.id">
+              <span>&nbsp;&bull;
+                <a class="" [routerLink]="['EditPost', {postid: post.id}]">[Edit Post]</a>
+              </span>
+            </div>
+            <div class="post-delete pull-left" *ngIf="currentUser && currentUser.id == post.postedby.id">
+              <span>&nbsp;&bull;
                 <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">[Delete Post]</a>
               </span>
             </div>

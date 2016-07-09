@@ -11,17 +11,17 @@ import {Subject} from 'rxjs/Subject';
 import {ErrorComponent} from '../misc/error.component';
 
 @Component({
-  selector: 'my-new-post',
+  selector: 'my-edit-post',
   template: `
-  <div class="my-new-post">
+  <div class="my-edit-post">
 
-    <div>     <!--  *ng If="!_errorMsg" -->
+    <div *ngIf="_readyToEdit">     <!--  *ng If="!_errorMsg" -->
 
       <form #postForm="ngForm" class="form-horizontal" novalidate>
 
         <div class="post-select form-group">
           <div class="col-xs-12 col-sm-offset-2 col-sm-10">
-            <h3>Create a New Post</h3>
+            <h3>Edit Post</h3>
           </div>
         </div>
 
@@ -30,7 +30,7 @@ import {ErrorComponent} from '../misc/error.component';
           <div class="col-sm-10">
             <span *ngFor="let postType of _postTypes">
               <label class="radio-inline">
-                <input type="radio" name="type" (click)="model.type = postType" [checked]="postType === model.type"> {{postType | uppercase}} &nbsp;&nbsp;
+                <input type="radio" name="type" (click)="_model.type = postType" [checked]="postType === _model.type"> {{postType | uppercase}} &nbsp;&nbsp;
               </label>
             </span>
           </div>
@@ -40,7 +40,7 @@ import {ErrorComponent} from '../misc/error.component';
           <label for="title" class="col-sm-2 control-label">Title</label>
           <div class="col-sm-10">
             <input id="title" type="text" class="form-control" required
-              [(ngModel)] = "model.title" placeholder="Post title"
+              [(ngModel)] = "_model.title" placeholder="Post title"
               ngControl = "title" #title="ngForm"
             >
             <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
@@ -49,12 +49,12 @@ import {ErrorComponent} from '../misc/error.component';
           </div>
         </div>
 
-        <div *ngIf="model.type == 'link'">
+        <div *ngIf="_model.type == 'link'">
           <div class="post-text form-group">
             <label for="link" class="col-sm-2 control-label">Link</label>
             <div class="col-sm-10">
               <input id="link" type="url" class="form-control" required
-                [(ngModel)] = "model.link" placeholder="Paste URL here"
+                [(ngModel)] = "_model.link" placeholder="Paste URL here"
                 ngControl = "link" #link="ngForm"
               >
               <div [hidden]="link.valid || link.pristine" class="alert alert-danger">
@@ -68,7 +68,7 @@ import {ErrorComponent} from '../misc/error.component';
           <label for="text" class="col-sm-2 control-label">Text</label>
           <div class="col-sm-10">
             <textarea type="text" class="form-control" rows="5"
-              [(ngModel)] = "model.text" placeholder="Post text"
+              [(ngModel)] = "_model.text" placeholder="Post text"
               ngControl = "text" #text="ngForm"
             ></textarea>
             <div [hidden]="text.valid || text.pristine" class="alert alert-danger">
@@ -77,18 +77,18 @@ import {ErrorComponent} from '../misc/error.component';
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group hidden">
           <label class="col-sm-2 control-label">Group</label>
           <div class="col-sm-10">
             <div class="">
               <p class="form-control-static">
-                <span *ngIf="model.group">
-                  {{model.group.supergroup.name | uppercase}}/{{model.group.name}}
+                <span *ngIf="_model.group">
+                  {{_model.group.supergroup.name | uppercase}}/{{_model.group.name}}
                 </span>
-                <span *ngIf="!model.group"><i>No Group Selected</i></span>
+                <span *ngIf="!_model.group"><i>No Group Selected</i></span>
               </p>
               <input id="group" type="text" class="hidden" required
-                [(ngModel)] = "model.group"
+                [(ngModel)] = "_model.group"
                 ngControl = "group" #group="ngForm">
               <div [hidden]="group.valid || !postForm.form.submitted" class="alert alert-danger">
                 Group is required
@@ -116,27 +116,27 @@ import {ErrorComponent} from '../misc/error.component';
           </div>    <!-- col-sm-10 -->
         </div>      <!-- ! form-group -->
 
-        <div class="post-as-anon form-group">
+        <div class="post-as-anon form-group hidden">
           <label for="post-as-anon" class="col-sm-2 control-label">Post As Anonymous</label>
           <div class="col-sm-10">
             <label  class="radio-inline">
-              <input type="radio" name="post-as-anon" (click)="model.post_as_anon = 1"  [checked]="model.post_as_anon === 1"> Yes
+              <input type="radio" name="post-as-anon" (click)="_model.post_as_anon = 1"  [checked]="_model.post_as_anon === 1"> Yes
             </label>
             <label  class="radio-inline">
-              <input type="radio" name="post-as-anon" (click)="model.post_as_anon = 0" [checked]="model.post_as_anon === 0"> No
+              <input type="radio" name="post-as-anon" (click)="_model.post_as_anon = 0" [checked]="_model.post_as_anon === 0"> No
             </label>
           </div>
         </div>
 
-        <div *ngIf="model.postedby && model.group">
-          <div class="sticky-post form-group" [ngClass]="{ hidden: model.group.owner !== model.postedby.id }">
+        <div *ngIf="_model.postedby && _model.group">
+          <div class="sticky-post form-group" [ngClass]="{ hidden: _model.group.owner !== _model.postedby.id }">
             <label for="sticky-post" class="col-sm-2 control-label">Sticky Post</label>
             <div class="col-sm-10">
               <label  class="radio-inline">
-                <input type="radio" name="sticky-post" (click)="model.sticky_post = 1"  [checked]="model.sticky_post === 1"> Yes
+                <input type="radio" name="sticky-post" (click)="_model.sticky_post = 1"  [checked]="_model.sticky_post === 1"> Yes
               </label>
               <label  class="radio-inline">
-                <input type="radio" name="sticky-post" (click)="model.sticky_post = 0" [checked]="model.sticky_post === 0"> No
+                <input type="radio" name="sticky-post" (click)="_model.sticky_post = 0" [checked]="_model.sticky_post === 0"> No
               </label>
             </div>
           </div>
@@ -150,7 +150,7 @@ import {ErrorComponent} from '../misc/error.component';
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Submit</button>
+            <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!postForm.form.valid">Update Post</button>
             <button (click)="goBack()" class="btn btn-default">Back</button>
           </div>
         </div>
@@ -160,43 +160,46 @@ import {ErrorComponent} from '../misc/error.component';
   </div>
   `,
   styles: [`
-    .my-new-post .ng-valid[required] {
+    .my-edit-post .ng-valid[required] {
       border-left: 5px solid #42A948; /* green */
     }
-    .my-new-post .ng-invalid {
+    .my-edit-post .ng-invalid {
       border-left: 5px solid #a94442; /* red */
     }
-    .my-new-post form {
+    .my-edit-post form {
       min-width: 250px;
     }
-    .my-new-post .post-textarea textarea{
+    .my-edit-post .post-textarea textarea{
       width: 100%;
     }
-    .my-new-post .post-text input{
+    .my-edit-post .post-text input{
       width: 100%;
     }
-    .my-new-post .post-select select{
+    .my-edit-post .post-select select{
       width: 100%;
     }
-    .my-new-post .search-group-label {
+    .my-edit-post .search-group-label {
       color: rgba(0, 0, 0, 0.4);
     }
-    .my-new-post .search-results {
+    .my-edit-post .search-results {
        margin: 10px 10px 0 0;
      }
   `],
   inputs: ['post'],
   directives: [ErrorComponent]
 })
-export class NewPostComponent {
+export class EditPostComponent {
 
   private _postTypes          = ['text', 'link'];
-  private model               = null;
+  private _model               = null;
   private _errorMsg: string   = null;
   private _showGroupSearchBox = true;
   //private _searchGroup      = '';
   private _loggedInUserSubcription = null;
   private _searchString       = '';
+  private _post = null;
+  private _readyToEdit = false;
+  private _currentUser = null;
 
   constructor(
     private _postService           : PostService,
@@ -210,65 +213,44 @@ export class NewPostComponent {
 
   ngOnInit() {
 
-    let super_group_name = this._routeParams.get('super_group_name') || null;
-    let group_name       = this._routeParams.get('group_name') || null;
+    let postId = this._routeParams.get('postid') || null;
 
-    let superGroupSlashGroup = null;
-    if(super_group_name && group_name) {
-      //superGroupSlashGroup = super_group_name + '/' + group_name;
-      this._showGroupSearchBox = false;
-      this._groupService.getGroup(super_group_name, group_name).subscribe(
-        group => {
-          //console.log(group)
-          this.model.group = group;
+    if( postId ) {
+      this._postService.getPost(postId).subscribe(
+        post => {
+          this._model = post;
+          this._model.post_as_anon = 0;
+          if ( this._currentUser ) this._readyToEdit = true;
         },
         error => {
-          this._showGroupSearchBox = true;
+          this._errorMsg = error;
         })     // !subscribe
-    }
-    if(super_group_name && !group_name) {
-      this._searchString = super_group_name + '/';
-      //superGroupSlashGroup = super_group_name;
-    }
-    /*
-    if(!super_group_name && group_name) {
-      superGroupSlashGroup = group_name;
-    }
-    */
-    //this._searchGroup = superGroupSlashGroup;
-
-    this.model =  {
-      title: '',
-      link: '',
-      text: '',
-      type: this._postTypes[0],
-      //group: superGroupSlashGroup,
-      post_as_anon: 0,
-      sticky_post: 0,
     }
 
     // Only logged in uses can post
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
-        this.model.postedby = currentUser;
+        this._currentUser = currentUser;
         this._errorMsg = null;
-        this.search(this._searchString);    // <-- This works
-        // if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to create new posts.";
+        //  if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to edit posts.";
+        if ( this._model ) this._readyToEdit = true;
       } else {
-        this._errorMsg = "User must be logged in to create new posts.";
+        this._errorMsg = "User must be logged in to edit posts.";
+        this._readyToEdit = false;
       }
     });
     // Only logged in uses can post (init version)
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
     if( currentUser ) {
-      console.log(currentUser)
+      this._currentUser = currentUser;
       this._errorMsg = null;
-      this.model.postedby = currentUser;
-      this.search(this._searchString);      // <-- This does not works
-      // if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to create new posts.";
+      // this._model.postedby = currentUser;
+      if ( this._model ) this._readyToEdit = true;
+      // if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to edit posts.";
     } else {
-      this._errorMsg = "User must be logged in to create new posts.";
+      this._errorMsg = "User must be logged in to edit posts.";
+      this._readyToEdit = false;
     }
 
   }
@@ -286,26 +268,11 @@ export class NewPostComponent {
     .distinctUntilChanged()
     .switchMap((term:string) => this._groupService.searchGroups(term));
 
-  /*
-  // Temporary local version
-  private items: Group[];
-  search(term: string) {
-    // get a 1 or 2 element array, correponding to trerm before and after a '/'
-    // filter empty "" strings
-    let termArray = term.split('/').slice(0, 2).filter(Boolean);
-    this._groupService.searchGroups(termArray).then(
-      searchResult => this.items = searchResult
-    ).catch(
-      err => console.log(err)
-    )
-  }
-  */
-
   /**
    * User clicked on a gog/group from the autocomplete dropdown list
    */
   selectSuperGroupSlashGroup(item) {
-    this.model.group = item;
+    this._model.group = item;
     //this.model.superGroupSlashGroup = item.supergroup.name+'/'+item.name;
   }
 
@@ -316,22 +283,23 @@ export class NewPostComponent {
 
     event.preventDefault();
 
-    if( !this.model.group || !this.model.postedby ) return;
+    if( !this._model.group || !this._model.postedby ) return;
 
     let properModel = {
-      title    : this.model.title,
-      link     : this.model.link || null,
-      text     : this.model.text || null,
-      type     : this.model.type,
-      postedby : this.model.postedby.id,
-      group    : this.model.group.id,
-      post_as_anon : this.model.post_as_anon ? true : false,
-      sticky_level : this.model.sticky_post ? 1 : 0     // 1 for group, 0 for no sticky
+      id       : this._model.id,
+      title    : this._model.title,
+      link     : this._model.link || null,
+      text     : this._model.text || null,
+      type     : this._model.type,
+      postedby : this._model.postedby.id,
+      group    : this._model.group.id,
+      post_as_anon : this._model.post_as_anon ? true : false,
+      sticky_level : this._model.sticky_post ? 1 : 0     // 1 for group, 0 for no sticky
     }
 
     console.log(properModel);
 
-    this._postService.createNewPost(properModel).subscribe(
+    this._postService.editPost(properModel).subscribe(
       post => {
         console.log(post);
         this._router.navigate(['ViewPost', {postid: post.id}]);

@@ -18,7 +18,8 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     <div class="my-view-post">
       <div *ngIf="post">
 
-        <div class="group-details">
+        <div *ngIf="_sticky" class="dummy-div"></div>
+        <div class="group-details" [ngClass]="{sticky: _sticky}">
           <div class="group-details-panel">
             <div class="row border-row">
               <div class="col-xs-12 group-name-row">
@@ -133,6 +134,23 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     </div>
   `,
   styles: [`
+  .my-view-post .dummy-div {
+    /** dummy div should be the exact height of the sticky div
+     * this is to prevent jumping of the page
+     */
+    height: 55px;
+  }
+  .my-view-post .sticky {
+    position: fixed;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.98);
+    z-index: 10;
+    margin-left: -15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
+    /* border-bottom: 1px solid rgba(0, 0, 0, 0.05); */
+  }
   .my-view-post .comment-level-1 {
     border-bottom: 1px solid rgba(0,0,0,.1);
     padding: 20px 0;
@@ -147,7 +165,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     padding: 0px 0px 0px 40px;
   }
   .my-view-post .group-name-row {
-    margin: 20px 0;
+    margin: 15px 0;
   }
   .my-view-post .supergroup-name {
     transition: 0.05s ease-in-out;
@@ -199,6 +217,7 @@ export class ViewPostComponent {
   private _group = null;
   private _super_group = null;
   private _hyper_group = null;
+  private _sticky:boolean = false;
 
   constructor(
     private _appService: AppService,
@@ -231,6 +250,29 @@ export class ViewPostComponent {
       this._errorMsg = null;
     // Logged in or not fetch post immidiately
     this.getPosts(postId);
+
+    // Sticky header. Ref: Geo-filter component for details
+    window.addEventListener("scroll", this.myEfficientFn);
+  }
+
+  myEfficientFn = this.debounce( () => {
+	  // All the taxing stuff you do
+    this._sticky = window.scrollY > 60;
+    //console.log(this._sticky)
+  }, 100, false);
+  debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    }
   }
 
   getPosts(postId: any) {
@@ -255,6 +297,7 @@ export class ViewPostComponent {
 
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
+    window.removeEventListener("scroll", this.myEfficientFn);
   }
 
   gotoNewPostForm() {

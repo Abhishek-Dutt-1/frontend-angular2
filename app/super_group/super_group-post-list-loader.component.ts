@@ -24,7 +24,8 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
       <div class="row">
         <div class="col-xs-12">
 
-          <div class="group-details">
+          <div *ngIf="_sticky" class="dummy-div"></div>
+          <div class="group-details" [ngClass]="{sticky: _sticky}">
 
             <div class="group-details-panel">
 
@@ -86,6 +87,23 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
   </div>  <!-- end top div -->
   `,
   styles: [`
+  .my-super-group-post-list-loader .dummy-div {
+    /** dummy div should be the exact height of the sticky div
+     * this is to prevent jumping of the page
+     */
+    height: 55px;
+  }
+  .my-super-group-post-list-loader .sticky {
+    position: fixed;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.98);
+    z-index: 10;
+    margin-left: -15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%; /*
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05); */
+  }
   .my-super-group-post-list-loader .group-name-row {
     margin: 15px 0;
   }
@@ -141,6 +159,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   private _loggedInUserSubcription = null;
   private _postTemplateType: PostTemplateType = null;
   private _currentUser: User = null;
+  private _sticky:boolean = false;
 
   constructor(
     private _appService: AppService,
@@ -176,7 +195,31 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     } else { }
     // Logged in or not fetch posts immidiately
     this.getSupergroupAndPosts(this._super_group_name);
+
+    // Sticky header. Ref: Geo-filter component for details
+    window.addEventListener("scroll", this.myEfficientFn);
   }
+
+  myEfficientFn = this.debounce( () => {
+	  // All the taxing stuff you do
+    this._sticky = window.scrollY > 60;
+    //console.log(this._sticky)
+  }, 100, false);
+  debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    }
+  }
+
 
   getSupergroupAndPosts(superGroup) {
 
@@ -213,6 +256,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
+    window.removeEventListener("scroll", this.myEfficientFn);
   }
 
 

@@ -32,12 +32,12 @@ import {CommentMetaPanelComponent} from '../misc/comment-meta-panel.component';
             </div>
 
             <div *ngIf="comment3.meme_image_url" class="col-xs-8 col-sm-9 col-md-10">
-              <div>
+              <div class="comment-text">
                 {{comment3.text}}
               </div>
             </div>
             <div *ngIf="!comment3.meme_image_url" class="col-xs-12">
-              <div>
+              <div class="comment-text">
                 {{comment3.text}}
               </div>
             </div>
@@ -90,36 +90,22 @@ import {CommentMetaPanelComponent} from '../misc/comment-meta-panel.component';
     padding-left: 0;
     padding-right: 0;
   }
-  /*
-  .my-comment3 .profile-image-container {
-    height: 32px;
-    width: 32px;
-    margin-top: 3px;
-    overflow: hidden;
-    margin-right: 10px;
+  .my-comment3 .comment-text {
+    color: rgba(0, 0, 0, 0.8);
+    display: block;
+    font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: -0.072px;
+    line-height: 27px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    /* margin-top: 8px; */
+    word-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
   }
-  .my-comment3 .profileimage {
-    width: 32px;
-    opacity:0.5;
-    filter:alpha(opacity=50);
-  }
-  .my-comment3 .postedby-info {
-    margin-top: 10px;
-  }
-  .my-comment3 .profile-name {
-    cursor: pointer;
-    display: inline;
-    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 14px;
-  }
-  .my-comment3 .comment-createdat {
-    display: inline;
-    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 12px;
-    line-height: 14.4px;
-    color: rgba(0, 0, 0, 0.439216);
-  }
-  */
   .my-comment3 .commentvote-container {
     float: left;
     margin-left: 15px;

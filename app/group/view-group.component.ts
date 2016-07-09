@@ -97,13 +97,13 @@ import {FabButtonComponent} from '../misc/fab-button.component';
   </div>  <!-- ! ngIfGroup -->
   `,
   styles: [`
-  .dummy-div {
+  .my-view-group .dummy-div {
     /** dummy div should be the exact height of the sticky div
      * this is to prevent jumping of the page
      */
     height: 55px;
   }
-  .sticky {
+  .my-view-group .sticky {
     position: fixed;
     top: 0;
     background-color: rgba(255, 255, 255, 0.98);

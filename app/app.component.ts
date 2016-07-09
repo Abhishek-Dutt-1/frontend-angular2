@@ -10,6 +10,7 @@ import { PostService } from './post/post.service';
 //import { PostDetailComponent } from './post/post-detail.component';
 import { ViewPostComponent } from './post/view-post.component';
 import { NewPostComponent } from './post/new-post.component';
+import { EditPostComponent } from './post/edit-post.component';
 import { ConfirmPostDeleteComponent } from './post/confirm-post-delete.component';
 
 import { SuperGroupPostListLoaderComponent } from './super_group/super_group-post-list-loader.component';
@@ -183,6 +184,12 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     path: '/newpost',
     name: 'NewPost',
     component: NewPostComponent
+  },
+  {
+    // Create a new post
+    path: '/editpost/:postid',
+    name: 'EditPost',
+    component: EditPostComponent
   },
   {
     path: '/confirmpostdelete/:postid',
