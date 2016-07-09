@@ -5,27 +5,33 @@ import {User} from '../user/user';
 import {ErrorComponent} from '../misc/error.component';
 import {HyperGroupSidebarComponent} from '../hyper_group/hyper_group-sidebar.component';
 import {AuthenticationService} from '../authentication/authentication.service';
+import {GeoFilterSupergroupSelection} from './geo-filter-supergroup-selection.component';
 
 @Component({
-  selector: 'my-add-supergroup',
+  selector: 'my-supergroup-selection',
   template: `
-    <div class="my-add-supergroup">
+    <div class="my-supergroup-selection">
+
+      <my-geo-filter-supergroup-selection [geoSelection]="_hypergroup" [superGroupList]="_superGroupList"></my-geo-filter-supergroup-selection>
+
       <div *ngIf="_errorMsg">
         <my-error [_errorMsg]="_errorMsg"></my-error>
       </div>
+
       <div *ngIf="!_errorMsg">
         <div class="row">
           <div class="col-sm-4">
-            <my-hyper_group-sidebar [hierarchy]="_sidebarHierarchy" [hyperGroup]="_hypergroup"></my-hyper_group-sidebar>
+            <my-hyper_group-sidebar [hierarchy]="_sidebarHierarchy" [hyperGroup]="_hypergroup" [extendedVersion]="true"></my-hyper_group-sidebar>
           </div>
         </div>
       </div>
+
     </div>
   `,
   styles: [],
-  directives: [ErrorComponent, HyperGroupSidebarComponent]
+  directives: [ErrorComponent, HyperGroupSidebarComponent, GeoFilterSupergroupSelection]
 })
-export class AddSupergroupsComponent implements OnInit {
+export class SupergroupSelectionComponent implements OnInit {
 
   private _errorMsg = null;
   private _hypergroup = null;
@@ -42,7 +48,7 @@ export class AddSupergroupsComponent implements OnInit {
 
   ngOnInit() {
     this._hypergroup = this._routeParams.get('hypergroup');
-    console.log("hypergroup", this._hypergroup)
+    //console.log("hypergroup", this._hypergroup)
 
     // Only logged in uses view posts
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(

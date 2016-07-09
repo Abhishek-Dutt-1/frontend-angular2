@@ -248,6 +248,12 @@ console.log('User signed out.');
         // Registeratin success
         // redirect ot login page (TODO: Auto login the new registered user)
         //this._router.navigate(['ViewUser', {id: user.id}]);
+        console.log(user)
+        if ( user.emailSuccess ) {
+          this._appService.createNotification( { text: user.msg, type: 'success', timeout: 20000 } );
+        } else {
+          this._appService.createNotification( { text: user.msg, type: 'danger', timeout: 20000 } );
+        }
         this._router.navigate(['Login']);
       },
       error => {

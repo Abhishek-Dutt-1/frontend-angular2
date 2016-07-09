@@ -25,6 +25,15 @@ export class AppService {
   }
 
   /**
+   * Show/hide global notification messages
+   */
+  private _notifications = new Subject<any>();
+  notifications$ = this._notifications.asObservable();
+  createNotification(msg: any) {
+    this._notifications.next(msg);
+  }
+
+  /**
    * Save the geo location page (i.e. int'l, national, city etc)
    */
   setGeoSelection(geoSelection: string) {
@@ -79,7 +88,7 @@ export class AppService {
     // In a real world app, we might send the error to remote logging infrastructure
     let errMsg = "";
     try {
-      console.log(error);
+      //console.log(error);
       if(error.status === 404 ) {
         errMsg = error._body || "Page Not Found!";
       } else if (error.status === 403) {
@@ -87,7 +96,7 @@ export class AppService {
       } else if (error.status === 400) {
         errMsg = error._body || "User must be logged in!";
       } else if (error.status === 500) {
-        errMsg = error.json().details || error.json() || error._body || "Server Error";
+        errMsg = error._body || "Server Error";
       } else if (error.json().type === "error") {
         // Handle XMLHttpRequestProgressEvent::ERR_CONNECTION_REFUSED i.e. Server not up
         errMsg = "Server not responding, Please try again later.";

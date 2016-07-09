@@ -5,6 +5,7 @@ import {SuperGroup} from '../super_group/super_group';
 export interface User {
   id: number;
   email: string;
+  emailverified: boolean;
   username: string;
   profileimage: string;
   displayname: string;

@@ -49,7 +49,7 @@ export class NewComment4LoaderComponent implements OnInit {
     this._postService.getPost(postid)
       .subscribe(
         post => {
-          console.log(post);
+          //console.log(post);
           this._post = post;
           var tmpComment3 = null;
           post.comments.find(function(comment1) {
@@ -64,7 +64,7 @@ export class NewComment4LoaderComponent implements OnInit {
             return false;
           })
           this._comment3 = tmpComment3
-          console.log(this._comment3)
+          //console.log(this._comment3)
         },
         error => console.log(error)
       );

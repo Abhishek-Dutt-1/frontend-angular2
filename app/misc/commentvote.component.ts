@@ -9,14 +9,14 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
         <div class="1row">
           <div class="1col-xs-6 vote-col-up">
             <div (click)="upVotePost(_votee.id)">
-              <div [ngClass]="{userHasVoted: _votee.currentUserHasUpVoted}"  class="vote up-vote">
+              <div [ngClass]="{userHasVoted: _votee.currentUserHasUpVoted && !disabled}"  class="vote up-vote">
               <span class="hidden">{{_votee.upvotes}}</span> <i class="fa fa-arrow-up"></i>
               </div>
             </div>
           </div>
           <div class="1col-xs-6 vote-col-down">
             <div (click)="downVotePost(_votee.id)">
-              <div [ngClass]="{userHasVoted: _votee.currentUserHasDownVoted}" class="vote down-vote">
+              <div [ngClass]="{userHasVoted: _votee.currentUserHasDownVoted && !disabled}" class="vote down-vote">
                 <i class="fa fa-arrow-down"></i> <span class="hidden">{{_votee.downvotes}}</span>
               </div>
             </div>
@@ -62,12 +62,13 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
       border-bottom-right-radius: 5px;
     }
   `],
-  inputs: ['_votee'],
+  inputs: ['_votee', 'disabled'],
   outputs: ['upVote', 'downVote']
 })
 export class CommentvoteComponent implements OnInit{
 
   private _votee = null;
+  private disabled = false;
   public upVote: EventEmitter<any> = new EventEmitter();
   public downVote: EventEmitter<any> = new EventEmitter();
 
@@ -77,10 +78,11 @@ export class CommentvoteComponent implements OnInit{
 
   upVotePost(id) {
     //console.log("Up voting post with ", id);
-    this.upVote.next(id);
+    if ( !this.disabled )
+      this.upVote.next(id);
   }
   downVotePost(id) {
-    //console.log("Down voting post with ", id);
-    this.downVote.next(id);
+    if ( !this.disabled )
+      this.downVote.next(id);
   }
 }

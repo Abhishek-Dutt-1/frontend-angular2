@@ -16,9 +16,14 @@ import {ErrorComponent} from '../misc/error.component';
   <div class="my-new-post">
 
     <div>     <!--  *ng If="!_errorMsg" -->
-      <h3>Create a New Post</h3>
 
       <form #postForm="ngForm" class="form-horizontal" novalidate>
+
+        <div class="post-select form-group">
+          <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+            <h3>Create a New Post</h3>
+          </div>
+        </div>
 
         <div class="post-select form-group">
           <label for="type" class="col-sm-2 control-label">Post Type</label>
@@ -137,7 +142,11 @@ import {ErrorComponent} from '../misc/error.component';
           </div>
         </div>
 
-        <my-error [_errorMsg]="_errorMsg"></my-error>
+        <div class="post-select form-group">
+          <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+            <my-error [_errorMsg]="_errorMsg"></my-error>
+          </div>
+        </div>
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
@@ -244,6 +253,7 @@ export class NewPostComponent {
         this.model.postedby = currentUser;
         this._errorMsg = null;
         this.search(this._searchString);    // <-- This works
+        if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to create new posts.";
       } else {
         this._errorMsg = "User must be logged in to create new posts.";
       }
@@ -253,9 +263,10 @@ export class NewPostComponent {
     let currentUser = this._authenticationService.getLoggedInUser();
     if( currentUser ) {
       console.log(currentUser)
-      this.model.postedby = currentUser;
       this._errorMsg = null;
+      this.model.postedby = currentUser;
       this.search(this._searchString);      // <-- This does not works
+      if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to create new posts.";
     } else {
       this._errorMsg = "User must be logged in to create new posts.";
     }

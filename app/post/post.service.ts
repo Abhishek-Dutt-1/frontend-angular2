@@ -18,9 +18,11 @@ export class PostService {
     private _userService: UserService
   ) { }
 
+  /*
   getPosts() {
     return Promise.resolve(MOCK_POSTS);
   }
+  */
 
   // See the "Take it slow" appendix
   getPostsSlowly() {

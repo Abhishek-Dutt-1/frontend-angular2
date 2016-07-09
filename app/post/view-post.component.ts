@@ -21,14 +21,14 @@ import {FabButtonComponent} from '../misc/fab-button.component';
         <div class="group-details">
           <div class="group-details-panel">
             <div class="row border-row">
-              <div class="col-xs-12 group-name-row ">
+              <div class="col-xs-12 group-name-row">
                 <div class="supergroup-name pull-left">
                   <div>
                     <a class="menu-link" [routerLink]="[ '/HyperGroupPostList', { geo: _hyper_group } ]">
                       <i class="fa" [ngClass]="{'fa-plane': _hyper_group == 'international', 'fa-train': _hyper_group == 'national', 'fa-bus': _hyper_group === 'state', 'fa-car': _hyper_group === 'city', 'fa-bicycle': _hyper_group === 'local' }"></i> /
                     </a>
                     <a [routerLink]="['SuperGroupPostList', {super_group_name: _super_group.name}]">
-                      {{_super_group.name | uppercase}} / <small class="hidden">{{_super_group.description}}</small>
+                      {{_super_group.name}} / <small class="hidden">{{_super_group.description}}</small>
                     </a>
                     <a [routerLink]="['ViewGroup', {super_group_name: _group.supergroup.name, group_name: _group.name}]">
                       {{_group.name}} / <small class="hidden">{{_group.description}}</small>
@@ -65,7 +65,9 @@ import {FabButtonComponent} from '../misc/fab-button.component';
               <div *ngFor="let comment1 of post.comments" class="comment-level-1">
                 <div class="row">
                   <div class="col-xs-12">
-                    <my-comment1 [comment1]="comment1" [post]="post"></my-comment1>
+                    <div class="comment1-container">
+                      <my-comment1 [comment1]="comment1" [post]="post" [currentUser]="_currentUser"></my-comment1>
+                    </div>
 
                     <!-- Replies to comments (Level 2) -->
                     <div *ngIf="comment1.comments && comment1.comments.length > 0" class="comment-list level-2">
@@ -73,7 +75,9 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 
                         <div class="row">
                           <div class="col-xs-12">
-                            <my-comment2 [comment2]="comment2" [post]="post"></my-comment2>
+                            <div class="comment2-container">
+                              <my-comment2 [comment2]="comment2" [post]="post" [currentUser]="_currentUser"></my-comment2>
+                            </div>
 
                             <!-- Replies to reply (Level 3) -->
                             <div *ngIf="comment2.comments && comment2.comments.length > 0" class="comment-list level-3">
@@ -81,7 +85,9 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 
                                 <div class="row">
                                   <div class="col-xs-12">
-                                    <my-comment3 [comment3]="comment3" [post]="post"></my-comment3>
+                                    <div class="comment3-container">
+                                      <my-comment3 [comment3]="comment3" [post]="post" [currentUser]="_currentUser"></my-comment3>
+                                    </div>
 
                                     <!-- Replies to reply (Level 3) -->
                                     <div *ngIf="comment3.comments && comment3.comments.length > 0" class="comment-list level-4">
@@ -89,7 +95,9 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 
                                         <div class="row">
                                           <div class="col-xs-12">
-                                            <my-comment4 [comment4]="comment4" [post]="post"></my-comment4>
+                                            <div class="comment4-container">
+                                              <my-comment4 [comment4]="comment4" [post]="post" [currentUser]="_currentUser"></my-comment4>
+                                            </div>
                                           </div>
                                         </div>
 
@@ -127,16 +135,16 @@ import {FabButtonComponent} from '../misc/fab-button.component';
   styles: [`
   .my-view-post .comment-level-1 {
     border-bottom: 1px solid rgba(0,0,0,.1);
-    padding: 10px 0;
+    padding: 20px 0;
   }
   .my-view-post .comment-list .level-2 {
-    padding: 10px 0px 0px 40px;
+    padding: 0px 0px 0px 40px;
   }
   .my-view-post .comment-list .level-3 {
-    padding: 10px 0px 0px 40px;
+    padding: 0px 0px 0px 40px;
   }
   .my-view-post .comment-list .level-4 {
-    padding: 10px 0px 0px 40px;
+    padding: 0px 0px 0px 40px;
   }
   .my-view-post .group-name-row {
     margin: 20px 0;
@@ -172,6 +180,9 @@ import {FabButtonComponent} from '../misc/fab-button.component';
   }
   .my-view-post .add-supergroups-button {
     padding-right: 10px;
+  }
+  .my-view-post .comment1-container, .comment2-container, .comment3-container, .comment4-container{
+    margin-bottom: 20px;
   }
   `],
   //styleUrls: ['app/post/view-post.component.css'],

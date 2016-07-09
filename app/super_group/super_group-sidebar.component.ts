@@ -7,7 +7,8 @@ import {AuthenticationService} from '../authentication/authentication.service';
 @Component({
   selector: 'my-super_group-sidebar',
   template: `
-  <div *ngIf="_groups && _super_group">
+  <!--  ------------------------------ Normal Version -------------------------------- -->
+  <div *ngIf="_groups && _super_group  && !extendedVersion">
     <div class="my-super_group-sidebar">
 
       <div class="row">
@@ -52,6 +53,57 @@ import {AuthenticationService} from '../authentication/authentication.service';
 
     </div>
   </div>    <!-- ngIf -->
+
+  <!--  ------------------------------ Extended version -------------------------------- -->
+
+  <div *ngIf="_groups && _super_group && extendedVersion">
+    <div class="my-super_group-sidebar">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h5>Groups within {{_super_group.name | uppercase}}:</h5>
+        </div>
+      </div>
+      <div class="row border-row">
+        <div class="col-xs-12">
+          <div class="group-list">
+            <div *ngFor="let group of _groups">
+              <div class="clearfix">
+                <h4><a class="pull-left" [routerLink]="['ViewGroup', {super_group_name: _super_group.name, group_name: group.name}]">&bull; {{group.name}}
+                &nbsp;<small class="1hidden">{{group.description}}</small></a>
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row border-row hidden">
+        <div class="col-xs-12">
+          <div class="supergroup-ops">
+            <a [routerLink]="['NewGroup', {super_group_name: _super_group.name}]">
+              Create a new group within {{_super_group.name | uppercase}}
+            </a>
+            <a (click)="gotoNewPostForm()" class="hidden">
+               &bull; Create New Post
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="message-meta">
+            Suggestion for a new Group? Message us at <a [routerLink]="['ViewGroup', {super_group_name: 'Global', group_name: 'Meta'}]">GLOBAL/Meta</a>.
+          </div>
+        </div>
+      </div>  <!-- !row -->
+
+    </div>
+  </div>    <!-- ngIf -->
+
+  <!--  ------------------------------ End Extended version -------------------------------- -->
+
   `,
   styles: [`
     .my-super_group-sidebar {
@@ -99,7 +151,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
     }
   `],
   directives: [RouterLink, ErrorComponent],
-  inputs: ["_groups", "_super_group"]
+  inputs: ["_groups", "_super_group", "extendedVersion"]
 
 })
 export class SuperGroupSidebarComponent implements OnInit {

@@ -99,12 +99,12 @@ export class UserService {
     return this._http.post(backendUrl+'/auth/registeruserlocal', JSON.stringify(newProperUser), options)
     .map(
       res => {
-        let user = res;
+        // let user = res;
         //console.log(user);
         //console.log(user.json());
-        user = res.json().user;
+        //user = res.json().user;
         this._appService.spinner(false);
-        return user;
+        return res.json();
     })
     .catch(
       error => {
@@ -233,6 +233,7 @@ export class UserService {
         this._appService.spinner(false);
         return res.json();
       }).catch(error => {
+        console.log(error)
         this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
       });

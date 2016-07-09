@@ -28,9 +28,8 @@ import {PostTemplateType} from './post-template-types';
             <div *ngIf="type != templateTypeGroupList">
               <div class="bullet pull-left"> in </div>
               <div class="post-grouplink pull-left">
-                <a class="" [routerLink]="['ViewGroup', {super_group_name: post.group.supergroup.name, group_name: post.group.name}]">
-                  {{post.group.supergroup.name}}/{{post.group.name}}
-                </a>
+                <a class="" [routerLink]="[ 'SuperGroupPostList', { super_group_name : post.group.supergroup.name } ]">{{post.group.supergroup.name}}</a><!--
+                --><a class="" [routerLink]="[ 'ViewGroup', { super_group_name : post.group.supergroup.name, group_name : post.group.name } ]">/{{post.group.name}}</a>
               </div>
             </div>
             <div *ngIf="_isSticky">
@@ -49,7 +48,7 @@ import {PostTemplateType} from './post-template-types';
                 Reply
               </a>
             </div>
-            <div class="post-delete p1ull-left" *ngIf="currentUser && currentUser.id == post.postedby.id">
+            <div class="post-delete 1pull-left" *ngIf="currentUser && currentUser.id == post.postedby.id">
               <span>&nbsp;
                 <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">[Delete Post]</a>
               </span>

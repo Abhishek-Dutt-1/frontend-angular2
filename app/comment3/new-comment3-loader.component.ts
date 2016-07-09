@@ -47,7 +47,7 @@ export class NewComment3LoaderComponent implements OnInit {
     this._postService.getPost(postid)
       .subscribe(
         post => {
-          console.log(post);
+          //console.log(post);
           this._post = post;
 
           var tmpComment2 = null;

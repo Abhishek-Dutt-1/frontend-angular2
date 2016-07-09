@@ -7,20 +7,20 @@ import {User} from '../user/user';
 import {SuperGroup} from '../super_group/super_group'
 
 @Component({
-  selector: 'my-geo-filter',
+  selector: 'my-geo-filter-supergroup-selection',
   template: `
     <!--
-KEEP IN SYNC : GeoFilterAddSupergroup
+KEEP IN SYNC : GeoFilter
     -->
     <div *ngIf="_sticky" class="dummy-div"></div>
-    <div class="my-geo-filter" [ngClass]="{sticky: _sticky}">
+    <div class="my-geo-filter-supergroup-selection" [ngClass]="{sticky: _sticky}">
 
           <div class="row hidden-xs">
             <div class="col-xs-12">
 
               <div class="pull-left">
                 <span class="menu-item">
-                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'international'}]"
+                    <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'international'}]"
                       [ngClass]="{active: geoSelection == 'international'}">
                       <i class="fa fa-plane"></i> International</a>
                 </span>
@@ -28,7 +28,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
 
               <div class="pull-left">
                 <span class="menu-item">
-                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
+                    <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'national'}]"
                       [ngClass]="{active: geoSelection == 'national'}">
                       <i class="fa fa-train"></i> National
                     </a>
@@ -37,7 +37,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
 
               <div class="pull-left">
                 <span class="menu-item">
-                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
+                    <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'state'}]"
                       [ngClass]="{active: geoSelection == 'state'}">
                       <i class="fa fa-bus"></i> State
                     </a>
@@ -46,7 +46,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
 
               <div class="pull-left">
                 <span class="menu-item">
-                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
+                    <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'city'}]"
                       [ngClass]="{active: geoSelection == 'city'}">
                       <i class="fa fa-car"></i> City
                     </a>
@@ -55,7 +55,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
 
               <div class="pull-left">
                 <span class="menu-item">
-                    <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
+                    <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'local'}]"
                       [ngClass]="{active: geoSelection == 'local'}">
                       <i class="fa fa-bicycle"></i> Local
                     </a>
@@ -63,17 +63,17 @@ KEEP IN SYNC : GeoFilterAddSupergroup
               </div>
 
               <div class="pull-right">
-                <div class="new-post pull-right">
+                <div class="new-post pull-right hidden">
                   <div>
                     <a class="btn btn-sm btn-default new-post-button" [routerLink]="['NewPost']">
                       <i class="fa fa-pencil" aria-hidden="true"></i> &nbsp;New Post
                     </a>
                   </div>
                 </div>
-                <div class="1hidden-md pull-right">
+                <div class="pull-right">
                   <div class="add-supergroups-button">
-                    <a class="1pull-right btn btn-sm btn-default new-post-button" [routerLink]="[ 'SupergroupSelection', { hypergroup: geoSelection } ]">
-                      <i class="fa fa-plus" aria-hidden="true"></i> &nbsp;Supergroups
+                    <a class="1pull-right btn btn-sm btn-default new-post-button" [routerLink]="[ 'HyperGroupPostList', { geo: geoSelection } ]">
+                      <i class="fa fa-undo" aria-hidden="true"></i> &nbsp;Posts
                     </a>
                   </div>
                 </div>
@@ -88,7 +88,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
           <div>
             <div class="menu-item pull-left">
               <div class="menu-link-container">
-                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'international'}]"
+                <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'international'}]"
                     [ngClass]="{active: geoSelection == 'international'}">
                   <i class="fa fa-plane"></i><span *ngIf="geoSelection == 'international'"> International</span>
                 </a>
@@ -97,7 +97,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
 
             <div class="menu-item pull-left">
               <div class="menu-link-container">
-                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'national'}]"
+                <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'national'}]"
                   [ngClass]="{active: geoSelection == 'national'}">
                   <i class="fa fa-train"></i><span *ngIf="geoSelection == 'national'"> National</span>
                 </a>
@@ -106,7 +106,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
 
             <div class="menu-item pull-left">
               <div class="menu-link-container">
-                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'state'}]"
+                <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'state'}]"
                   [ngClass]="{active: geoSelection == 'state'}">
                   <i class="fa fa-bus"></i><span *ngIf="geoSelection == 'state'"> State</span>
                 </a>
@@ -115,7 +115,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
 
             <div class="menu-item pull-left">
               <div class="menu-link-container">
-                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'city'}]"
+                <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'city'}]"
                   [ngClass]="{active: geoSelection == 'city'}">
                   <i class="fa fa-car"></i><span *ngIf="geoSelection == 'city'"> City</span>
                 </a>
@@ -124,7 +124,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
 
             <div class="menu-item pull-left">
               <div class="menu-link-container">
-                <a class="menu-link" [routerLink]="['/HyperGroupPostList', {geo: 'local'}]"
+                <a class="menu-link" [routerLink]="['SupergroupSelection', {hypergroup: 'local'}]"
                   [ngClass]="{active: geoSelection == 'local'}">
                   <i class="fa fa-bicycle"></i><span *ngIf="geoSelection == 'local'"> Local</span>
                 </a>
@@ -133,8 +133,8 @@ KEEP IN SYNC : GeoFilterAddSupergroup
 
             <div class="menu-item pull-right add-supergroups">
               <div class="menu-link-container">
-                <a class="menu-link" [routerLink]="[ 'SupergroupSelection', { hypergroup: geoSelection } ]">
-                  <i class="fa fa-plus"></i>
+                <a class="menu-link" [routerLink]="[ 'HyperGroupPostList', { geo: geoSelection } ]">
+                  <i class="fa fa-undo"></i>
                 </a>
               </div>
             </div>
@@ -179,15 +179,15 @@ KEEP IN SYNC : GeoFilterAddSupergroup
         padding-right: 15px;
         width: 100%;
       }
-      .my-geo-filter {
+      .my-geo-filter-supergroup-selection {
 
       }
-      .my-geo-filter > .row {
+      .my-geo-filter-supergroup-selection > .row {
         border-bottom: 1px solid rgba(0,0,0,0.05);
         padding-bottom: 15px;
         padding-top: 15px;
       }
-      .my-geo-filter .menu-item {
+      .my-geo-filter-supergroup-selection .menu-item {
         padding: 0 15px 0px 0;
         transition: 0.05s ease-in-out;
         display: block;
@@ -195,37 +195,37 @@ KEEP IN SYNC : GeoFilterAddSupergroup
         letter-spacing: 1px;
         text-decoration: none;
       }
-      .my-geo-filter .menu-item .menu-link {
+      .my-geo-filter-supergroup-selection .menu-item .menu-link {
         color: rgba(0, 0, 0, 0.3);
         font-size: 18px;
         font-family: WorkSans,sans-serif;
         text-transform: capitalize;
       }
-      .my-geo-filter .menu-item .active {
+      .my-geo-filter-supergroup-selection .menu-item .active {
         color: rgba(0, 0, 0, 0.8);
       }
-      .my-geo-filter .visible-xs-block .menu-link {
+      .my-geo-filter-supergroup-selection .visible-xs-block .menu-link {
 
       }
-      .my-geo-filter .geo-filter-details {
+      .my-geo-filter-supergroup-selection .geo-filter-details {
         clear: both;
         text-transform: uppercase;
         font-size: 11px;
       }
-      .my-geo-filter .new-post {
+      .my-geo-filter-supergroup-selection .new-post {
         padding-top: 0px;
       }
-      .my-geo-filter .new-post-button {
+      .my-geo-filter-supergroup-selection .new-post-button {
         /*
         color: rgba(0, 0, 0, 0.4);
         */
         color: #af2b2b;
         padding: 3px 15px 3px 10px;
       }
-      .my-geo-filter .add-supergroups {
+      .my-geo-filter-supergroup-selection .add-supergroups {
         padding-right: 0;
       }
-      .my-geo-filter .add-supergroups-button {
+      .my-geo-filter-supergroup-selection .add-supergroups-button {
         padding-right: 10px;
       }
     `],
@@ -233,7 +233,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
   directives: [ROUTER_DIRECTIVES]
 
 })
-export class GeoFilterComponent implements OnInit, OnDestroy {
+export class GeoFilterSupergroupSelection implements OnInit, OnDestroy {
 
   private _international: string[] = null;
   private _national: string = null;

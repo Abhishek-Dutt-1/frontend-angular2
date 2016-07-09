@@ -153,6 +153,8 @@ export class NewComment1Component {
    */
   onSubmit(event) {
 
+    if( !this._model.postedby || !this._model.postedby.id ) return;
+
     event.preventDefault();
     this._model.commentedon = this.post
 

@@ -7,6 +7,7 @@ import {RouterLink} from '@angular/router-deprecated';
 import {DateFormatPipe} from '../misc/date-format.pipe';
 import {Comment3Service} from '../comment3/comment3.service';
 import {CommentvoteComponent} from '../misc/commentvote.component';
+import {CommentMetaPanelComponent} from '../misc/comment-meta-panel.component';
 
 @Component({
   selector: 'my-comment3',
@@ -17,12 +18,11 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
 
         <div class="1col-xs-2 1col-sm-1">
           <div class="commentvote-container">
-            <my-commentvote [_votee]='comment3' (upVote)='upVoteComment3($event)' (downVote)='downVoteComment3($event)'></my-commentvote>
+            <my-commentvote [_votee]='comment3' (upVote)='upVoteComment3($event)' (downVote)='downVoteComment3($event)' [disabled]="comment3.sd"></my-commentvote>
           </div>
         </div>
 
         <div class="col-xs-8 col-sm-10 comment-main">
-
           <div class="row">
 
             <div *ngIf="comment3.meme_image_url" class="col-xs-4 col-sm-3 col-md-2 meme-image-col">
@@ -44,6 +44,8 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
 
           </div>      <!-- ! row -->
 
+          <my-comment-meta-panel [post]="post" [commentLevel]="3" [comment]="comment3" [currentUser]="currentUser"></my-comment-meta-panel>
+<!--
           <div class="row">
             <div class="col-xs-12">
               <div>
@@ -69,10 +71,10 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
                     </div>
                   </div>
 
-                </div>    <!-- ! postedby-info -->
+                </div>
               </div>
             </div>
-          </div>    <!-- ! row -->
+          </div> -->    <!-- ! row -->
 
         </div>
 
@@ -88,6 +90,7 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
     padding-left: 0;
     padding-right: 0;
   }
+  /*
   .my-comment3 .profile-image-container {
     height: 32px;
     width: 32px;
@@ -113,18 +116,18 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
     display: inline;
     font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 12px;
-    /* padding-left: 10px; */
     line-height: 14.4px;
     color: rgba(0, 0, 0, 0.439216);
   }
+  */
   .my-comment3 .commentvote-container {
     float: left;
     margin-left: 15px;
     margin-right: 15px;
   }
   `],
-  inputs: ['comment3', 'post'],
-  directives: [RouterLink, CommentvoteComponent],
+  inputs: ['comment3', 'post', 'currentUser'],
+  directives: [RouterLink, CommentvoteComponent, CommentMetaPanelComponent],
   pipes: [DateFormatPipe]
 })
 export class Comment3Component {

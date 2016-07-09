@@ -36,7 +36,7 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
                         <i class="fa" [ngClass]="{'fa-plane': _hyper_group == 'international', 'fa-train': _hyper_group == 'national', 'fa-bus': _hyper_group === 'state', 'fa-car': _hyper_group === 'city', 'fa-bicycle': _hyper_group === 'local' }"></i> /
                       </a>
                       <a [routerLink]="['SuperGroupPostList', {super_group_name: _super_group.name}]">
-                        {{_super_group.name | uppercase}} / &nbsp;<small>{{_super_group.description}}</small>
+                        {{_super_group.name}} / &nbsp;<small class="hidden">{{_super_group.description}}</small>
                       </a>
                     </div>
                   </div>
@@ -52,7 +52,7 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
                     <div class="pull-right">
                       <div class="add-supergroups-button">
                         <a class="1pull-right btn btn-sm btn-default new-post-button" [routerLink]="[ 'ViewGroupList', { supergroup: _super_group.name } ]">
-                          <i class="fa fa-plus hidden" aria-hidden="true"></i>Sub Groups</a>
+                          <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Groups</a>
                       </div>
                     </div>
                   </div>
@@ -86,9 +86,9 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
   </div>  <!-- end top div -->
   `,
   styles: [`
-    .my-super-group-post-list-loader .group-name-row {
-      margin: 20px 0;
-    }
+  .my-super-group-post-list-loader .group-name-row {
+    margin: 15px 0;
+  }
   .my-super-group-post-list-loader .supergroup-name {
     transition: 0.05s ease-in-out;
     display: block;

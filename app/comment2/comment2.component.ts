@@ -7,6 +7,7 @@ import {RouterLink} from '@angular/router-deprecated';
 import {DateFormatPipe} from '../misc/date-format.pipe';
 import {Comment2Service} from '../comment2/comment2.service';
 import {CommentvoteComponent} from '../misc/commentvote.component';
+import {CommentMetaPanelComponent} from '../misc/comment-meta-panel.component';
 
 @Component({
   selector: 'my-comment2',
@@ -17,7 +18,7 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
 
         <div class="1col-xs-2 1col-sm-1">
           <div class="commentvote-container">
-            <my-commentvote [_votee]='comment2' (upVote)='upVoteComment2($event)' (downVote)='downVoteComment2($event)'></my-commentvote>
+            <my-commentvote [_votee]='comment2' (upVote)='upVoteComment2($event)' (downVote)='downVoteComment2($event)' [disabled]="comment2.sd"></my-commentvote>
           </div>
         </div>
 
@@ -25,7 +26,7 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
           <div class="row">
 
             <div *ngIf="comment2.meme_image_url" class="col-xs-4 col-sm-3 col-md-2 meme-image-col">
-              <div class="meme-image-container ">
+              <div class="meme-image-container">
                 <img src="{{comment2.meme_image_url}}" class="meme-image img-responsive img-rounded  center-block">
               </div>
             </div>
@@ -41,7 +42,9 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
             </div>
           </div>      <!-- ! row -->
 
-          <div class="row">
+          <my-comment-meta-panel [post]="post" [commentLevel]="2" [comment]="comment2" [currentUser]="currentUser"></my-comment-meta-panel>
+          <!--
+          <div class="row" *ngIf="false">
             <div class="col-xs-12">
               <div>
                 <div class="postedby-info">
@@ -69,7 +72,7 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
 
               </div>
             </div>
-          </div>    <!-- ! row -->
+          </div> -->   <!-- ! row -->
 
         </div>
 
@@ -85,6 +88,7 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
     padding-left: 0;
     padding-right: 0;
   }
+  /*
   .my-comment2 .profile-image-container {
     height: 32px;
     width: 32px;
@@ -110,18 +114,18 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
     display: inline;
     font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 12px;
-    /* padding-left: 10px; */
     line-height: 14.4px;
     color: rgba(0, 0, 0, 0.439216);
   }
+  */
   .my-comment2 .commentvote-container {
     float: left;
     margin-left: 15px;
     margin-right: 15px;
   }
   `],
-  inputs: ['comment2', 'post'],
-  directives: [RouterLink, CommentvoteComponent],
+  inputs: ['comment2', 'post', 'currentUser'],
+  directives: [RouterLink, CommentvoteComponent, CommentMetaPanelComponent],
   pipes: [DateFormatPipe]
 })
 export class Comment2Component {

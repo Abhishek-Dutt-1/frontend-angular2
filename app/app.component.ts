@@ -40,6 +40,7 @@ import { NewComment1LoaderComponent } from './comment1/new-comment1-loader.compo
 import { NewComment2LoaderComponent } from './comment2/new-comment2-loader.component';
 import { NewComment3LoaderComponent } from './comment3/new-comment3-loader.component';
 import { NewComment4LoaderComponent } from './comment4/new-comment4-loader.component';
+import { ConfirmCommentDeleteComponent } from './misc/confirm-comment-delete.component';
 
 import { Comment1Service } from './comment1/comment1.service';
 import { Comment2Service } from './comment2/comment2.service';
@@ -48,7 +49,8 @@ import { Comment4Service } from './comment4/comment4.service';
 
 import { MemeService } from './meme/meme.service';
 import { SpinnerComponent } from './misc/spinner.component';
-import { AddSupergroupsComponent } from './hyper_group/add-supergroups.component';
+import { ToastNotificationComponent } from './misc/toast-notification.component';
+import { SupergroupSelectionComponent } from './hyper_group/supergroup-selection.component';
 
 
 @Component({
@@ -81,6 +83,7 @@ import { AddSupergroupsComponent } from './hyper_group/add-supergroups.component
         <my-spinner></my-spinner>
 
     </div>
+    <my-toast-notification></my-toast-notification>
   </div>
   `,
   styles: [`
@@ -128,7 +131,7 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     }
   `],
   //styleUrls: ['app/app.component.css'],
-  directives: [ROUTER_DIRECTIVES, UserAuthenticationPanelComponent, SpinnerComponent],
+  directives: [ROUTER_DIRECTIVES, UserAuthenticationPanelComponent, SpinnerComponent, ToastNotificationComponent],
   providers: [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
@@ -182,7 +185,6 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     component: NewPostComponent
   },
   {
-    // Create a new post
     path: '/confirmpostdelete/:postid',
     name: 'ConfirmPostDelete',
     component: ConfirmPostDeleteComponent
@@ -279,9 +281,14 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     component: NewComment4LoaderComponent
   },
   {
+    path: '/confirmcommentdelete/:postid/:commentlevel/:commentid',
+    name: 'ConfirmCommentDelete',
+    component: ConfirmCommentDeleteComponent
+  },
+  {
     path: '/sub/:hypergroup',
-    name: 'AddSupergroups',
-    component: AddSupergroupsComponent
+    name: 'SupergroupSelection',
+    component: SupergroupSelectionComponent
   }
 ])
 export class AppComponent { }

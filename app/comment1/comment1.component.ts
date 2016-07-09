@@ -7,6 +7,7 @@ import {RouterLink} from '@angular/router-deprecated';
 import {DateFormatPipe} from '../misc/date-format.pipe';
 import {Comment1Service} from '../comment1/comment1.service';
 import {CommentvoteComponent} from '../misc/commentvote.component';
+import {CommentMetaPanelComponent} from '../misc/comment-meta-panel.component';
 
 @Component({
   selector: 'my-comment1',
@@ -17,7 +18,7 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
 
         <div class="1col-xs-2 1col-sm-1">
           <div class="commentvote-container">
-            <my-commentvote [_votee]='comment1' (upVote)='upVoteComment1($event)' (downVote)='downVoteComment1($event)'></my-commentvote>
+            <my-commentvote [_votee]='comment1' (upVote)='upVoteComment1($event)' (downVote)='downVoteComment1($event)' [disabled]="comment1.sd"></my-commentvote>
           </div>
         </div>
 
@@ -43,7 +44,9 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
             </div>
           </div>    <!-- ! row -->
 
-          <div class="row">
+          <my-comment-meta-panel [post]="post" [commentLevel]="1" [comment]="comment1" [currentUser]="currentUser"></my-comment-meta-panel>
+          <!--
+          <div class="row" *ngIf="false">
             <div class="col-xs-12">
               <div>
                 <div class="postedby-info">
@@ -63,14 +66,20 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
                     &bull;
                     <a [routerLink] = "['NewComment2', {postid: post.id, comment1id: comment1.id}]">Reply</a>
                     <div class="clearfix"></div>
-                    <div class="comment-createdat">
+                    <div class="comment-createdat pull-left">
                       {{ comment1.createdAt | timeAgo }}
                     </div>
+                    <div class="comment-delete pull-left" *ngIf="currentUser && currentUser.id == comment1.postedby.id">
+                      <span>&bull;
+                        <a class="" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 1, commentid: comment1.id } ]">[Delete Comment]</a>
+                      </span>
+                    </div>
+
                   </div>
                 </div>
               </div>
             </div>
-          </div>    <!-- ! row -->
+          </div>  -->    <!-- ! row -->
         </div>
 
       </div>    <!-- ! row -->
@@ -85,6 +94,7 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
     padding-left: 0;
     padding-right: 0;
   }
+  /*
   .my-comment1 .profile-image-container {
     height: 32px;
     width: 32px;
@@ -110,18 +120,25 @@ import {CommentvoteComponent} from '../misc/commentvote.component';
     display: inline;
     font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 12px;
-    /* padding-left: 10px; */
     line-height: 14.4px;
     color: rgba(0, 0, 0, 0.439216);
   }
+  .my-comment1 .comment-delete {
+    display: inline;
+    font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    line-height: 14.4px;
+    color: rgba(0, 0, 0, 0.439216);
+  }
+  */
   .my-comment1 .commentvote-container {
     float: left;
     margin-left: 15px;
     margin-right: 15px;
   }
   `],
-  inputs: ['comment1', 'post'],
-  directives: [RouterLink, CommentvoteComponent],
+  inputs: ['currentUser', 'comment1', 'post'],
+  directives: [RouterLink, CommentvoteComponent, CommentMetaPanelComponent],
   pipes: [DateFormatPipe]
 })
 export class Comment1Component {

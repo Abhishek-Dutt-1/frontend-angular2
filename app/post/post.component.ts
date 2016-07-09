@@ -310,6 +310,9 @@ import {AppService} from '../app.service';
     word-wrap: break-word;
     -webkit-font-smoothing: antialiased;
   }
+  .my-post .post-container .post-type-link a {
+    color: #af2b2b;
+  }
   .my-post .post-container .post-text-wrap {
     /*white-space: pre-wrap; */
     white-space: pre-line;
@@ -389,8 +392,8 @@ export class PostComponent implements OnInit {
       },
       error => {
         this._processingVote = false;
-        //console.log("Upvote unsuccess")
-        this._errorMsg = error;
+        //this._errorMsg = error;
+        this._appService.createNotification( { text: error, type: 'danger' } );
       });
   }
 
@@ -411,9 +414,9 @@ export class PostComponent implements OnInit {
         this._errorMsg = null;
       },
       error => {
-        //console.log("Upvote unsuccess")
         this._processingVote = false;
-        this._errorMsg = error;
+        //this._errorMsg = error;
+        this._appService.createNotification( { text: error, type: 'danger' } );
       });
   }
 

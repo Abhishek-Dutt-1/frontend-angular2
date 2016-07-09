@@ -175,6 +175,8 @@ export class NewComment4Component {
    */
   onSubmit(event) {
 
+    if( !this._model.postedby || !this._model.postedby.id ) return;
+
     event.preventDefault();
     this._model.commentedon = this.comment3
     let properModel = {

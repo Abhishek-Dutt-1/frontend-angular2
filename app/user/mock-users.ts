@@ -6,6 +6,7 @@ export var MOCK_USERS: User[] = [
   {
     id: 1,
     email: 'iron@in.in',
+    emailverified: true,
     displayname: 'Iron Man',
     username: 'ironman',
     profileimage: '',
@@ -21,6 +22,7 @@ export var MOCK_USERS: User[] = [
   {
     id: 2,
     email: 'captain@in.in',
+    emailverified: true,
     displayname: 'Captain America',
     username: 'cap',
     profileimage: '',
@@ -36,6 +38,7 @@ export var MOCK_USERS: User[] = [
   {
     id: 3,
     email: 'hulk@in.in',
+    emailverified: true,
     displayname: 'Incredible Hulk',
     username: 'hulk',
     profileimage: '',
@@ -51,6 +54,7 @@ export var MOCK_USERS: User[] = [
   {
     id: 4,
     email: 'thor@in.in',
+    emailverified: true,
     displayname: 'The Mighty Thor',
     username: 'thor',
     profileimage: '',
