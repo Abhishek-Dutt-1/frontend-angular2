@@ -65,6 +65,7 @@ import { SupergroupSelectionComponent } from './hyper_group/supergroup-selection
             <div class="col-xs-7 logo-container">
               <div class="logo">
                 <a [routerLink]="['/HyperGroupPostListDefault']">
+                  <img src="images/angrycity_white.png" width="30" class="hidden">
                   <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Angry.City
                 </a> <sup class="alpha">&alpha;</sup>
               </div>

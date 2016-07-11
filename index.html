@@ -5,9 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#E40606">
+  <link rel="icon" href="images/angrycity_red.png">
   <base href="/">
   <title>Angry.City</title>
 <!--------------------------------------------------------------------------------->
+<!--
   <script src="node_modules/core-js/client/shim.min.js"></script>
   <script src="node_modules/zone.js/dist/zone.js"></script>
   <script src="node_modules/reflect-metadata/Reflect.js"></script>
@@ -20,51 +24,15 @@
   <link rel="stylesheet" href="styles.css">
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- -->
+-->
 <!--  no bootstrap
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 -->
-
 <!--------------------------------------------------------------------------------->
-
-<!--  for non-SFX bundles
-<script>
-System.config({
-    /*
-    packages: {
-        'build/': {
-            format: 'register',
-            defaultExtension: 'js'
-        }
-    },
-    */
-    /*
-    meta: {
-    //'build/main': {
-    'build/app.bundle.js': {
-      format: 'cjs',
-      defaultExtension: 'js'
-    }
-  },*/
-  /*
-    map: {
-      //'app':                        'app', // 'dist',
-      '@angular':                   'node_modules/@angular',
-      'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
-      'rxjs':                       'node_modules/rxjs'
-    },*/
-    bundles: {
-        'build/minified/app.bundle.js': ['build/main']
-    }
-});
-System.import('build/main').then(null, console.error.bind(console));
-</script>
--->
 <!-- DIST.1 -->
-<!--
 <script src="dist/vendor.min.js"></script>
 <link rel="stylesheet" href="dist/dist/css/styles.min.css">
--->
+<!-- -->
 </head>
 <body>
   <my-app-component>
@@ -72,8 +40,8 @@ System.import('build/main').then(null, console.error.bind(console));
   </my-app-component>
 
 <!-- DIST.2 for SFX bundles -->
-<!-- 
+
   <script src="dist/app.min.js"></script>
--->
+<!-- -->
 </body>
 </html>
