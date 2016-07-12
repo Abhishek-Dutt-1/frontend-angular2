@@ -25,9 +25,9 @@ import {AuthenticationService} from '../authentication/authentication.service';
                     <!--
                     <a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic</a>
                     -->
-                    <a [routerLink]="['ViewUser', {id: user.id, tab: 'basic'}]" aria-controls="basic" role="tab" data-toggle1="tab">Basic</a>
+                    <a [routerLink]="['ViewUser', {id: user.id, tab: 'basic'}]" aria-controls="basic" role="tab" data-toggle1="tab">Profile</a>
                   </li>
-                  <li role="presentation" [hidden]="!ownProfile" [ngClass]="{active: tab == 'geo'}">
+                  <li role="presentation" [hidden]="!ownProfile" [ngClass]="{active: tab == 'geo'}" class="hidden">
                     <!--
                     <a href="#geo" aria-controls="geo" role="tab" data-toggle="tab">Geo</a>
                     -->

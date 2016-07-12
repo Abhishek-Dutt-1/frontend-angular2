@@ -31,8 +31,8 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
 /*
       background-color: rgba(0, 182, 255, 0.05);
       */
-      background-color: rgba(255, 73, 0, 0.05);
-      color: rgba(0, 0, 0, 0.35);
+      background-color: rgba(255, 0, 0, 0.2);
+      color: rgba(0, 0, 0, 0.7);
     }
   `],
   //inputs: ['_votee'],

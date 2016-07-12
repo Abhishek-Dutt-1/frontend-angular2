@@ -47,7 +47,7 @@ import {AppService} from '../app.service';
       </div>
 
       <div class="form-group" *ngIf="_showMemeList">
-        <label for="meme-selector" class="col-sm-2 control-label">Meme Selector</label>
+        <label for="meme-selector" class="col-sm-2 control-label">Select Meme</label>
         <div class="col-sm-10">
           <my-meme-selector (memeSelected)="memeClicked($event)"></my-meme-selector>
         </div>
@@ -69,7 +69,7 @@ import {AppService} from '../app.service';
 
       <div class="form-group">
         <div class="col-sm-offset-2 col-md-10">
-          <button (click)="_showMemeList = !_showMemeList" class="btn btn-default">Meme</button>
+          <button (click)="_showMemeList = !_showMemeList" class="btn btn-default hidden">Meme</button>
           <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!comment1Form.form.valid">Submit</button>
           <button (click)="goBack()" class="btn btn-default">Cancel</button>
         </div>
@@ -99,7 +99,7 @@ export class NewComment1Component {
   private post = null;
   private _model: any = null;
   private _errorMsg: string = null;
-  private _showMemeList: boolean = false;
+  private _showMemeList: boolean = true;
 
   constructor(
     private _appService: AppService,

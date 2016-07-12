@@ -29,11 +29,16 @@ declare var gapi:any;
 <div (click)="signOut()">Sign out</div>
 -->
 
-          <h3>Welcome fellow human!</h3>
+
           <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
           <form #newUserForm="ngForm" class="form-horizontal" novalidate>
 
+            <div class="form-group">
+              <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                <h3>Welcome fellow human!</h3>
+              </div>
+            </div>
             <div class="form-group">
               <label for="displayname" class="col-sm-2 control-label">Display Name</label>
               <div class="col-sm-10">

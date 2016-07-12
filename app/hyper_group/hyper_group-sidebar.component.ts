@@ -14,10 +14,10 @@ import {AppService} from '../app.service';
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
       <!-- User's Super Groups -->
-      <div class="row1">
+      <div class="row1 section" *ngIf="hierarchy.sg.length > 0">
         <div class="row">
           <div class="col-xs-12">
-            <h5>Your {{hyperGroup | uppercase}} Supergroups:</h5>
+            <div>Your {{hyperGroup | uppercase}} Supergroups:</div>
           </div>
         </div>
         <div class="row1">
@@ -51,10 +51,10 @@ import {AppService} from '../app.service';
       </div>    <!-- row1 -->
 
       <!-- Suggested Super Groups -->
-      <div class="row1" *ngIf="hierarchy.suggestedSgs.length > 0">
+      <div class="row1 section" *ngIf="hierarchy.suggestedSgs.length > 0">
         <div class="row">
           <div class="col-xs-12">
-            <h5>Suggested {{hyperGroup | uppercase}} Supergroups:</h5>
+            <div>Suggested {{hyperGroup | uppercase}} Supergroups:</div>
           </div>
         </div>
         <div class="row1">
@@ -74,10 +74,10 @@ import {AppService} from '../app.service';
 
 
       <!-- Other available Super Groups -->
-      <div class="row1" *ngIf="hierarchy.otherSg.length > 0">
+      <div class="row1 section" *ngIf="hierarchy.otherSg.length > 0">
         <div class="row">
           <div class="col-xs-12">
-            <h5>More {{hyperGroup | uppercase}} Supergroups:</h5>
+            <div>More {{hyperGroup | uppercase}} Supergroups:</div>
           </div>
         </div>
         <div class="row1">
@@ -95,7 +95,7 @@ import {AppService} from '../app.service';
         </div>
       </div>    <!-- row1 -->
 
-      <div class="row">
+      <div class="row section">
         <div class="col-xs-12">
           <div class="message-meta">
             Suggestion for a new Group? Message us at <a [routerLink]="['ViewGroup', {super_group_name: 'Global', group_name: 'Meta'}]">GLOBAL/Meta</a>.
@@ -114,7 +114,7 @@ import {AppService} from '../app.service';
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
       <!-- User's Super Groups -->
-      <div class="row1">
+      <div class="row1 section" *ngIf="hierarchy.sg.length > 0">
         <div class="row">
           <div class="col-xs-12">
             <h4>Your {{hyperGroup | uppercase}} Supergroups:</h4>
@@ -151,7 +151,7 @@ import {AppService} from '../app.service';
       </div>    <!-- row1 -->
 
       <!-- Suggested Super Groups -->
-      <div class="row1" *ngIf="hierarchy.suggestedSgs.length > 0">
+      <div class="row1 section" *ngIf="hierarchy.suggestedSgs.length > 0">
         <div class="row">
           <div class="col-xs-12">
             <h4>Suggested {{hyperGroup | uppercase}} Supergroups:</h4>
@@ -179,7 +179,7 @@ import {AppService} from '../app.service';
 
 
       <!-- Other available Super Groups -->
-      <div class="row1" *ngIf="hierarchy.otherSg.length > 0">
+      <div class="row1 section" *ngIf="hierarchy.otherSg.length > 0">
         <div class="row">
           <div class="col-xs-12">
             <h4>More {{hyperGroup | uppercase}} Supergroups:</h4>
@@ -205,7 +205,7 @@ import {AppService} from '../app.service';
         </div>
       </div>    <!-- row1 -->
 
-      <div class="row">
+      <div class="row section">
         <div class="col-xs-12">
           <div class="message-meta">
             Suggestion for a new Group? Message us at <a [routerLink]="['ViewGroup', {super_group_name: 'Global', group_name: 'Meta'}]">GLOBAL/Meta</a>.
@@ -222,6 +222,12 @@ import {AppService} from '../app.service';
     .my-hyper_group-sidebar {
       padding-top: 10px;
     }
+    .my-hyper_group-sidebar .section {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      margin-bottom: 15px;
+      margin-top: 15px;
+      padding-bottom: 15px;
+    }
     .my-hyper_group-sidebar a {
       color: #af2b2b;
     }
@@ -233,7 +239,9 @@ import {AppService} from '../app.service';
     .my-hyper_group-sidebar .message-meta {
       font-style: italic;
       font-size: x-small;
+      /*
       margin-top: 15px;
+      */
     }
   `],
   directives: [RouterLink, ErrorComponent],
@@ -258,12 +266,13 @@ export class HyperGroupSidebarComponent implements OnInit {
    * Subscribe to a Super group into user's hyper group
    */
   subscribeSuperGroup(sg: any, hyperGroup: string) {
-    console.log("Subbing SG", sg);
+    //console.log("Subbing SG", sg);
     this._userService.subscribeSuperGroup(sg.id, hyperGroup).subscribe(
       updatedUser => {
         //console.log("Success", updatedUser)
         this._authenticationService.updateCurrentUser(updatedUser);
         //this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'geo'}]);
+        this._appService.createNotification( { text: "Subscribed to Supergroup '" + sg.name + "'", type: 'success' } );
       },
       error => {
         // this._errorMsg = error;
@@ -281,6 +290,7 @@ export class HyperGroupSidebarComponent implements OnInit {
           //console.log("Success", updatedUser)
           this._authenticationService.updateCurrentUser(updatedUser);
           //this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'geo'}]);
+          this._appService.createNotification( { text: "Unsubscribed from Supergroup '" + sg.name + "'", type: 'success' } );
         },
         error => {
           //this._errorMsg = error;

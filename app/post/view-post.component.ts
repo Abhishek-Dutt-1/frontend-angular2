@@ -11,6 +11,7 @@ import {Comment4Component} from '../comment4/comment4.component';
 import {PostTemplateType} from './post-template-types';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {FabButtonComponent} from '../misc/fab-button.component';
+import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-view-post',
@@ -32,7 +33,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
                       {{_super_group.name}} / <small class="hidden">{{_super_group.description}}</small>
                     </a>
                     <a [routerLink]="['ViewGroup', {super_group_name: _group.supergroup.name, group_name: _group.name}]">
-                      {{_group.name}} / <small class="hidden">{{_group.description}}</small>
+                      {{_group.name}} > <small class="hidden">{{_group.description}}</small>
                     </a>
                   </div>
                 </div>
@@ -63,6 +64,9 @@ import {FabButtonComponent} from '../misc/fab-button.component';
           <div class="col-xs-12">
             <!-- Replies to Post -->
             <div class="comment-list level-1">
+
+              <my-error [_errorMsg]="_errorMsg"></my-error>
+
               <div *ngFor="let comment1 of post.comments" class="comment-level-1">
                 <div class="row">
                   <div class="col-xs-12">
@@ -204,7 +208,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
   }
   `],
   //styleUrls: ['app/post/view-post.component.css'],
-  directives: [RouterLink, PostComponent, FabButtonComponent, Comment1Component, Comment2Component, Comment3Component, Comment4Component]
+  directives: [RouterLink, PostComponent, ErrorComponent, FabButtonComponent, Comment1Component, Comment2Component, Comment3Component, Comment4Component]
   //////inputs: ['post']////
 })
 export class ViewPostComponent {
@@ -287,6 +291,9 @@ export class ViewPostComponent {
           if ( this._currentUser && this._currentUser.national.find( group => group.id === this._super_group.id ) ) {
             this._hyper_group = 'national'
           }
+        }
+        if ( this.post.comments.length == 0 ) {
+          this._errorMsg = "There are no comments on this post. You can post the first by clicking 'Reply'.";  
         }
       },
       error => {

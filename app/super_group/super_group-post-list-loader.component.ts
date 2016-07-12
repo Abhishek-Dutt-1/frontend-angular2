@@ -51,9 +51,14 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
                       </div>
                     </div>
                     <div class="pull-right">
-                      <div class="add-supergroups-button">
+                      <div class="add-supergroups-button hidden-xs">
                         <a class="1pull-right btn btn-sm btn-default new-post-button" [routerLink]="[ 'ViewGroupList', { supergroup: _super_group.name } ]">
                           <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Groups</a>
+                      </div>
+                      <div class="add-supergroups-plus visible-xs-block">
+                        <a class="" [routerLink]="[ 'ViewGroupList', { supergroup: _super_group.name } ]">
+                          <i class="fa fa-plus"></i>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -75,7 +80,7 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
           <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
         </div>
         <div class="col-md-2 hidden-xs hidden-sm">
-          <my-super_group-sidebar [_super_group]="_super_group" [_groups]="_groups"></my-super_group-sidebar>
+          <my-super_group-sidebar [_super_group]="_super_group" [_groups]="_groups" [_currentUser]="_currentUser"></my-super_group-sidebar>
         </div>
       </div>
 
@@ -138,6 +143,14 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
   }
   .my-super-group-post-list-loader .add-supergroups-button {
     padding-right: 10px;
+  }
+  .my-super-group-post-list-loader .add-supergroups-plus {
+    font-size: 18px;
+    font-family: WorkSans,sans-serif;
+    text-transform: capitalize;
+  }
+  .my-super-group-post-list-loader .add-supergroups-plus a {
+    color: rgba(0, 0, 0, 0.3);
   }
   `],
   directives: [PostListComponent, RouterLink, ErrorComponent, FabButtonComponent, SuperGroupSidebarComponent]
@@ -227,6 +240,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
       resp => {
         //console.log(resp);
         this._errorMsg = null;
+        resp.superGroup.groups = resp.groupList;
         this._super_group = resp.superGroup;
         this._groups = resp.superGroup.groups;
         this._hyper_group = this._super_group.type;
@@ -251,12 +265,12 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   }
 
   gotoNewPostForm() {
-    this._router.navigate( [ 'NewPost', {super_group_name: this._super_group.name } ] );
+    this._router.navigate( [ 'NewPost', { super_group_name: this._super_group.name } ] );
   }
 
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
-    window.removeEventListener("scroll", this.myEfficientFn);
+    window.removeEventListener( "scroll", this.myEfficientFn );
   }
 
 

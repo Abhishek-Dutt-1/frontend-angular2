@@ -65,7 +65,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
       <div *ngIf="!_errorMsg">
         <div class="row">
           <div class="col-xs-12">
-            <my-super_group-sidebar [_super_group]="_super_group" [_groups]="_groups"  [extendedVersion]="true"></my-super_group-sidebar>
+            <my-super_group-sidebar [_super_group]="_super_group" [_groups]="_groups" [_currentUser]="_currentUser" [extendedVersion]="true"></my-super_group-sidebar>
           </div>
         </div>
       </div>
@@ -158,6 +158,7 @@ export class ViewGroupListComponent implements OnInit {
 
     this._superGroupService.getSupergroupWithGroups(super_group_name).subscribe(
       sg => {
+        console.log(sg)
         this._errorMsg = null;
         this._super_group = sg.superGroup;
         this._groups = sg.superGroup.groups;

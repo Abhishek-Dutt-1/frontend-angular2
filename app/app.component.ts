@@ -62,15 +62,15 @@ import { SupergroupSelectionComponent } from './hyper_group/supergroup-selection
 
         <div class="row">
           <div class="header">
-            <div class="col-xs-7 logo-container">
+            <div class="col-xs-6 logo-container">
               <div class="logo">
                 <a [routerLink]="['/HyperGroupPostListDefault']">
-                  <img src="images/angrycity_white.png" width="30" class="hidden">
-                  <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Angry.City
+                  <img src="images/angrycity_white.png" width="30" class="1hidden">
+                  <span class="glyphicon glyphicon-home hidden" aria-hidden="true"></span> Angry.City
                 </a> <sup class="alpha">&alpha;</sup>
               </div>
             </div>
-            <div class="col-xs-5 user-panel-container">
+            <div class="col-xs-6 user-panel-container">
               <my-user-authentication-panel></my-user-authentication-panel>
             </div>
           </div>
@@ -109,8 +109,8 @@ background-image: -webkit-linear-gradient(top, #e40606 0%, #980505 100%);
 background-image:    -moz-linear-gradient(top, #e40606 0%, #980505 100%);
 background-image:      -o-linear-gradient(top, #e40606 0%, #980505 100%);
 background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
-
-      border-bottom: 1px solid #003264;
+/*
+      border-bottom: 1px solid #003264; */
     }
     .my-app-component .header .logo-container {
       padding-top: 13px;

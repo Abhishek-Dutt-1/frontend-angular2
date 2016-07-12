@@ -29,10 +29,18 @@ import {AppService} from '../app.service';
             <div class="col-xs-12">
               <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
                 <span>{{post.title}}</span>
-              </a>
+              </a>    <!--
               <span *ngIf="post.type === 'link'" class="post-type-link">
                 <a target="_blank" [href]="post.link">[view link]</a>
-              </span>
+              </span> -->
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div *ngIf="post.type === 'link'" class="post-type-link">
+                <a target="_blank" [href]="post.link">View link <i class="fa fa-external-link" aria-hidden="true"></i></a>
+              </div>
             </div>
           </div>
 
@@ -83,10 +91,18 @@ import {AppService} from '../app.service';
                 <div class="col-xs-12">
                   <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
                     <span>{{post.title}}</span>
-                  </a>
+                  </a>    <!--
                   <span *ngIf="post.type === 'link'" class="post-type-link">
                     <a target="_blank" [href]="post.link">[view link]</a>
-                  </span>
+                  </span>     -->
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <div *ngIf="post.type === 'link'" class="post-type-link">
+                    <a target="_blank" [href]="post.link">View link <i class="fa fa-external-link" aria-hidden="true"></i></a>
+                  </div>
                 </div>
               </div>
 
@@ -122,10 +138,18 @@ import {AppService} from '../app.service';
             <div class="col-xs-12">
               <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
                 <span>{{post.title}}</span>
-              </a>
+              </a>  <!--
               <span *ngIf="post.type === 'link'">
                 <a target="_blank" [href]="post.link">[view link]</a>
-              </span>
+              </span>  -->
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div *ngIf="post.type === 'link'" class="post-type-link">
+                <a target="_blank" [href]="post.link">View link <i class="fa fa-external-link" aria-hidden="true"></i></a>
+              </div>
             </div>
           </div>
 
@@ -168,14 +192,22 @@ import {AppService} from '../app.service';
             <div class="col-xs-12">
               <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
                 <span>{{post.title}}</span>
-              </a>
+              </a><!--
               <span *ngIf="post.type === 'link'" class="post-type-link">
-                <a target="_blank" [href]="post.link">[view link]</a>
-              </span>
+                <a target="_blank" [href]="post.link">[view 2 link]</a>
+              </span>  -->
             </div>
           </div>
 
           <div class="row">
+            <div class="col-xs-12">
+              <div *ngIf="post.type === 'link'" class="post-type-link">
+                <a target="_blank" [href]="post.link">View link <i class="fa fa-external-link" aria-hidden="true"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="post.text">
             <div class="col-xs-12">
               <div class="post-text">
                 <div *ngIf="_readmore">
@@ -227,16 +259,23 @@ import {AppService} from '../app.service';
             </div>
 
             <div class="col-xs-11">
+
               <div class="row">
                 <div class="col-xs-12">
                   <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
                     <span>{{post.title}}</span>
                   </a>
-                  <span *ngIf="post.type === 'link'" class="post-type-link">
-                    <a target="_blank" [href]="post.link">[view link]</a>
-                  </span>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <div *ngIf="post.type === 'link'" class="post-type-link">
+                    <a target="_blank" [href]="post.link">View link <i class="fa fa-external-link" aria-hidden="true"></i></a>
+                  </div>
+                </div>
+              </div>
+
               <div class="row" *ngIf="post.text">
                 <div class="col-xs-12">
                   <div class="post-text">
@@ -309,6 +348,10 @@ import {AppService} from '../app.service';
     margin-top: 8px;
     word-wrap: break-word;
     -webkit-font-smoothing: antialiased;
+  }
+  .my-post .post-container .post-type-link{
+    padding-top: 15px;
+    color: #af2b2b;
   }
   .my-post .post-container .post-type-link a {
     color: #af2b2b;

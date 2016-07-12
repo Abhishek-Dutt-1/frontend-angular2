@@ -262,7 +262,7 @@ export class NewPostComponent {
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
     if( currentUser ) {
-      console.log(currentUser)
+      //console.log(currentUser)
       this._errorMsg = null;
       this.model.postedby = currentUser;
       this.search(this._searchString);      // <-- This does not works
@@ -329,11 +329,11 @@ export class NewPostComponent {
       sticky_level : this.model.sticky_post ? 1 : 0     // 1 for group, 0 for no sticky
     }
 
-    console.log(properModel);
+    //console.log(properModel);
 
     this._postService.createNewPost(properModel).subscribe(
       post => {
-        console.log(post);
+        //console.log(post);
         this._router.navigate(['ViewPost', {postid: post.id}]);
       },
       error => {

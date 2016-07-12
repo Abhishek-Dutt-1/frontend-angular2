@@ -42,8 +42,8 @@ import {FabButtonComponent} from '../misc/fab-button.component';
                     </div>
                   </div>
 
-                  <div class="pull-right btn btn-sm btn-default subscribe-button" *ngIf="!group.isCurrentUserSubscribed && !group.isCurrentUsersMembershipPending && _currentUser" (click)="subscribeToThisGroup()">
-                    Subscribe
+                  <div class="pull-right btn btn-sm btn-default subscribe-button" *ngIf="!group.isCurrentUserSubscribed && !group.isCurrentUsersMembershipPending" (click)="subscribeToThisGroup()">
+                    Join Group
                   </div>
 
                 </div>
@@ -67,7 +67,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
       <div class="row border-row" *ngIf="group.isCurrentUsersMembershipPending || group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner">
         <div class="col-xs-12">
           <div class="group-ops">
-            <div class="btn btn-xs btn-link sub-text" *ngIf="group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner" (click)="unSubscribeFromThisGroup()">Unsubscribe</div>
+            <div class="btn btn-xs btn-link sub-text" *ngIf="group.isCurrentUserSubscribed && !group.currentUserIsGroupOwner" (click)="unSubscribeFromThisGroup()">Leave Group</div>
             <div class="btn btn-xs btn-link sub-text" *ngIf="group.isCurrentUsersMembershipPending" (click)="cancelPendingGroupMembership()">Membership Pending (Cancel?)</div>
           </div>
         </div> <!-- !col -->
@@ -128,6 +128,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     font-family: WorkSans,sans-serif;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    color: rgba(0, 0, 0, 0.6);
   }
   .my-view-group .group-name a {
     color: rgba(0, 0, 0, 0.6);
@@ -165,9 +166,11 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     color: rgba(0, 0, 0, 0.4);
   }
   .my-view-group .subscribe-button {
-    color: rgba(0, 0, 0, 0.4);
+    /*
+    color: rgba(0, 0, 0, 0.4); */
     padding: 3px 15px 3px 10px;
     margin-right: 15px;
+    color: #af2b2b;
   }
   .my-view-group .new-post {
     padding-top: 0px;
@@ -291,14 +294,25 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
         });
   }
 
+
+
+  /***************************************
+   * SYNC WITH super_group-sidebar.component
+   *
+   ***************************************/
+
   /**
    * Subscribe current user to this group
    */
   subscribeToThisGroup() {
     if(!this.group.id) return;
-    if(!this._currentUser || !this._currentUser.id) return;
+    if(!this._currentUser || !this._currentUser.id) {
+      //this._errorMsg = "User must be logged in to join a group.";
+      this._appService.createNotification( { text: "User must be logged in to join a group.", type: 'danger' } );
+      return;
+    }
     this._groupService.subscribeCurrentUserToGroup(this.group.id).subscribe(
-      res => {
+      updatedUser => {
         //console.log("SUCCESS SUBS", res);
         // If group membership needs approval, then server wourld have added
         // the user to waiting list or else would have directly subscribed
@@ -307,9 +321,12 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
         } else {
           this.group.isCurrentUserSubscribed = true;
         }
+        //this._authenticationService.updateCurrentUser(updatedUser); // <-- NOT NEEDED HERE
+        this._appService.createNotification( { text: "Joined group '" + this._super_group.name + "/" + this.group.name + "'", type: 'success' } );
       },
       error => {
-        this._errorMsg = error;
+        //this._errorMsg = error;
+        this._appService.createNotification( { text: error, type: 'danger' } );
         //console.log("ERROR", error);
       })
   }
@@ -320,15 +337,22 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   unSubscribeFromThisGroup() {
     //console.log("Un subscribing")
     if(!this.group.id) return;
-    if(!this._currentUser || !this._currentUser.id) return;
+    // if(!this._currentUser || !this._currentUser.id) return;
+    if(!this._currentUser || !this._currentUser.id) {
+      this._appService.createNotification( { text: "User must be logged in to leave groups.", type: 'danger' } );
+      return;
+    }
 
     this._groupService.unSubscribeCurrentUserFromGroup(this.group.id).subscribe(
-      res => {
+      updatedUser => {
         //console.log("SUCCESS UN SUBS", res);
         this.group.isCurrentUserSubscribed = false;
+        //this._authenticationService.updateCurrentUser(updatedUser); // <-- NOT NEEDED HERE
+        this._appService.createNotification( { text: "Left the group '" + this._super_group.name + "/" + this.group.name + "'", type: 'success' } );
       },
       error => {
-        this._errorMsg = error;
+        //this._errorMsg = error;
+        this._appService.createNotification( { text: error, type: 'danger' } );
         //console.log("ERROR", error);
       })
   }
@@ -339,14 +363,22 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   cancelPendingGroupMembership() {
     //console.log("Cancelling pending membership")
     if(!this.group.id) return;
-    if(!this._currentUser || !this._currentUser.id) return;
+    //if(!this._currentUser || !this._currentUser.id) return;
+    if(!this._currentUser || !this._currentUser.id) {
+      this._appService.createNotification( { text: "User must be logged in..", type: 'danger' } );
+      return;
+    }
+
     this._groupService.cancelCurrentUsersPendingMembership(this.group.id).subscribe(
-      res => {
+      updatedUser => {
         //console.log("SUCCESS UN SUBS pending meme", res);
         this.group.isCurrentUsersMembershipPending = false;
+        //this._authenticationService.updateCurrentUser(updatedUser); // <-- NOT NEEDED HERE
+        this._appService.createNotification( { text: "Cancelled pending memebership for '" + this._super_group.name + "/" + this.group.name + "'", type: 'success' } );
       },
       error => {
-        this._errorMsg = error;
+        //this._errorMsg = error;
+        this._appService.createNotification( { text: error, type: 'danger' } );
         //console.log("ERROR", error);
       })
 
