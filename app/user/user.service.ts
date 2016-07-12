@@ -381,5 +381,47 @@ export class UserService {
        });
    }
 
+  /**
+   *  Get all upvoted posts by a user.
+   *  For displaying in his/her profile view.
+   */
+   getUpvotesByUser(userId: any) {
 
+     this._appService.spinner();
+     let backendUrl = this._appService.getSiteParams().backendUrl;
+     let headers    = new Headers( this._appService.getSiteParams().headersObj );
+     let options    = new RequestOptions({ headers: headers });
+     return this._http.post(backendUrl + '/vote/getUpvotesByUser', JSON.stringify( { userId: userId } ), options)
+       .map(
+         res => {
+           this._appService.spinner(false);
+           return res.json().posts;
+       })
+       .catch(error => {
+         this._appService.spinner(false);
+         return this._appService.handleServerErrors(error);
+       });
+   }
+
+   /**
+    *  Get all down voted posts by a user.
+    *  For displaying in his/her profile view.
+    */
+    getDownvotesByUser(userId: any) {
+
+      this._appService.spinner();
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers    = new Headers( this._appService.getSiteParams().headersObj );
+      let options    = new RequestOptions({ headers: headers });
+      return this._http.post(backendUrl + '/vote/getDownvotesByUser', JSON.stringify( { userId: userId } ), options)
+        .map(
+          res => {
+            this._appService.spinner(false);
+            return res.json().posts;
+        })
+        .catch(error => {
+          this._appService.spinner(false);
+          return this._appService.handleServerErrors(error);
+        });
+    }
 }

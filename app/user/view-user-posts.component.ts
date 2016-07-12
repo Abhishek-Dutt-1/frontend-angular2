@@ -39,7 +39,7 @@ import {PostListComponent} from '../post/post-list.component';
     </div>
   `,
   styles: [`
-  .my-view-user .errorMsg {
+  .my-view-user-posts .errorMsg {
     margin-top: 20px;
   }
   `],
