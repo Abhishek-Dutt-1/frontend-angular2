@@ -13,6 +13,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
   template: `
     <div *ngIf="user">
       <div class="my-user">
+            
         <div class="row">
           <div class="col-xs-12 col-md-12">
 
@@ -20,20 +21,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
 
             <div class="tab-container">
               <div class="myTabs">
-                <ul class="nav nav-tabs" role="tablist1">
-                  <li role="presentation" [ngClass]="{active: tab == 'basic'}">
-                    <!--
-                    <a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic</a>
-                    -->
-                    <a [routerLink]="['ViewUser', {id: user.id, tab: 'basic'}]" aria-controls="basic" role="tab" data-toggle1="tab">Profile</a>
-                  </li>
-                  <li role="presentation" [hidden]="!ownProfile" [ngClass]="{active: tab == 'geo'}" class="hidden">
-                    <!--
-                    <a href="#geo" aria-controls="geo" role="tab" data-toggle="tab">Geo</a>
-                    -->
-                    <a [routerLink]="['ViewUser', {id: user.id, tab: 'geo'}]" aria-controls="geo" role="tab" data-toggle1="tab">Geo</a>
-                  </li>
-                </ul>
+
                 <div class="tab-content">
                   <div role="tabpanel1" class="tab-pane" [ngClass]="{active: tab == 'basic'}" id="basic">
 
@@ -156,70 +144,10 @@ import {AuthenticationService} from '../authentication/authentication.service';
                         </div>
 
                       </div>
-                      <!--
-                      <div class="form-group" [hidden]="true || !ownProfile">
-                        <div class="col-sm-offset-2 col-sm-10">
-                          <button (click)="gotoEditUser('basic')" class="btn btn-default">Edit</button>
-                        </div>
-                      </div>
-                      -->
-                    </div>
 
+                    </div>
                   </div>
 
-                  <div role="tabpanel1" class="tab-pane" [ngClass]="{active: tab == 'geo'}" id="geo">
-
-                    <div [hidden]="!ownProfile">
-                      <div class="form-horizontal">
-                        <div class="form-group">
-                          <label class="col-sm-2 control-label">International</label>
-                          <p class="form-control-static col-sm-10">
-                            <span *ngFor="let international of user.international">
-                              {{international.name}},
-                            </span>
-                          </p>
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-2 control-label">National</label>
-                          <p class="form-control-static col-sm-10">
-                            <span *ngFor="let national of user.national">
-                              {{national.name}}
-                            </span>
-                          </p>
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-2 control-label">State</label>
-                          <p class="form-control-static col-sm-10">
-                            <span *ngFor="let state of user.state">
-                                {{state.name}},
-                            </span>
-                          </p>
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-2 control-label">City</label>
-                          <p class="form-control-static col-sm-10">
-                            <span *ngFor="let city of user.city">
-                              {{city.name}},
-                            </span>
-                          </p>
-                        </div>
-                        <div class="form-group">
-                          <label class="col-sm-2 control-label">Local</label>
-                          <p class="form-control-static col-sm-10">
-                            <span *ngFor="let local of user.local">
-                              {{local.name}},
-                            </span>
-                          </p>
-                        </div>
-                        <div class="form-group">
-                          <div class="col-sm-offset-2 col-sm-10">
-                            <button (click)="gotoEditUser('geo')" class="btn btn-default">Edit</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
                 </div> <!-- !tab-content -->
               </div> <!-- !tab -->
             </div>

@@ -33,7 +33,7 @@ import {ErrorComponent} from '../misc/error.component';
                       {{_super_group.name}} / <small class="hidden">{{_super_group.description}}</small>
                     </a>
                     <a [routerLink]="['ViewGroup', {super_group_name: _group.supergroup.name, group_name: _group.name}]">
-                      {{_group.name}} > <small class="hidden">{{_group.description}}</small>
+                      {{_group.name}} / <small class="hidden">{{_group.description}}</small>
                     </a>
                   </div>
                 </div>
@@ -293,7 +293,7 @@ export class ViewPostComponent {
           }
         }
         if ( this.post.comments.length == 0 ) {
-          this._errorMsg = "There are no comments on this post. You can post the first by clicking 'Reply'.";  
+          this._errorMsg = "There are no comments on this post. You can post the first by clicking 'Reply'.";
         }
       },
       error => {
