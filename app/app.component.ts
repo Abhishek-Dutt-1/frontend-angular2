@@ -28,6 +28,9 @@ import { HyperGroupService } from './hyper_group/hyper_group.service';
 
 import { NewUserComponent } from './user/new-user.component';
 import { ViewUserComponent } from './user/view-user.component';
+import { ViewUserPostsComponent } from './user/view-user-posts.component';
+import { ViewUserUpvotesComponent } from './user/view-user-upvotes.component';
+import { ViewUserDownvotesComponent } from './user/view-user-downvotes.component';
 import { EditUserComponent } from './user/edit-user.component';
 import { VerifyEmailComponent } from './misc/verify-email.component';
 import { VerifyExtraEmailComponent } from './misc/verify-extra-email.component';
@@ -267,6 +270,21 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     path: '/user/:id',
     name: 'ViewUser',
     component: ViewUserComponent
+  },
+  {
+    path: '/userposts/:id',
+    name: 'ViewUserPosts',
+    component: ViewUserPostsComponent
+  },
+  {
+    path: '/userupvotes/:id',
+    name: 'ViewUserUpvotes',
+    component: ViewUserUpvotesComponent
+  },
+  {
+    path: '/userdownvotes/:id',
+    name: 'ViewUserDownvotes',
+    component: ViewUserDownvotesComponent
   },
   {
     path: '/reply/:postid',

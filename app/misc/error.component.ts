@@ -5,7 +5,7 @@ import {Component, OnInit} from '@angular/core';
   template: `
     <div *ngIf="_errorMsg">
       <div class="my-error">
-        <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
+        <div class="alert" [ngClass]="{ 'alert-danger' : !_errorType || _errorType == 'danger', 'alert-success' : _errorType == 'success', 'alert-info' : _errorType == 'info', 'alert-warning' : _errorType == 'warning' }" role="alert" [hidden]="!_errorMsg">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
           <span class="sr-only">Error:</span>
           {{_errorMsg}}
@@ -18,7 +18,7 @@ import {Component, OnInit} from '@angular/core';
       margin-top: 20px;
     }
   `],
-  inputs: ['_errorMsg']
+  inputs: ['_errorMsg', '_errorType']
 })
 export class ErrorComponent {
 

@@ -12,36 +12,40 @@ import {UserComponent} from './user.component';
 import {UserprofileMenuPanelComponent} from './userprofile-menu-panel.component';
 import {ErrorComponent} from '../misc/error.component';
 import {AuthenticationService} from '../authentication/authentication.service';
+import {PostTemplateType} from '../post/post-template-types';
+import {PostListComponent} from '../post/post-list.component';
 
 @Component({
-  selector: 'my-view-user',
+  selector: 'my-view-user-downvotes',
   template: `
-    <div class="my-view-user">
+    <div class="my-view-user-downvotes">
 
       <my-userprofile-memu-panel [_profileOwnersId]="_profileOwnersId"></my-userprofile-memu-panel>
 
+      <h3 *ngIf="_currentUser">{{_currentUser.displayname}}'s Down votes:</h3>
+
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
-      <my-user [user]="_user" [ownProfile]="_ownProfile" [tab]="_tab"></my-user>
+      <my-post-list [posts]="_userPosts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
 
     </div>
   `,
   styles: [`
-  .my-view-user .errorMsg {
+  .my-view-downvotes .errorMsg {
     margin-top: 20px;
   }
   `],
-  directives: [RouterLink, UserComponent, ErrorComponent, UserprofileMenuPanelComponent]
+  directives: [RouterLink, ErrorComponent, PostListComponent, UserprofileMenuPanelComponent]
 })
-export class ViewUserComponent implements OnInit {
+export class ViewUserDownvotesComponent implements OnInit {
 
-  private _tab: string = 'basic';
-  private _user: User = null;
-  private _loggedInUser:User = null;
+  private _currentUser:User = null;
   private _ownProfile = false;
   private _profileOwnersId = null;
-  private _errorMsg = false;
+  private _errorMsg = null;
   private _loggedInUserSubcription = null;
+  private _userPosts = null;
+  private postTemplateType: PostTemplateType;
 
   constructor(
     private _userService: UserService,
@@ -53,49 +57,44 @@ export class ViewUserComponent implements OnInit {
 
   ngOnInit() {
 
-    this._profileOwnersId = +this._routeParams.get('id');
-    this._tab = this._routeParams.get('tab') || this._tab;
+    this.postTemplateType = PostTemplateType.List;
 
+    this._profileOwnersId = +this._routeParams.get('id');
 
     // This is so that if the user logs out while viewing his own profile (i.e. this page)
     // The edit buttons are shown or hidden from the ui as needed
     // i.e. if the logged in state changes due to some other componenent, it is percolated here also
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(user => {
       if(user) {
-        this._loggedInUser = user;
-        this._ownProfile = this._loggedInUser.id === this._profileOwnersId;
-        this.getUser( this._profileOwnersId );
-        //console.log(this._ownProfile)
+        this._currentUser = user;
+        this._ownProfile = this._currentUser.id == this._profileOwnersId;
+        this.getDownvotesByUser( this._profileOwnersId )
       } else {
-        this._loggedInUser = user;
+        this._currentUser = user;
         this._ownProfile = false;
       }
     });
     // This is so that if an already logged in user comes to this page, the profile buttons are shown or hidden as needed
     // i.e. teh logged in state hasent changed
-    this._loggedInUser = this._authenticationService.getLoggedInUser();
-    if(this._loggedInUser) {
-      this._ownProfile = this._loggedInUser.id == this._profileOwnersId;
+    this._currentUser = this._authenticationService.getLoggedInUser();
+    if( this._currentUser ) {
+      this._ownProfile = this._currentUser.id == this._profileOwnersId;
     } else {
       this._ownProfile = false;
     }
-    this.getUser( this._profileOwnersId );
+    this.getDownvotesByUser( this._profileOwnersId )
   }     // ! ngOnInit()
 
-
-  getUser(userId) {
-    this._userService.getUser( userId ).subscribe(
-      user => {
-        if( user ) {
-          //console.log("View user", user);
-          this._errorMsg = null;
-          this._user = user;
-        }
+  getDownvotesByUser(userId: any) {
+    this._userService.getDownvotesByUser(userId).subscribe(
+      posts => {
+        this._userPosts = posts;
+        if ( this._userPosts.length == 0 ) this._errorMsg = "User has not down voted any posts."
       },
       error => {
-        //console.log(error);
         this._errorMsg = error;
-      });
+      }
+    )
   }
 
   ngOnDestroy() {

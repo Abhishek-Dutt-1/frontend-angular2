@@ -220,6 +220,7 @@ export class EditPostComponent {
         post => {
           this._model = post;
           this._model.post_as_anon = 0;
+          this._model.sticky_post = this._model.sticky_level ? 1 : 0     // 1 for group, 0 for no sticky
           if ( this._currentUser ) this._readyToEdit = true;
         },
         error => {
@@ -297,11 +298,11 @@ export class EditPostComponent {
       sticky_level : this._model.sticky_post ? 1 : 0     // 1 for group, 0 for no sticky
     }
 
-    console.log(properModel);
+    //console.log(properModel);
 
     this._postService.editPost(properModel).subscribe(
       post => {
-        console.log(post);
+        //console.log(post);
         this._router.navigate(['ViewPost', {postid: post.id}]);
       },
       error => {

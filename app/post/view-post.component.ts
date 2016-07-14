@@ -33,7 +33,7 @@ import {ErrorComponent} from '../misc/error.component';
                       {{_super_group.name}} / <small class="hidden">{{_super_group.description}}</small>
                     </a>
                     <a [routerLink]="['ViewGroup', {super_group_name: _group.supergroup.name, group_name: _group.name}]">
-                      {{_group.name}} > <small class="hidden">{{_group.description}}</small>
+                      {{_group.name}} / <small class="hidden">{{_group.description}}</small>
                     </a>
                   </div>
                 </div>
@@ -55,7 +55,7 @@ import {ErrorComponent} from '../misc/error.component';
 
         <div class="row">
           <div class="col-xs-12">
-            <my-post [post]="post" [type]="postTemplateType" [currentUser]="_currentUser"></my-post>
+            <my-post [post]="post" [type]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post>
           </div>
         </div>
 
@@ -65,7 +65,7 @@ import {ErrorComponent} from '../misc/error.component';
             <!-- Replies to Post -->
             <div class="comment-list level-1">
 
-              <my-error [_errorMsg]="_errorMsg"></my-error>
+              <my-error [_errorMsg]="_errorMsg" [_errorType]="_errorType"></my-error>
 
               <div *ngFor="let comment1 of post.comments" class="comment-level-1">
                 <div class="row">
@@ -218,10 +218,12 @@ export class ViewPostComponent {
   private _loggedInUserSubcription = null;
   private _currentUser = null;
   private _errorMsg = null;
+  private _errorType = null;
   private _group = null;
   private _super_group = null;
   private _hyper_group = null;
   private _sticky:boolean = false;
+  private _view = "post";
 
   constructor(
     private _appService: AppService,
@@ -245,6 +247,7 @@ export class ViewPostComponent {
         this.getPosts(postId);
       },
       error => {
+        this._errorType = "danger";
         this._errorMsg = error;
       });
     // Only logged in uses view post (init version)
@@ -293,11 +296,13 @@ export class ViewPostComponent {
           }
         }
         if ( this.post.comments.length == 0 ) {
-          this._errorMsg = "There are no comments on this post. You can post the first by clicking 'Reply'.";  
+          this._errorMsg = "There are no comments on this post. You can post the first by clicking 'Reply'.";
+          this._errorType = "info";
         }
       },
       error => {
         //console.log(error);
+        this._errorType = "danger";
         this._errorMsg = error;
       });
   }

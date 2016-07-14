@@ -27,7 +27,7 @@ export class UserService {
   getUser(id: number) {
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     //return this._http.get(backendUrl+'/user/'+id, options)
     return this._http.get(backendUrl+'/user/getuserbyid/'+id, options)
@@ -50,7 +50,7 @@ export class UserService {
   getUserByToken(token: string) {
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/user/getUserByToken', JSON.stringify({token: token}), options)
     .map(
@@ -93,7 +93,7 @@ export class UserService {
 
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     //return this._http.post(backendUrl+'/auth/local/register', JSON.stringify(newProperUser), options)
     return this._http.post(backendUrl+'/auth/registeruserlocal', JSON.stringify(newProperUser), options)
@@ -358,4 +358,70 @@ export class UserService {
         return this._appService.handleServerErrors(error);
       });
   }
+
+  /**
+   *  Get all posts posted by a user.
+   *  For displaying in his/her profile view.
+   */
+   getPostsByUser(userId: any) {
+
+     this._appService.spinner();
+     let backendUrl = this._appService.getSiteParams().backendUrl;
+     let headers    = new Headers( this._appService.getSiteParams().headersObj );
+     let options    = new RequestOptions({ headers: headers });
+     return this._http.post(backendUrl + '/user/getPostsByUser', JSON.stringify( { userId: userId } ), options)
+       .map(
+         res => {
+           this._appService.spinner(false);
+           return res.json().posts;
+       })
+       .catch(error => {
+         this._appService.spinner(false);
+         return this._appService.handleServerErrors(error);
+       });
+   }
+
+  /**
+   *  Get all upvoted posts by a user.
+   *  For displaying in his/her profile view.
+   */
+   getUpvotesByUser(userId: any) {
+
+     this._appService.spinner();
+     let backendUrl = this._appService.getSiteParams().backendUrl;
+     let headers    = new Headers( this._appService.getSiteParams().headersObj );
+     let options    = new RequestOptions({ headers: headers });
+     return this._http.post(backendUrl + '/vote/getUpvotesByUser', JSON.stringify( { userId: userId } ), options)
+       .map(
+         res => {
+           this._appService.spinner(false);
+           return res.json().posts;
+       })
+       .catch(error => {
+         this._appService.spinner(false);
+         return this._appService.handleServerErrors(error);
+       });
+   }
+
+   /**
+    *  Get all down voted posts by a user.
+    *  For displaying in his/her profile view.
+    */
+    getDownvotesByUser(userId: any) {
+
+      this._appService.spinner();
+      let backendUrl = this._appService.getSiteParams().backendUrl;
+      let headers    = new Headers( this._appService.getSiteParams().headersObj );
+      let options    = new RequestOptions({ headers: headers });
+      return this._http.post(backendUrl + '/vote/getDownvotesByUser', JSON.stringify( { userId: userId } ), options)
+        .map(
+          res => {
+            this._appService.spinner(false);
+            return res.json().posts;
+        })
+        .catch(error => {
+          this._appService.spinner(false);
+          return this._appService.handleServerErrors(error);
+        });
+    }
 }
