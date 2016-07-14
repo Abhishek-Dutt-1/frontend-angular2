@@ -191,6 +191,7 @@ export class PostMetaPanelComponent implements OnInit{
     this.templateTypeGroupList = PostTemplateType.Grouplist;
     this.templateTypeMain = PostTemplateType.Main;
 
+    if ( this.post.sticky_level !== 0                      && this.view == 'post'       ) this._isSticky = true;
     if ( [1, 3, 5, 7].indexOf(this.post.sticky_level) > -1 && this.view == 'group'      ) this._isSticky = true;
     if ( [2, 3, 7].indexOf(this.post.sticky_level) > -1    && this.view == 'supergroup' ) this._isSticky = true;
     if ( [4, 5, 6, 7].indexOf(this.post.sticky_level) > -1 && this.view == 'hypergroup' ) this._isSticky = true;

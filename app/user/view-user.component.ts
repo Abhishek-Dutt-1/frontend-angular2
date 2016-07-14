@@ -9,6 +9,7 @@ import {AppService} from '../app.service';
 import {User} from './user';
 import {UserService} from './user.service';
 import {UserComponent} from './user.component';
+import {UserprofileMenuPanelComponent} from './userprofile-menu-panel.component';
 import {ErrorComponent} from '../misc/error.component';
 import {AuthenticationService} from '../authentication/authentication.service';
 
@@ -17,18 +18,12 @@ import {AuthenticationService} from '../authentication/authentication.service';
   template: `
     <div class="my-view-user">
 
-      <div class="row" *ngIf="_user">
-        <div class="col-xs-12">
-          <div class="btn btn-sm btn-default" [routerLink]="[ 'ViewUser', { id : _user.id } ]">Info</div>
-          <div class="btn btn-sm btn-default" [routerLink]="[ 'ViewUserPosts', { id : _user.id } ]">Posts</div>
-          <div class="btn btn-sm btn-default" [routerLink]="[ 'ViewUserUpvotes', { id : _user.id } ]">Up votes</div>
-          <div class="btn btn-sm btn-default">Down votes</div>
-          <div class="btn btn-sm btn-default">Comments</div>
-        </div>
-      </div>
+      <my-userprofile-memu-panel [_profileOwnersId]="_profileOwnersId"></my-userprofile-memu-panel>
 
       <my-error [_errorMsg]="_errorMsg"></my-error>
+
       <my-user [user]="_user" [ownProfile]="_ownProfile" [tab]="_tab"></my-user>
+
     </div>
   `,
   styles: [`
@@ -36,7 +31,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
     margin-top: 20px;
   }
   `],
-  directives: [RouterLink, UserComponent, ErrorComponent]
+  directives: [RouterLink, UserComponent, ErrorComponent, UserprofileMenuPanelComponent]
 })
 export class ViewUserComponent implements OnInit {
 
@@ -44,6 +39,7 @@ export class ViewUserComponent implements OnInit {
   private _user: User = null;
   private _loggedInUser:User = null;
   private _ownProfile = false;
+  private _profileOwnersId = null;
   private _errorMsg = false;
   private _loggedInUserSubcription = null;
 
@@ -56,20 +52,10 @@ export class ViewUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    let id = +this._routeParams.get('id');
+
+    this._profileOwnersId = +this._routeParams.get('id');
     this._tab = this._routeParams.get('tab') || this._tab;
 
-    this._userService.getUser(id).subscribe(
-        user => {
-          if(user) {
-            //console.log("View user", user);
-            this._user = user;
-          }
-        },
-        error => {
-          //console.log(error);
-          this._errorMsg = error;
-        });
 
     // This is so that if the user logs out while viewing his own profile (i.e. this page)
     // The edit buttons are shown or hidden from the ui as needed
@@ -77,7 +63,8 @@ export class ViewUserComponent implements OnInit {
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(user => {
       if(user) {
         this._loggedInUser = user;
-        this._ownProfile = this._loggedInUser.id === id;
+        this._ownProfile = this._loggedInUser.id === this._profileOwnersId;
+        this.getUser( this._profileOwnersId );
         //console.log(this._ownProfile)
       } else {
         this._loggedInUser = user;
@@ -88,11 +75,28 @@ export class ViewUserComponent implements OnInit {
     // i.e. teh logged in state hasent changed
     this._loggedInUser = this._authenticationService.getLoggedInUser();
     if(this._loggedInUser) {
-      this._ownProfile = this._loggedInUser.id == id;
+      this._ownProfile = this._loggedInUser.id == this._profileOwnersId;
     } else {
       this._ownProfile = false;
     }
+    this.getUser( this._profileOwnersId );
   }     // ! ngOnInit()
+
+
+  getUser(userId) {
+    this._userService.getUser( userId ).subscribe(
+      user => {
+        if( user ) {
+          //console.log("View user", user);
+          this._errorMsg = null;
+          this._user = user;
+        }
+      },
+      error => {
+        //console.log(error);
+        this._errorMsg = error;
+      });
+  }
 
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();

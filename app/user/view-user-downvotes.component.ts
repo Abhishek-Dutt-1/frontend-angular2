@@ -16,31 +16,28 @@ import {PostTemplateType} from '../post/post-template-types';
 import {PostListComponent} from '../post/post-list.component';
 
 @Component({
-  selector: 'my-view-user-posts',
+  selector: 'my-view-user-downvotes',
   template: `
-    <div class="my-view-user-posts">
+    <div class="my-view-user-downvotes">
 
       <my-userprofile-memu-panel [_profileOwnersId]="_profileOwnersId"></my-userprofile-memu-panel>
 
-      <h3 *ngIf="_currentUser">{{_currentUser.displayname}}'s Posts:</h3>
+      <h3 *ngIf="_currentUser">{{_currentUser.displayname}}'s Down votes:</h3>
 
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
       <my-post-list [posts]="_userPosts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
-      <!--
-      <my-user [user]="_user" [ownProfile]="_ownProfile" [tab]="_tab"></my-user>
-      -->
+
     </div>
   `,
   styles: [`
-  .my-view-user-posts .errorMsg {
+  .my-view-downvotes .errorMsg {
     margin-top: 20px;
   }
   `],
-  // directives: [RouterLink, UserComponent, ErrorComponent, PostListComponent]
   directives: [RouterLink, ErrorComponent, PostListComponent, UserprofileMenuPanelComponent]
 })
-export class ViewUserPostsComponent implements OnInit {
+export class ViewUserDownvotesComponent implements OnInit {
 
   private _currentUser:User = null;
   private _ownProfile = false;
@@ -71,7 +68,7 @@ export class ViewUserPostsComponent implements OnInit {
       if(user) {
         this._currentUser = user;
         this._ownProfile = this._currentUser.id == this._profileOwnersId;
-        this.getPostsByUser( this._profileOwnersId )
+        this.getDownvotesByUser( this._profileOwnersId )
       } else {
         this._currentUser = user;
         this._ownProfile = false;
@@ -85,15 +82,14 @@ export class ViewUserPostsComponent implements OnInit {
     } else {
       this._ownProfile = false;
     }
-    // Try getting posts any way
-    this.getPostsByUser( this._profileOwnersId )
+    this.getDownvotesByUser( this._profileOwnersId )
   }     // ! ngOnInit()
 
-  getPostsByUser(userId: any) {
-    this._userService.getPostsByUser(userId).subscribe(
+  getDownvotesByUser(userId: any) {
+    this._userService.getDownvotesByUser(userId).subscribe(
       posts => {
         this._userPosts = posts;
-        if ( this._userPosts.length == 0 ) this._errorMsg = "User has no Posts."
+        if ( this._userPosts.length == 0 ) this._errorMsg = "User has not down voted any posts."
       },
       error => {
         this._errorMsg = error;

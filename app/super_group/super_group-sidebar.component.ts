@@ -16,7 +16,7 @@ import {GroupService} from '../group/group.service';
 
       <div class="row">
         <div class="col-xs-12">
-          <div>Groups within {{_super_group.name | uppercase}}:</div>
+          <div>Groups in {{_super_group.name}}:</div>
         </div>
       </div>
       <div class="row border-row">
@@ -24,8 +24,8 @@ import {GroupService} from '../group/group.service';
           <div class="group-list">
             <div *ngFor="let group of _groups">
               <div class="clearfix group-container">
-                <div><a class="pull-left" [routerLink]="['ViewGroup', {super_group_name: _super_group.name, group_name: group.name}]">{{group.name}}
-                &nbsp;<small class="hidden">{{group.description}}</small></a>
+                <div><a class="pull-left" [routerLink]="['ViewGroup', {super_group_name: _super_group.name, group_name: group.name}]">/{{group.name}}
+                <small class="hidden">&nbsp;{{group.description}}</small></a>
                 </div>
                 <div class="pull-right" *ngIf="!group.isCurrentUserSubscribed && !group.isCurrentUsersMembershipPending" (click)="subscribeToThisGroup(group)">
                   <div class="add-super-group-plus"><i class="fa fa-plus" aria-hidden="true"></i></div>
@@ -42,13 +42,13 @@ import {GroupService} from '../group/group.service';
         </div>
       </div>
 
-      <div class="row border-row hidden">
+      <div class="row border-row hidden1">
         <div class="col-xs-12">
           <div class="supergroup-ops">
             <a [routerLink]="['NewGroup', {super_group_name: _super_group.name}]">
-              Create a new group within {{_super_group.name | uppercase}}
+              Create a new group in <b>{{_super_group.name}}</b>
             </a>
-            <a (click)="gotoNewPostForm()" class="hidden1">
+            <a (click)="gotoNewPostForm()" class="hidden">
                &bull; Create New Post
             </a>
           </div>

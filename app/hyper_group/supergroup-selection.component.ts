@@ -82,6 +82,10 @@ export class SupergroupSelectionComponent implements OnInit {
   getHyperGroupHierarchy(currentUser, hyperGroup) {
     this._userService.getHyperGroupHierarchy(currentUser, hyperGroup).subscribe(
       resp => {
+        if ( hyperGroup === 'international' && currentUser && currentUser.national.length > 0 ) {
+          resp.suggestedSgs = resp.suggestedSgs.filter( sg => sg.id != currentUser.national[0].id )
+          resp.otherSg = resp.otherSg.filter( sg => sg.id != currentUser.national[0].id )
+        }
         this._sidebarHierarchy = resp;
       },
       error => {

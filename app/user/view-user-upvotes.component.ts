@@ -9,6 +9,7 @@ import {AppService} from '../app.service';
 import {User} from './user';
 import {UserService} from './user.service';
 import {UserComponent} from './user.component';
+import {UserprofileMenuPanelComponent} from './userprofile-menu-panel.component';
 import {ErrorComponent} from '../misc/error.component';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {PostTemplateType} from '../post/post-template-types';
@@ -19,23 +20,14 @@ import {PostListComponent} from '../post/post-list.component';
   template: `
     <div class="my-view-user-upvotes">
 
-      <div class="row" *ngIf="_user">
-        <div class="col-xs-12">
-          <div class="btn btn-sm btn-default" [routerLink]="[ 'ViewUser', { id : _user.id } ]">Info</div>
-          <div class="btn btn-sm btn-default">Posts</div>
-          <div class="btn btn-sm btn-default">Comments</div>
-          <div class="btn btn-sm btn-default">Up votes</div>
-          <div class="btn btn-sm btn-default">Down votes</div>
-        </div>
-      </div>
+      <my-userprofile-memu-panel [_profileOwnersId]="_profileOwnersId"></my-userprofile-memu-panel>
 
-      <h3 *ngIf="_currentUser">{{_currentUser.displayname}}'s Upvosts:</h3>
+      <h3 *ngIf="_currentUser">{{_currentUser.displayname}}'s Up votes:</h3>
+
       <my-error [_errorMsg]="_errorMsg"></my-error>
 
       <my-post-list [posts]="_userPosts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
-      <!--
-      <my-user [user]="_user" [ownProfile]="_ownProfile" [tab]="_tab"></my-user>
-      -->
+
     </div>
   `,
   styles: [`
@@ -43,15 +35,13 @@ import {PostListComponent} from '../post/post-list.component';
     margin-top: 20px;
   }
   `],
-  // directives: [RouterLink, UserComponent, ErrorComponent, PostListComponent]
-  directives: [RouterLink, ErrorComponent, PostListComponent]
+  directives: [RouterLink, ErrorComponent, PostListComponent, UserprofileMenuPanelComponent]
 })
 export class ViewUserUpvotesComponent implements OnInit {
 
-  //private _tab: string = 'basic';
-  //private _user: User = null;
   private _currentUser:User = null;
   private _ownProfile = false;
+  private _profileOwnersId = null;
   private _errorMsg = null;
   private _loggedInUserSubcription = null;
   private _userPosts = null;
@@ -69,7 +59,7 @@ export class ViewUserUpvotesComponent implements OnInit {
 
     this.postTemplateType = PostTemplateType.List;
 
-    let id = +this._routeParams.get('id');
+    this._profileOwnersId = +this._routeParams.get('id');
 
     // This is so that if the user logs out while viewing his own profile (i.e. this page)
     // The edit buttons are shown or hidden from the ui as needed
@@ -77,8 +67,8 @@ export class ViewUserUpvotesComponent implements OnInit {
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(user => {
       if(user) {
         this._currentUser = user;
-        this._ownProfile = this._currentUser.id == id;
-        this.getUpvotesByUser( id )
+        this._ownProfile = this._currentUser.id == this._profileOwnersId;
+        this.getUpvotesByUser( this._profileOwnersId )
       } else {
         this._currentUser = user;
         this._ownProfile = false;
@@ -88,18 +78,18 @@ export class ViewUserUpvotesComponent implements OnInit {
     // i.e. teh logged in state hasent changed
     this._currentUser = this._authenticationService.getLoggedInUser();
     if( this._currentUser ) {
-      this._ownProfile = this._currentUser.id == id;
-      this.getUpvotesByUser( id )
+      this._ownProfile = this._currentUser.id == this._profileOwnersId;
     } else {
       this._ownProfile = false;
     }
+    this.getUpvotesByUser( this._profileOwnersId )
   }     // ! ngOnInit()
 
   getUpvotesByUser(userId: any) {
     this._userService.getUpvotesByUser(userId).subscribe(
       posts => {
         this._userPosts = posts;
-        if ( this._userPosts.length == 0 ) this._errorMsg = "User has no Posts."
+        if ( this._userPosts.length == 0 ) this._errorMsg = "User has not upvoted any posts."
       },
       error => {
         this._errorMsg = error;

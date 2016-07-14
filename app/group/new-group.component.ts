@@ -7,6 +7,7 @@ import {SuperGroupService} from '../super_group/super_group.service';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {ErrorComponent} from '../misc/error.component';
+import {AppService} from '../app.service';
 
 @Component({
   selector: 'my-new-group',
@@ -18,9 +19,18 @@ import {ErrorComponent} from '../misc/error.component';
     </div>
 
     <div *ngIf="_readyToEdit">
+
       <h3 class="col-sm-offset-2">Create a New Group:</h3>
+
       <form #groupForm="ngForm" class="form-horizontal" novalidate>
-        <h5>{{model.supergroup.name | uppercase}}/{{model.name}}</h5>
+
+        <div class="form-group">
+          <label for="group_name" class="col-sm-2 control-label"></label>
+          <div class="col-sm-10">
+            <p class="form-control-static">{{model.supergroup.name}}/{{model.name}}</p>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="group_name" class="col-sm-2 control-label"> Group Name </label>
           <div class="col-sm-10">
@@ -35,7 +45,7 @@ import {ErrorComponent} from '../misc/error.component';
           <label for="description" class="col-sm-2 control-label">Description</label>
           <div class="col-sm-10">
             <textarea type="text" rows="5" class="form-control" (keyup)="validateForm('description')"
-              [(ngModel)] = "model.description" placeholder="Tell your group members what this group is about." required></textarea>
+              [(ngModel)] = "model.description" placeholder="Tell users what this group is about." required></textarea>
             <div [hidden]="_formErrors.description.isValid" class="alert alert-danger">
               {{_formErrors.description.errMsg}}
             </div>
@@ -77,6 +87,32 @@ import {ErrorComponent} from '../misc/error.component';
             </label>
           </div>
         </div>
+
+
+                <div class="form-group">
+                  <label for="allow_anon_posts" class="col-sm-2 control-label">Allow anonymous posts?</label>
+                  <div class="col-sm-10">
+                    <label class="checkbox-inline">
+                      <input type="radio" name="allow_anon_posts" (click)="model.allow_anon_posts = 1" [checked]="model.allow_anon_posts === 1" > Yes
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="radio" name="allow_anon_posts" (click)="model.allow_anon_posts = 0" [checked]="model.allow_anon_posts === 0" > No
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="allow_anon_comments" class="col-sm-2 control-label">Allow anonymous comments?</label>
+                  <div class="col-sm-10">
+                    <label class="checkbox-inline">
+                      <input type="radio" name="allow_anon_comments" (click)="model.allow_anon_comments = 1" [checked]="model.allow_anon_comments === 1" > Yes
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="radio" name="allow_anon_comments" (click)="model.allow_anon_comments = 0" [checked]="model.allow_anon_comments === 0" > No
+                    </label>
+                  </div>
+                </div>
+
 
         <div class="form-group">
           <label for="verify_members_email" class="col-sm-2 control-label">Restrict membership by Email domain?</label>
@@ -158,6 +194,8 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
     owner: null,
     non_members_can_view: 1,
     non_members_can_post: 0,
+    allow_anon_posts: 1,
+    allow_anon_comments: 1,
     verify_members_email: 0,
     verify_email_domains_list: [],
     number_of_email_domains: [0],      // this tracks the number of email input fields to show in ui (purly frontend stuff)
@@ -180,6 +218,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
 
   constructor(
     //private _postService: PostService,
+    private _appService: AppService,
     private _routeParams: RouteParams,
     private _authenticationService: AuthenticationService,
     private _groupService: GroupService,
@@ -208,7 +247,7 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
         this.model.owner = currentUser.id;
         this._errorMsg = null;
         if(this.model.supergroup) this._readyToEdit = true;
-        console.log(this._readyToEdit)
+        //console.log(this._readyToEdit)
       } else {
         this._currentUser = null;
         this._errorMsg = "User must be logged in to create new group.";
@@ -254,9 +293,10 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
       .subscribe( group => {
         console.log(group)
         this._router.navigate(['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]);
+        this._appService.createNotification( { text: 'Group ' + group.supergroup.name + '/' + group.name + ' created successfully', type: 'success', timeout: 20000 } );
       },
       error => {
-        console.log(error);
+        //console.log(error);
         this._errorMsg = error;
       });
 
@@ -335,6 +375,12 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
         if ( model.membership_needs_approval == true  ) model.membership_needs_approval = 1;
         if ( model.membership_needs_approval == false ) model.membership_needs_approval = 0;
 
+        if ( model.allow_anon_posts == true  ) model.allow_anon_posts = 1;
+        if ( model.allow_anon_posts == false ) model.allow_anon_posts = 0;
+
+        if ( model.allow_anon_comments == true  ) model.allow_anon_comments = 1;
+        if ( model.allow_anon_comments == false ) model.allow_anon_comments = 0;
+
     } else {
         if ( model.non_members_can_view == 1 ) model.non_members_can_view = true;
         if ( model.non_members_can_view == 0 ) model.non_members_can_view = false;
@@ -347,6 +393,12 @@ export class NewGroupComponent implements OnInit, OnDestroy  {
 
         if ( model.membership_needs_approval == 1 ) model.membership_needs_approval = true;
         if ( model.membership_needs_approval == 0 ) model.membership_needs_approval = false;
+
+        if ( model.allow_anon_posts == 1 ) model.allow_anon_posts = true;
+        if ( model.allow_anon_posts == 0 ) model.allow_anon_posts = false;
+
+        if ( model.allow_anon_comments == 1 ) model.allow_anon_comments = true;
+        if ( model.allow_anon_comments == 0 ) model.allow_anon_comments = false;
     }
   }
 
