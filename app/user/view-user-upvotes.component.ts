@@ -24,7 +24,7 @@ import {PostListComponent} from '../post/post-list.component';
 
       <h3 *ngIf="_currentUser">{{_currentUser.displayname}}'s Up votes:</h3>
 
-      <my-error [_errorMsg]="_errorMsg"></my-error>
+      <my-error [_error]="_error"></my-error>
 
       <my-post-list [posts]="_userPosts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
 
@@ -42,7 +42,7 @@ export class ViewUserUpvotesComponent implements OnInit {
   private _currentUser:User = null;
   private _ownProfile = false;
   private _profileOwnersId = null;
-  private _errorMsg = null;
+  private _error = { msg: null, type: null };
   private _loggedInUserSubcription = null;
   private _userPosts = null;
   private postTemplateType: PostTemplateType;
@@ -89,10 +89,10 @@ export class ViewUserUpvotesComponent implements OnInit {
     this._userService.getUpvotesByUser(userId).subscribe(
       posts => {
         this._userPosts = posts;
-        if ( this._userPosts.length == 0 ) this._errorMsg = "User has not upvoted any posts."
+        if ( this._userPosts.length == 0 ) this._error.msg = "User has not up voted any posts."
       },
       error => {
-        this._errorMsg = error;
+        this._error.msg = error;
       }
     )
   }

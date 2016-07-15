@@ -84,7 +84,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
         </div> <!-- !col -->
       </div> <!-- !row -->
 
-      <my-error [_errorMsg]="_errorMsg"></my-error>
+      <my-error [_error]="_error"></my-error>
 
       <my-post-list [posts]="groupPostsSticky" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view"></my-post-list>
       <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view"></my-post-list>
@@ -196,7 +196,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   private postTemplateType: PostTemplateType;
   private _loggedInUserSubcription = null;
   private _currentUser: User = null;
-  private _errorMsg = null;
+  private _error = { msg: null, type: null };
   private _sticky:boolean = false;
 
   constructor(
@@ -218,21 +218,21 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
       currentUser => {
         //if(currentUser) {
           this._currentUser = currentUser;
-          this._errorMsg = null;
+          this._error.msg = null;
           this.getPostsInGroup(super_group_name, group_name);
         //} else {
         //  this.getPostsInGroup(super_group_name, group_name);
         //}
       },
       error => {
-        this._errorMsg = error;
+        this._error.msg = error;
       });
     // Only logged in uses view post (init version)
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
     //if(currentUser) {
       this._currentUser = currentUser;
-      this._errorMsg = null;
+      this._error.msg = null;
     //} else { }
     // Logged in or not fetch posts immidiately
     this.getPostsInGroup(super_group_name, group_name);
@@ -269,7 +269,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
       .subscribe(
         groupAndPostList => {
           //console.log(groupAndPostList)
-          this._errorMsg = null;
+          this._error.msg = null;
           this.group = groupAndPostList.group;
           this._super_group = this.group.supergroup;
           this._hyper_group = this._super_group.type;
@@ -282,15 +282,15 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
           this.groupPostsSticky = groupAndPostList.postListSticky;
           if( this.groupPosts.length + this.groupPostsSticky.length < 1 ) {
             if ( this.group.non_members_can_view || this.group.isCurrentUserSubscribed ) {
-              this._errorMsg = "This group does not have any posts yet. You can help by creating the first post!"
+              this._error.msg = "This group does not have any posts yet. You can help by creating the first post!"
             } else {
-              this._errorMsg = "This group is private. Non members can not view posts in this group."
+              this._error.msg = "This group is private. Non members can not view posts in this group."
             }
           }
         },
         error => {
           //console.log(error);
-          this._errorMsg = error;
+          this._error.msg = error;
         });
   }
 

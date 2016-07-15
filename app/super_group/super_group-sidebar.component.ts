@@ -1,6 +1,6 @@
  import {Component, OnInit} from '@angular/core';
 import {Router, RouteParams, RouterLink} from '@angular/router-deprecated';
-import {ErrorComponent} from '../misc/error.component';
+//import {ErrorComponent} from '../misc/error.component';
 import {UserService} from '../user/user.service';
 import {AppService} from '../app.service';
 import {Group} from '../group/group';
@@ -190,7 +190,8 @@ import {GroupService} from '../group/group.service';
       color: rgba(0, 0, 0, 0.4);
     }
   `],
-  directives: [RouterLink, ErrorComponent],
+  //directives: [RouterLink, ErrorComponent],
+  directives: [RouterLink],
   inputs: ["_groups", "_super_group", "_currentUser", "extendedVersion"]
 
 })
@@ -200,7 +201,7 @@ export class SuperGroupSidebarComponent implements OnInit {
   private _groups = null;
   private _super_group = null;
   private _currentUser = null;
-  private _errorMsg = null;
+  //private _errorMsg = null;
 
   constructor(
     private _userService: UserService,

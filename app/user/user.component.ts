@@ -7,17 +7,18 @@ import {Router, RouterLink} from '@angular/router-deprecated';
 import {UserService} from './user.service';
 import {ErrorComponent} from '../misc/error.component';
 import {AuthenticationService} from '../authentication/authentication.service';
+import {AppService} from '../app.service';
 
 @Component({
   selector: 'my-user',
   template: `
     <div *ngIf="user">
       <div class="my-user">
-            
+
         <div class="row">
           <div class="col-xs-12 col-md-12">
 
-            <my-error [_errorMsg]="_errorMsg"></my-error>
+            <my-error [_error]="_error"></my-error>
 
             <div class="tab-container">
               <div class="myTabs">
@@ -185,7 +186,7 @@ export class UserComponent {
 
   private user: User;
   private ownProfile: Boolean = false;
-  private _errorMsg = null;
+  private _error = { msg: null, type: null };
   private _editInPlaceModel = {
     profileimage  : '',
     extraEmail    : '',
@@ -208,6 +209,7 @@ export class UserComponent {
   private _addExtraEmail: boolean = false;
 
   constructor(
+    private _appService: AppService,
     private _router: Router,
     private _userService: UserService,
     private _authenticationService: AuthenticationService
@@ -226,15 +228,15 @@ export class UserComponent {
   resendVerificationEmail(email) {
       this._userService.resendVerificationEmail(email).subscribe(
         data => {
-          console.log(data);
+          //console.log(data);
+          this._appService.createNotification( { text: data, type: 'success', timeout: 20000 } );
         },
         error => {
-          console.log("Error", error);
-          this._errorMsg = error;
+          //console.log("Error", error);
+          this._error.msg = error;
         }
       )
   }
-
 
   /**
    * Update profile image url
@@ -245,12 +247,13 @@ export class UserComponent {
         data => {
           this._authenticationService.updateCurrentUser(data);
           this.user.profileimage = data.profileimage;
-          this._errorMsg = null;
+          this._error.msg = null;
           this._editProfileImage = false;
+          this._appService.createNotification( { text: 'Success!', type: 'success', timeout: 5000 } );
         },
         error => {
-          console.log(error);
-          this._errorMsg = error;
+          // console.log(error);
+          this._error.msg = error;
         }
       )
   }
@@ -259,18 +262,18 @@ export class UserComponent {
    * Add extra email
    */
   addExtraEmail() {
-    console.log(this._editInPlaceModel.extraEmail)
+    // console.log(this._editInPlaceModel.extraEmail)
     this._userService.addExtraEmail( this._editInPlaceModel.extraEmail ).subscribe(
       data => {
         this._authenticationService.updateCurrentUser(data);
         this.user.extra_emails = data.extra_emails;
-        this._errorMsg = null;
+        this._error.msg = null;
         this._editInPlaceModel.extraEmail = '';
         this._editInPlaceModel.showForm.addExtraEmail = false;
       },
       error => {
-        console.log(error);
-        this._errorMsg = error;
+        // console.log(error);
+        this._error.msg = error;
       }
     )
   }
@@ -295,13 +298,13 @@ export class UserComponent {
         console.log(data);
         this._authenticationService.updateCurrentUser(data);
         this.user.extra_emails = data.extra_emails;
-        this._errorMsg = null;
+        this._error.msg = null;
         this._editInPlaceModel.extraEmail = '';
         this._editInPlaceModel.showForm.addExtraEmail = false;
       },
       error => {
-        console.log(error);
-        this._errorMsg = error;
+        // console.log(error);
+        this._error.msg = error;
       }
     )
   }
@@ -334,16 +337,16 @@ export class UserComponent {
     if ( this._editInPlaceModel.resetPassword !== this._editInPlaceModel.resetPasswordConfirm ) return;
     this._userService.resetPassword( this._editInPlaceModel.resetPassword ).subscribe(
       data => {
-        console.log(data);
+        // console.log(data);
         //this._authenticationService.updateCurrentUser(data);
         //this.user.extra_emails = data.extra_emails;
-        this._errorMsg = null;
+        this._error.msg = null;
         //this._editInPlaceModel.extraEmail = '';
         this._editInPlaceModel.showForm.resetPassword = false
       },
       error => {
-        console.log(error);
-        this._errorMsg = error;
+        // console.log(error);
+        this._error.msg = error;
       })
   }
 

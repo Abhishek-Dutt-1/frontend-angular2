@@ -28,10 +28,11 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
       height: 56px;
       -webkit-transition: all .1s ease-out;
               transition: all .1s ease-out;
-/*
+      /*
       background-color: rgba(0, 182, 255, 0.05);
-      */
       background-color: rgba(255, 0, 0, 0.2);
+      */
+      background-color: rgba(255, 44, 44, 0.12);
       color: rgba(0, 0, 0, 0.7);
     }
   `],

@@ -62,7 +62,7 @@ import {ErrorComponent} from '../misc/error.component';
 
       <div class="post-as-anon form-group">
         <label for="post-as-anon" class="col-sm-2 control-label">Post As Anonymous</label>
-        <div class="radio-inline">
+        <div class="col-sm-10 radio-inline1">
           <label  class="radio-inline">
             <input type="radio" name="post-as-anon" (click)="_model.post_as_anon = 1"  [checked]="_model.post_as_anon === 1"> Yes
           </label>

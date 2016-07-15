@@ -19,44 +19,55 @@ import {PostTemplateType} from './post-template-types';
               </div>
             </a>
           </div>
-          <div class="post-info-text pull-left">
-            <div class="profile-name pull-left">
+          <div class="post-info-text pull-left"><!--
+         --><div class="profile-text pull-left">
+              by
+            </div>
+            <div class="profile-link pull-left">
               <a class="" [routerLink]="['ViewUser', {id: post.postedby.id}]">
                 {{post.postedby.displayname}}
               </a>
             </div>
-            <div *ngIf="type != templateTypeGroupList">
-              <div class="bullet pull-left"> in </div>
-              <div class="post-grouplink pull-left">
+            <div *ngIf="type != templateTypeGroupList" class="pull-left">
+              <div class="profile-text pull-left">in</div>
+              <div class="profile-link pull-left">
                 <a class="" [routerLink]="[ 'SuperGroupPostList', { super_group_name : post.group.supergroup.name } ]">{{post.group.supergroup.name}}</a><!--
                 --><a class="" [routerLink]="[ 'ViewGroup', { super_group_name : post.group.supergroup.name, group_name : post.group.name } ]">/{{post.group.name}}</a>
               </div>
             </div>
-            <div *ngIf="_isSticky">
-              <div class="bullet pull-left"> &bull; [Sticky Post] </div>
+            <div *ngIf="_isSticky" class="pull-left">
+              <div class="bullet pull-left">&bull;</div>
+              <div class="profile-text pull-left">[Sticky]</div>
             </div>
 
             <div class="clearfix"></div>
-            <div class="post-createdat pull-left">
-              {{ post.createdAt | timeAgo }} &bull;
+
+            <div class="profile-text pull-left">
+              {{ post.createdAt | timeAgo }}
             </div>
-            <div class="post-commentstotal pull-left">
+
+            <div class="bullet pull-left">&bull;</div>
+
+            <div class="profile-text pull-left">
               {{post.comments.length}} Comments
             </div>
-            <div class="post-reply pull-left"> &nbsp;&bull;
+
+            <div class="bullet pull-left">&bull;</div>
+
+            <div class="profile-link pull-left">
               <a [routerLink]="['NewComment1', {postid: post.id}]" class="">
                 Reply
               </a>
             </div>
-            <div class="post-delete pull-left" *ngIf="currentUser && currentUser.id == post.postedby.id">
-              <span>&nbsp;&bull;
-                <a class="" [routerLink]="['EditPost', {postid: post.id}]">[Edit Post]</a>
-              </span>
+
+            <div class="pull-left" *ngIf="currentUser && currentUser.id == post.postedby.id">
+              <div class="bullet pull-left">&bull;</div>
+              <a class="profile-link pull-left" [routerLink]="['EditPost', {postid: post.id}]">[Edit]</a>
             </div>
-            <div class="post-delete pull-left" *ngIf="currentUser && currentUser.id == post.postedby.id">
-              <span>&nbsp;&bull;
-                <a class="" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">[Delete Post]</a>
-              </span>
+
+            <div class="pull-left" *ngIf="currentUser && currentUser.id == post.postedby.id">
+              <div class="bullet pull-left">&bull;</div>
+              <a class="profile-link pull-left" [routerLink]="['ConfirmPostDelete', {postid: post.id}]">[Delete]</a>
             </div>
 
           </div>
@@ -68,101 +79,36 @@ import {PostTemplateType} from './post-template-types';
     </div>
   `,
   styles: [`
+    .my-post-meta-panel {
+      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 14px;
+      line-height: 19.6px;
+      color: rgba(0, 0, 0, 0.439216);
+    }
     .my-post-meta-panel a {
       color: #af2b2b;
     }
     .my-post-meta-panel .post-info {
-      font-size: 12px;
       margin-top: 15px;
       overflow-wrap: break-word;
       word-wrap: break-word;
     }
-    .my-post-meta-panel .post-info .profile-image {
+    .my-post-meta-panel .post-info .profileimage {
       height: 32px;
       width: 32px;
-      /* border: 1px solid lightgrey; */
       margin-top: 3px;
       overflow: hidden;
-    }
-    .my-post-meta-panel .post-info .profileimage {
-      width: 32px;
-      opacity:0.5;
-      filter:alpha(opacity=50);
+      opacity: 0.5;
+      filter: alpha(opacity=50);
     }
     .my-post-meta-panel .post-info .post-info-text {
       padding-left: 10px;
       width: 88%;
     }
-    .my-post-meta-panel .post-info .profile-name {
-      cursor: pointer;
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: normal;
-      height: auto;
-      letter-spacing: normal;
-      line-height: 19.6px;
-      text-decoration: none;
-      unicode-bidi: isolate;
-      visibility: visible;
-      white-space: nowrap;
-      width: auto;
-      -webkit-font-smoothing: antialiased;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
-    .my-post-meta-panel .post-info .post-grouplink {
-      cursor: pointer;
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 14px;
-      line-height: 19.6px;
-      text-decoration: none;
-      /*
-      width: 80%;
-      -webkit-font-smoothing: antialiased;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-      */
-    }
-    .my-post-meta-panel .post-info .post-createdat {
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 12px;
-      /* padding-left: 10px; */
-      line-height: 14.4px;
-      color: rgba(0, 0, 0, 0.439216);
-    }
-    .my-post-meta-panel .post-info .post-commentstotal {
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 12px;
-      padding-left: 5px;
-      line-height: 14.4px;
-      color: rgba(0, 0, 0, 0.439216);
-    }
-    .my-post-meta-panel .post-info .post-reply {
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 12px;
-      padding-left: 0px;
-      line-height: 14.4px;
-      color: rgba(0, 0, 0, 0.439216);
-    }
-    .my-post-meta-panel .post-info .bullet {
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 12px;
-      line-height: 1.8;
-      color: rgba(0, 0, 0, 0.439216);
-      padding: 0 5px;
-    }
-    .my-post-meta-panel .post-info .post-reply {
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 12px;
-      padding-left: 0px;
-      line-height: 14.4px;
-      color: rgba(0, 0, 0, 0.439216);
+    .my-post-meta-panel .profile-text,
+    .my-post-meta-panel .profile-link,
+    .my-post-meta-panel .bullet {
+      padding-right: 5px;
     }
   `],
   inputs: ['post', 'currentUser', 'type', 'view'],

@@ -75,7 +75,7 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
 
       <div class="row">
         <div class="col-md-10 post-list-area">
-          <my-error [_errorMsg]="_errorMsg"></my-error>
+          <my-error [_error]="_error"></my-error>
           <my-post-list [posts]="_postsSticky" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
           <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
         </div>
@@ -168,7 +168,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   private _super_group_name: string;
   private _super_group: SuperGroup;
   private _hyper_group = null;
-  private _errorMsg: String = null;
+  private _error = { msg: null, type: null };
   private _loggedInUserSubcription = null;
   private _postTemplateType: PostTemplateType = null;
   private _currentUser: User = null;
@@ -193,7 +193,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
       currentUser => {
         if(currentUser) {
           this._currentUser = currentUser;
-          this._errorMsg = null;
+          this._error.msg = null;
           this.getSupergroupAndPosts(this._super_group_name);
         } else {
           this.getSupergroupAndPosts(this._super_group_name);
@@ -204,7 +204,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     let currentUser = this._authenticationService.getLoggedInUser();
     if( currentUser ) {
       this._currentUser = currentUser;
-      this._errorMsg = null;
+      this._error.msg = null;
     } else { }
     // Logged in or not fetch posts immidiately
     this.getSupergroupAndPosts(this._super_group_name);
@@ -239,7 +239,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     this._superGroupService.getSupergroupAndPosts(superGroup).subscribe(
       resp => {
         //console.log(resp);
-        this._errorMsg = null;
+        this._error.msg = null;
         resp.superGroup.groups = resp.groupList;
         this._super_group = resp.superGroup;
         this._groups = resp.superGroup.groups;
@@ -253,11 +253,11 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         this._posts = resp.posts;
         this._postsSticky = resp.postsSticky;
         if( this._posts.length + this._postsSticky.length < 1 ) {
-          this._errorMsg = "No posts here. You can create the first one!"
+          this._error.msg = "No posts here yet. You can create the first one!"
         }
       },
       error => {
-        this._errorMsg = error;
+        this._error.msg = error;
     })
   }
 

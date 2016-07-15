@@ -12,32 +12,39 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
       <div class="col-xs-12">
         <div>
           <div class="postedby-info">
+
             <div *ngIf="comment.postedby">
-            <a class="" [routerLink]="['ViewUser', {id: comment.postedby.id}]">
-              <div class="profile-image-container pull-left">
-                <img *ngIf="comment.postedby.profileimage" src="{{comment.postedby.profileimage}}" class="profileimage" [ngClass]=" { 'img-rounded': commentLevel == 1, 'img-circle': commentLevel != 1 } ">
-                <img *ngIf="!comment.postedby.profileimage" src="images/user-default.png" class="profileimage" [ngClass]=" { 'img-rounded': commentLevel == 1, 'img-circle': commentLevel != 1 } ">
-              </div>
-            </a>
+              <a class="" [routerLink]="['ViewUser', {id: comment.postedby.id}]">
+                <div class="profile-image-container pull-left">
+                  <img *ngIf="comment.postedby.profileimage" src="{{comment.postedby.profileimage}}" class="profileimage" [ngClass]=" { 'img-rounded': commentLevel == 1, 'img-circle': commentLevel != 1 } ">
+                  <img *ngIf="!comment.postedby.profileimage" src="images/user-default.png" class="profileimage" [ngClass]=" { 'img-rounded': commentLevel == 1, 'img-circle': commentLevel != 1 } ">
+                </div>
+              </a>
             </div>
 
-            <div class=" pull-left">
-              <div class="profile-name pull-left" *ngIf="comment.postedby">
+            <div class="comment-info-text pull-left">
+
+              <div class="comment-link pull-left" *ngIf="comment.postedby">
                 <a class="" [routerLink]="['ViewUser', {id: comment.postedby.id}]">
                   {{comment.postedby.displayname}}
                 </a>
               </div>
-              <div *ngIf="comment.postedby && commentLevel < 4" class="pull-left">&nbsp;&bull;&nbsp;</div>
-              <div *ngIf="commentLevel == 1" class="pull-left"><a [routerLink] = "[ 'NewComment2', { postid: post.id, comment1id: comment.id } ]">Reply</a></div>
-              <div *ngIf="commentLevel == 2" class="pull-left"><a [routerLink] = "[ 'NewComment3', { postid: post.id, comment2id: comment.id } ]">Reply</a></div>
-              <div *ngIf="commentLevel == 3" class="pull-left"><a [routerLink] = "[ 'NewComment4', { postid: post.id, comment3id: comment.id } ]">Reply</a></div>
-              <div *ngIf="commentLevel == 4" class="pull-left"></div>
+
+              <div *ngIf="comment.postedby && commentLevel < 4" class="bullet pull-left">&bull;</div>
+              <div *ngIf="commentLevel == 1" class="comment-link pull-left"><a [routerLink] = "[ 'NewComment2', { postid: post.id, comment1id: comment.id } ]">Reply</a></div>
+              <div *ngIf="commentLevel == 2" class="comment-link pull-left"><a [routerLink] = "[ 'NewComment3', { postid: post.id, comment2id: comment.id } ]">Reply</a></div>
+              <div *ngIf="commentLevel == 3" class="comment-link pull-left"><a [routerLink] = "[ 'NewComment4', { postid: post.id, comment3id: comment.id } ]">Reply</a></div>
+              <div *ngIf="commentLevel == 4" class="comment-link pull-left"></div>
+
               <div class="clearfix"></div>
-              <div class="comment-createdat pull-left">
+
+              <div class="comment-text pull-left">
                 {{ comment.createdAt | timeAgo }}
               </div>
-              <div class="comment-delete pull-left" *ngIf="currentUser && comment.postedby && currentUser.id == comment.postedby.id">
-                <span>&bull;
+
+              <div class="pull-left" *ngIf="currentUser && comment.postedby && currentUser.id == comment.postedby.id">
+                <div class="bullet pull-left">&bull;</div>
+                <span class="comment-link">
                   <a *ngIf="commentLevel == 1" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 1, commentid: comment.id } ]">[Delete]</a>
                   <a *ngIf="commentLevel == 2" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 2, commentid: comment.id } ]">[Delete]</a>
                   <a *ngIf="commentLevel == 3" [routerLink]="['ConfirmCommentDelete', { postid: post.id, commentlevel: 3, commentid: comment.id } ]">[Delete]</a>
@@ -54,6 +61,12 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
   </div>
   `,
   styles: [`
+    .my-comment-meta-panel {
+      font-size: 12px;
+      line-height: 14.4px;
+      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: rgba(0, 0, 0, 0.439216);
+    }
     .my-comment-meta-panel a {
       color: #af2b2b;
     }
@@ -72,30 +85,13 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
     .my-comment-meta-panel .postedby-info {
       margin-top: 10px;
     }
-    .my-comment-meta-panel .profile-name {
-      cursor: pointer;
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 14px;
+    .my-comment-meta-panel .comment-info-text {
+      margin-top: 4px;
     }
-    .my-comment-meta-panel .reply-link {
-      float: left;
-    }
-    .my-comment-meta-panel .comment-createdat {
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 12px;
-      /* padding-left: 10px; */
-      line-height: 14.4px;
-      color: rgba(0, 0, 0, 0.439216);
-    }
-    .my-comment-meta-panel .comment-delete {
-      display: inline;
-      font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 12px;
-      /* padding-left: 10px; */
-      line-height: 14.4px;
-      color: rgba(0, 0, 0, 0.439216);
+    .my-comment-meta-panel .comment-text,
+    .my-comment-meta-panel .comment-link,
+    .my-comment-meta-panel .bullet {
+      padding-right: 5px;
     }
   `],
   inputs: ['comment', 'currentUser', 'post', 'commentLevel'],

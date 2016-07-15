@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, RouteParams, RouterLink} from '@angular/router-deprecated';
-import {ErrorComponent} from '../misc/error.component';
+// import {ErrorComponent} from '../misc/error.component';
 import {UserService} from '../user/user.service';
 import {AuthenticationService} from '../authentication/authentication.service';
 import {AppService} from '../app.service';
@@ -11,7 +11,9 @@ import {AppService} from '../app.service';
   <div *ngIf="hierarchy && !extendedVersion">
     <div class="my-hyper_group-sidebar">
 
+      <!--
       <my-error [_errorMsg]="_errorMsg"></my-error>
+      -->
 
       <!-- User's Super Groups -->
       <div class="row1 section" *ngIf="hierarchy.sg.length > 0">
@@ -272,14 +274,15 @@ import {AppService} from '../app.service';
       color: rgba(0, 0, 0, 0.3);
     }
   `],
-  directives: [RouterLink, ErrorComponent],
+  //directives: [RouterLink, ErrorComponent],
+  directives: [RouterLink],
   inputs: ["hierarchy", "hyperGroup", "extendedVersion"]
 
 })
 export class HyperGroupSidebarComponent implements OnInit {
 
   private hierarchy: string = null;
-  private _errorMsg  = null;
+  //private _errorMsg  = null;
 
   constructor(
     private _appService: AppService,

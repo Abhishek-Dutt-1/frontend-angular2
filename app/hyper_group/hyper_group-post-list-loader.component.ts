@@ -23,7 +23,7 @@ import {HyperGroupSidebarComponent} from './hyper_group-sidebar.component';
 
       <div class="row">
         <div class="col-md-10 post-list-area">
-          <my-error [_errorMsg]="_errorMsg"></my-error>
+          <my-error [_error]="_error"></my-error>
           <my-post-list [posts]="postsSticky" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
           <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
         </div>
@@ -60,7 +60,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   //private parent_gorup: Group_Of_Groups;
   private _geoSelection: string = null;
   private _superGroupList: SuperGroup[];
-  private _errorMsg = null;
+  private _error = { msg : null, type : null };
   private _showUserControls: boolean = false;
   private _currentUser: User = null;
   private _loggedInUserSubcription = null;
@@ -87,7 +87,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
       currentUser => {
         if(currentUser) {
           this._currentUser = currentUser;
-          this._errorMsg = null;
+          this._error.msg = null;
           this.getPostsByHypergroup(this._geoSelection);
           this.getHyperGroupHierarchy(this._currentUser, this._geoSelection);
         } else {
@@ -100,7 +100,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
       this._currentUser = currentUser;
-      this._errorMsg = null;
+      this._error.msg = null;
     } else { }
     // Logged in or not fetch posts immidiately
     this.getPostsByHypergroup(this._geoSelection);
@@ -115,23 +115,23 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     this._postService.getPostsByHyperGroup(geoSelection).subscribe(
       resp => {
         //console.log(resp)
-        this._errorMsg = null;
+        this._error.msg = null;
         this.posts = resp.posts;
         this.postsSticky = resp.postsSticky;
         if( this.posts.length + this.postsSticky.length < 1 ) {
-          this._errorMsg = "Your '" + this._geoSelection.toUpperCase() + "' groups do not have any posts yet. " +
-                           "Please subscribe to some more active groups, or create a new post yourself."
+          this._error = { type: 'danger', msg: "Your '" + this._geoSelection.toUpperCase() + "' groups do not have any posts yet. " +
+                           "Please subscribe to some more active groups, or create a new post yourself." }
         }
 
         this._superGroupList = resp.superGroupList;
         if(this._superGroupList.length < 1) {
-          this._errorMsg = "You have not subscibed to any groups in '" + this._geoSelection.toUpperCase() + "'. " +
-                           "Please subscribe to more groups to view posts."
+          this._error = { type: 'danger', msg: "You have not subscibed to any groups in '" + this._geoSelection.toUpperCase() + "'. " +
+                           "Please subscribe to more groups to view posts." }
         }
       },
       error => {
         //console.log(error);
-        this._errorMsg = error;
+        this._error = { type: 'danger', msg: error };
       });
   }
 
@@ -158,7 +158,8 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
       },
       error => {
-        this._errorMsg = error;
+        //this._error.msg = error;
+        this._error = { type: 'danger', msg: error };
     })
   }
 

@@ -316,8 +316,8 @@ import {AppService} from '../app.service';
   }
   .my-post .post-container {
     /** border-bottom: 1px solid lightgrey; */
-    padding-bottom: 20px;
-    padding-top: 20px;
+    padding-bottom: 35px;
+    padding-top: 35px;
   }
   .my-post .post-container h5 {
     margin-bottom: 5px;

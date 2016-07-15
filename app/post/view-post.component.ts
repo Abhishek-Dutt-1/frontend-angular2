@@ -65,7 +65,7 @@ import {ErrorComponent} from '../misc/error.component';
             <!-- Replies to Post -->
             <div class="comment-list level-1">
 
-              <my-error [_errorMsg]="_errorMsg" [_errorType]="_errorType"></my-error>
+              <my-error [_error]="_error"></my-error>
 
               <div *ngFor="let comment1 of post.comments" class="comment-level-1">
                 <div class="row">
@@ -217,8 +217,7 @@ export class ViewPostComponent {
   private postTemplateType: any = null;
   private _loggedInUserSubcription = null;
   private _currentUser = null;
-  private _errorMsg = null;
-  private _errorType = null;
+  private _error = { msg: null, type: null };
   private _group = null;
   private _super_group = null;
   private _hyper_group = null;
@@ -243,18 +242,18 @@ export class ViewPostComponent {
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(
       currentUser => {
         this._currentUser = currentUser;
-        this._errorMsg = null;
+        this._error.msg = null;
         this.getPosts(postId);
       },
       error => {
-        this._errorType = "danger";
-        this._errorMsg = error;
+        this._error.type = "danger";
+        this._error.msg = error;
       });
     // Only logged in uses view post (init version)
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
       this._currentUser = currentUser;
-      this._errorMsg = null;
+      this._error.msg = null;
     // Logged in or not fetch post immidiately
     this.getPosts(postId);
 
@@ -296,14 +295,14 @@ export class ViewPostComponent {
           }
         }
         if ( this.post.comments.length == 0 ) {
-          this._errorMsg = "There are no comments on this post. You can post the first by clicking 'Reply'.";
-          this._errorType = "info";
+          this._error.msg = "There are no comments on this post. You can post the first by clicking 'Reply'.";
+          this._error.type = "danger";
         }
       },
       error => {
         //console.log(error);
-        this._errorType = "danger";
-        this._errorMsg = error;
+        this._error.type = "danger";
+        this._error.msg = error;
       });
   }
 
