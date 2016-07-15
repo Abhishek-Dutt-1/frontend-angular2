@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+ import {Component, OnInit} from '@angular/core';
 import {Router, RouteParams, RouterLink} from '@angular/router-deprecated';
 import {ErrorComponent} from '../misc/error.component';
 import {UserService} from '../user/user.service';
@@ -34,7 +34,7 @@ import {GroupService} from '../group/group.service';
                   <div class="add-super-group-plus"><i class="fa fa-minus" aria-hidden="true"></i></div>
                 </div>
                 <div class="pull-right" *ngIf="group.isCurrentUsersMembershipPending" (click)="cancelPendingGroupMembership(group)">
-                  <div class="add-super-group-plus"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                  <div class="add-super-group-plus"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
                 </div>
               </div>
             </div>

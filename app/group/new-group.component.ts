@@ -68,26 +68,35 @@ import {AppService} from '../app.service';
           <label for="non_members_can_view" class="col-sm-2 control-label">Are posts in this group visible to NON Members?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_view" (click)="model.non_members_can_view = 1" [checked]="model.non_members_can_view === 1" > Yes
+              <input type="radio" name="non_members_can_view"
+                     (click)="model.non_members_can_view = 1"
+                     [checked]="model.non_members_can_view === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_view" (click)="model.non_members_can_view = 0" [checked]="model.non_members_can_view === 0" > No
+              <input type="radio" name="non_members_can_view"
+                     (click)="model.non_members_can_view = 0; model.non_members_can_post = 0"
+                     [checked]="model.non_members_can_view === 0" > No
             </label>
           </div>
         </div>
 
+        <fieldset [disabled]="model.non_members_can_view === 0">
         <div class="form-group">
           <label for="non_members_can_post" class="col-sm-2 control-label">Can NON Members post in this group?</label>
           <div class="col-sm-10">
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_post" (click)="model.non_members_can_post = 1" [checked]="model.non_members_can_post === 1" > Yes
+              <input type="radio" name="non_members_can_post"
+                     (click)="model.non_members_can_post = 1"
+                     [checked]="model.non_members_can_post === 1" > Yes
             </label>
             <label class="checkbox-inline">
-              <input type="radio" name="non_members_can_post" (click)="model.non_members_can_post = 0" [checked]="model.non_members_can_post === 0" > No
+              <input type="radio" name="non_members_can_post"
+                     (click)="model.non_members_can_post = 0"
+                     [checked]="model.non_members_can_post === 0" > No
             </label>
           </div>
         </div>
-
+        </fieldset>
 
                 <div class="form-group">
                   <label for="allow_anon_posts" class="col-sm-2 control-label">Allow anonymous posts?</label>

@@ -55,7 +55,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   private posts: Post[];
   private postsSticky: Post[];
   private _view = "hypergroup";
-  private _sidebarHierarchy: any[] = null;
+  private _sidebarHierarchy = null;
   private postTemplateType: PostTemplateType;
   //private parent_gorup: Group_Of_Groups;
   private _geoSelection: string = null;
@@ -143,11 +143,19 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   getHyperGroupHierarchy(currentUser, hyperGroup) {
     this._userService.getHyperGroupHierarchy(currentUser, hyperGroup).subscribe(
       resp => {
+        // Remove user's national form international suggestions
         if ( hyperGroup === 'international' && currentUser && currentUser.national.length > 0 ) {
           resp.suggestedSgs = resp.suggestedSgs.filter( sg => sg.id != currentUser.national[0].id )
           resp.otherSg = resp.otherSg.filter( sg => sg.id != currentUser.national[0].id )
         }
         this._sidebarHierarchy = resp;
+        if ( this._sidebarHierarchy.suggestedSgs && this._sidebarHierarchy.suggestedSgs.length > 10 ) {
+          this._sidebarHierarchy.suggestedSgs = this._sidebarHierarchy.suggestedSgs.slice(0, 10)
+        }
+        if ( this._sidebarHierarchy.otherSg && this._sidebarHierarchy.otherSg.length > 10 ) {
+          this._sidebarHierarchy.otherSg = this._sidebarHierarchy.otherSg.slice(0, 10)
+        }
+
       },
       error => {
         this._errorMsg = error;

@@ -37,7 +37,7 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
                         <i class="fa" [ngClass]="{'fa-plane': _hyper_group == 'international', 'fa-train': _hyper_group == 'national', 'fa-bus': _hyper_group === 'state', 'fa-car': _hyper_group === 'city', 'fa-bicycle': _hyper_group === 'local' }"></i> /
                       </a>
                       <a [routerLink]="['SuperGroupPostList', {super_group_name: _super_group.name}]">
-                        {{_super_group.name}} / &nbsp;<small class="hidden">{{_super_group.description}}</small>
+                        {{_super_group.name}} / &nbsp;<small class="hidden1"><i>{{_super_group.description}}</i></small>
                       </a>
                     </div>
                   </div>
@@ -245,6 +245,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         this._groups = resp.superGroup.groups;
         this._hyper_group = this._super_group.type;
         if ( this._super_group.type == 'international' ) {
+          //console.log(this._currentUser)
           if ( this._currentUser && this._currentUser.national.find( group => group.id === this._super_group.id ) ) {
             this._hyper_group = 'national'
           }

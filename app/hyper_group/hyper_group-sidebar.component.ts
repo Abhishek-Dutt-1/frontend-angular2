@@ -21,6 +21,7 @@ import {AppService} from '../app.service';
           </div>
         </div>
         <div class="row1">
+
           <div *ngIf="hierarchy">
             <div *ngFor="let sg of hierarchy.sg">
               <div class="row">
@@ -67,6 +68,17 @@ import {AppService} from '../app.service';
                 </div>
               </div>
             </div>
+
+            <div class="row" *ngIf="hierarchy.suggestedSgs.length >= 10">
+              <div class="col-xs-12">
+                <div class="view-more">
+                  <div [routerLink]="[ 'SupergroupSelection', { hypergroup: hyperGroup } ]">
+                    View All
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -90,6 +102,17 @@ import {AppService} from '../app.service';
                 </div>
               </div>
             </div>
+
+            <div class="row" *ngIf="hierarchy.otherSg.length >= 10">
+              <div class="col-xs-12">
+                <div class="view-more">
+                  <div [routerLink]="[ 'SupergroupSelection', { hypergroup: hyperGroup } ]">
+                    View All
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -239,9 +262,14 @@ import {AppService} from '../app.service';
     .my-hyper_group-sidebar .message-meta {
       font-style: italic;
       font-size: x-small;
-      /*
-      margin-top: 15px;
-      */
+    }
+    .my-hyper_group-sidebar .view-more {
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9em;
+      margin: 10px 0 5px 0;
+      /* text-align: center; */
+      color: rgba(0, 0, 0, 0.3);
     }
   `],
   directives: [RouterLink, ErrorComponent],
