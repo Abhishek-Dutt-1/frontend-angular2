@@ -26,6 +26,7 @@ import {PostListComponent} from '../post/post-list.component';
               <div type="button" class="btn btn-default" [routerLink]="[ 'ViewUserPosts', { id : _profileOwnersId } ]">Posts</div>
               <div type="button" class="btn btn-default" [routerLink]="[ 'ViewUserUpvotes', { id : _profileOwnersId } ]">Up votes</div>
               <div type="button" class="btn btn-default" [routerLink]="[ 'ViewUserDownvotes', { id : _profileOwnersId } ]">Down votes</div>
+              <div type="button" class="btn btn-default hidden">Groups</div>
               <div type="button" class="btn btn-default">Comments</div>
             </div>
           </div>
