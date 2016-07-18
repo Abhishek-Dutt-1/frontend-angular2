@@ -47,8 +47,12 @@ import {AppService} from '../app.service';
           <div class="row" *ngIf="post.text">
             <div class="col-xs-12">
               <div class="post-text">
-                <div *ngIf="_textTrimmed">{{_textTrimmed}}<div class="read-more">Read more ...</div></div>
-                <div *ngIf="!_textTrimmed">{{post.text}}</div>
+                <div *ngIf="_textTrimmed" class="post-text-wrap1">{{_textTrimmed}}
+                  <div class="read-more">
+                    <a [routerLink]="['ViewPost', {postid: post.id}]">Read more ...</a>
+                  </div>
+                </div>
+                <div *ngIf="!_textTrimmed" class="post-text-wrap1">{{post.text}}</div>
               </div>
             </div>
           </div>
@@ -109,8 +113,10 @@ import {AppService} from '../app.service';
               <div class="row" *ngIf="post.text">
                 <div class="col-xs-12">
                   <div class="post-text">
-                    <div *ngIf="_textTrimmed">{{_textTrimmed}}<div class="read-more">Read more ...</div></div>
-                    <div *ngIf="!_textTrimmed">{{post.text}}</div>
+                    <div *ngIf="_textTrimmed" class="post-text-wrap1">{{_textTrimmed}}
+                      <div class="read-more"><a [routerLink]="['ViewPost', {postid: post.id}]">Read more ...</a></div>
+                    </div>
+                    <div *ngIf="!_textTrimmed" class="post-text-wrap1">{{post.text}}</div>
                   </div>
                 </div>
               </div>
@@ -210,7 +216,7 @@ import {AppService} from '../app.service';
           <div class="row" *ngIf="post.text">
             <div class="col-xs-12">
               <div class="post-text">
-                <div *ngIf="_readmore">
+                <div *ngIf="_readmore" class="post-text-wrap">
                   {{_textTrimmed}}
                   <div class="read-more" (click)="_readmore = false">
                     Show more ...
@@ -279,7 +285,7 @@ import {AppService} from '../app.service';
               <div class="row" *ngIf="post.text">
                 <div class="col-xs-12">
                   <div class="post-text">
-                    <div *ngIf="_readmore">
+                    <div *ngIf="_readmore" class="post-text-wrap">
                       {{_textTrimmed}}
                       <div class="read-more" (click)="_readmore = false">
                         Show more ...
@@ -369,6 +375,10 @@ import {AppService} from '../app.service';
     line-height: 25.2px;
     margin-top: 15px;
     margin-bottom: 0px;
+    cursor: pointer;
+  }
+  .my-post .post-container .read-more a {
+    color: rgba(0, 0, 0, 0.4);
   }
   .my-post .post-container .vote-container {
     margin-top: 15px;
@@ -405,7 +415,7 @@ export class PostComponent implements OnInit {
     if(this.post) this._readmore = false;
     if(this.post && this.post.text.length > MAXCHARS) {
       this._textTrimmed = this.post.text.substring(0, MAXCHARS) + ' ...';
-      this._readmore = true;
+      this._readmore = false;
       //this._showFullText = false;     // On Post page, initally hide full text
     }
   }
@@ -457,6 +467,7 @@ export class PostComponent implements OnInit {
         this._errorMsg = null;
       },
       error => {
+        console.log(error)
         this._processingVote = false;
         //this._errorMsg = error;
         this._appService.createNotification( { text: error, type: 'danger' } );

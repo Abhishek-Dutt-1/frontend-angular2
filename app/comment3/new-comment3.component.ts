@@ -73,7 +73,7 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
       </div>
 
-      <my-error [_errorMsg]="_errorMsg"></my-error>
+      <my-error [_error]="_error"></my-error>
 
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
@@ -123,7 +123,7 @@ export class NewComment3Component {
   private post: Post = null;
   private comment2 = null;
   private _model: any = null;
-  private _errorMsg: string = null;
+  private _error = { msg: null, type: null };
   private _showMemeList: boolean = true;
 
   constructor(
@@ -157,9 +157,9 @@ export class NewComment3Component {
       if(currentUser) {
         console.log("State change ", currentUser)
         this._model.postedby = currentUser;
-        this._errorMsg = null;
+        this._error.msg = null;
       } else {
-        this._errorMsg = "User must be logged in to reply.";
+        this._error.msg = "User must be logged in to reply.";
       }
     });
     // Only logged in uses can comment2 (init version)
@@ -167,9 +167,9 @@ export class NewComment3Component {
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
       this._model.postedby = currentUser;
-      this._errorMsg = null;
+      this._error.msg = null;
     } else {
-      this._errorMsg = "User must be logged in to reply.";
+      this._error.msg = "User must be logged in to reply.";
     }
   }
 
@@ -199,7 +199,7 @@ export class NewComment3Component {
         },
         error => {
           //console.log(error)
-          this._errorMsg = error;
+          this._error.msg = error;
         });
   }
 

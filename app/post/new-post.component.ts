@@ -67,7 +67,7 @@ import {ErrorComponent} from '../misc/error.component';
         <div class="post-textarea form-group">
           <label for="text" class="col-sm-2 control-label">Text</label>
           <div class="col-sm-10">
-            <textarea type="text" class="form-control" rows="5"
+            <textarea type="text" class="form-control" rows="20"
               [(ngModel)] = "model.text" placeholder="Post text"
               ngControl = "text" #text="ngForm"
             ></textarea>
@@ -144,7 +144,7 @@ import {ErrorComponent} from '../misc/error.component';
 
         <div class="post-select form-group">
           <div class="col-xs-12 col-sm-offset-2 col-sm-10">
-            <my-error [_errorMsg]="_errorMsg"></my-error>
+            <my-error [_error]="_error"></my-error>
           </div>
         </div>
 
@@ -192,7 +192,7 @@ export class NewPostComponent {
 
   private _postTypes          = ['text', 'link'];
   private model               = null;
-  private _errorMsg: string   = null;
+  private _error = { msg : null, type : null };
   private _showGroupSearchBox = true;
   //private _searchGroup      = '';
   private _loggedInUserSubcription = null;
@@ -251,11 +251,11 @@ export class NewPostComponent {
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
         this.model.postedby = currentUser;
-        this._errorMsg = null;
+        this._error.msg = null;
         this.search(this._searchString);    // <-- This works
         // if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to create new posts.";
       } else {
-        this._errorMsg = "User must be logged in to create new posts.";
+        this._error.msg = "User must be logged in to create new posts.";
       }
     });
     // Only logged in uses can post (init version)
@@ -263,12 +263,12 @@ export class NewPostComponent {
     let currentUser = this._authenticationService.getLoggedInUser();
     if( currentUser ) {
       //console.log(currentUser)
-      this._errorMsg = null;
+      this._error.msg = null;
       this.model.postedby = currentUser;
       this.search(this._searchString);      // <-- This does not works
       // if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to create new posts.";
     } else {
-      this._errorMsg = "User must be logged in to create new posts.";
+      this._error.msg = "User must be logged in to create new posts.";
     }
 
   }
@@ -316,7 +316,9 @@ export class NewPostComponent {
 
     event.preventDefault();
 
-    if( !this.model.group || !this.model.postedby ) return;
+    if( !this.model.group || !this.model.postedby ) {
+      return;
+    }
 
     let properModel = {
       title    : this.model.title,
@@ -337,7 +339,7 @@ export class NewPostComponent {
         this._router.navigate(['ViewPost', {postid: post.id}]);
       },
       error => {
-        this._errorMsg = error;
+        this._error.msg = error;
         console.log(error);
       });
   }

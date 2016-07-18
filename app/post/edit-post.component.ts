@@ -67,7 +67,7 @@ import {ErrorComponent} from '../misc/error.component';
         <div class="post-textarea form-group">
           <label for="text" class="col-sm-2 control-label">Text</label>
           <div class="col-sm-10">
-            <textarea type="text" class="form-control" rows="5"
+            <textarea type="text" class="form-control" rows="20"
               [(ngModel)] = "_model.text" placeholder="Post text"
               ngControl = "text" #text="ngForm"
             ></textarea>
@@ -144,7 +144,7 @@ import {ErrorComponent} from '../misc/error.component';
 
         <div class="post-select form-group">
           <div class="col-xs-12 col-sm-offset-2 col-sm-10">
-            <my-error [_errorMsg]="_errorMsg"></my-error>
+            <my-error [_error]="_error"></my-error>
           </div>
         </div>
 
@@ -192,7 +192,7 @@ export class EditPostComponent {
 
   private _postTypes          = ['text', 'link'];
   private _model               = null;
-  private _errorMsg: string   = null;
+  private _error = { msg: null, type: null };
   private _showGroupSearchBox = true;
   //private _searchGroup      = '';
   private _loggedInUserSubcription = null;
@@ -224,7 +224,7 @@ export class EditPostComponent {
           if ( this._currentUser ) this._readyToEdit = true;
         },
         error => {
-          this._errorMsg = error;
+          this._error.msg = error;
         })     // !subscribe
     }
 
@@ -232,11 +232,11 @@ export class EditPostComponent {
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
         this._currentUser = currentUser;
-        this._errorMsg = null;
-        //  if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to edit posts.";
+        this._error.msg = null;
+        //  if ( ! currentUser.emailverified ) this._error.msg = "Users must have a verified email to edit posts.";
         if ( this._model ) this._readyToEdit = true;
       } else {
-        this._errorMsg = "User must be logged in to edit posts.";
+        this._error.msg = "User must be logged in to edit posts.";
         this._readyToEdit = false;
       }
     });
@@ -245,12 +245,12 @@ export class EditPostComponent {
     let currentUser = this._authenticationService.getLoggedInUser();
     if( currentUser ) {
       this._currentUser = currentUser;
-      this._errorMsg = null;
+      this._error.msg = null;
       // this._model.postedby = currentUser;
       if ( this._model ) this._readyToEdit = true;
       // if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to edit posts.";
     } else {
-      this._errorMsg = "User must be logged in to edit posts.";
+      this._error.msg = "User must be logged in to edit posts.";
       this._readyToEdit = false;
     }
 
@@ -306,8 +306,8 @@ export class EditPostComponent {
         this._router.navigate(['ViewPost', {postid: post.id}]);
       },
       error => {
-        this._errorMsg = error;
-        console.log(error);
+        this._error.msg = error;
+        // console.log(error);
       });
   }
 
