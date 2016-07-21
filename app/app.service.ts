@@ -55,7 +55,9 @@ export class AppService {
     return {
       servicesMode: 'server',
       backendUrl: 'http://localhost:1337',
-      //backendUrl: 'http://54.169.107.132:1337',
+      //backendUrl: 'http://fire.angry.city',
+      //backendUrl: 'http://54.210.225.167:1337',
+      //backendUrl: 'https://54.210.225.167:1337',
       headersObj: this.getHttpHeaders()
     }
   }
