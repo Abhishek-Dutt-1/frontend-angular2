@@ -159,4 +159,24 @@ export class PostService {
       });
   }
 
+  /**
+   * Fetches a list of images (with relevency score) from a url
+   * for link type post
+   */
+  fetchPostImagesFromUrl( url : string ) {
+    this._appService.spinner();
+    let backendUrl = this._appService.getSiteParams().backendUrl;
+    let headers = new Headers( this._appService.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(backendUrl+'/post/fetchPostImagesFromUrl/', JSON.stringify( { url: url } ), options).map(
+      res => {
+        this._appService.spinner(false);
+        return res.json();
+      })
+      .catch(error => {
+        this._appService.spinner(false);
+        return this._appService.handleServerErrors(error)
+      });
+  }
+
 }
