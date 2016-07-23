@@ -8,7 +8,9 @@ export class AppService {
   private _geoSelection: string = null;
   private _jwt: string = null;
 
-  constructor() {}
+  constructor(
+    private _http: Http,
+  ) {}
 
   /**
    * Show/hide global spinner
@@ -86,6 +88,32 @@ export class AppService {
     this._jwt = null;
   }
 
+
+  /**
+   *
+   */
+   /*
+   Moved to post.service
+  fetchPostImagesFromUrl( url : string ) {
+    this.spinner();
+    let backendUrl = this.getSiteParams().backendUrl;
+    let headers = new Headers( this.getSiteParams().headersObj );
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get( url, options).map(
+      res => {
+        this.spinner(false)
+        return res
+      }
+    )
+    .catch(error => {
+      this.spinner(false)
+      let err = this.handleServerErrors(error)
+      console.log(err)
+      return Observable.empty()
+      //return Observable.from( err )
+    });
+  }
+*/
   handleServerErrors(error: any) {
     // In a real world app, we might send the error to remote logging infrastructure
     let errMsg = "";

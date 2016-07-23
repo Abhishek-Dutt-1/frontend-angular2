@@ -36,9 +36,19 @@ import {AppService} from '../app.service';
             </div>
           </div>
 
-          <div class="row">
+          <div class="row" *ngIf="post.image">
             <div class="col-xs-12">
-              <div *ngIf="post.type === 'link'" class="post-type-link">
+              <div class="post-image post-image-list-view">
+                <a [routerLink]="['ViewPost', {postid: post.id}]">
+                  <img src="{{post.image}}" class="img-responsive img-rounded">
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="post.type === 'link'" >
+            <div class="col-xs-12">
+              <div class="post-type-link">
                 <a target="_blank" [href]="post.link">View link <i class="fa fa-external-link" aria-hidden="true"></i></a>
               </div>
             </div>
@@ -89,7 +99,7 @@ import {AppService} from '../app.service';
               </div>
             </div>
 
-            <div class="col-xs-11">
+            <div [ngClass]="{ 'col-xs-9' : post.image, 'col-xs-10' : !post.image }">
 
               <div class="row">
                 <div class="col-xs-12">
@@ -102,9 +112,9 @@ import {AppService} from '../app.service';
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row" *ngIf="post.type === 'link'">
                 <div class="col-xs-12">
-                  <div *ngIf="post.type === 'link'" class="post-type-link">
+                  <div class="post-type-link">
                     <a target="_blank" [href]="post.link">View link <i class="fa fa-external-link" aria-hidden="true"></i></a>
                   </div>
                 </div>
@@ -128,64 +138,24 @@ import {AppService} from '../app.service';
               </div>     <!-- ! row -->
 
             </div>
+
+            <div class="col-xs-2 post-image-md-col">
+                <div class="row" *ngIf="post.image">
+                  <div class="col-xs-12">
+                    <div class="post-image-md">
+                      <a [routerLink]="['ViewPost', {postid: post.id}]">
+                        <img src="{{post.image}}" class="img-responsive img-rounded">
+                      </a>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
           </div>
 
         </div>      <!-- !post-container -->
       </div>        <!-- !hidden-xs/sm -->
 
-    </div>     <!-- ! ngIf-row -->
-
-
-    <div *ngIf="false && type === templateTypeGroupList" class="row">
-      <div class="col-xs-12">
-        <div class="post-container">
-
-          <div class="row">
-            <div class="col-xs-12">
-              <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
-                <span>{{post.title}}</span>
-              </a>  <!--
-              <span *ngIf="post.type === 'link'">
-                <a target="_blank" [href]="post.link">[view link]</a>
-              </span>  -->
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div *ngIf="post.type === 'link'" class="post-type-link">
-                <a target="_blank" [href]="post.link">View link <i class="fa fa-external-link" aria-hidden="true"></i></a>
-              </div>
-            </div>
-          </div>
-
-          <div class="row" *ngIf="post.textTrimmed">
-            <div class="col-xs-12">
-              <div class="post-text">
-                {{post.textTrimmed}}
-              </div>
-              <div class="read-more">
-                Read more ...
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-xs-12">
-              <my-post-meta-panel [post]="post" [currentUser]="currentUser" [type]="type" [view]="view"></my-post-meta-panel>
-            </div>
-          </div>     <!-- ! row -->
-
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="vote-container">
-                <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
-              </div>
-            </div>
-          </div>
-
-        </div>      <!-- !post-container -->
-      </div>
     </div>     <!-- ! ngIf-row -->
 
 
@@ -202,6 +172,14 @@ import {AppService} from '../app.service';
               <span *ngIf="post.type === 'link'" class="post-type-link">
                 <a target="_blank" [href]="post.link">[view 2 link]</a>
               </span>  -->
+            </div>
+          </div>
+
+          <div class="row" *ngIf="post.image">
+            <div class="col-xs-12">
+              <div class="post-image" (click)="togglePostImageSize()" [ngClass]="{ 'post-image-max-height' : _togglePostImageSize, 'post-image-less-height' : !_togglePostImageSize  }">
+                  <img src="{{post.image}}" class="img-responsive img-rounded">
+              </div>
             </div>
           </div>
 
@@ -264,13 +242,21 @@ import {AppService} from '../app.service';
               </div>
             </div>
 
-            <div class="col-xs-11">
+            <div [ngClass]="{ 'col-xs-9' : post.image, 'col-xs-10' : !post.image }">
 
               <div class="row">
                 <div class="col-xs-12">
                   <a [routerLink]="['ViewPost', {postid: post.id}]" class="post-title">
                     <span>{{post.title}}</span>
                   </a>
+                </div>
+              </div>
+
+              <div class="row hidden1" *ngIf="post.image">
+                <div class="col-xs-12">
+                  <div class="post-image" (click)="togglePostImageSize()" [ngClass]="{ 'post-image-max-height' : _togglePostImageSize, 'post-image-less-height' : !_togglePostImageSize }">
+                      <img src="{{post.image}}" class="img-responsive img-rounded">
+                  </div>
                 </div>
               </div>
 
@@ -306,6 +292,19 @@ import {AppService} from '../app.service';
                 </div>
               </div>     <!-- ! row -->
             </div>
+<!--
+            <div class="col-xs-2 post-image-md-col">
+                <div class="row" *ngIf="post.image">
+                  <div class="col-xs-12">
+                    <div class="post-image-md">
+                      <a [routerLink]="['ViewPost', {postid: post.id}]">
+                        <img src="{{post.image}}" class="img-responsive img-rounded">
+                      </a>
+                    </div>
+                  </div>
+                </div>
+            </div>
+-->
           </div>
 
         </div>      <!-- !post-container -->
@@ -339,6 +338,36 @@ import {AppService} from '../app.service';
     letter-spacing: -.022em;
     word-wrap: break-word;
   }
+  .my-post .post-container .post-image {
+    padding-top: 20px;
+    cursor: pointer;
+  }
+  .my-post .post-container .post-image-list-view {
+    max-height: 250px;
+    overflow: hidden;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+  }
+  .my-post .post-container .post-image-less-height {
+    max-height: 250px;
+    overflow: hidden;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+  }
+  .my-post .post-container .post-image-max-height {
+    max-height: initial;
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  .my-post .post-container .post-image-md-col {
+    padding-left: 0;
+  }
+  .my-post .post-container .post-image-md {
+    max-height: 124px;
+    overflow: hidden;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+  }
   .my-post .post-container .post-text {
     color: rgba(0, 0, 0, 0.8);
     display: block;
@@ -351,12 +380,12 @@ import {AppService} from '../app.service';
     margin-bottom: 0px;
     margin-left: 0px;
     margin-right: 0px;
-    margin-top: 8px;
+    margin-top: 15px;
     word-wrap: break-word;
     -webkit-font-smoothing: antialiased;
   }
-  .my-post .post-container .post-type-link{
-    padding-top: 15px;
+  .my-post .post-container .post-type-link {
+    padding-top: 20px;
     color: #af2b2b;
   }
   .my-post .post-container .post-type-link a {
@@ -399,6 +428,7 @@ export class PostComponent implements OnInit {
   private _readmore               : Boolean          = false;
   private _textTrimmed            : string           = null;
   private _errorMsg               : string           = null;
+  private _togglePostImageSize    : boolean          = false;
 
   constructor(
     private _appService: AppService,
@@ -411,9 +441,10 @@ export class PostComponent implements OnInit {
     this.templateTypeGroupList = PostTemplateType.Grouplist;
     this.templateTypeMain = PostTemplateType.Main;
 
+    if ( this.post && this.post.text ) this.post.text = this.post.text.trim()
     let MAXCHARS = 250;
     if(this.post) this._readmore = false;
-    if(this.post && this.post.text.length > MAXCHARS) {
+    if(this.post && this.post.text && this.post.text.length > MAXCHARS) {
       this._textTrimmed = this.post.text.substring(0, MAXCHARS) + ' ...';
       this._readmore = false;
       //this._showFullText = false;     // On Post page, initally hide full text
@@ -472,6 +503,14 @@ export class PostComponent implements OnInit {
         //this._errorMsg = error;
         this._appService.createNotification( { text: error, type: 'danger' } );
       });
+  }
+
+  /**
+   * User clicked on the post image in post view
+   * So toggle the image size to show full size image if it is larger than max-height
+   */
+  togglePostImageSize() {
+    this._togglePostImageSize = !this._togglePostImageSize;
   }
 
   ngOnDestroy() {

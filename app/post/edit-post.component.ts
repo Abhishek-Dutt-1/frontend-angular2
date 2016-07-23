@@ -53,13 +53,43 @@ import {ErrorComponent} from '../misc/error.component';
           <div class="post-text form-group">
             <label for="link" class="col-sm-2 control-label">Link</label>
             <div class="col-sm-10">
-              <input id="link" type="url" class="form-control" required
-                [(ngModel)] = "_model.link" placeholder="Paste URL here"
-                ngControl = "link" #link="ngForm"
-              >
-              <div [hidden]="link.valid || link.pristine" class="alert alert-danger">
-                Link is required
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <input id="link" type="url" class="form-control" required
+                    [(ngModel)] = "_model.link" placeholder="Paste a URL here ( e.g. http://example.com/xyz )"
+                    ngControl = "link" #link="ngForm" (change)="searchImagesFromUrl(_model.link)"
+                  >
+                  <div [hidden]="link.valid || link.pristine" class="alert alert-danger">
+                    Link is required
+                  </div>
+                </div>
               </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="post-images-message" *ngIf="_post_images_message">{{_post_images_message}}</div>
+                  <div class="post-images" *ngFor="let image of _imageList; let i = index" (click)="selectPostImage(i)">
+                    <div class="post-image pull-left" [ngClass]="{ 'post-image-selected' : image.selected }">
+                      <img src={{image.src}} class="img-responsive img-rounded" alt="image loading">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="post-image-text form-group">
+          <label for="post-image-text" class="col-sm-2 control-label">Image URL</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control"
+              [(ngModel)] = "_model.image" placeholder="Image to be displayed with the post. (Optional)"
+              ngControl = "post_image" #post_image="ngForm"
+            >
+            <div [hidden]="post_image.valid || post_image.pristine" class="alert alert-danger">
+              Invalid Image URL.
             </div>
           </div>
         </div>
@@ -184,6 +214,23 @@ import {ErrorComponent} from '../misc/error.component';
     .my-edit-post .search-results {
        margin: 10px 10px 0 0;
      }
+     .my-edit-post .post-images-message {
+       margin-top: 20px;
+       margin-bottom: 20px;
+       font-weight: bold;
+       font-style: italic;
+     }
+     .my-edit-post .post-image {
+      max-width: 150px;
+      margin-right: 15px;
+      margin-bottom: 15px;
+      padding: 5px;
+     }
+     .my-edit-post .post-image-selected {
+       /* border: 1px solid #337ab7; */
+       border-radius: 6px;
+       background-color: #ff5e5e;
+     }
   `],
   inputs: ['post'],
   directives: [ErrorComponent]
@@ -200,6 +247,8 @@ export class EditPostComponent {
   private _post = null;
   private _readyToEdit = false;
   private _currentUser = null;
+  private _imageList          = [];
+  private _post_images_message = null;
 
   constructor(
     private _postService           : PostService,
@@ -221,7 +270,10 @@ export class EditPostComponent {
           this._model = post;
           this._model.post_as_anon = 0;
           this._model.sticky_post = this._model.sticky_level ? 1 : 0     // 1 for group, 0 for no sticky
-          if ( this._currentUser ) this._readyToEdit = true;
+          if ( this._currentUser ) {
+            this.searchImagesFromUrl(this._model.link)  // since user is also needed
+            this._readyToEdit = true;
+          }
         },
         error => {
           this._error.msg = error;
@@ -233,8 +285,10 @@ export class EditPostComponent {
       if(currentUser) {
         this._currentUser = currentUser;
         this._error.msg = null;
-        //  if ( ! currentUser.emailverified ) this._error.msg = "Users must have a verified email to edit posts.";
-        if ( this._model ) this._readyToEdit = true;
+        if ( this._model ) {
+          this.searchImagesFromUrl(this._model.link)
+          this._readyToEdit = true;
+        }
       } else {
         this._error.msg = "User must be logged in to edit posts.";
         this._readyToEdit = false;
@@ -246,9 +300,7 @@ export class EditPostComponent {
     if( currentUser ) {
       this._currentUser = currentUser;
       this._error.msg = null;
-      // this._model.postedby = currentUser;
       if ( this._model ) this._readyToEdit = true;
-      // if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to edit posts.";
     } else {
       this._error.msg = "User must be logged in to edit posts.";
       this._readyToEdit = false;
@@ -277,6 +329,52 @@ export class EditPostComponent {
     //this.model.superGroupSlashGroup = item.supergroup.name+'/'+item.name;
   }
 
+
+  /**
+   * User posted a url in link type post
+   */
+  searchImagesFromUrl( url : string ) {
+    //console.log( "ONCHANE", url )
+    this._post_images_message = "Loading images from the Link..."
+    this._postService.fetchPostImagesFromUrl( url ).subscribe(
+      imageList => {
+        //console.log( imageList );
+        this._imageList = imageList.imageList;
+        if ( this._imageList.length > 0 ) {
+          this._post_images_message = this._imageList.length + " images found. Click to select a suitable image for the post."
+          this._post_images_message = "Click to select a suitable image for the post."
+        } else {
+          this._post_images_message = "No images found."
+        }
+        //this._router.navigate(['ViewPost', {postid: post.id}]);
+      },
+      error => {
+        this._post_images_message = "Error loading images."
+        // this._error.msg = error;
+        // console.log(error);
+      });
+  }
+  /**
+   * User clicked on an image form the image list
+   */
+  selectPostImage( index: any ) {
+    //console.log( index, this._imageList )
+
+    this._imageList.forEach( (image, ind, arr) => {
+      if ( ind != index)
+        arr[ind].selected = false;
+    })
+
+    if ( this._imageList[ index ].selected == true ) {
+      this._imageList[ index ].selected = false;
+      this._model.image = null;
+    } else {
+      this._imageList[ index ].selected = true;
+      this._model.image = this._imageList[ index ].src;
+    }
+
+  }
+
   /**
    * Submit the new post form
    */
@@ -292,6 +390,7 @@ export class EditPostComponent {
       link     : this._model.link || null,
       text     : this._model.text || null,
       type     : this._model.type,
+      image    : this._model.image || null,
       postedby : this._model.postedby.id,
       group    : this._model.group.id,
       post_as_anon : this._model.post_as_anon ? true : false,
