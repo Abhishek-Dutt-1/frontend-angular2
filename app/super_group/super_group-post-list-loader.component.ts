@@ -77,7 +77,8 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
         <div class="col-md-10 post-list-area">
           <my-error [_error]="_error"></my-error>
           <my-post-list [posts]="_postsSticky" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
-          <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
+          <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"
+           [loadButtonState]="_loadButtonState" (loadMoreClicked)="loadMoreClicked($event)"></my-post-list>
         </div>
         <div class="col-md-2 hidden-xs hidden-sm">
           <my-super_group-sidebar [_super_group]="_super_group" [_groups]="_groups" [_currentUser]="_currentUser"></my-super_group-sidebar>
@@ -161,10 +162,10 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
  */
 export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
-  private _posts: Post[];
-  private _postsSticky: Post[];
+  private _posts: Post[] = [];
+  private _postsSticky: Post[] = [];
   private _view = "supergroup";
-  private _groups: Group[];
+  private _groups: Group[] = [];
   private _super_group_name: string;
   private _super_group: SuperGroup;
   private _hyper_group = null;
@@ -173,6 +174,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   private _postTemplateType: PostTemplateType = null;
   private _currentUser: User = null;
   private _sticky:boolean = false;
+  private _loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
 
   constructor(
     private _appService: AppService,
@@ -194,9 +196,11 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         if(currentUser) {
           this._currentUser = currentUser;
           this._error.msg = null;
-          this.getSupergroupAndPosts(this._super_group_name);
+          this._loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
+          this.getSupergroupAndPosts(this._super_group_name, true);
         } else {
-          this.getSupergroupAndPosts(this._super_group_name);
+          this._loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
+          this.getSupergroupAndPosts(this._super_group_name, true);
         }
       });
     // Only logged in uses view post (init version)
@@ -207,7 +211,8 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
       this._error.msg = null;
     } else { }
     // Logged in or not fetch posts immidiately
-    this.getSupergroupAndPosts(this._super_group_name);
+    this._loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
+    this.getSupergroupAndPosts(this._super_group_name, true);
 
     // Sticky header. Ref: Geo-filter component for details
     window.addEventListener("scroll", this.myEfficientFn);
@@ -217,7 +222,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 	  // All the taxing stuff you do
     this._sticky = window.scrollY > 60;
     //console.log(this._sticky)
-  }, 100, false);
+  }, 0, false);   // was 100ms
   debounce(func, wait, immediate) {
     var timeout;
     return function() {
@@ -234,9 +239,15 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   }
 
 
-  getSupergroupAndPosts(superGroup) {
+  getSupergroupAndPosts(superGroup: any, startOver?: boolean) {
 
-    this._superGroupService.getSupergroupAndPosts(superGroup).subscribe(
+    let lastPostId = -1 // -1 == get the newest post
+    if ( this._posts && this._posts.length > 0 && !startOver ) {
+      lastPostId = Math.min.apply(Math, this._posts.map( post => post.id ) );
+    }
+
+    this._loadButtonState.buzyLoadingPosts = true;
+    this._superGroupService.getSupergroupAndPosts( superGroup, lastPostId ).subscribe(
       resp => {
         //console.log(resp);
         this._error.msg = null;
@@ -245,20 +256,39 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         this._groups = resp.superGroup.groups;
         this._hyper_group = this._super_group.type;
         if ( this._super_group.type == 'international' ) {
-          //console.log(this._currentUser)
           if ( this._currentUser && this._currentUser.national.find( group => group.id === this._super_group.id ) ) {
             this._hyper_group = 'national'
           }
         }
-        this._posts = resp.posts;
+        //this._posts = resp.posts;
+        if ( startOver ) {
+          this._posts = resp.posts;
+        } else {
+          this._posts = this._posts.concat( resp.posts );
+        }
+
+        this._loadButtonState.reachedLastPost = resp.posts.length == 0
         this._postsSticky = resp.postsSticky;
+
         if( this._posts.length + this._postsSticky.length < 1 ) {
           this._error.msg = "No posts here yet. You can create the first one!"
+          this._loadButtonState.postListHasNoPosts = true;
         }
+
+        this._loadButtonState.buzyLoadingPosts = false;
       },
       error => {
-        this._error.msg = error;
+        // this._error.msg = error;
+        this._error = { type: 'danger', msg: error };
+        this._loadButtonState.show = false;
+        this._loadButtonState.buzyLoadingPosts = false;
+        this._loadButtonState.reachedLastPost = false;
     })
+  }
+
+  loadMoreClicked( noop ) {
+    if ( this._loadButtonState.buzyLoadingPosts || this._loadButtonState.reachedLastPost ) return;
+    this.getSupergroupAndPosts( this._super_group_name, false )
   }
 
   goBack() {

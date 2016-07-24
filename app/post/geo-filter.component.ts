@@ -266,7 +266,7 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
 	  // All the taxing stuff you do
     this._sticky = window.scrollY > 60;
     //console.log(this._sticky)
-  }, 100, false);
+  }, 0, false);   // was 100ms
   // Returns a function, that, as long as it continues to be invoked, will not
   // be triggered. The function will be called after it stops being called for
   // N milliseconds. If `immediate` is passed, trigger the function on the

@@ -92,12 +92,14 @@ export class SuperGroupService {
    * Returns the Supergroup, its groups and thier posts
    * for displaying on Supergroup's post lists page
    */
-  getSupergroupAndPosts(superGroup: string) {
+  getSupergroupAndPosts( superGroup: string, lastPostId?: any ) {
+    lastPostId = lastPostId || -1;
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers    = new Headers( this._appService.getSiteParams().headersObj );
     let options    = new RequestOptions({ headers: headers });
-    return this._http.post(backendUrl + '/supergroup/getSupergroupAndPosts', JSON.stringify( { superGroup: superGroup } ), options)
+    return this._http.post(backendUrl + '/supergroup/getSupergroupAndPosts',
+      JSON.stringify( { superGroup: superGroup, lastPostId: lastPostId  } ), options)
       .map(
         res => {
           this._appService.spinner(false);

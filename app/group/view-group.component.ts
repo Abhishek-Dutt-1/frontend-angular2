@@ -87,7 +87,8 @@ import {FabButtonComponent} from '../misc/fab-button.component';
       <my-error [_error]="_error"></my-error>
 
       <my-post-list [posts]="groupPostsSticky" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view"></my-post-list>
-      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view"></my-post-list>
+      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view"
+        [loadButtonState]="_loadButtonState" (loadMoreClicked)="loadMoreClicked($event)"></my-post-list>
 
       <div class="fab-button visible-xs-block">
         <my-fab-button (clicked)='gotoNewPostForm($event)'></my-fab-button>
@@ -189,15 +190,18 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   private group: Group;
   private _super_group = null;
   private _hyper_group = null;
+  private _super_group_name = null
+  private _group_name = null
 
-  private groupPosts: Post[];
-  private groupPostsSticky: Post[];
+  private groupPosts: Post[] = [];
+  private groupPostsSticky: Post[] = [];
   private _view = "group";
   private postTemplateType: PostTemplateType;
   private _loggedInUserSubcription = null;
   private _currentUser: User = null;
   private _error = { msg: null, type: null };
   private _sticky:boolean = false;
+  private _loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
 
   constructor(
     private _appService: AppService,
@@ -210,8 +214,8 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
 
     this.postTemplateType = PostTemplateType.Grouplist;
 
-    let super_group_name = this._routeParams.get('super_group_name');
-    let group_name = this._routeParams.get('group_name');
+    this._super_group_name = this._routeParams.get('super_group_name');
+    this._group_name = this._routeParams.get('group_name');
 
     // Only logged in uses view posts
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(
@@ -219,7 +223,8 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
         //if(currentUser) {
           this._currentUser = currentUser;
           this._error.msg = null;
-          this.getPostsInGroup(super_group_name, group_name);
+          this._loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
+          this.getPostsInGroup(this._super_group_name, this._group_name, true);
         //} else {
         //  this.getPostsInGroup(super_group_name, group_name);
         //}
@@ -235,7 +240,8 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
       this._error.msg = null;
     //} else { }
     // Logged in or not fetch posts immidiately
-    this.getPostsInGroup(super_group_name, group_name);
+    this._loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
+    this.getPostsInGroup(this._super_group_name, this._group_name, true);
 
     // Sticky header. Ref: Geo-filter component for details
     window.addEventListener("scroll", this.myEfficientFn);
@@ -245,7 +251,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
 	  // All the taxing stuff you do
     this._sticky = window.scrollY > 60;
     //console.log(this._sticky)
-  }, 100, false);
+  }, 0, false);   // 100ms
   debounce(func, wait, immediate) {
     var timeout;
     return function() {
@@ -264,8 +270,15 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   /**
    * Fetches posts in given supergroup/group
    */
-  getPostsInGroup(super_group_name: string, group_name: string) {
-    this._groupService.getPostsInGroup(super_group_name, group_name)
+  getPostsInGroup( super_group_name: string, group_name: string, startOver?: boolean ) {
+
+    let lastPostId = -1 // -1 == get the newest post
+    if ( this.groupPosts && this.groupPosts.length > 0 && !startOver ) {
+      lastPostId = Math.min.apply(Math, this.groupPosts.map( post => post.id ) );
+    }
+
+    this._loadButtonState.buzyLoadingPosts = true;
+    this._groupService.getPostsInGroup( super_group_name, group_name, lastPostId )
       .subscribe(
         groupAndPostList => {
           //console.log(groupAndPostList)
@@ -278,22 +291,41 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
               this._hyper_group = 'national'
             }
           }
-          this.groupPosts = groupAndPostList.postList;
+          //this.groupPosts = groupAndPostList.postList;
+          if ( startOver ) {
+            this.groupPosts = groupAndPostList.postList;
+          } else {
+            this.groupPosts = this.groupPosts.concat( groupAndPostList.postList );
+          }
+
+          this._loadButtonState.reachedLastPost = groupAndPostList.postList.length == 0
           this.groupPostsSticky = groupAndPostList.postListSticky;
+
           if( this.groupPosts.length + this.groupPostsSticky.length < 1 ) {
             if ( this.group.non_members_can_view || this.group.isCurrentUserSubscribed ) {
               this._error.msg = "This group does not have any posts yet. You can help by creating the first post!"
+              this._loadButtonState.postListHasNoPosts = true;
             } else {
               this._error.msg = "This group is private. Non members can not view posts in this group."
             }
           }
+
+          this._loadButtonState.buzyLoadingPosts = false;
         },
         error => {
           //console.log(error);
-          this._error.msg = error;
+          //this._error.msg = error;
+          this._error = { type: 'danger', msg: error };
+          this._loadButtonState.show = false;
+          this._loadButtonState.buzyLoadingPosts = false;
+          this._loadButtonState.reachedLastPost = false;
         });
   }
 
+  loadMoreClicked( noop ) {
+    if ( this._loadButtonState.buzyLoadingPosts || this._loadButtonState.reachedLastPost ) return;
+    this.getPostsInGroup( this._super_group_name, this._group_name, false )
+  }
 
 
   /***************************************

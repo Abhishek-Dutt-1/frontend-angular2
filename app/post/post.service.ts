@@ -53,12 +53,14 @@ export class PostService {
   /**
    * Returns posts belonging to a geoSelection
    */
-  getPostsByHyperGroup(geoSelection: any) {
+  getPostsByHyperGroup( geoSelection: any, lastPostId?: any ) {
+    lastPostId = lastPostId || -1;
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.get(backendUrl+'/post/getPostsByHyperGroup/' + geoSelection, options)
+    return this._http.post( backendUrl+'/post/getPostsByHyperGroup/',
+      JSON.stringify({ hyperGroup: geoSelection, lastPostId: lastPostId }), options )
       .map(res => {
         //console.log(res.json());
         this._appService.spinner(false);

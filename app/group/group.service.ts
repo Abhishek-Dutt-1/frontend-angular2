@@ -108,13 +108,14 @@ export class GroupService {
   /**
    * Get all posts in a Group
    */
-  getPostsInGroup(superGroupName: string, groupName: string) {
+  getPostsInGroup(superGroupName: string, groupName: string, lastPostId?: any ) {
+    lastPostId = lastPostId || -1;
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/group/getPostsInGroup',
-        JSON.stringify({superGroupName: superGroupName, groupName: groupName}),
+        JSON.stringify({ superGroupName: superGroupName, groupName: groupName, lastPostId: lastPostId }),
         options)
       .map(
         res => {

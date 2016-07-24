@@ -315,11 +315,11 @@ export class HyperGroupSidebarComponent implements OnInit {
      * Un subscribe to a Super group into user's given hyper group
      */
     unSubscribeSuperGroup(sg: any, hyperGroup: string) {
-      console.log("Un Subbing SG", sg);
-      this._userService.unSubscribeSuperGroup(sg.id, hyperGroup).subscribe(
+      // console.log("Un Subbing SG", sg);
+      this._userService.unSubscribeSuperGroup( sg.id, hyperGroup ).subscribe(
         updatedUser => {
           //console.log("Success", updatedUser)
-          this._authenticationService.updateCurrentUser(updatedUser);
+          this._authenticationService.updateCurrentUser( updatedUser );
           //this._router.navigate(['ViewUser', {id: this._currentUser.id, tab: 'geo'}]);
           this._appService.createNotification( { text: "Unsubscribed from Supergroup '" + sg.name + "'", type: 'success' } );
         },
