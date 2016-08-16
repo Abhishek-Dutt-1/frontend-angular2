@@ -53,10 +53,14 @@ export class NewComment2LoaderComponent implements OnInit {
     */
     this._postService.getPost(postid)
       .subscribe(
-        post => {
+        res => {
           //console.log(post);
+          let post = res.post;
+          post.comments = res.comments;
           this._post = post;
-          this._comment1 = post.comments.find(function(comment) {return comment.id == comment1id;})
+
+          //this._post = post;
+          this._comment1 = post.comments.find( function( comment ) { return comment.id == comment1id; } )
         },
         error => {
           //console.log(error);

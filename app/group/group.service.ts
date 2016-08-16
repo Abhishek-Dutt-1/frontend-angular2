@@ -134,8 +134,6 @@ export class GroupService {
 
   /**
    * Fetch a list of super_group/group names for autocomplete dropdown in new post form
-   * TODO:: SETUP BACKEND TO TEST THIS
-   * TODO:: CHANGE JSONP TO HTTP
    */
   searchGroups(searchTermArray: string) {
 

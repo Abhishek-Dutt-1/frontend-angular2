@@ -16,5 +16,7 @@ export interface User {
   state: SuperGroup[],
   city: SuperGroup[],
   local: SuperGroup[],
-  extra_emails: any[]
+  extra_emails: any[],
+  score: number,
+  totalScore: number
 }

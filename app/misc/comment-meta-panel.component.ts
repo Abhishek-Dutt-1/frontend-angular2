@@ -27,7 +27,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
               <div class="comment-link pull-left" *ngIf="comment.postedby">
                 <a class="" [routerLink]="['ViewUser', {id: comment.postedby.id}]">
                   {{comment.postedby.displayname}}
-                </a>
+                </a> ({{comment.postedby.score}}/{{comment.postedby.totalScore}})
               </div>
 
               <div *ngIf="comment.postedby && commentLevel < 4" class="bullet pull-left">&bull;</div>

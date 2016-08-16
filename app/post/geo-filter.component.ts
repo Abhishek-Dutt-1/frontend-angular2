@@ -255,13 +255,15 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // See more at: http://www.mzan.com/article/37019491-how-to-get-value-of-this-keyword-inside-windows-scroll-event-listener-in-angu.shtml#sthash.ihJMe7X1.dpuf
     //window.addEventListener("scroll", (event) => { this._scrollListener(event); });
-    //window.addEventListener("scroll", this._scrollListener.bind(this));
-    window.addEventListener("scroll", this.myEfficientFn);
+    window.addEventListener("scroll", this._scrollListener.bind(this));
+    //window.addEventListener("scroll", this.myEfficientFn);
   }
   ngOnDestroy() {
     //console.log("REMOVING LIStener")
-    window.removeEventListener("scroll", this.myEfficientFn);
+    //window.removeEventListener("scroll", this.myEfficientFn);
+    window.removeEventListener("scroll", this._scrollListener);
   }
+  /*
   myEfficientFn = this.debounce( () => {
 	  // All the taxing stuff you do
     this._sticky = window.scrollY > 60;
@@ -285,7 +287,10 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
       if (callNow) func.apply(context, args);
     }
   }
-
+  */
+  _scrollListener() {
+    this._sticky = window.scrollY > 60;
+  }
 
   /*
   gotoChangeGeoSttings() {

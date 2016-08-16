@@ -20,6 +20,7 @@ import {User} from './user'
       </div>
       <div *ngIf="isUserLoggedIn">
         <a [routerLink]="['ViewUser', {id: loggedInUser.id}]" class="displayname">{{loggedInUser.displayname}}</a>
+        ({{loggedInUser.score}}/{{loggedInUser.totalScore}})
         <span class="auth-pipe"> | </span>
         <a class="auth-logout" (click)="logout()">Logout</a>
       </div>
@@ -49,12 +50,13 @@ export class UserAuthenticationPanelComponent {
 
   private isUserLoggedIn = false;
   private loggedInUser:User = null;
+  private _loggedInUserSubcription = null;
 
   constructor(
     private _userService: UserService,
     private _authenticationService: AuthenticationService
   ) {
-    this._authenticationService.loggedInUser$.subscribe(user => {
+    this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(user => {
       if(user) {
         this.loggedInUser = user;
         this.isUserLoggedIn = true;
@@ -77,4 +79,7 @@ export class UserAuthenticationPanelComponent {
     this._authenticationService.logoutUser()
   }
 
+  ngOnDestroy() {
+    this._loggedInUserSubcription.unsubscribe();
+  }
 }

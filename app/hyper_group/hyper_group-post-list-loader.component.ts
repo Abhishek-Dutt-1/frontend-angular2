@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router, RouteParams} from '@angular/router-deprecated';
 import {Post} from '../post/post';
 import {User} from '../user/user';
+import {Group} from '../group/group';
 import {AppService} from '../app.service';
 import {PostService} from '../post/post.service';
 import {UserService} from '../user/user.service';
@@ -24,8 +25,8 @@ import {HyperGroupSidebarComponent} from './hyper_group-sidebar.component';
       <div class="row">
         <div class="col-md-10 post-list-area">
           <my-error [_error]="_error"></my-error>
-          <my-post-list [posts]="postsSticky" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
-          <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view"
+          <my-post-list [posts]="postsSticky" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view" [contextGroups]="_contextGroups"></my-post-list>
+          <my-post-list [posts]="posts" [postTemplateType]="postTemplateType" [currentUser]="_currentUser" [view]="_view" [contextGroups]="_contextGroups"
             [loadButtonState]="_loadButtonState" (loadMoreClicked)="loadMoreClicked($event)"></my-post-list>
         </div>
         <div class="col-md-2 hidden-xs hidden-sm">
@@ -66,6 +67,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   private _currentUser: User = null;
   private _loggedInUserSubcription = null;
   private _loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
+  private _contextGroups: Group[] = []
 
   constructor(
     private _appService: AppService,
@@ -80,7 +82,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
     this.postTemplateType = PostTemplateType.List;
 
-    this._geoSelection = this._routeParams.get('geo') || this._appService.getGeoSelection() || 'national';
+    this._geoSelection = this._routeParams.get('geo') || this._appService.getGeoSelection() || 'city';
     this._appService.setGeoSelection(this._geoSelection);
 
     // Only logged in uses view posts
@@ -126,8 +128,18 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     this._loadButtonState.buzyLoadingPosts = true;
     this._postService.getPostsByHyperGroup( geoSelection, lastPostId ).subscribe(
       resp => {
-        // console.log(resp)
+        console.log(resp)
         this._error.msg = null;
+
+        this._contextGroups = resp.groupList;
+        //console.log(this._contextGroups)
+
+        // Update user's score
+        if ( this._currentUser && this._currentUser.id ) {
+          let temp = {};
+          temp[this._currentUser.id] = resp.currentUserScore;
+          this._authenticationService.updateCurrentUsersScore( temp );
+        }
 
         if ( startOver ) {
           this.posts = resp.posts;

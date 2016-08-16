@@ -6,17 +6,17 @@ import {PostComponent} from './post.component';
   template: `
     <div class="my-post-list">
       <div *ngFor="let post of posts">
-        <my-post [post]="post" [type]="postTemplateType" [currentUser]="currentUser" [view]="view"></my-post>
+        <my-post [post]="post" [type]="postTemplateType" [currentUser]="currentUser" [view]="view" [contextGroups]="contextGroups" (updateUserScores)="updateUserScores($event)"></my-post>
       </div>
       <div class="load-more" *ngIf="loadButtonState.show && !loadButtonState.postListHasNoPosts">
         <div class="alert alert-danger" role="alert" *ngIf="loadButtonState.buzyLoadingPosts">
-          Loading posts ...
+          &nbsp;&nbsp;&nbsp;Loading posts ...
         </div>
         <div  class="alert alert-danger" role="alert" *ngIf="false && !loadButtonState.buzyLoadingPosts && !loadButtonState.reachedLastPost" (click)="loadMore()">
           <button class="btn btn-danger btn-sm">Load more posts</button>
         </div>
         <div  class="alert alert-danger" role="alert" *ngIf="loadButtonState.reachedLastPost">
-          Reached the end, no more posts here.
+          &nbsp;&nbsp;&nbsp;Reached the end, no more posts here.
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@ import {PostComponent} from './post.component';
     }
   `],
   directives: [PostComponent],
-  inputs: ["posts", "postTemplateType", "currentUser", "view", "loadButtonState"],
+  inputs: ["posts", "postTemplateType", "currentUser", "view", "loadButtonState", "contextGroups"],
   outputs: ['loadMoreClicked']
 })
 export class PostListComponent implements OnInit {
@@ -57,7 +57,7 @@ export class PostListComponent implements OnInit {
 
     // >= is needed because if the horizontal scrollbar is visible then window.innerHeight includes
     // it and in that case the left side of the equation is somewhat greater.
-    var scrolledToBottom = (scrollTop + window.innerHeight) >= scrollHeight - 100;
+    var scrolledToBottom = (scrollTop + window.innerHeight) >= scrollHeight - 500;
 
     if ( scrolledToBottom ) this.loadMore()
     //console.log("scroll left", scrollTop, scrollHeight, scrolledToBottom)
@@ -68,6 +68,22 @@ export class PostListComponent implements OnInit {
     // console.log("Load More")
     this.loadMoreClicked.next( 'noop' );
   }
+
+  /**
+   * Event comming from individual post
+   * Typically update User's scores
+   */
+  updateUserScores( userScoreObj ) {
+    //console.log( "Post List", userScoreObj, this.posts )
+    Object.keys( userScoreObj ).forEach( ( userId ) => {
+      this.posts.filter( post => post.postedby.id == userId )
+      .forEach( post => {
+        post.postedby.score = userScoreObj[ userId ].score
+        post.postedby.totalScore = userScoreObj[ userId ].totalScore
+      });
+    })
+  }
+
   ngOnDestroy() {
     //console.log("REMOVING LIStener")
     window.removeEventListener("scroll", this.checkIfUserScrolledToEnd);

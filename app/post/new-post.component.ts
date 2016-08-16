@@ -112,7 +112,7 @@ import {ErrorComponent} from '../misc/error.component';
             <div class="">
               <p class="form-control-static">
                 <span *ngIf="model.group">
-                  {{model.group.supergroup.name | uppercase}}/{{model.group.name}}
+                  <b>{{model.group.supergroup.name}}/{{model.group.name}}</b>
                 </span>
                 <span *ngIf="!model.group"><i>No Group Selected</i></span>
               </p>
@@ -136,7 +136,7 @@ import {ErrorComponent} from '../misc/error.component';
                   (keyup)="search(searchGroupTmp.value)">
               </div>
               <div class="col-sm-12">
-                <button class="btn btn-sm btn-default search-results" *ngFor="let item of items | async" (click)="selectSuperGroupSlashGroup(item)">
+                <button class="btn btn-sm btn-info search-results" *ngFor="let item of items | async" (click)="selectSuperGroupSlashGroup(item)">
                   {{item.supergroup.name}}/{{item.name}}
                 </button>
               </div>
@@ -238,7 +238,7 @@ export class NewPostComponent {
 
   private _postTypes          = ['text', 'link'];
   private model               = null;
-  private _error = { msg : null, type : null };
+  private _error              = { msg : null, type : null };
   private _showGroupSearchBox = true;
   //private _searchGroup      = '';
   private _loggedInUserSubcription = null;
@@ -379,6 +379,7 @@ export class NewPostComponent {
         //this._router.navigate(['ViewPost', {postid: post.id}]);
       },
       error => {
+        this._imageList = [];
         this._post_images_message = "Error loading images."
         // this._error.msg = error;
         // console.log(error);

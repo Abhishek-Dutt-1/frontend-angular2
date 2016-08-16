@@ -168,5 +168,14 @@ export class AuthenticationService {
     this._isUserLoggedIn = true;
     this._loggedInUser.next(updatedUser);
   }
-
+  updateCurrentUsersScore( userScoreObj ) {
+    let scoreObj = userScoreObj[ this._currentUser.id ]
+    if ( scoreObj ) {
+      this._currentUser.score = scoreObj.score;
+      this._currentUser.totalScore = scoreObj.totalScore;
+      // Dont notify anyone else as score is currently displayed on the top menu
+      // else this will trigger a unnecessary request
+      //this._loggedInUser.next(this._currentUser);
+    }
+  }
 }

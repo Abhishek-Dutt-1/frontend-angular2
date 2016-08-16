@@ -35,7 +35,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class ErrorComponent {
 
-  private _errorMsg = null;
+  private _error = { msg: null, type: null };
 
   constructor( ) { }
 

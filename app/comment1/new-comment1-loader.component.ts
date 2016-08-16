@@ -38,9 +38,12 @@ export class NewComment1LoaderComponent implements OnInit {
   ngOnInit() {
     this._postTemplateType = PostTemplateType.Main;
     this._postid = +this._routeParams.get('postid');
-    this._postService.getPost(this._postid).subscribe(post => {
-      this._post = post;
-    });
+    this._postService.getPost(this._postid).subscribe(
+      res => {
+        let post = res.post;
+        post.comments = res.comments;
+        this._post = post;
+      });
 
   }
 

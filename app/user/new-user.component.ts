@@ -105,7 +105,11 @@ declare var gapi:any;
               </div>
             </div>
 
-            <my-error [_errorMsg]="_errorMsg"></my-error>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <my-error [_error]="_error"></my-error>
+              </div>
+            </div>
 
             <div class="form-group">
               <div class="col-sm-10 col-sm-offset-2">
@@ -151,7 +155,7 @@ export class NewUserComponent {
     */
   };
   //private _groupList = {international: [], national: [], state: [], city: [], local: [], selectedNational: {}};
-  private _errorMsg = false;
+  private _error = { msg: null, type: null };
   private _loggedInUserSubcription = null;
 /*
 googleLoginButtonId = "google-login-button";
@@ -239,7 +243,7 @@ console.log('User signed out.');
   }
 
   onSubmit(event) {
-    this._errorMsg = null;
+    this._error.msg = null;
     event.preventDefault();
     /*
     this.model.international = this._groupList.international.filter(el => el.selected == true)
@@ -263,8 +267,8 @@ console.log('User signed out.');
       },
       error => {
         // TODO:: Handle errors
-        console.log(error)
-        this._errorMsg = error;
+        //console.log(error)
+        this._error.msg = error;
       })
   }
 

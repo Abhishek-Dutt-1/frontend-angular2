@@ -55,7 +55,7 @@ import {ErrorComponent} from '../misc/error.component';
 
         <div class="row">
           <div class="col-xs-12">
-            <my-post [post]="post" [type]="postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post>
+            <my-post [post]="post" [type]="postTemplateType" [currentUser]="_currentUser" [view]="_view" [contextGroups]="[_group]" (updateUserScores)="updateUserScores($event)"></my-post>
           </div>
         </div>
 
@@ -283,8 +283,10 @@ export class ViewPostComponent {
 
   getPosts(postId: any) {
     this._postService.getPost(postId).subscribe(
-      post => {
+      res => {
         //console.log(post)
+        let post = res.post;
+        post.comments = res.comments;
         this.post = post;
         this._group = post.group;
         this._super_group = post.group.supergroup;
@@ -298,6 +300,12 @@ export class ViewPostComponent {
           this._error.msg = "There are no comments on this post. You can post the first by clicking 'Reply'.";
           this._error.type = "danger";
         }
+        // Update user's score
+        if ( this._currentUser && this._currentUser.id ) {
+          let temp = {};
+          temp[this._currentUser.id] = res.currentUserScore;
+          this._authenticationService.updateCurrentUsersScore( temp );
+        }
       },
       error => {
         //console.log(error);
@@ -305,6 +313,45 @@ export class ViewPostComponent {
         this._error.msg = error;
       });
   }
+
+  /**
+   * Event comming from individual post
+   * Typically update User's scores
+   */
+  updateUserScores( userScoreObj ) {
+
+    //console.log( "Post List", userScoreObj, this.post )
+    if ( userScoreObj[ this.post.postedby.id ] ) {
+      this.post.postedby.score = userScoreObj[ this.post.postedby.id ].score
+      this.post.postedby.totalScore = userScoreObj[ this.post.postedby.id ].totalScore
+    }
+
+    this.post.comments.forEach( function(c1) {
+      if ( c1.postedby && userScoreObj[ c1.postedby.id ] ) {
+        c1.postedby.score = userScoreObj[ c1.postedby.id ].score
+        c1.postedby.totalScore = userScoreObj[ c1.postedby.id ].totalScore
+      }
+      c1.comments.forEach( function(c2) {
+        if ( c2.postedby && userScoreObj[ c2.postedby.id ] ) {
+          c2.postedby.score = userScoreObj[ c2.postedby.id ].score
+          c2.postedby.totalScore = userScoreObj[ c2.postedby.id ].totalScore
+        }
+        c2.comments.forEach( function(c3) {
+          if ( c3.postedby && userScoreObj[ c1.postedby.id ] ) {
+            c3.postedby.score = userScoreObj[ c3.postedby.id ].score
+            c3.postedby.totalScore = userScoreObj[ c3.postedby.id ].totalScore
+          }
+          c3.comments.forEach( function(c4) {
+            if ( c4.postedby && userScoreObj[ c1.postedby.id ] ) {
+              c4.postedby.score = userScoreObj[ c4.postedby.id ].score
+              c4.postedby.totalScore = userScoreObj[ c4.postedby.id ].totalScore
+            }
+          })
+        })
+      })
+    })
+  }
+
 
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();

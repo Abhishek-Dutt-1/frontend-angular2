@@ -89,7 +89,7 @@ export class SuperGroupService {
   }       // !getAllSuperGroups()
 
   /**
-   * Returns the Supergroup, its groups and thier posts
+   * Returns the Supergroup, its groups and their posts
    * for displaying on Supergroup's post lists page
    */
   getSupergroupAndPosts( superGroup: string, lastPostId?: any ) {

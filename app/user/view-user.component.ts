@@ -20,7 +20,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
 
       <my-userprofile-memu-panel [_profileOwnersId]="_profileOwnersId"></my-userprofile-memu-panel>
 
-      <my-error [_errorMsg]="_errorMsg"></my-error>
+      <my-error [_error]="_error"></my-error>
 
       <my-user [user]="_user" [ownProfile]="_ownProfile" [tab]="_tab"></my-user>
 
@@ -40,7 +40,7 @@ export class ViewUserComponent implements OnInit {
   private _loggedInUser:User = null;
   private _ownProfile = false;
   private _profileOwnersId = null;
-  private _errorMsg = false;
+  private _error = { msg: null, type: null };
   private _loggedInUserSubcription = null;
 
   constructor(
@@ -88,13 +88,13 @@ export class ViewUserComponent implements OnInit {
       user => {
         if( user ) {
           //console.log("View user", user);
-          this._errorMsg = null;
+          this._error.msg = null;
           this._user = user;
         }
       },
       error => {
         //console.log(error);
-        this._errorMsg = error;
+        this._error.msg = error;
       });
   }
 

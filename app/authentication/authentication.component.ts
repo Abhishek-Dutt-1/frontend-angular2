@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {RouteParams, Router} from '@angular/router-deprecated';
 import {AuthenticationService} from './authentication.service';
 import {AppService} from '../app.service';
+import {ErrorComponent} from '../misc/error.component';
 
 @Component({
   selector: 'my-authentication',
@@ -11,11 +12,8 @@ import {AppService} from '../app.service';
       <div class="col-xs-12 col-md-offset-3 col-md-6">
 
         <h3>Welcome fellow human!</h3>
-        <div class="alert alert-danger" role="alert" [hidden]="!_errorMsg">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-          <span class="sr-only">Error:</span>
-          {{_errorMsg}}
-        </div>
+        <my-error [_error]="_error"></my-error>
+
         <form #loginForm="ngForm">
 
           <!--
@@ -60,18 +58,13 @@ import {AppService} from '../app.service';
             <button (click)="goBack()" class="btn btn-default">Go Back</button>
           </div>
 
-          <div>
-            <div [hidden]="!errorMsg">
-              {{errorMsg}}
-            </div>
-          </div>
-
         </form>
 
       </div>
     </div>
   </div>
   `,
+  directives: [ErrorComponent],
 })
 export class AuthenticationComponent {
 
@@ -80,7 +73,7 @@ export class AuthenticationComponent {
     identifier: null,
     password: null
   };
-  private _errorMsg = null;
+  private _error = { msg: null, type: null };
 
   constructor(
     private _authenticationService: AuthenticationService,
@@ -99,14 +92,14 @@ export class AuthenticationComponent {
       },
       error => {
         console.log(error)
-        this._errorMsg = error;
+        this._error.msg = error;
       }
     );
 
   }
 
   clearErrorMsg() {
-    this._errorMsg = null;
+    this._error.msg = null;
   }
 
   goBack() {

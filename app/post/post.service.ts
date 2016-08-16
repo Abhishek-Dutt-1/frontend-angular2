@@ -41,9 +41,10 @@ export class PostService {
       .map(res => {
         //console.log(res.json());
         this._appService.spinner(false);
-        let post = res.json().post;
-        post.comments = res.json().comments;
-        return post;
+        //let post = res.json().post;
+        //post.comments = res.json().comments;
+        //return post;
+        return res.json();
       }).catch(error => {
         this._appService.spinner(false);
         return this._appService.handleServerErrors(error);
@@ -125,12 +126,13 @@ export class PostService {
       });
   }   // !deletePostById()
 
-  upVotePost(id: any) {
+  upVotePost(id: any, contextGroups: any) {
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.get(backendUrl+'/post/upVotePost/'+id, options).map(
+    //return this._http.get(backendUrl+'/post/upVotePost/'+id, options).map(
+    return this._http.post(backendUrl+'/post/upVotePost/', JSON.stringify( { postId : id, contextGroups : contextGroups } ), options).map(
       res => {
         //console.log(res);
         //console.log(res.json());
@@ -143,12 +145,13 @@ export class PostService {
       });
   }
 
-  downVotePost(id: any) {
+  downVotePost(id: any, contextGroups: any) {
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.get(backendUrl+'/post/downVotePost/'+id, options).map(
+    //return this._http.get(backendUrl+'/post/downVotePost/'+id, options).map(
+    return this._http.post(backendUrl+'/post/downVotePost/', JSON.stringify( { postId : id, contextGroups : contextGroups } ), options).map(
       res => {
         //console.log(res);
         //console.log(res.json());

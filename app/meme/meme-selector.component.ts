@@ -4,6 +4,8 @@ import {AppService} from '../app.service';
 import {ErrorComponent} from '../misc/error.component';
 import {Meme} from './meme';
 import {MemeService} from './meme.service';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'my-meme-selector',
@@ -13,25 +15,60 @@ import {MemeService} from './meme.service';
     <div class="my-meme-selector">
 
       <div class="row visible-xs-block meme-names-horiz">
+
         <div class="col-xs-12">
           <div *ngFor="let memecat of _memeList.memecategories">
-            <div class="btn btn-default btn-xs pull-left" (click)="memeCatNameClicked(memecat.id)">{{memecat.name}}</div>
+            <div class="btn btn-xs pull-left" [ngClass]="{'btn-danger': _selectedMemeCatId == memecat.id }" (click)="memeCatNameClicked(memecat.id)">{{memecat.name}}</div>
           </div>
         </div>
+
+        <div class="col-xs-12">
+          <div class="text-center text-muted"><b><i>- OR -</i></b></div>
+          <input id="meme-search" type="text" class="form-control" placeholder="Search meme by tag"
+            [(ngModel)]="_memeSearchStringTmp" (click)="_memesBySearch = true; _selectedMemeCatId = null;" (keyup)="searchMemesByTags( _memeSearchStringTmp )">
+        </div>
+
       </div>
 
       <div class="row">
         <div class="col-xs-2 hidden-xs">
+
           <div *ngFor="let memecat of _memeList.memecategories">
-            <div class="btn btn-default btn-xs btn-block" (click)="memeCatNameClicked(memecat.id)">{{memecat.name}}</div>
+            <div class="btn btn-xs btn-block" [ngClass]="{'btn-danger': _selectedMemeCatId == memecat.id }" (click)="memeCatNameClicked(memecat.id)">{{memecat.name}}</div>
           </div>
+          <div class="text-center text-muted"><b><i>- OR -</i></b></div>
+          <input id="meme-search" type="text" class="form-control" placeholder="Search meme by tag"
+            [(ngModel)]="_memeSearchStringTmp" (click)="_memesBySearch = true; _selectedMemeCatId = null;" (keyup)="searchMemesByTags( _memeSearchStringTmp )">
+
         </div> <!-- !col -->
+
         <div class="col-xs-12 col-sm-10 meme-pane">
-          <div *ngFor="let meme of _displayedMemeList">
-            <div class="meme-image-container pull-left" (click)="selectMeme(meme)">
-              <img src="{{meme.imageurl}}" class="meme-image img-rounded">
+          <div class="row">
+
+            <div class="col-sm-12" [ngClass]="{ 'hidden' : _memesBySearch  == false }">
+
+              <div *ngIf=" _memeSearchStringTmp == '' " class="text-muted"><i>Go ahead. Type Something.</i></div>
+              <div *ngIf=" _searchTermLoading == true">Loading...</div>
+              <!--
+              <div *ngIf=" _searchTermLoading == false && _memeSearchStringTmp != '' "> Done loading '{{_memeSearchStringTmp}}' </div>
+              -->
+              <div *ngFor="let item of items | async" [ngClass]="{'hidden': _memeSearchStringTmp == '' }">
+                <div class="meme-image-container pull-left" (click)="selectMeme(item)">
+                  <img src="{{item.imageurl}}" class="meme-image img-rounded">
+                </div>
+              </div>
+
             </div>
-          </div>
+
+            <div class="col-xs-12" [ngClass]="{ 'hidden' : _memesBySearch  == true }">
+              <div *ngFor="let meme of _displayedMemeList">
+                <div class="meme-image-container pull-left" (click)="selectMeme(meme)">
+                  <img src="{{meme.imageurl}}" class="meme-image img-rounded">
+                </div>
+              </div>
+            </div>
+
+          </div>  <!-- !row -->
         </div>
       </div> <!-- !row -->
 
@@ -68,6 +105,9 @@ export class MemeSelectorComponent implements OnInit {
   private _memeList = { memeList: [], memecategories: [] };
   private _selectedMemeCatId = null;
   private _displayedMemeList = [];
+  private _memeSearchStringTmp = '';
+  private _memesBySearch = false;   // weather meme search by tag is in progress or not
+  private _searchTermLoading = false;
   public memeSelected: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -93,6 +133,7 @@ export class MemeSelectorComponent implements OnInit {
   // User clicked on a meme category name
   memeCatNameClicked(memeCatId) {
     this._selectedMemeCatId = memeCatId
+    this._memesBySearch = false;
     this._displayedMemeList = this._memeList.memeList.filter( meme => meme.categories.some( cat => cat.id === memeCatId ));
   }
 
@@ -100,5 +141,34 @@ export class MemeSelectorComponent implements OnInit {
   selectMeme(selectedMeme) {
     this.memeSelected.next(selectedMeme.imageurl);
   }
+
+  /**
+   * Search memes by thier tags
+   * input could be csv and/or space sperated list of tags
+   */
+  private _searchTermStream = new Subject<string>();
+  items:Observable<any[]> = this._searchTermStream
+    .debounceTime( 500 )
+    .distinctUntilChanged( )
+    .do( obs => {
+      this._searchTermLoading = true;
+      return obs;
+    })
+    .switchMap( ( term:string ) => this._memeService.searchMemesByTags( term ) )
+    .do( obs => {
+      this._searchTermLoading = false;
+      return obs;
+    })
+    .catch( (error) => Observable.from( [] ) );
+
+  searchMemesByTags( term: string ) {
+    if ( ! term ) {
+      this._memeSearchStringTmp = ''    // a hack for a wierd bug
+      console.log("returning", this._memeSearchStringTmp)
+      return
+    }
+    this._searchTermStream.next( term.trim() );
+  }
+
 
 }

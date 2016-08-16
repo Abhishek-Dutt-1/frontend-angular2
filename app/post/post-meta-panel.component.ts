@@ -28,6 +28,9 @@ import {PostTemplateType} from './post-template-types';
                 {{post.postedby.displayname}}
               </a>
             </div>
+            <div class="pull-left">
+              <div class="profile-text pull-left">({{post.postedby.score}}/{{post.postedby.totalScore}})</div>
+            </div>
             <div *ngIf="type != templateTypeGroupList" class="pull-left">
               <div class="profile-text pull-left">in</div>
               <div class="profile-link pull-left">

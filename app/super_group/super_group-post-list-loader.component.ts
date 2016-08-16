@@ -17,10 +17,11 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
 @Component({
   selector: 'my-super-group-post-list-loader',
   template: `
-  <div *ngIf="_super_group && _groups">
+  <div class="my-super-group-post-list-loader">
 
-    <div class="my-super-group-post-list-loader">
+    <div class="">
 
+      <div *ngIf="_super_group && _groups">
       <div class="row">
         <div class="col-xs-12">
 
@@ -72,12 +73,13 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
 
         </div> <!-- !col -->
       </div> <!-- !row -->
+      </div>  <!-- *ngIf="supergorup && group" -->
 
       <div class="row">
         <div class="col-md-10 post-list-area">
           <my-error [_error]="_error"></my-error>
-          <my-post-list [posts]="_postsSticky" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"></my-post-list>
-          <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view"
+          <my-post-list [posts]="_postsSticky" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view" [contextGroups]="_groups"></my-post-list>
+          <my-post-list [posts]="_posts" [postTemplateType]="_postTemplateType" [currentUser]="_currentUser" [view]="_view" [contextGroups]="_groups"
            [loadButtonState]="_loadButtonState" (loadMoreClicked)="loadMoreClicked($event)"></my-post-list>
         </div>
         <div class="col-md-2 hidden-xs hidden-sm">
@@ -215,9 +217,11 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     this.getSupergroupAndPosts(this._super_group_name, true);
 
     // Sticky header. Ref: Geo-filter component for details
-    window.addEventListener("scroll", this.myEfficientFn);
-  }
+    //window.addEventListener("scroll", this.myEfficientFn);
+    window.addEventListener("scroll", this._scrollListener.bind(this));
 
+  }
+/*
   myEfficientFn = this.debounce( () => {
 	  // All the taxing stuff you do
     this._sticky = window.scrollY > 60;
@@ -237,7 +241,10 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
       if (callNow) func.apply(context, args);
     }
   }
-
+*/
+  _scrollListener() {
+    this._sticky = window.scrollY > 60;
+  }
 
   getSupergroupAndPosts(superGroup: any, startOver?: boolean) {
 
@@ -249,7 +256,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     this._loadButtonState.buzyLoadingPosts = true;
     this._superGroupService.getSupergroupAndPosts( superGroup, lastPostId ).subscribe(
       resp => {
-        //console.log(resp);
+        console.log(resp);
         this._error.msg = null;
         resp.superGroup.groups = resp.groupList;
         this._super_group = resp.superGroup;
@@ -273,6 +280,13 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         if( this._posts.length + this._postsSticky.length < 1 ) {
           this._error.msg = "No posts here yet. You can create the first one!"
           this._loadButtonState.postListHasNoPosts = true;
+        }
+
+        // Update user's score
+        if ( this._currentUser && this._currentUser.id ) {
+          let temp = {};
+          temp[this._currentUser.id] = resp.currentUserScore;
+          this._authenticationService.updateCurrentUsersScore( temp );
         }
 
         this._loadButtonState.buzyLoadingPosts = false;
@@ -301,7 +315,8 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
-    window.removeEventListener( "scroll", this.myEfficientFn );
+    //window.removeEventListener( "scroll", this.myEfficientFn );
+    window.removeEventListener("scroll", this._scrollListener);
   }
 
 

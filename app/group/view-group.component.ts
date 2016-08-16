@@ -14,9 +14,11 @@ import {FabButtonComponent} from '../misc/fab-button.component';
 @Component({
   selector: 'my-view-group',
   template: `
-  <div *ngIf="group">
+  <div class="my-view-group">
 
-    <div class="my-view-group">
+    <div>
+
+      <div *ngIf="group">
 
       <div class="row border-row">
         <div class="col-xs-12">
@@ -84,10 +86,12 @@ import {FabButtonComponent} from '../misc/fab-button.component';
         </div> <!-- !col -->
       </div> <!-- !row -->
 
+      </div> <!-- *ngIf="group" -->
+
       <my-error [_error]="_error"></my-error>
 
-      <my-post-list [posts]="groupPostsSticky" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view"></my-post-list>
-      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view"
+      <my-post-list [posts]="groupPostsSticky" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view" [contextGroups]="[group]"></my-post-list>
+      <my-post-list [posts]="groupPosts" [postTemplateType]="postTemplateType"  [currentUser]="_currentUser" [view]="_view" [contextGroups]="[group]"
         [loadButtonState]="_loadButtonState" (loadMoreClicked)="loadMoreClicked($event)"></my-post-list>
 
       <div class="fab-button visible-xs-block">
@@ -244,9 +248,10 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
     this.getPostsInGroup(this._super_group_name, this._group_name, true);
 
     // Sticky header. Ref: Geo-filter component for details
-    window.addEventListener("scroll", this.myEfficientFn);
+    //window.addEventListener("scroll", this.myEfficientFn);
+    window.addEventListener("scroll", this._scrollListener.bind(this));
   }   // !ngOnInit
-
+/*
   myEfficientFn = this.debounce( () => {
 	  // All the taxing stuff you do
     this._sticky = window.scrollY > 60;
@@ -266,6 +271,10 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
       if (callNow) func.apply(context, args);
     }
   }
+*/
+  _scrollListener() {
+    this._sticky = window.scrollY > 60;
+  }
 
   /**
    * Fetches posts in given supergroup/group
@@ -281,7 +290,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
     this._groupService.getPostsInGroup( super_group_name, group_name, lastPostId )
       .subscribe(
         groupAndPostList => {
-          //console.log(groupAndPostList)
+          console.log(groupAndPostList)
           this._error.msg = null;
           this.group = groupAndPostList.group;
           this._super_group = this.group.supergroup;
@@ -310,12 +319,21 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
             }
           }
 
+          // Update user's score
+          if ( this._currentUser && this._currentUser.id ) {
+            let temp = {};
+            temp[this._currentUser.id] = groupAndPostList.currentUserScore;
+            this._authenticationService.updateCurrentUsersScore( temp );
+          }
+
           this._loadButtonState.buzyLoadingPosts = false;
         },
         error => {
-          //console.log(error);
+          console.log(error);
+          console.log(typeof error);
           //this._error.msg = error;
           this._error = { type: 'danger', msg: error };
+          console.log(this._error)
           this._loadButtonState.show = false;
           this._loadButtonState.buzyLoadingPosts = false;
           this._loadButtonState.reachedLastPost = false;
@@ -418,7 +436,8 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
 
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
-    window.removeEventListener("scroll", this.myEfficientFn);
+    //window.removeEventListener("scroll", this.myEfficientFn);
+    window.removeEventListener("scroll", this._scrollListener);
   }
 
   goBack() {

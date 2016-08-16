@@ -95,12 +95,13 @@ export class Comment1Service {
    * Delete comment1 by id
     * (This function is not named deleteComment1ById due to confirm-comment-delete componenet)
    */
-  deleteCommentById( commentId: any ) {
+  deleteCommentById( commentId: any, postId: any ) {
     this._appService.spinner();
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers    = new Headers( this._appService.getSiteParams().headersObj );
     let options    = new RequestOptions({ headers: headers });
-    return this._http.get(backendUrl+'/comment1/deleteComment1ById/' + commentId, options).map(
+    //return this._http.get(backendUrl+'/comment1/deleteComment1ById/' + commentId, options).map(
+    return this._http.post(backendUrl+'/comment1/deleteComment1ById/', JSON.stringify( { commentId: commentId, postId: postId } ), options).map(
       res => {
         //console.log(res)
         //console.log(res.json())

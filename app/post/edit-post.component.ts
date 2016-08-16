@@ -238,8 +238,8 @@ import {ErrorComponent} from '../misc/error.component';
 export class EditPostComponent {
 
   private _postTypes          = ['text', 'link'];
-  private _model               = null;
-  private _error = { msg: null, type: null };
+  private _model              = null;
+  private _error              = { msg: null, type: null };
   private _showGroupSearchBox = true;
   //private _searchGroup      = '';
   private _loggedInUserSubcription = null;

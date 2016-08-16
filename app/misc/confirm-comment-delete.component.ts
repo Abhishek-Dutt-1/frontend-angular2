@@ -105,8 +105,10 @@ export class ConfirmCommentDeleteComponent implements OnInit {
 
 
     this._postServiceSubcription = this._postService.getPost(this._postId).subscribe(
-      post => {
+      res => {
         // console.log(post)
+        let post = res.post;
+        post.comments = res.comments;
         this._post = post;
         if ( this._comment ) this._readyToGo = true
       },
@@ -128,7 +130,7 @@ export class ConfirmCommentDeleteComponent implements OnInit {
   }
 
   deleteThisComment() {
-    this._commentService.deleteCommentById( this._comment.id ).subscribe(
+    this._commentService.deleteCommentById( this._comment.id, this._post.id ).subscribe(
       deletedComment => {
         // console.log("DELETE SUCCESS");
         // console.log(deletedComment);

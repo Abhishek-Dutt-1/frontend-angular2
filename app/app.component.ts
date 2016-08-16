@@ -122,7 +122,9 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
       vertical-align: middle;
       color: white;
       font-weight: bold;
+      /*
       text-shadow: 3px 3px 3px rgba(0,0,0,0.5)
+      */
     }
     .my-app-component .header .logo a:hover {
       text-decoration: none;
@@ -168,7 +170,7 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     useAsDefault: true
   },
   {
-    path: '/sg/:super_group_name',
+    path: '/my/:super_group_name',
     name: 'SuperGroupPostList',
     component: SuperGroupPostListLoaderComponent
   },/*
@@ -206,7 +208,7 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     component: NewGroupComponent
   },
   {
-    path: '/go/:super_group_name/:group_name',
+    path: '/my/:super_group_name/:group_name',
     name: 'ViewGroup',
     component: ViewGroupComponent
   },

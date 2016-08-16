@@ -1,7 +1,7 @@
 /**
  * Displays a single post
  */
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, EventEmitter} from '@angular/core';
 import {Post} from './post';
 import {Router, RouterLink} from '@angular/router-deprecated';
 import {PostService} from './post.service';
@@ -11,6 +11,7 @@ import {DateFormatPipe} from '../misc/date-format.pipe';
 import {PostMetaPanelComponent} from './post-meta-panel.component';
 import {ErrorComponent} from '../misc/error.component';
 import {AppService} from '../app.service';
+import {AuthenticationService} from '../authentication/authentication.service';
 
 @Component({
   selector: 'my-post',
@@ -18,7 +19,7 @@ import {AppService} from '../app.service';
   <div *ngIf="post">
   <div class="my-post">
 
-    <my-error [_errorMsg]="_errorMsg"></my-error>
+    <my-error [_error]="_error"></my-error>
 
     <div *ngIf="type === templateTypeList || type === templateTypeGroupList" class="row">
 
@@ -75,7 +76,7 @@ import {AppService} from '../app.service';
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="vote-container">
+              <div class="vote-container-horiz">
                 <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
               </div>
             </div>
@@ -218,7 +219,7 @@ import {AppService} from '../app.service';
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="vote-container">
+              <div class="vote-container-horiz">
                 <my-vote [_votee]='post' (upVote)='upVotePost($event)' (downVote)='downVotePost($event)'></my-vote>
               </div>
             </div>
@@ -410,29 +411,35 @@ import {AppService} from '../app.service';
     color: rgba(0, 0, 0, 0.4);
   }
   .my-post .post-container .vote-container {
+    margin-top: 5px;
+  }
+  .my-post .post-container .vote-container-horiz {
     margin-top: 15px;
   }
   `],
-  inputs: ['post', 'type', 'currentUser', 'view'],
+  inputs: ['post', 'type', 'currentUser', 'view', 'contextGroups'],
+  outputs: ['updateUserScores'],
   directives: [RouterLink, VoteComponent, PostMetaPanelComponent, ErrorComponent],
   pipes: [DateFormatPipe]
 })
 export class PostComponent implements OnInit {
 
-  private post                    : Post             = null;
-  private type                    : string           = null;
-  private templateTypeList        : PostTemplateType = null;
-  private templateTypeGroupList   : PostTemplateType = null;
-  private templateTypeMain        : PostTemplateType = null;
-  private _processingVote         : Boolean          = false;
-  private _readmore               : Boolean          = false;
-  private _textTrimmed            : string           = null;
-  private _errorMsg               : string           = null;
-  private _togglePostImageSize    : boolean          = false;
-
+  private post                    : Post              = null;
+  private type                    : string            = null;
+  private templateTypeList        : PostTemplateType  = null;
+  private templateTypeGroupList   : PostTemplateType  = null;
+  private templateTypeMain        : PostTemplateType  = null;
+  private _processingVote         : Boolean           = false;
+  private _readmore               : Boolean           = false;
+  private _textTrimmed            : string            = null;
+  private _error                                      = { msg: null, type: null };
+  private _togglePostImageSize    : boolean           = false;
+  public  updateUserScores        : EventEmitter<any> = new EventEmitter();    // User action changed Score, so update it all over the UI
+  public  contextGroups           : any               = []
   constructor(
     private _appService: AppService,
     private _postService: PostService,
+    private _authenticationService: AuthenticationService,
     private _router: Router) { }
 
   ngOnInit() {
@@ -462,17 +469,21 @@ export class PostComponent implements OnInit {
     //console.log("Inside post comp upvoting ", id)
     if(this._processingVote) return;
     this._processingVote = true;
-
-    this._postService.upVotePost(id).subscribe(
+console.log(this.contextGroups)
+    let contextGroups = this.contextGroups.map( group => group.id );
+    // Context Groups are used to calculate User's score depending on which  page the post is
+    this._postService.upVotePost(id, contextGroups).subscribe(
       post => {
         this._processingVote = false;
         //this.post = post;
-        this.post.upvotes = post.upvotes;
-        this.post.downvotes = post.downvotes;
-        this.post.currentUserHasUpVoted = post.currentUserHasUpVoted;
-        this.post.currentUserHasDownVoted = post.currentUserHasDownVoted;
+        this.post.upvotes = post.post.upvotes;
+        this.post.downvotes = post.post.downvotes;
+        this.post.currentUserHasUpVoted = post.post.currentUserHasUpVoted;
+        this.post.currentUserHasDownVoted = post.post.currentUserHasDownVoted;
         //console.log("UpVote susccess");
-        this._errorMsg = null;
+        //console.log(post)
+        this.updateUserScoresEvent( post.changedScores );
+        this._error.msg = null;
       },
       error => {
         this._processingVote = false;
@@ -486,16 +497,19 @@ export class PostComponent implements OnInit {
     if(this._processingVote) return;
     this._processingVote = true;
 
-    this._postService.downVotePost(id).subscribe(
+    let contextGroups = this.contextGroups.map( group => group.id );
+    // Context Groups are used to calculate User's score depending on which  page the post is
+    this._postService.downVotePost(id, contextGroups).subscribe(
       post => {
         this._processingVote = false;
         //this.post = post;
-        this.post.upvotes = post.upvotes;
-        this.post.downvotes = post.downvotes;
-        this.post.currentUserHasUpVoted = post.currentUserHasUpVoted;
-        this.post.currentUserHasDownVoted = post.currentUserHasDownVoted;
+        this.post.upvotes = post.post.upvotes;
+        this.post.downvotes = post.post.downvotes;
+        this.post.currentUserHasUpVoted = post.post.currentUserHasUpVoted;
+        this.post.currentUserHasDownVoted = post.post.currentUserHasDownVoted;
         //console.log("Down Vote susccess");
-        this._errorMsg = null;
+        this.updateUserScoresEvent( post.changedScores );
+        this._error.msg = null;
       },
       error => {
         console.log(error)
@@ -503,6 +517,17 @@ export class PostComponent implements OnInit {
         //this._errorMsg = error;
         this._appService.createNotification( { text: error, type: 'danger' } );
       });
+  }
+
+  /**
+   *
+   */
+  updateUserScoresEvent( userScoreObj ) {
+    //console.log("POST", userScoreObj)
+    this.updateUserScores.next( userScoreObj );
+    // Don't want to track current user in PostComponent also, so let AuthService find
+    // the right user from the obj
+    this._authenticationService.updateCurrentUsersScore( userScoreObj );
   }
 
   /**

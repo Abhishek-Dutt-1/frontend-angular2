@@ -77,8 +77,10 @@ export class ConfirmPostDeleteComponent implements OnInit {
     }
 
     this._postService.getPost(postId).subscribe(
-      post => {
-        console.log(post)
+      res => {
+        //console.log(res)
+        let post = res.post;
+        post.comments = res.comments;
         this._post = post;
       },
       error => {

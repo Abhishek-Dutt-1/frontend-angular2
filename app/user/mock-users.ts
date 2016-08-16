@@ -17,7 +17,9 @@ export var MOCK_USERS: User[] = [
     state: [MOCK_SUPER_GROUPS[5-1]],
     city: [MOCK_SUPER_GROUPS[7-1]],
     local: [MOCK_SUPER_GROUPS[9-1]],
-    extra_emails: []
+    extra_emails: [],
+    score: 0,
+    totalScore: 0
   },
   {
     id: 2,
@@ -33,7 +35,9 @@ export var MOCK_USERS: User[] = [
     state: [MOCK_SUPER_GROUPS[5]],
     city: [MOCK_SUPER_GROUPS[2]],
     local: [MOCK_SUPER_GROUPS[3]],
-    extra_emails: []
+    extra_emails: [],
+    score: 0,
+    totalScore: 0
   },
   {
     id: 3,
@@ -49,7 +53,9 @@ export var MOCK_USERS: User[] = [
     state: [MOCK_SUPER_GROUPS[5]],
     city: [MOCK_SUPER_GROUPS[2]],
     local: [MOCK_SUPER_GROUPS[3]],
-    extra_emails: []
+    extra_emails: [],
+    score: 0,
+    totalScore: 0
   },
   {
     id: 4,
@@ -65,7 +71,9 @@ export var MOCK_USERS: User[] = [
     state: [MOCK_SUPER_GROUPS[5]],
     city: [MOCK_SUPER_GROUPS[2]],
     local: [MOCK_SUPER_GROUPS[3]],
-    extra_emails: []
+    extra_emails: [],
+    score: 0,
+    totalScore: 0
   }
 
 ]

@@ -7,10 +7,10 @@ import {ErrorComponent} from '../misc/error.component';
   selector: 'my-verify-email',
   template: `
     <div class="my-verify-email">
-      <div *ngIf="_errorMsg">
-        <my-error [_errorMsg]="_errorMsg"></my-error>
+      <div *ngIf="_error.msg">
+        <my-error [_error]="_error"></my-error>
       </div>
-      <div *ngIf="!_errorMsg">
+      <div *ngIf="!_error.msg">
         <div>
           {{_message}}
         </div>
@@ -22,7 +22,7 @@ import {ErrorComponent} from '../misc/error.component';
 })
 export class VerifyEmailComponent implements OnInit {
 
-  private _errorMsg = null;
+  private _error = { msg : null, type : null };
   private _userid = null;
   private _message = null;
 
@@ -38,10 +38,10 @@ export class VerifyEmailComponent implements OnInit {
       data => {
         //this._userid = data.userid;
         this._message = data.msg;
-        this._errorMsg = null;
+        this._error.msg = null;
       },
       error => {
-        this._errorMsg = error;
+        this._error.msg = error;
       }
     )
   }
