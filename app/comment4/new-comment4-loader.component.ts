@@ -48,9 +48,14 @@ export class NewComment4LoaderComponent implements OnInit {
     */
     this._postService.getPost(postid)
       .subscribe(
-        post => {
+        res => {
           //console.log(post);
+          //this._post = post;
+
+          let post = res.post;
+          post.comments = res.comments;
           this._post = post;
+
           var tmpComment3 = null;
           post.comments.find(function(comment1) {
             if(tmpComment3) return true;

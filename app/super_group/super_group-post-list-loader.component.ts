@@ -201,6 +201,8 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
           this._loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
           this.getSupergroupAndPosts(this._super_group_name, true);
         } else {
+          this._currentUser = currentUser;
+          this._error.msg = null;
           this._loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
           this.getSupergroupAndPosts(this._super_group_name, true);
         }
@@ -256,7 +258,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     this._loadButtonState.buzyLoadingPosts = true;
     this._superGroupService.getSupergroupAndPosts( superGroup, lastPostId ).subscribe(
       resp => {
-        console.log(resp);
+        //console.log(resp);
         this._error.msg = null;
         resp.superGroup.groups = resp.groupList;
         this._super_group = resp.superGroup;

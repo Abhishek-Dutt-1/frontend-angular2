@@ -290,7 +290,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
     this._groupService.getPostsInGroup( super_group_name, group_name, lastPostId )
       .subscribe(
         groupAndPostList => {
-          console.log(groupAndPostList)
+          //console.log(groupAndPostList)
           this._error.msg = null;
           this.group = groupAndPostList.group;
           this._super_group = this.group.supergroup;

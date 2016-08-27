@@ -88,6 +88,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     // Only logged in uses view posts
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(
       currentUser => {
+        console.log(this._currentUser, currentUser)
         if(currentUser) {
           this._currentUser = currentUser;
           this._error.msg = null;
@@ -96,6 +97,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
           this.getPostsByHypergroup(this._geoSelection, true);
           this.getHyperGroupHierarchy(this._currentUser, this._geoSelection);
         } else {
+          this._currentUser = currentUser;
           this._loadButtonState = { show: true, buzyLoadingPosts: false, reachedLastPost: false, postListHasNoPosts: false }
           this.getPostsByHypergroup(this._geoSelection, true);
           this.getHyperGroupHierarchy(this._currentUser, this._geoSelection);
@@ -128,7 +130,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     this._loadButtonState.buzyLoadingPosts = true;
     this._postService.getPostsByHyperGroup( geoSelection, lastPostId ).subscribe(
       resp => {
-        console.log(resp)
+        // console.log(resp)
         this._error.msg = null;
 
         this._contextGroups = resp.groupList;
@@ -136,6 +138,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
         // Update user's score
         if ( this._currentUser && this._currentUser.id ) {
+          console.log(this._currentUser)
           let temp = {};
           temp[this._currentUser.id] = resp.currentUserScore;
           this._authenticationService.updateCurrentUsersScore( temp );

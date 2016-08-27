@@ -46,19 +46,22 @@ export class NewComment3LoaderComponent implements OnInit {
     */
     this._postService.getPost(postid)
       .subscribe(
-        post => {
+        res => {
           //console.log(post);
+          //this._post = post;
+          let post = res.post;
+          post.comments = res.comments;
           this._post = post;
 
           var tmpComment2 = null;
-          post.comments.find(function(comment1) {
-            if(tmpComment2) return true;
-            tmpComment2 = comment1.comments.find(function(comment2) {
+          post.comments.find( function( comment1 ) {
+            if( tmpComment2 ) return true;
+            tmpComment2 = comment1.comments.find(function( comment2 ) {
               return comment2.id == comment2id;
             })
             return false;
           })
-          console.log(tmpComment2)
+          //console.log(tmpComment2)
           this._comment2 = tmpComment2
         },
         error => console.log(error)
