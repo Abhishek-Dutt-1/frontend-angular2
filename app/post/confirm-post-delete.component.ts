@@ -17,7 +17,7 @@ import {ErrorComponent} from '../misc/error.component';
   <div *ngIf="_post">
     <div class="my-confirm-post-delete">
 
-      <my-error [_errorMsg]="_errorMsg"></my-error>
+      <my-error [_error]="_error"></my-error>
       <div class="panel panel-default">
         <div class="panel-heading">Confirm?</div>
         <div class="panel-body">
@@ -56,7 +56,7 @@ export class ConfirmPostDeleteComponent implements OnInit {
   private templateTypeMain        : PostTemplateType = null;
 
   private _post: Post = null;
-  private _errorMsg: String = null;
+  private _error = { msg: null, type: null };
 
   constructor(
     private _postService: PostService,
@@ -84,8 +84,8 @@ export class ConfirmPostDeleteComponent implements OnInit {
         this._post = post;
       },
       error => {
-        this._errorMsg = error;
-        console.log(error);
+        this._error.msg = error;
+        //console.log(error);
       })
 
   }
@@ -93,12 +93,12 @@ export class ConfirmPostDeleteComponent implements OnInit {
   deleteThisPost() {
     this._postService.deletePostById(this._post.id).subscribe(
       deletedPost => {
-        console.log("DELETE SUCCESS");
-        console.log(deletedPost);
+        //console.log("DELETE SUCCESS");
+        //console.log(deletedPost);
         this._router.navigate(['ViewGroup', {super_group_name: this._post.group.supergroup.name, group_name: this._post.group.name}]);
       },
       error => {
-       this._errorMsg = error;
+       this._error.msg = error;
       })
   }
   gotoPost(id: number) {

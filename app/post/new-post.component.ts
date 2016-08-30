@@ -96,7 +96,7 @@ import {ErrorComponent} from '../misc/error.component';
         <div class="post-textarea form-group">
           <label for="text" class="col-sm-2 control-label">Text</label>
           <div class="col-sm-10">
-            <textarea type="text" class="form-control" rows="20"
+            <textarea type="text" class="form-control" rows="15"
               [(ngModel)] = "model.text" placeholder="Post text"
               ngControl = "text" #text="ngForm"
             ></textarea>
@@ -145,6 +145,7 @@ import {ErrorComponent} from '../misc/error.component';
           </div>    <!-- col-sm-10 -->
         </div>      <!-- ! form-group -->
 
+        <fieldset [disabled]="_currentUser ? false : true">
         <div class="post-as-anon form-group">
           <label for="post-as-anon" class="col-sm-2 control-label">Post As Anonymous</label>
           <div class="col-sm-10">
@@ -156,6 +157,7 @@ import {ErrorComponent} from '../misc/error.component';
             </label>
           </div>
         </div>
+        </fieldset>
 
         <div *ngIf="model.postedby && model.group">
           <div class="sticky-post form-group" [ngClass]="{ hidden: model.group.owner !== model.postedby.id }">
@@ -236,15 +238,17 @@ import {ErrorComponent} from '../misc/error.component';
 })
 export class NewPostComponent {
 
-  private _postTypes          = ['text', 'link'];
-  private model               = null;
-  private _error              = { msg : null, type : null };
-  private _showGroupSearchBox = true;
-  //private _searchGroup      = '';
+  private _postTypes               = ['text', 'link'];
+  private model                    = null;
+  private _error                   = { msg : null, type : null };
+  private _showGroupSearchBox      = true;
+  //private _searchGroup           = '';
   private _loggedInUserSubcription = null;
-  private _searchString       = '';
-  private _imageList          = [];
-  private _post_images_message = null;
+  private _currentUser             = null;
+  private _searchString            = '';
+  private _imageList               = [];
+  private _post_images_message     = null;
+
 
   constructor(
     private _postService           : PostService,
@@ -260,6 +264,17 @@ export class NewPostComponent {
 
     let super_group_name = this._routeParams.get('super_group_name') || null;
     let group_name       = this._routeParams.get('group_name') || null;
+
+    this.model =  {
+      title: '',
+      link: '',
+      image: '',
+      text: '',
+      type: this._postTypes[0],
+      //group: superGroupSlashGroup,
+      post_as_anon: 0,
+      sticky_post: 0,
+    }
 
     let superGroupSlashGroup = null;
     if(super_group_name && group_name) {
@@ -285,26 +300,20 @@ export class NewPostComponent {
     */
     //this._searchGroup = superGroupSlashGroup;
 
-    this.model =  {
-      title: '',
-      link: '',
-      image: '',
-      text: '',
-      type: this._postTypes[0],
-      //group: superGroupSlashGroup,
-      post_as_anon: 0,
-      sticky_post: 0,
-    }
-
     // Only logged in uses can post
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
+        this._currentUser = currentUser;
         this.model.postedby = currentUser;
+        this.model.post_as_anon = 0;
         this._error.msg = null;
         this.search(this._searchString);    // <-- This works
         // if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to create new posts.";
       } else {
-        this._error.msg = "User must be logged in to create new posts.";
+        this._currentUser = null;
+        this.model.postedby = null;
+        this.model.post_as_anon = 1;
+        //this._error.msg = "User must be logged in to create new posts.";
       }
     });
     // Only logged in uses can post (init version)
@@ -312,12 +321,17 @@ export class NewPostComponent {
     let currentUser = this._authenticationService.getLoggedInUser();
     if( currentUser ) {
       //console.log(currentUser)
+      this._currentUser = currentUser;
       this._error.msg = null;
       this.model.postedby = currentUser;
+      this.model.post_as_anon = 0;
       this.search(this._searchString);      // <-- This does not works
       // if ( ! currentUser.emailverified ) this._errorMsg = "Users must have a verified email to create new posts.";
     } else {
-      this._error.msg = "User must be logged in to create new posts.";
+      this._currentUser = null;
+      this.model.postedby = null;
+      this.model.post_as_anon = 1;
+      //this._error.msg = "User must be logged in to create new posts.";
     }
 
   }
@@ -368,7 +382,7 @@ export class NewPostComponent {
     this._post_images_message = "Loading images from the Link..."
     this._postService.fetchPostImagesFromUrl( url ).subscribe(
       imageList => {
-        //console.log( imageList );
+        console.log( imageList );
         this._imageList = imageList.imageList;
         if ( this._imageList.length > 0 ) {
           this._post_images_message = this._imageList.length + " images found. Click to select a suitable image for the post."
@@ -382,7 +396,8 @@ export class NewPostComponent {
         this._imageList = [];
         this._post_images_message = "Error loading images."
         // this._error.msg = error;
-        // console.log(error);
+        //this._error.msg = error;
+         //console.log(error);
       });
   }
   /**
@@ -427,8 +442,9 @@ export class NewPostComponent {
 
     event.preventDefault();
 
-    if( !this.model.group || !this.model.postedby ) {
-      return;
+    //if( !this.model.group || !this.model.postedby ) {
+    if( !this.model.group ) {
+        return;
     }
 
     let properModel = {
@@ -437,7 +453,7 @@ export class NewPostComponent {
       text     : this.model.text || null,
       type     : this.model.type,
       image    : this.model.image || null,
-      postedby : this.model.postedby.id,
+      postedby : this.model.postedby ? this.model.postedby.id : null,
       group    : this.model.group.id,
       post_as_anon : this.model.post_as_anon ? true : false,
       sticky_level : this.model.sticky_post ? 1 : 0     // 1 for group, 0 for no sticky

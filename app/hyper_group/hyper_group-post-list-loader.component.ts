@@ -88,7 +88,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
     // Only logged in uses view posts
     this._loggedInUserSubcription = this._authenticationService.loggedInUser$.subscribe(
       currentUser => {
-        console.log(this._currentUser, currentUser)
+        //console.log(this._currentUser, currentUser)
         if(currentUser) {
           this._currentUser = currentUser;
           this._error.msg = null;
@@ -138,7 +138,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
 
         // Update user's score
         if ( this._currentUser && this._currentUser.id ) {
-          console.log(this._currentUser)
+          //console.log(this._currentUser)
           let temp = {};
           temp[this._currentUser.id] = resp.currentUserScore;
           this._authenticationService.updateCurrentUsersScore( temp );

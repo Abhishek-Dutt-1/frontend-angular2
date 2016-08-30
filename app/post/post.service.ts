@@ -175,10 +175,12 @@ export class PostService {
     let options = new RequestOptions({ headers: headers });
     return this._http.post(backendUrl+'/post/fetchPostImagesFromUrl/', JSON.stringify( { url: url } ), options).map(
       res => {
+        //console.log(res.json())
         this._appService.spinner(false);
         return res.json();
       })
       .catch(error => {
+        //console.log(error)
         this._appService.spinner(false);
         return this._appService.handleServerErrors(error)
       });

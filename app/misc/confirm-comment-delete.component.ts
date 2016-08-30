@@ -22,7 +22,7 @@ import {Comment4Component} from '../comment4/comment4.component';
 @Component({
   selector: 'my-confirm-comment-delete',
   template: `
-  <my-error [_errorMsg]="_errorMsg"></my-error>
+  <my-error [_error]="_error"></my-error>
   <div *ngIf="_readyToGo">
     <div class="my-confirm-comment-delete">
 
@@ -62,7 +62,7 @@ import {Comment4Component} from '../comment4/comment4.component';
 })
 export class ConfirmCommentDeleteComponent implements OnInit {
 
-  private _errorMsg: String = null;
+  private _error = { msg: null, type: null };
   private _post: Post = null;
   private _currentUser: User = null;
   private _comment: any = null;
@@ -113,7 +113,7 @@ export class ConfirmCommentDeleteComponent implements OnInit {
         if ( this._comment ) this._readyToGo = true
       },
       error => {
-        this._errorMsg = error;
+        this._error.msg = error;
         // console.log(error);
       })
 
@@ -124,8 +124,8 @@ export class ConfirmCommentDeleteComponent implements OnInit {
         if ( this._post ) this._readyToGo = true
       },
       error => {
-        this._errorMsg = error;
-        // console.log(error);
+        this._error.msg = error;
+        console.log(error);
       })
   }
 
@@ -134,12 +134,12 @@ export class ConfirmCommentDeleteComponent implements OnInit {
       deletedComment => {
         // console.log("DELETE SUCCESS");
         // console.log(deletedComment);
-        this._errorMsg = null;
+        this._error.msg = null;
         this._router.navigate( [ 'ViewPost', { postid: this._post.id } ] );
         // this._router.navigate( [ 'ViewGroup', { super_group_name: this._post.group.supergroup.name, group_name: this._post.group.name } ] );
       },
       error => {
-       this._errorMsg = error;
+       this._error.msg = error;
       })
   }
 

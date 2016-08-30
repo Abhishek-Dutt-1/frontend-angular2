@@ -80,7 +80,7 @@ export class Comment2Service {
     let backendUrl = this._appService.getSiteParams().backendUrl;
     let headers = new Headers( this._appService.getSiteParams().headersObj );
     let options = new RequestOptions({ headers: headers });
-    return this._http.get(backendUrl+'/comment2/' + id, options)
+    return this._http.get(backendUrl+'/comment2/getComment2ById/' + id, options)
       .map(res => {
         //console.log(res.json());
         this._appService.spinner(false);

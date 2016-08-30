@@ -41,12 +41,13 @@ import {ErrorComponent} from '../misc/error.component';
                 Verify members email: {{group.verify_members_email}}<br/>
                 Verify members email domain list: {{group.verify_members_email_list}}<br/>
                 Membership needs approval: {{group.membership_needs_approval}}<br/>
+                <!--
                 Members waiting approval: {{group.members_waiting_approval}}<br/>
 
                 Is current user Subscribed: {{group.isCurrentUserSubscribed}}<br/>
                 Is current user in waiting list: {{group.isCurrentUsersMembershipPending}}<br/>
                 Is current user owner of this group: {{group.currentUserIsGroupOwner}}<br/>
-
+                -->
               </div>
               <div class="panel-footer">
                 <a>Group Info</a> |

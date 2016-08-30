@@ -215,7 +215,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
         // Do some post prep for the form
         this.convertBooleanToBinary(group, true)
         group.number_of_email_domains = [];
-        console.log("Group", group)
+        //console.log("Group", group)
         for (var i = 0; i < group.verify_email_domains_list.length; i++) {
           group.number_of_email_domains.push(i);
         }
@@ -268,7 +268,7 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
   onSubmit(event) {
 
     event.preventDefault();
-    console.log(this._model);
+    //console.log(this._model);
 
     ['name', 'description', 'emailDomain'].forEach( field => this.validateForm(field) );
     if(this._formErrors.name.isValid && this._formErrors.description.isValid && this._formErrors.emailDomain.isValid) {
@@ -285,11 +285,11 @@ export class EditGroupComponent implements OnInit, OnDestroy  {
 
     this._groupService.editGroup(tmpModel)
       .subscribe( group => {
-        console.log(group)
+        //console.log(group)
         this._router.navigate(['ViewGroup', {super_group_name: group.supergroup.name, group_name: group.name}]);
       },
       error => {
-        console.log(error);
+        //console.log(error);
         this._errorMsg = error;
       });
   }

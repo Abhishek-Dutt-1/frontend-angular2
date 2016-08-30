@@ -61,6 +61,7 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
       </div>
 
+      <fieldset [disabled]="_currentUser ? false : true">
       <div class="post-as-anon form-group">
         <label for="post-as-anon" class="col-sm-2 control-label">Post As Anonymous</label>
         <div class="col-sm-10 radio-inline1">
@@ -72,6 +73,7 @@ import {ErrorComponent} from '../misc/error.component';
           </label>
         </div>
       </div>
+      </fieldset>
 
       <my-error [_error]="_error"></my-error>
 
@@ -120,11 +122,12 @@ import {ErrorComponent} from '../misc/error.component';
 })
 export class NewComment3Component {
 
-  private post: Post = null;
-  private comment2 = null;
-  private _model: any = null;
-  private _error = { msg: null, type: null };
+  private post: Post             = null;
+  private comment2               = null;
+  private _model: any            = null;
+  private _error                 = { msg : null, type : null };
   private _showMemeList: boolean = true;
+  private _currentUser           = null;
 
   constructor(
     private _comment3Service: Comment3Service,
@@ -155,21 +158,30 @@ export class NewComment3Component {
     // Only logged in uses can comment2
     this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
-        console.log("State change ", currentUser)
-        this._model.postedby = currentUser;
-        this._error.msg = null;
+        this._currentUser        = currentUser;
+        this._model.postedby     = currentUser;
+        this._model.post_as_anon = 0;
+        this._error.msg          = null;
       } else {
-        this._error.msg = "User must be logged in to reply.";
+        this._currentUser = null;
+        this._model.postedby = null;
+        this._model.post_as_anon = 1;
+        //this._error.msg = "User must be logged in to reply.";
       }
     });
     // Only logged in uses can comment2 (init version)
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
+      this._currentUser = currentUser;
       this._model.postedby = currentUser;
+      this._model.post_as_anon = 0;
       this._error.msg = null;
     } else {
-      this._error.msg = "User must be logged in to reply.";
+      this._currentUser = null;
+      this._model.postedby = null;
+      this._model.post_as_anon = 1;
+      //this._error.msg = "User must be logged in to reply.";
     }
   }
 
@@ -178,14 +190,14 @@ export class NewComment3Component {
    */
   onSubmit(event) {
 
-    if( !this._model.postedby || !this._model.postedby.id ) return;
+    //if( !this._model.postedby || !this._model.postedby.id ) return;
 
     event.preventDefault();
     this._model.commentedon = this.comment2
     let properModel = {
       text           : this._model.text || null,
       meme_image_url : this._model.meme_image_url || null,
-      postedby       : this._model.postedby.id,
+      postedby       : this._model.postedby ? this._model.postedby.id : null,
       commentedon    : this._model.commentedon.id,
       parent_post_id : this.post.id,
       post_as_anon   : this._model.post_as_anon ? true : false
@@ -195,7 +207,7 @@ export class NewComment3Component {
     this._comment3Service.createNewComment3( properModel )
       .subscribe(
         comment3 => {
-          this._router.navigate(['ViewPost', {postid: this.post.id}]);
+          this._router.navigate( [ 'ViewPost', { postid : this.post.id } ] );
         },
         error => {
           //console.log(error)
@@ -204,7 +216,7 @@ export class NewComment3Component {
   }
 
   memeClicked(memeImageUrl: string) {
-    console.log("Inside post comp upvoting ", memeImageUrl);
+    //console.log("Inside post comp upvoting ", memeImageUrl);
     this._model.meme_image_url = memeImageUrl;
   }
 

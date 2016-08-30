@@ -60,6 +60,7 @@ import {ErrorComponent} from '../misc/error.component';
         </div>
       </div>
 
+      <fieldset [disabled]="_currentUser ? false : true">
       <div class="post-as-anon form-group">
         <label for="post-as-anon" class="col-sm-2 control-label">Post As Anonymous</label>
         <div class="col-sm-10 radio-inline1">
@@ -71,11 +72,11 @@ import {ErrorComponent} from '../misc/error.component';
           </label>
         </div>
       </div>
-
-      <my-error [_error]="_error"></my-error>
+      </fieldset>
 
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
+          <my-error [_error]="_error"></my-error>
           <button (click)="_showMemeList = !_showMemeList" class="btn btn-default hidden">Meme</button>
           <button (click)="onSubmit($event)" class="btn btn-default" [disabled]="!comment4Form.form.valid">Submit</button>
           <button (click)="goBack()" class="btn btn-default">Cancel</button>
@@ -118,11 +119,12 @@ import {ErrorComponent} from '../misc/error.component';
 })
 export class NewComment4Component {
 
-  private post: Post = null;
-  private comment3 = null;
-  private _model: any = null;
-  private _error = { msg: null, type: null };
+  private post: Post             = null;
+  private comment3               = null;
+  private _model: any            = null;
+  private _error                 = { msg : null, type : null };
   private _showMemeList: boolean = true;
+  private _currentUser           = null;
 
   constructor(
     private _comment4Service: Comment4Service,
@@ -153,21 +155,30 @@ export class NewComment4Component {
     // Only logged in uses can comment2
     this._authenticationService.loggedInUser$.subscribe(currentUser => {
       if(currentUser) {
-        console.log("State change ", currentUser)
-        this._model.postedby = currentUser;
-        this._error.msg = null;
+        this._currentUser        = currentUser;
+        this._model.postedby     = currentUser;
+        this._model.post_as_anon = 0;
+        this._error.msg          = null;
       } else {
-        this._error.msg = "User must be logged in to reply.";
+        this._currentUser        = null;
+        this._model.postedby     = null;
+        this._model.post_as_anon = 1;
+        //this._error.msg = "User must be logged in to reply.";
       }
     });
     // Only logged in uses can comment2 (init version)
     // TODO:: Find the Observable way to do this
     let currentUser = this._authenticationService.getLoggedInUser();
     if(currentUser) {
-      this._model.postedby = currentUser;
-      this._error.msg = null;
+      this._currentUser        = currentUser;
+      this._model.postedby     = currentUser;
+      this._model.post_as_anon = 0;
+      this._error.msg          = null;
     } else {
-      this._error.msg = "User must be logged in to reply.";
+      this._currentUser        = null;
+      this._model.postedby     = null;
+      this._model.post_as_anon = 1;
+      //this._error.msg = "User must be logged in to reply.";
     }
   }
 
@@ -176,14 +187,14 @@ export class NewComment4Component {
    */
   onSubmit(event) {
 
-    if( !this._model.postedby || !this._model.postedby.id ) return;
+    //if( !this._model.postedby || !this._model.postedby.id ) return;
 
     event.preventDefault();
     this._model.commentedon = this.comment3
     let properModel = {
       text           : this._model.text || null,
       meme_image_url : this._model.meme_image_url || null,
-      postedby       : this._model.postedby.id,
+      postedby       : this._model.postedby ? this._model.postedby.id : null,
       commentedon    : this._model.commentedon.id,
       parent_post_id : this.post.id,
       post_as_anon   : this._model.post_as_anon ? true : false
@@ -193,7 +204,7 @@ export class NewComment4Component {
     let newPost = this._comment4Service.createNewComment4( properModel )
       .subscribe(
         comment => {
-          this._router.navigate(['ViewPost', {postid: this.post.id}]);
+          this._router.navigate( [ 'ViewPost', { postid : this.post.id } ] );
         },
         error => {
           //console.log(error)

@@ -469,7 +469,7 @@ export class PostComponent implements OnInit {
     //console.log("Inside post comp upvoting ", id)
     if(this._processingVote) return;
     this._processingVote = true;
-console.log(this.contextGroups)
+//console.log(this.contextGroups)
     let contextGroups = this.contextGroups.map( group => group.id );
     // Context Groups are used to calculate User's score depending on which  page the post is
     this._postService.upVotePost(id, contextGroups).subscribe(

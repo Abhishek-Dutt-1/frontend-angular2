@@ -54,7 +54,7 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
                     <div class="pull-right">
                       <div class="add-supergroups-button hidden-xs">
                         <a class="1pull-right btn btn-sm btn-default new-post-button" [routerLink]="[ 'ViewGroupList', { supergroup: _super_group.name } ]">
-                          <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Groups</a>
+                          <i class="fa fa-bars" aria-hidden="true"></i>&nbsp;Groups</a>
                       </div>
                       <div class="add-supergroups-plus visible-xs-block">
                         <a class="" [routerLink]="[ 'ViewGroupList', { supergroup: _super_group.name } ]">

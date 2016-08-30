@@ -97,7 +97,7 @@ import {ErrorComponent} from '../misc/error.component';
         <div class="post-textarea form-group">
           <label for="text" class="col-sm-2 control-label">Text</label>
           <div class="col-sm-10">
-            <textarea type="text" class="form-control" rows="20"
+            <textarea type="text" class="form-control" rows="15"
               [(ngModel)] = "_model.text" placeholder="Post text"
               ngControl = "text" #text="ngForm"
             ></textarea>
@@ -266,7 +266,9 @@ export class EditPostComponent {
 
     if( postId ) {
       this._postService.getPost(postId).subscribe(
-        post => {
+        res => {
+          let post = res.post
+          post.comments = res.comments
           this._model = post;
           this._model.post_as_anon = 0;
           this._model.sticky_post = this._model.sticky_level ? 1 : 0     // 1 for group, 0 for no sticky
@@ -335,6 +337,7 @@ export class EditPostComponent {
    */
   searchImagesFromUrl( url : string ) {
     //console.log( "ONCHANE", url )
+    if ( !url ) return
     this._post_images_message = "Loading images from the Link..."
     this._postService.fetchPostImagesFromUrl( url ).subscribe(
       imageList => {
