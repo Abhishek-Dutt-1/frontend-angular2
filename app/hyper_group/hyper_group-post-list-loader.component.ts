@@ -154,7 +154,7 @@ export class HyperGroupPostListLoaderComponent implements OnInit, OnDestroy {
         this.postsSticky = resp.postsSticky;
 
         if( this.posts.length + this.postsSticky.length < 1 ) {
-          this._error = { type: 'danger', msg: "Your '" + this._geoSelection.toUpperCase() + "' groups do not have any posts yet. " +
+          this._error = { type: 'danger', msg: "Your '" + this._geoSelection.toUpperCase() + "' groups do not have any posts yet ¯\\_(ツ)_/¯. " +
                            "Please subscribe to some more active groups, or create a new post yourself." }
           this._loadButtonState.postListHasNoPosts = true;
         }

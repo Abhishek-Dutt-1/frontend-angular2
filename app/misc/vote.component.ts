@@ -54,8 +54,9 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
       border-radius: 5px;
       /*
       background-color: rgba(248, 251, 251, 0.3);
-      */
       background-color: rgba(245, 217, 217, 0.07);
+      */
+      background-color: rgba(245, 217, 217, 0.3);
       color: rgba(0, 0, 0, 0.3);
       cursor: pointer;
     }
@@ -99,8 +100,9 @@ import {Component, OnInit, EventEmitter} from '@angular/core';
       font-size: 14px;
       /*
       background-color: rgba(248, 251, 251, 0.3);
-      */
       background-color: rgba(245, 217, 217, 0.07);
+      */
+      background-color: rgba(245, 217, 217, 0.1);
       color: rgba(0, 0, 0, 0.3);
       cursor: pointer;
       text-align: center;

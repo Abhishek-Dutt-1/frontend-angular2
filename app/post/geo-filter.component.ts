@@ -73,7 +73,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
                 <div class="1hidden-md pull-right">
                   <div class="add-supergroups-button">
                     <a class="1pull-right btn btn-sm btn-default new-post-button" [routerLink]="[ 'SupergroupSelection', { hypergroup: geoSelection } ]">
-                      <i class="fa fa-bars" aria-hidden="true"></i> &nbsp;Supergroups
+                      <i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;Supergroups
                     </a>
                   </div>
                 </div>
@@ -134,7 +134,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
             <div class="menu-item pull-right add-supergroups">
               <div class="menu-link-container">
                 <a class="menu-link" [routerLink]="[ 'SupergroupSelection', { hypergroup: geoSelection } ]">
-                  <i class="fa fa-bars"></i>
+                  <i class="fa fa-map-marker"></i>
                 </a>
               </div>
             </div>

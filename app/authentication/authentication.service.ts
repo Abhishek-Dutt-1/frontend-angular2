@@ -168,6 +168,7 @@ export class AuthenticationService {
     this._isUserLoggedIn = true;
     this._loggedInUser.next(updatedUser);
   }
+  
   updateCurrentUsersScore( userScoreObj ) {
     let scoreObj = userScoreObj[ this._currentUser.id ]
     if ( scoreObj ) {

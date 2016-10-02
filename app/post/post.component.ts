@@ -512,7 +512,7 @@ export class PostComponent implements OnInit {
         this._error.msg = null;
       },
       error => {
-        console.log(error)
+        //console.log(error)
         this._processingVote = false;
         //this._errorMsg = error;
         this._appService.createNotification( { text: error, type: 'danger' } );
