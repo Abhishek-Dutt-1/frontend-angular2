@@ -52,7 +52,9 @@ import {PostTemplateType} from './post-template-types';
             <div class="bullet pull-left">&bull;</div>
 
             <div class="profile-text pull-left">
-              {{post.comments.length}} Comments
+              {{post.comments.length}}
+              <span *ngIf="post.comments.length == 1">Comment</span>
+              <span *ngIf="post.comments.length != 1">Comments</span>
             </div>
 
             <div class="bullet pull-left">&bull;</div>
@@ -84,7 +86,7 @@ import {PostTemplateType} from './post-template-types';
   styles: [`
     .my-post-meta-panel {
       font-family: BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 19.6px;
       color: rgba(0, 0, 0, 0.439216);
     }

@@ -106,7 +106,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     /** dummy div should be the exact height of the sticky div
      * this is to prevent jumping of the page
      */
-    height: 55px;
+    height: 46px;
   }
   .my-view-group .sticky {
     position: fixed;
@@ -123,13 +123,14 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
   .my-view-group .group-name {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     transition: 0.05s ease-in-out;
     display: block;
     vertical-align: baseline;
     letter-spacing: 1px;
     font-size: 18px;
+    font-weight: bold;
     font-family: WorkSans,sans-serif;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -140,16 +141,16 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     text-decoration: none;
   }
   .my-view-group .group-ops {
-    padding: 15px 0;
+    padding: 10px 0;
   }
   .my-view-group .group-description {
     color: rgba(0, 0, 0, 0.8);
     display: block;
     font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 27px;
-    margin-bottom: 15px;
-    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
     word-wrap: break-word;
     -webkit-font-smoothing: antialiased;
     overflow-wrap: break-word;
@@ -162,7 +163,7 @@ import {FabButtonComponent} from '../misc/fab-button.component';
     -webkit-font-smoothing: antialiased;
     color: rgb(200, 200, 200);
     font-family: "Graphik Web","Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1;
     text-transform: uppercase;
     vertical-align: middle;
@@ -273,7 +274,7 @@ export class ViewGroupComponent implements OnInit, OnDestroy  {
   }
 */
   _scrollListener() {
-    this._sticky = window.scrollY > 60;
+    this._sticky = window.scrollY > 45;
   }
 
   /**

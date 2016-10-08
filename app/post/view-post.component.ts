@@ -62,6 +62,11 @@ import {ErrorComponent} from '../misc/error.component';
         <!-- split it into comment-list component if need to reuse -->
         <div class="row"> <!-- comments start -->
           <div class="col-xs-12">
+            <!-- Watermark -->
+            <div id="background">
+              <p id="bg-text" *ngIf="post.comments.length == 1">{{post.comments.length}} Comment</p>
+              <p id="bg-text" *ngIf="post.comments.length != 1">{{post.comments.length}} Comments</p>
+            </div>
             <!-- Replies to Post -->
             <div class="comment-list level-1">
 
@@ -142,7 +147,7 @@ import {ErrorComponent} from '../misc/error.component';
     /** dummy div should be the exact height of the sticky div
      * this is to prevent jumping of the page
      */
-    height: 55px;
+    height: 47px;
   }
   .my-view-post .sticky {
     position: fixed;
@@ -169,7 +174,7 @@ import {ErrorComponent} from '../misc/error.component';
     padding: 0px 0px 0px 40px;
   }
   .my-view-post .group-name-row {
-    margin: 15px 0;
+    margin: 10px 0;
   }
   .my-view-post .supergroup-name {
     transition: 0.05s ease-in-out;
@@ -182,6 +187,7 @@ import {ErrorComponent} from '../misc/error.component';
     word-wrap: break-word;
     color: rgba(0, 0, 0, 0.6);
     text-decoration: none;
+    font-weight: bold;
   }
   .my-view-post .supergroup-name a {
     color: rgba(0, 0, 0, 0.6);
@@ -202,6 +208,27 @@ import {ErrorComponent} from '../misc/error.component';
   }
   .my-view-post .add-supergroups-button {
     padding-right: 10px;
+  }
+  .my-view-post #background {
+    /*
+    position:absolute;
+    right: 15px;
+    */
+    z-index: -1;
+    opacity: 0.7;
+    text-align: right;
+    /*
+    background:white;
+    display:block;
+    min-height:50%;
+    min-width:50%;
+    color:yellow;
+    float: right;
+    */
+  }
+  .my-view-post #bg-text {
+      color:lightgrey;
+      font-size: 25px;
   }
   .my-view-post .comment1-container, .comment2-container, .comment3-container, .comment4-container{
     margin-bottom: 20px;
@@ -258,12 +285,14 @@ export class ViewPostComponent {
     this.getPosts(postId);
 
     // Sticky header. Ref: Geo-filter component for details
-    window.addEventListener("scroll", this.myEfficientFn);
+    //window.addEventListener("scroll", this.myEfficientFn);
+    window.addEventListener("scroll", this._scrollListener.bind(this));
   }
 
+/*
   myEfficientFn = this.debounce( () => {
 	  // All the taxing stuff you do
-    this._sticky = window.scrollY > 60;
+    this._sticky = window.scrollY > 45;
     //console.log(this._sticky)
   }, 100, false);
   debounce(func, wait, immediate) {
@@ -280,7 +309,10 @@ export class ViewPostComponent {
       if (callNow) func.apply(context, args);
     }
   }
-
+*/
+  _scrollListener() {
+    this._sticky = window.scrollY > 45;
+  }
   getPosts(postId: any) {
     this._postService.getPost(postId).subscribe(
       res => {
@@ -355,7 +387,8 @@ export class ViewPostComponent {
 
   ngOnDestroy() {
     this._loggedInUserSubcription.unsubscribe();
-    window.removeEventListener("scroll", this.myEfficientFn);
+    //window.removeEventListener("scroll", this.myEfficientFn);
+    window.removeEventListener("scroll", this._scrollListener);
   }
 
   gotoNewPostForm() {

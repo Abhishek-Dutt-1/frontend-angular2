@@ -167,7 +167,7 @@ KEEP IN SYNC : GeoFilterAddSupergroup
         /** dummy div should be the exact height of the sticky div
          * this is to prevent jumping of the page
          */
-        height: 56px;
+        height: 47px;
       }
       .sticky {
         position: fixed;
@@ -184,8 +184,8 @@ KEEP IN SYNC : GeoFilterAddSupergroup
       }
       .my-geo-filter > .row {
         border-bottom: 1px solid rgba(0,0,0,0.05);
-        padding-bottom: 15px;
-        padding-top: 15px;
+        padding-bottom: 10px;
+        padding-top: 10px;
       }
       .my-geo-filter .menu-item {
         padding: 0 15px 0px 0;
@@ -289,7 +289,8 @@ export class GeoFilterComponent implements OnInit, OnDestroy {
   }
   */
   _scrollListener() {
-    this._sticky = window.scrollY > 60;
+    // The top header hieght, after which div becomes sticky
+    this._sticky = window.scrollY > 45;
   }
 
   /*

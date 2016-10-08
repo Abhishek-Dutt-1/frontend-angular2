@@ -68,7 +68,7 @@ import { SupergroupSelectionComponent } from './hyper_group/supergroup-selection
             <div class="col-xs-6 logo-container">
               <div class="logo">
                 <a [routerLink]="['/HyperGroupPostListDefault']">
-                  <img src="images/angrycity_white.png" width="30" class="1hidden">
+                  <img src="images/angrycity_white.png" width="25" class="1hidden">
                   <span class="glyphicon glyphicon-home hidden" aria-hidden="true"></span> Angry.City
                 </a> <sup class="alpha">&alpha;</sup>
               </div>
@@ -95,8 +95,8 @@ import { SupergroupSelectionComponent } from './hyper_group/supergroup-selection
     .my-app-component .header {
       height: 55px;
       color: white;
-      height: 60px;
-      font-size: 21px;
+      height: 45px;
+      font-size: 20px;
       font-family: Roboto, UILanguageFont, Arial, sans-serif;
 /*
 background-color: #0054a6;
@@ -116,7 +116,7 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
       border-bottom: 1px solid #003264; */
     }
     .my-app-component .header .logo-container {
-      padding-top: 13px;
+      padding-top: 5px;
     }
     .my-app-component .header .logo a {
       vertical-align: middle;
@@ -131,8 +131,13 @@ background-image:     -ms-linear-gradient(top, #e40606 0%, #980505 100%);
     }
     .my-app-component .header .user-panel-container {
       text-align: right;
+      /*
       font-size: 14px;
       padding-top: 20px;
+      */
+      font-size: 15px;
+      padding-top: 10px;
+      font-weight: bold;
     }
     .my-app-component .header .alpha {
     }

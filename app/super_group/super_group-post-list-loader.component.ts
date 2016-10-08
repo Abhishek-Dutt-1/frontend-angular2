@@ -38,7 +38,7 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
                         <i class="fa" [ngClass]="{'fa-plane': _hyper_group == 'international', 'fa-train': _hyper_group == 'national', 'fa-bus': _hyper_group === 'state', 'fa-car': _hyper_group === 'city', 'fa-bicycle': _hyper_group === 'local' }"></i> /
                       </a>
                       <a [routerLink]="['SuperGroupPostList', {super_group_name: _super_group.name}]">
-                        {{_super_group.name}} / &nbsp;<small class="hidden1"><i>{{_super_group.description}}</i></small>
+                        <span class="supergroup-row-bold">{{_super_group.name}}</span> / &nbsp;<small class="hidden1"><i>{{_super_group.description}}</i></small>
                       </a>
                     </div>
                   </div>
@@ -99,7 +99,7 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
     /** dummy div should be the exact height of the sticky div
      * this is to prevent jumping of the page
      */
-    height: 55px;
+    height: 47px;
   }
   .my-super-group-post-list-loader .sticky {
     position: fixed;
@@ -113,7 +113,7 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
     border-bottom: 1px solid rgba(0, 0, 0, 0.05); */
   }
   .my-super-group-post-list-loader .group-name-row {
-    margin: 15px 0;
+    margin: 10px 0;
   }
   .my-super-group-post-list-loader .supergroup-name {
     transition: 0.05s ease-in-out;
@@ -130,6 +130,9 @@ import {SuperGroupSidebarComponent} from './super_group-sidebar.component';
   .my-super-group-post-list-loader .supergroup-name a {
     color: rgba(0, 0, 0, 0.6);
     text-decoration: none;
+  }
+  .my-super-group-post-list-loader .supergroup-row-bold {
+    font-weight: bold;
   }
   .my-super-group-post-list-loader .border-row {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -245,7 +248,7 @@ export class SuperGroupPostListLoaderComponent implements OnInit, OnDestroy {
   }
 */
   _scrollListener() {
-    this._sticky = window.scrollY > 60;
+    this._sticky = window.scrollY > 45;
   }
 
   getSupergroupAndPosts(superGroup: any, startOver?: boolean) {
