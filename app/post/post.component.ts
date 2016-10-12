@@ -373,7 +373,7 @@ import {AuthenticationService} from '../authentication/authentication.service';
     color: rgba(0, 0, 0, 0.8);
     display: block;
     font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
-    font-size: 16px;
+    font-size: 17px;
     font-style: normal;
     font-weight: normal;
     letter-spacing: -0.072px;
